@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -15,6 +16,37 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+  String _selectedMission = 'Math';
+  String _selectedMissionVideo = 'assets/videos/math.webm';
+
+  // Processing screen
+  double _processingProgress = 0.0;
+  Timer? _processingTimer;
+
+  void _startProcessing() {
+    _processingProgress = 0.0;
+    const totalMs = 3000;
+    const tickMs = 50;
+    int elapsed = 0;
+    _processingTimer?.cancel();
+    _processingTimer = Timer.periodic(Duration(milliseconds: tickMs), (timer) {
+      elapsed += tickMs;
+      setState(() {
+        _processingProgress = (elapsed / totalMs).clamp(0.0, 1.0);
+      });
+      if (elapsed >= totalMs) {
+        timer.cancel();
+        _completeOnboarding();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _processingTimer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
 
   void _completeOnboarding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -108,6 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   setState(() {
                     _currentPage = value;
                   });
+                  if (value == 8) _startProcessing();
                 },
                 children: [
                   _buildIntro1(),
@@ -250,7 +283,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _buildPhoneCard(String title, bool isAlarmy, List<Map<String, dynamic>> alarms) {
     return Container(
       width: 160,
-      height: 320,
+      height: 340,
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(0xFF1E1E20),
@@ -261,23 +294,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           Text(title, style: TextStyle(color: isAlarmy ? Color(0xFFFF3B30) : Colors.white54, fontSize: 14, fontWeight: FontWeight.bold)),
           SizedBox(height: 24),
-          ...alarms.map((alarm) => Padding(
-                padding: const EdgeInsets.only(bottom: 24.0),
-                child: Opacity(
-                  opacity: alarm["opacity"],
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(alarm["time"], style: TextStyle(color: Colors.white, fontSize: 24)),
-                      CupertinoSwitch(
-                        value: true,
-                        activeColor: isAlarmy ? Color(0xFFFF3B30) : Colors.green,
-                        onChanged: (bool value) {},
-                      ),
-                    ],
+          Expanded(
+            child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(), // Keep it feeling like a static card unless it really needs to scroll
+              child: Column(
+                children: alarms.map((alarm) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Opacity(
+                    opacity: alarm["opacity"],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(alarm["time"], style: TextStyle(color: Colors.white, fontSize: 24)),
+                        CupertinoSwitch(
+                          value: true,
+                          activeColor: isAlarmy ? Color(0xFFFF3B30) : Colors.green,
+                          onChanged: (bool value) {},
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )),
+                )).toList(),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -537,11 +577,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 child: Column(
                   children: [
-                    _buildSoundListTile("Wake up you lazy", false),
+                    _buildSoundListTile("Digital Alarm", false),
                     Divider(color: Colors.white10),
-                    _buildSoundListTile("At this time you are sleeping?", false),
+                    _buildSoundListTile("Analog Alarm", false),
                     Divider(color: Colors.white10),
-                    _buildSoundListTile("Ice Cream Truck", false),
+                    _buildSoundListTile("Siren", false),
+                    Divider(color: Colors.white10),
+                    _buildSoundListTile("Rooster", false),
+                    Divider(color: Colors.white10),
+                    _buildSoundListTile("Sunshine", false),
+                    Divider(color: Colors.white10),
+                    _buildSoundListTile("Morning Park", false),
                   ],
                 ),
               ),
@@ -609,12 +655,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 24),
             children: [
-              _buildMissionCard(Icons.calculate, "Math", Color(0xFF1E1E20), Colors.lightBlue),
-              _buildMissionCard(Icons.grid_view, "Find Color Tiles", Color(0xFF1E1E20), Colors.blue),
-              _buildMissionCard(Icons.keyboard, "Typing", Color(0xFF1E1E20), Colors.cyan),
-              _buildMissionCard(Icons.vibration, "Shake", Color(0xFF1E1E20), Colors.deepPurpleAccent),
+              _buildMissionCard(Icons.calculate, "Math", 'assets/videos/math.webm', Colors.lightBlue),
+              _buildMissionCard(Icons.memory, "Memory", 'assets/videos/memorize.webm', Colors.blue),
+              _buildMissionCard(Icons.keyboard, "Typing", 'assets/videos/typing.webm', Colors.cyan),
+              _buildMissionCard(Icons.vibration, "Shake", 'assets/videos/shake.webm', Colors.deepPurpleAccent),
               SizedBox(height: 16),
-              _buildMissionCard(Icons.close, "Off", Color(0xFF1E1E20), Colors.white54, isNext: true),
+              _buildMissionCard(Icons.close, "Off", '', Colors.white54, isOff: true),
             ],
           ),
         ),
@@ -622,15 +668,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildMissionCard(IconData icon, String title, Color bgColor, Color iconColor, {bool isNext = false}) {
+  Widget _buildMissionCard(IconData icon, String title, String videoPath, Color iconColor, {bool isOff = false}) {
     return GestureDetector(
-      onTap: isNext ? _nextPage : () {},
+      onTap: () {
+        if (isOff) {
+          _goToNext(); // skip detail, go straight to processing
+        } else {
+          setState(() {
+            _selectedMission = title;
+            _selectedMissionVideo = videoPath;
+          });
+          _goToNext();
+        }
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 16),
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: bgColor,
+          color: Color(0xFF1E1E20),
           borderRadius: BorderRadius.circular(16),
+          border: _selectedMission == title && !isOff
+              ? Border.all(color: iconColor, width: 1.5)
+              : null,
         ),
         child: Row(
           children: [
@@ -643,14 +702,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Icon(icon, color: iconColor, size: 24),
             ),
             SizedBox(width: 24),
-            Text(title, style: TextStyle(color: Colors.white, fontSize: 18)),
+            Expanded(
+              child: Text(title, style: TextStyle(color: Colors.white, fontSize: 18)),
+            ),
+            if (_selectedMission == title && !isOff)
+              Icon(Icons.check_circle, color: iconColor, size: 20),
           ],
         ),
       ),
     );
   }
 
-  // Step 4/4 Details: Mission Video
+  // Step 4/4 Details: Mission Preview Video
   Widget _buildStep4Detail() {
     return Column(
       children: [
@@ -661,11 +724,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             color: Colors.white12,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Text("Math", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          child: Text(_selectedMission, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         ),
         SizedBox(height: 24),
         Text(
-          "Solve math problems,\nWake your brain",
+          _missionTagline(_selectedMission),
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white, height: 1.2),
         ),
@@ -678,15 +741,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             borderRadius: BorderRadius.circular(24),
           ),
           clipBehavior: Clip.antiAlias,
-          child: MissionVideoPlayer(),
+          child: MissionVideoPlayer(videoPath: _selectedMissionVideo),
         ),
         Spacer(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          child: SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFF3B30),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              onPressed: _nextPage,
+              child: Text("Next", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ),
+        ),
       ],
     );
   }
 
+  String _missionTagline(String mission) {
+    switch (mission) {
+      case 'Math': return "Solve math problems,\nWake your brain";
+      case 'Typing': return "Type a phrase,\nFocus your mind";
+      case 'Shake': return "Shake your phone,\nWake your body";
+      case 'Memory': return "Memorize tiles,\nSharp your memory";
+      default: return "Rise and shine!";
+    }
+  }
+
   // Final: Processing Mascot
   Widget _buildProcessing() {
+    final percent = (_processingProgress * 100).toInt();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -699,7 +788,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 size: Size(250, 250),
                 painter: SpotlightPainter(),
               ),
-              Lottie.asset('assets/lottie/anim_fire.json', fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Icon(Icons.local_fire_department, color: Colors.red, size: 80)),
+              Lottie.asset(
+                'assets/lottie/character_larmy_stage_1.lottie',
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    Lottie.asset('assets/lottie/anim_fire.json', fit: BoxFit.contain,
+                        errorBuilder: (c, e, s) => Icon(Icons.local_fire_department, color: Colors.red, size: 80)),
+              ),
             ],
           ),
         ),
@@ -707,7 +802,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 64.0),
           child: LinearProgressIndicator(
-            value: 0.76,
+            value: _processingProgress,
             backgroundColor: Colors.white12,
             valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF3B30)),
             minHeight: 4,
@@ -722,16 +817,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
         SizedBox(height: 16),
         Text(
-          "Finding the right mission 76%",
+          "Setting up your alarm... $percent%",
           style: TextStyle(color: Colors.white54, fontSize: 16),
         ),
-        SizedBox(height: 64),
+        SizedBox(height: 40),
+        if (_processingProgress >= 1.0)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFF3B30),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+                onPressed: _completeOnboarding,
+                child: Text("Start Now", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+              ),
+            ),
+          ),
+        SizedBox(height: 32),
       ],
     );
   }
 }
 
 class MissionVideoPlayer extends StatefulWidget {
+  final String videoPath;
+  const MissionVideoPlayer({Key? key, required this.videoPath}) : super(key: key);
+
   @override
   _MissionVideoPlayerState createState() => _MissionVideoPlayerState();
 }
@@ -742,7 +857,7 @@ class _MissionVideoPlayerState extends State<MissionVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset('assets/videos/math.webm')
+    _controller = VideoPlayerController.asset(widget.videoPath)
       ..initialize().then((_) {
         setState(() {});
         _controller.setLooping(true);
