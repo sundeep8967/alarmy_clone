@@ -88,6 +88,7 @@ class OnboardingStep4Detail extends ConsumerWidget {
       case 'Shake':
         return 'Shake your phone,\nWake your body';
       case 'Memory':
+      case 'Find Color Tiles':
         return 'Memorize tiles,\nSharp your memory';
       default:
         return 'Rise and shine!';

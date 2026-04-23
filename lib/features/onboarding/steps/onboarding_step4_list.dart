@@ -48,7 +48,7 @@ class OnboardingStep4List extends ConsumerWidget {
                 },
                 {
                   'icon': Icons.memory,
-                  'title': 'Memory',
+                  'title': 'Find Color Tiles',
                   'video': 'assets/videos/memorize.webm',
                   'color': Colors.blue,
                 },

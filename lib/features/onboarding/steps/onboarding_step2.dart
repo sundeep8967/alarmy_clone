@@ -17,6 +17,10 @@ class OnboardingStep2 extends ConsumerWidget {
       {'key': 'animal', 'label': '🐾 Animal'},
       {'key': 'landscape', 'label': '🪐 Landscape'},
       {'key': 'simple', 'label': '✨ Simple'},
+      {'key': 'alarmy', 'label': '⏰ Alarmy'},
+      {'key': 'affirmation', 'label': '😌 Affirmation'},
+      {'key': 'authentic', 'label': '📸 Authentic'},
+      {'key': 'religion', 'label': '🙏 Religion'},
     ];
 final state = ref.watch(onboardingProvider);
 

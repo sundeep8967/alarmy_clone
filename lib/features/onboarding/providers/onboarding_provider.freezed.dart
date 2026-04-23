@@ -175,7 +175,9 @@ class __$$OnboardingStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OnboardingStateImpl implements _OnboardingState {
+class _$OnboardingStateImpl
+    with DiagnosticableTreeMixin
+    implements _OnboardingState {
   const _$OnboardingStateImpl({
     this.currentPage = 0,
     this.selectedMission = 'Math',
@@ -205,8 +207,23 @@ class _$OnboardingStateImpl implements _OnboardingState {
   final bool showPermissionOverlay;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'OnboardingState(currentPage: $currentPage, selectedMission: $selectedMission, selectedMissionVideo: $selectedMissionVideo, selectedWallpaperId: $selectedWallpaperId, processingProgress: $processingProgress, showPermissionOverlay: $showPermissionOverlay)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'OnboardingState'))
+      ..add(DiagnosticsProperty('currentPage', currentPage))
+      ..add(DiagnosticsProperty('selectedMission', selectedMission))
+      ..add(DiagnosticsProperty('selectedMissionVideo', selectedMissionVideo))
+      ..add(DiagnosticsProperty('selectedWallpaperId', selectedWallpaperId))
+      ..add(DiagnosticsProperty('processingProgress', processingProgress))
+      ..add(
+        DiagnosticsProperty('showPermissionOverlay', showPermissionOverlay),
+      );
   }
 
   @override

@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'onboarding_provider.dart';
+part of 'sounds_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$onboardingHash() => r'a22b8655c418158fb3745d5d1bcaad7b74c8be88';
+String _$selectedSoundHash() => r'44bba341b373428b343df771048df9e77e95e94e';
 
-/// See also [Onboarding].
-@ProviderFor(Onboarding)
-final onboardingProvider =
-    AutoDisposeNotifierProvider<Onboarding, OnboardingState>.internal(
-      Onboarding.new,
-      name: r'onboardingProvider',
+/// See also [SelectedSound].
+@ProviderFor(SelectedSound)
+final selectedSoundProvider =
+    AutoDisposeNotifierProvider<SelectedSound, String>.internal(
+      SelectedSound.new,
+      name: r'selectedSoundProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$onboardingHash,
+          : _$selectedSoundHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$Onboarding = AutoDisposeNotifier<OnboardingState>;
+typedef _$SelectedSound = AutoDisposeNotifier<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
