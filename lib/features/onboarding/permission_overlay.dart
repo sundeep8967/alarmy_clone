@@ -32,7 +32,9 @@ class _PermissionOverlayState extends State<PermissionOverlay> {
     try {
       final plugin = FlutterLocalNotificationsPlugin();
       plugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >()
           ?.requestNotificationsPermission();
     } catch (_) {
       // Ignore — permission is best-effort during onboarding
@@ -44,103 +46,106 @@ class _PermissionOverlayState extends State<PermissionOverlay> {
     return Container(
       color: Colors.black54,
       child: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: 320,
-              padding: EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Color(0xFF2A2A2E),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Allow Notifications",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "If notifications are turned off, you won't see or hear anything when alarms ring",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      decoration: TextDecoration.none,
-                      height: 1.4,
-                    ),
-                  ),
-                  SizedBox(height: 32),
-                  _isRequesting
-                      ? SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Color(0xFF42A5F5),
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            GestureDetector(
-                              onTap: widget.onDeny,
-                              child: Text(
-                                "Don't Allow",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: _handleAllow,
-                              child: Text(
-                                "Allow",
-                                style: TextStyle(
-                                  color: Color(0xFF42A5F5),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                ],
-              ),
-            ),
-            Positioned(
-              right: 10,
-              bottom: -40,
-              child: IgnorePointer(
-                child: SizedBox(
-                  width: 120,
-                  height: 120,
-                  child: Lottie.asset(
-                    'assets/lottie/lottie_onboarding_permission_point.lottie',
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white12,
-                        shape: BoxShape.circle,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: 320,
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2A2A2E),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Allow Notifications',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: Icon(Icons.touch_app, color: Color(0xFF42A5F5), size: 40),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      "If notifications are turned off, you won't see or hear anything when alarms ring",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    _isRequesting
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Color(0xFF42A5F5),
+                            ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: widget.onDeny,
+                                child: const Text(
+                                  "Don't Allow",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: _handleAllow,
+                                child: const Text(
+                                  'Allow',
+                                  style: TextStyle(
+                                    color: Color(0xFF42A5F5),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 10,
+                bottom: -40,
+                child: IgnorePointer(
+                  child: SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Lottie.asset(
+                      'assets/lottie/lottie_onboarding_permission_point.lottie',
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: const BoxDecoration(
+                          color: Colors.white12,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.touch_app,
+                          color: Color(0xFF42A5F5),
+                          size: 40,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -153,7 +158,7 @@ void showPermissionOverlay(BuildContext context, VoidCallback onComplete) {
     context: context,
     barrierDismissible: false,
     barrierColor: Colors.transparent,
-    transitionDuration: Duration(milliseconds: 200),
+    transitionDuration: const Duration(milliseconds: 200),
     pageBuilder: (dialogContext, animation, secondaryAnimation) {
       final dialogNavigator = Navigator.of(dialogContext);
       return PermissionOverlay(
@@ -169,5 +174,3 @@ void showPermissionOverlay(BuildContext context, VoidCallback onComplete) {
     },
   );
 }
-
-
