@@ -5,9 +5,9 @@ class VolumeOverlay extends StatelessWidget {
   final VoidCallback onNext;
 
   const VolumeOverlay({
-    Key? key,
+    super.key,
     required this.onNext,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class VolumeOverlay extends StatelessWidget {
                   ),
                   CupertinoSwitch(
                     value: true,
-                    activeColor: Color(0xFF42A5F5), // Light blue switch
+                    activeTrackColor: Color(0xFF42A5F5), // Light blue switch
                     onChanged: (val) {},
                   ),
                 ],

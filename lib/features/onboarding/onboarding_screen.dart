@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -18,12 +19,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   String _selectedMission = 'Math';
   String _selectedMissionVideo = 'assets/videos/math.webm';
+  bool _showPermissionOverlay = false;
+
+  // Wallpaper data
+  List<Map<String, dynamic>> _wallpapers = [];
+  String _selectedWallpaperId = '';
 
   // Processing screen
   double _processingProgress = 0.0;
   Timer? _processingTimer;
 
   void _startProcessing() {
+    debugPrint('⏳ [Onboarding] Page 8: Processing screen started — animating progress bar');
     _processingProgress = 0.0;
     const totalMs = 3000;
     const tickMs = 50;
@@ -48,24 +55,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _loadWallpapers();
+  }
+
+  Future<void> _loadWallpapers() async {
+    try {
+      final String raw = await DefaultAssetBundle.of(context)
+          .loadString('assets/alarmy_wallpaper_images.json');
+      final dynamic decoded = json.decode(raw);
+      final List items = decoded is List ? decoded : [];
+      setState(() {
+        _wallpapers = items.cast<Map<String, dynamic>>();
+        if (_wallpapers.isNotEmpty) {
+          _selectedWallpaperId = _wallpapers.first['id'] ?? '';
+        }
+      });
+    } catch (e) {
+      debugPrint('[Wallpaper] Failed to load JSON: $e');
+    }
+  }
+
   void _completeOnboarding() async {
+    debugPrint('🏁 [Onboarding] Completing onboarding → navigating to MainScaffold');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('has_seen_onboarding', true);
-
+    if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => MainScaffold()),
     );
   }
 
   void _nextPage() {
+    debugPrint('👆 [Onboarding] Next tapped on page $_currentPage');
     if (_currentPage == 8) {
       _completeOnboarding();
     } else if (_currentPage == 3) {
-      // Step 1/4 -> 2/4 (Permission overlay)
-      showPermissionOverlay(context, () {
-        _goToNext();
-      });
+      debugPrint('🔔 [Onboarding] Page 3: Showing Permission Overlay (in-stack)');
+      setState(() => _showPermissionOverlay = true);
     } else if (_currentPage == 5) {
+      debugPrint('🔊 [Onboarding] Page 5: Showing Volume Overlay');
       // Step 3/4 -> 4/4 (Volume overlay)
       showVolumeOverlay(context, () {
         _goToNext();
@@ -76,10 +107,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToNext() {
-    _pageController.nextPage(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeIn,
-    );
+    debugPrint('➡️  [Onboarding] Navigating page $_currentPage → ${_currentPage + 1}');
+    _pageController.jumpToPage(_currentPage + 1);
   }
 
   @override
@@ -96,108 +125,134 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF0F0F11),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            if (progressStep > 0)
-              Padding(
-                padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 100 * (progressStep / 4),
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(2),
-                            ),
+            // ── Main content column ──────────────────────────────────
+            Column(
+              children: [
+                if (progressStep > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: Colors.white24,
+                            borderRadius: BorderRadius.circular(2),
                           ),
-                        ],
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 100 * (progressStep / 4),
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          '$progressStep/4',
+                          style: TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (value) {
+                      final names = [
+                        'Intro1: Most Trusted',
+                        'Intro2: Comparison Cards',
+                        'Intro3: Medical Journal',
+                        'Step1: Set Alarm Time',
+                        'Step2: Wallpaper Selection',
+                        'Step3: Sound Selection',
+                        'Step4: Mission List',
+                        'Step4: Mission Preview',
+                        'Processing: Mascot',
+                      ];
+                      final name = value < names.length ? names[value] : 'Unknown';
+                      debugPrint('📄 [Onboarding] ===== PAGE $value: $name =====');
+                      setState(() { _currentPage = value; });
+                      if (value == 8) _startProcessing();
+                    },
+                    children: [
+                      _buildIntro1(),
+                      _buildIntro2(),
+                      _buildIntro3(),
+                      _buildStep1(),
+                      _buildStep2(),
+                      _buildStep3(),
+                      _buildStep4List(),
+                      _buildStep4Detail(),
+                      _buildProcessing(),
+                    ],
+                  ),
+                ),
+                if (_currentPage < 3)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        3,
+                        (index) => AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          margin: EdgeInsets.symmetric(horizontal: 4),
+                          height: 8,
+                          width: 8,
+                          decoration: BoxDecoration(
+                            color: _currentPage == index ? Colors.white : Colors.white24,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
                       ),
                     ),
-                    SizedBox(width: 8),
-                    Text(
-                      '$progressStep/4',
-                      style: TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                physics: NeverScrollableScrollPhysics(), // Prevent manual swipe
-                onPageChanged: (value) {
-                  setState(() {
-                    _currentPage = value;
-                  });
-                  if (value == 8) _startProcessing();
-                },
-                children: [
-                  _buildIntro1(),
-                  _buildIntro2(),
-                  _buildIntro3(),
-                  _buildStep1(), // Set Time
-                  _buildStep2(), // Wallpaper
-                  _buildStep3(), // Sound
-                  _buildStep4List(), // Mission List
-                  _buildStep4Detail(), // Math Video
-                  _buildProcessing(), // Mascot
-                ],
-              ),
+                  ),
+                if (_currentPage != 8 && _currentPage != 4 && _currentPage != 5 && _currentPage != 6)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFF3B30),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        ),
+                        onPressed: _nextPage,
+                        child: Text(
+                          _currentPage == 2 ? "Get started" : "Next",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            if (_currentPage < 3)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    3,
-                    (index) => AnimatedContainer(
-                      duration: Duration(milliseconds: 200),
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      height: 8,
-                      width: 8,
-                      decoration: BoxDecoration(
-                        color: _currentPage == index ? Colors.white : Colors.white24,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            if (_currentPage != 8 && _currentPage != 4 && _currentPage != 5 && _currentPage != 6) // Hide default next button on some screens
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFF3B30),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    onPressed: _nextPage,
-                    child: Text(
-                      _currentPage == 2 ? "Get started" : "Next",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+            // ── Permission overlay (in-stack, no route) ───────────────
+            if (_showPermissionOverlay)
+              Positioned.fill(
+                child: PermissionOverlay(
+                  onAllow: () {
+                    debugPrint('✅ [Permission] Allowed → hiding overlay, jumping to page 4');
+                    setState(() => _showPermissionOverlay = false);
+                    _goToNext();
+                  },
+                  onDeny: () {
+                    debugPrint('❌ [Permission] Denied → hiding overlay, jumping to page 4');
+                    setState(() => _showPermissionOverlay = false);
+                    _goToNext();
+                  },
                 ),
               ),
           ],
@@ -298,7 +353,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: SingleChildScrollView(
               physics: NeverScrollableScrollPhysics(), // Keep it feeling like a static card unless it really needs to scroll
               child: Column(
-                children: alarms.map((alarm) => Padding(
+                children: alarms.map<Widget>((alarm) => Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Opacity(
                     opacity: alarm["opacity"],
@@ -308,7 +363,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(alarm["time"], style: TextStyle(color: Colors.white, fontSize: 24)),
                         CupertinoSwitch(
                           value: true,
-                          activeColor: isAlarmy ? Color(0xFFFF3B30) : Colors.green,
+                          activeTrackColor: isAlarmy ? Color(0xFFFF3B30) : Colors.green,
                           onChanged: (bool value) {},
                         ),
                       ],
@@ -417,6 +472,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Step 2/4: Choose Wallpaper
   Widget _buildStep2() {
+    final categories = [
+      {'key': 'trending', 'label': '💖 Trending'},
+      {'key': 'morning',  'label': '🌅 Morning'},
+      {'key': 'animal',   'label': '🐾 Animal'},
+      {'key': 'landscape','label': '🪐 Landscape'},
+      {'key': 'simple',   'label': '✨ Simple'},
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -428,58 +491,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white, height: 1.2),
           ),
         ),
-        SizedBox(height: 32),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Row(
-            children: [
-              Text("💖", style: TextStyle(fontSize: 20)),
-              SizedBox(width: 8),
-              Text("Trending", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-            ],
-          ),
-        ),
-        SizedBox(height: 16),
-        SizedBox(
-          height: 240,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            children: [
-              _buildWallpaperCard(Colors.blueGrey, "♪ At this time y..."),
-              SizedBox(width: 16),
-              _buildWallpaperCard(Colors.blueAccent, "♪ Ice Cream Tr..."),
-              SizedBox(width: 16),
-              _buildWallpaperCard(Colors.brown, "♪ Wake up you..."),
-            ],
-          ),
-        ),
-        SizedBox(height: 32),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Row(
-            children: [
-              Text("🪐", style: TextStyle(fontSize: 20)),
-              SizedBox(width: 8),
-              Text("Into Space", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-            ],
-          ),
-        ),
         SizedBox(height: 16),
         Expanded(
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            children: [
-              _buildWallpaperCard(Colors.indigo, ""),
-              SizedBox(width: 16),
-              _buildWallpaperCard(Colors.black87, ""),
-              SizedBox(width: 16),
-              _buildWallpaperCard(Colors.deepPurple, ""),
-            ],
-          ),
+          child: _wallpapers.isEmpty
+              ? Center(child: CircularProgressIndicator(color: Color(0xFFFF3B30)))
+              : ListView(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  children: categories.map((cat) {
+                    final items = _wallpapers
+                        .where((w) => w['category'] == cat['key'])
+                        .toList();
+                    if (items.isEmpty) return SizedBox.shrink();
+                    return _buildWallpaperSection(cat['label']!, items);
+                  }).toList(),
+                ),
         ),
-        // Next button embedded here so it's not full width at bottom like others
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: SizedBox(
@@ -499,20 +525,91 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildWallpaperCard(Color color, String text) {
-    return Container(
-      width: 140,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text(text, style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
+  Widget _buildWallpaperSection(String label, List<Map<String, dynamic>> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
+          child: Text(label, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
         ),
-      ),
+        SizedBox(
+          height: 220,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            itemCount: items.length,
+            itemBuilder: (context, i) {
+              final w = items[i];
+              final id = w['id'] as String? ?? '';
+              final thumbUrl = 'https://${w['thumbnailURL']}';
+              final isSelected = _selectedWallpaperId == id;
+              return GestureDetector(
+                onTap: () => setState(() => _selectedWallpaperId = id),
+                child: Container(
+                  width: 130,
+                  margin: EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: isSelected
+                        ? Border.all(color: Color(0xFFFF3B30), width: 2.5)
+                        : null,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(
+                          thumbUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            color: Color(0xFF2A2A2E),
+                            child: Icon(Icons.image, color: Colors.white24, size: 40),
+                          ),
+                          loadingBuilder: (_, child, progress) => progress == null
+                              ? child
+                              : Container(color: Color(0xFF2A2A2E),
+                                  child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFFF3B30)))),
+                        ),
+                        if (isSelected)
+                          Positioned(
+                            top: 8, right: 8,
+                            child: Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(color: Color(0xFFFF3B30), shape: BoxShape.circle),
+                              child: Icon(Icons.check, color: Colors.white, size: 14),
+                            ),
+                          ),
+                        Positioned(
+                          bottom: 0, left: 0, right: 0,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [Colors.black87, Colors.transparent],
+                              ),
+                            ),
+                            child: Text(
+                              w['name']?.toString().replaceAll('_', ' ') ?? '',
+                              style: TextStyle(color: Colors.white, fontSize: 11),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 16),
+      ],
     );
   }
 
@@ -696,7 +793,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: iconColor.withOpacity(0.2),
+                color: iconColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: iconColor, size: 24),
@@ -883,7 +980,7 @@ class SpotlightPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.white.withOpacity(0.04)
+      ..color = Colors.white.withValues(alpha: 0.04)
       ..style = PaintingStyle.fill;
 
     Path path = Path();
