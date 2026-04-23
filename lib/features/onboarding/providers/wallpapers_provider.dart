@@ -7,7 +7,7 @@ import '../models/wallpaper.dart';
 part 'wallpapers_provider.g.dart';
 
 @riverpod
-Future<List<Wallpaper>> wallpapers(Ref ref) async {
+Future<List<Wallpaper>> wallpapers(WallpapersRef ref) async {
   final String raw = await rootBundle.loadString(
     'assets/alarmy_wallpaper_images.json',
   );

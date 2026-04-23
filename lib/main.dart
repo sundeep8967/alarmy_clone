@@ -39,9 +39,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     super.initState();
-    // Create GoRouter ONCE in initState — never inside build().
-    // Creating it in build() causes the entire route tree to be torn down
-    // and recreated on every rebuild, destroying widget State and PageControllers.
     _router = GoRouter(
       initialLocation:
           widget.hasSeenOnboarding ? AppRoutes.home : AppRoutes.onboarding,
@@ -59,15 +56,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   @override
-  void dispose() {
-    _router.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Alarmy Clone',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -75,8 +67,8 @@ class _MyAppState extends ConsumerState<MyApp> {
           brightness: Brightness.dark,
         ),
         scaffoldBackgroundColor: Colors.black,
-        ),
-        routerConfig: router,
-        );
+      ),
+      routerConfig: _router,
+    );
   }
 }
