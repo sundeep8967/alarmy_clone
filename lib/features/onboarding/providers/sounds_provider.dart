@@ -38,6 +38,10 @@ class SelectedSound extends _$SelectedSound {
   }
 
   Future<void> _playPreview(String id) async {
+    if (id == 'video_sound') {
+      debugPrint('🎵 [Sounds] Video sound selected (handled by video player)');
+      return;
+    }
     final sound = sounds.firstWhere((s) => s.id == id);
     try {
       await _audioPlayer.stop();

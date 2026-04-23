@@ -100,6 +100,31 @@ class WallpaperSectionWidget extends StatelessWidget {
                               ),
                             ),
                           ),
+                        if (w.isVideo)
+                          Positioned(
+                            bottom: 30,
+                            left: 8,
+                            child: Row(
+                              children: [
+                                const Text(
+                                  '♪',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  w.name.length > 10 ? '${w.name.substring(0, 8)}...' : w.name,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         Positioned(
                           bottom: 0,
                           left: 0,

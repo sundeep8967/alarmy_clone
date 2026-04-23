@@ -13,6 +13,8 @@ _$WallpaperImpl _$$WallpaperImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       thumbnailURL: json['thumbnailURL'] as String,
       url: json['url'] as String,
+      isVideo: json['isVideo'] as bool? ?? false,
+      videoURL: json['videoURL'] as String?,
     );
 
 Map<String, dynamic> _$$WallpaperImplToJson(_$WallpaperImpl instance) =>
@@ -22,4 +24,6 @@ Map<String, dynamic> _$$WallpaperImplToJson(_$WallpaperImpl instance) =>
       'name': instance.name,
       'thumbnailURL': instance.thumbnailURL,
       'url': instance.url,
+      'isVideo': instance.isVideo,
+      'videoURL': instance.videoURL,
     };

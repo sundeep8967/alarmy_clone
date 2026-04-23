@@ -26,6 +26,8 @@ mixin _$Wallpaper {
   String get name => throw _privateConstructorUsedError;
   String get thumbnailURL => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
+  bool get isVideo => throw _privateConstructorUsedError;
+  String? get videoURL => throw _privateConstructorUsedError;
 
   /// Serializes this Wallpaper to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,6 +50,8 @@ abstract class $WallpaperCopyWith<$Res> {
     String name,
     String thumbnailURL,
     String url,
+    bool isVideo,
+    String? videoURL,
   });
 }
 
@@ -71,6 +75,8 @@ class _$WallpaperCopyWithImpl<$Res, $Val extends Wallpaper>
     Object? name = null,
     Object? thumbnailURL = null,
     Object? url = null,
+    Object? isVideo = null,
+    Object? videoURL = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -94,6 +100,14 @@ class _$WallpaperCopyWithImpl<$Res, $Val extends Wallpaper>
                 ? _value.url
                 : url // ignore: cast_nullable_to_non_nullable
                       as String,
+            isVideo: null == isVideo
+                ? _value.isVideo
+                : isVideo // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            videoURL: freezed == videoURL
+                ? _value.videoURL
+                : videoURL // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -115,6 +129,8 @@ abstract class _$$WallpaperImplCopyWith<$Res>
     String name,
     String thumbnailURL,
     String url,
+    bool isVideo,
+    String? videoURL,
   });
 }
 
@@ -137,6 +153,8 @@ class __$$WallpaperImplCopyWithImpl<$Res>
     Object? name = null,
     Object? thumbnailURL = null,
     Object? url = null,
+    Object? isVideo = null,
+    Object? videoURL = freezed,
   }) {
     return _then(
       _$WallpaperImpl(
@@ -160,6 +178,14 @@ class __$$WallpaperImplCopyWithImpl<$Res>
             ? _value.url
             : url // ignore: cast_nullable_to_non_nullable
                   as String,
+        isVideo: null == isVideo
+            ? _value.isVideo
+            : isVideo // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        videoURL: freezed == videoURL
+            ? _value.videoURL
+            : videoURL // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -174,6 +200,8 @@ class _$WallpaperImpl implements _Wallpaper {
     required this.name,
     required this.thumbnailURL,
     required this.url,
+    this.isVideo = false,
+    this.videoURL,
   });
 
   factory _$WallpaperImpl.fromJson(Map<String, dynamic> json) =>
@@ -189,10 +217,15 @@ class _$WallpaperImpl implements _Wallpaper {
   final String thumbnailURL;
   @override
   final String url;
+  @override
+  @JsonKey()
+  final bool isVideo;
+  @override
+  final String? videoURL;
 
   @override
   String toString() {
-    return 'Wallpaper(id: $id, category: $category, name: $name, thumbnailURL: $thumbnailURL, url: $url)';
+    return 'Wallpaper(id: $id, category: $category, name: $name, thumbnailURL: $thumbnailURL, url: $url, isVideo: $isVideo, videoURL: $videoURL)';
   }
 
   @override
@@ -206,13 +239,24 @@ class _$WallpaperImpl implements _Wallpaper {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.thumbnailURL, thumbnailURL) ||
                 other.thumbnailURL == thumbnailURL) &&
-            (identical(other.url, url) || other.url == url));
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.isVideo, isVideo) || other.isVideo == isVideo) &&
+            (identical(other.videoURL, videoURL) ||
+                other.videoURL == videoURL));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, category, name, thumbnailURL, url);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    category,
+    name,
+    thumbnailURL,
+    url,
+    isVideo,
+    videoURL,
+  );
 
   /// Create a copy of Wallpaper
   /// with the given fields replaced by the non-null parameter values.
@@ -235,6 +279,8 @@ abstract class _Wallpaper implements Wallpaper {
     required final String name,
     required final String thumbnailURL,
     required final String url,
+    final bool isVideo,
+    final String? videoURL,
   }) = _$WallpaperImpl;
 
   factory _Wallpaper.fromJson(Map<String, dynamic> json) =
@@ -250,6 +296,10 @@ abstract class _Wallpaper implements Wallpaper {
   String get thumbnailURL;
   @override
   String get url;
+  @override
+  bool get isVideo;
+  @override
+  String? get videoURL;
 
   /// Create a copy of Wallpaper
   /// with the given fields replaced by the non-null parameter values.

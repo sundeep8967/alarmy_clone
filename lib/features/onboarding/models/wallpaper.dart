@@ -11,6 +11,8 @@ class Wallpaper with _$Wallpaper {
     required String name,
     required String thumbnailURL,
     required String url,
+    @Default(false) bool isVideo,
+    String? videoURL,
   }) = _Wallpaper;
 
   factory Wallpaper.fromJson(Map<String, dynamic> json) =>
