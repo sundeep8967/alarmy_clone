@@ -25,9 +25,9 @@ class OnboardingStep4List extends ConsumerWidget {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            itemCount: 5,
+            itemCount: 9, // Increased count
             itemBuilder: (context, index) {
-              if (index == 4) {
+              if (index == 8) {
                 return MissionCardWidget(
                   icon: Icons.close,
                   title: 'Off',
@@ -63,6 +63,30 @@ class OnboardingStep4List extends ConsumerWidget {
                   'title': 'Shake',
                   'video': 'assets/videos/shake.webm',
                   'color': Colors.deepPurpleAccent,
+                },
+                {
+                  'icon': Icons.qr_code_scanner,
+                  'title': 'Barcode',
+                  'video': 'assets/videos/barcode.webm',
+                  'color': Colors.green,
+                },
+                {
+                  'icon': Icons.camera_alt,
+                  'title': 'Photo',
+                  'video': 'assets/videos/photo.webm',
+                  'color': Colors.orange,
+                },
+                {
+                  'icon': Icons.accessibility_new,
+                  'title': 'Squat',
+                  'video': 'assets/videos/mission_squat_onboarding.webm',
+                  'color': Colors.redAccent,
+                },
+                {
+                  'icon': Icons.image_search,
+                  'title': 'Image Recognition',
+                  'video': 'assets/videos/image_recognition.webm',
+                  'color': Colors.indigo,
                 },
               ];
               final m = missions[index];
