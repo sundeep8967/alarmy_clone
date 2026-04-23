@@ -7,10 +7,16 @@ import '../models/wallpaper.dart';
 
 class OnboardingWallpaperPreview extends ConsumerStatefulWidget {
   final VoidCallback onNext;
-  const OnboardingWallpaperPreview({super.key, required this.onNext});
+  final VoidCallback goBack;
+  const OnboardingWallpaperPreview({
+    super.key,
+    required this.onNext,
+    required this.goBack,
+  });
 
   @override
-  ConsumerState<OnboardingWallpaperPreview> createState() => _OnboardingWallpaperPreviewState();
+  ConsumerState<OnboardingWallpaperPreview> createState() =>
+      _OnboardingWallpaperPreviewState();
 }
 
 class _OnboardingWallpaperPreviewState extends ConsumerState<OnboardingWallpaperPreview> {
@@ -87,7 +93,7 @@ class _OnboardingWallpaperPreviewState extends ConsumerState<OnboardingWallpaper
             child: SafeArea(
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: widget.goBack,
               ),
             ),
           ),
