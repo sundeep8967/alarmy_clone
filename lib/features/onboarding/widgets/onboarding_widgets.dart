@@ -188,27 +188,28 @@ class MissionCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSelected = selectedMission == title && !isOff;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: const Color(0xFF1E1E20),
-          borderRadius: BorderRadius.circular(16),
-          border: selectedMission == title && !isOff
-              ? Border.all(color: iconColor, width: 1.5)
+          borderRadius: BorderRadius.circular(20),
+          border: isSelected
+              ? Border.all(color: Colors.white12, width: 1.5)
               : null,
         ),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: iconColor.withValues(alpha: 0.2),
+                color: iconColor.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: iconColor, size: 28),
+              child: Icon(icon, color: iconColor, size: 24),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -217,12 +218,12 @@ class MissionCardWidget extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            if (selectedMission == title && !isOff)
-              const Icon(Icons.check_circle, color: Color(0xFFFF3B30)),
+            if (isSelected)
+              const Icon(Icons.check, color: Color(0xFF42A5F5), size: 20),
           ],
         ),
       ),
@@ -317,13 +318,20 @@ class _MissionVideoPlayerState extends State<MissionVideoPlayer> {
 class SpotlightPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.04)
+    final Rect rect = Offset.zero & size;
+    final Paint paint = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          Colors.white.withValues(alpha: 0.1),
+          Colors.white.withValues(alpha: 0.0),
+        ],
+        stops: const [0.2, 1.0],
+      ).createShader(rect)
       ..style = PaintingStyle.fill;
 
-    Path path = Path();
-    path.moveTo(size.width * 0.35, 0);
-    path.lineTo(size.width * 0.65, 0);
+    final Path path = Path();
+    path.moveTo(size.width * 0.3, 0);
+    path.lineTo(size.width * 0.7, 0);
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
     path.close();

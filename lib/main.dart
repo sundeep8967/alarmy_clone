@@ -74,9 +74,9 @@ class _MyAppState extends ConsumerState<MyApp> {
           seedColor: Colors.deepOrange,
           brightness: Brightness.dark,
         ),
-        scaffoldBackgroundColor: const Color(0xFF121212),
-      ),
-      routerConfig: _router,
-    );
+        scaffoldBackgroundColor: Colors.black,
+        ),
+        routerConfig: router,
+        );
   }
 }

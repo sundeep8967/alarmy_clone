@@ -32,8 +32,9 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
       'Simple',
     ];
 
+    final displayCategory = selectedCategory == 'In Use' ? 'Trending' : selectedCategory;
     final filteredSounds =
-        sounds.where((s) => s.category == selectedCategory).toList();
+        sounds.where((s) => s.category == displayCategory).toList();
 
     return Column(
       children: [
@@ -165,12 +166,12 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                   Row(
                     children: [
                       Text(
-                        _getCategoryEmoji(selectedCategory),
+                        _getCategoryEmoji(displayCategory),
                         style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        selectedCategory,
+                        displayCategory,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,

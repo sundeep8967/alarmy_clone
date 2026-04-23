@@ -115,9 +115,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     // This prevents Flutter from recreating the PageView when the Column
     // children list structure changes.
     return Scaffold(
-      backgroundColor: const Color(0xFF0F0F11),
+      backgroundColor: Colors.black,
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
             // PageView — always fills the entire area, never moves in the tree
             Positioned.fill(
