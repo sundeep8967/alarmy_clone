@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\${alarm.hour.toString().padLeft(2, '0')}:\${alarm.minute.toString().padLeft(2, '0')}',
+                            '${alarm.hour.toString().padLeft(2, '0')}:${alarm.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontSize: 48,
                               fontWeight: FontWeight.w300,
