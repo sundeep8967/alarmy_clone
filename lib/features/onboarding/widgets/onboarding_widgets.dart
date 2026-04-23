@@ -2,6 +2,86 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import '../models/wallpaper.dart';
 
+class VideoWallpaperThumb extends StatefulWidget {
+  final String videoUrl;
+  final String thumbUrl;
+
+  const VideoWallpaperThumb({
+    super.key,
+    required this.videoUrl,
+    required this.thumbUrl,
+  });
+
+  @override
+  State<VideoWallpaperThumb> createState() => _VideoWallpaperThumbState();
+}
+
+class _VideoWallpaperThumbState extends State<VideoWallpaperThumb> {
+  VideoPlayerController? _controller;
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.videoUrl.startsWith('assets/')) {
+      _controller = VideoPlayerController.asset(widget.videoUrl);
+    } else {
+      _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+    }
+
+    _controller!.initialize().then((_) {
+      if (mounted) {
+        setState(() => _initialized = true);
+        _controller!.setVolume(0);
+        _controller!.setLooping(true);
+        _controller!.play();
+      }
+    }).catchError((error) {
+      debugPrint('❌ [VideoWallpaperThumb] Error initializing video: $error');
+      // Fallback to local asset if remote fails
+      if (mounted) {
+        _controller?.dispose();
+        _controller = VideoPlayerController.asset('assets/videos/shake.webm');
+        _controller!.initialize().then((_) {
+          if (mounted) {
+            setState(() => _initialized = true);
+            _controller!.setVolume(0);
+            _controller!.setLooping(true);
+            _controller!.play();
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_initialized || _controller == null) {
+      return Image.network(
+        widget.thumbUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Container(color: const Color(0xFF2A2A2E)),
+      );
+    }
+    return SizedBox.expand(
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: _controller!.value.size.width,
+          height: _controller!.value.size.height,
+          child: VideoPlayer(_controller!),
+        ),
+      ),
+    );
+  }
+}
+
 class WallpaperSectionWidget extends StatelessWidget {
   final String label;
   final List<Wallpaper> items;
@@ -41,7 +121,7 @@ class WallpaperSectionWidget extends StatelessWidget {
             itemBuilder: (context, i) {
               final w = items[i];
               final id = w.id;
-              final thumbUrl = 'https://${w.thumbnailURL}';
+              final thumbUrl = w.thumbnailURL; // Fix double https:// prefix
               final isSelected = selectedWallpaperId == id;
               return GestureDetector(
                 onTap: () => onSelect(id),
@@ -59,30 +139,35 @@ class WallpaperSectionWidget extends StatelessWidget {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        Image.network(
-                          thumbUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
-                            color: const Color(0xFF2A2A2E),
-                            child: const Icon(
-                              Icons.image,
-                              color: Colors.white24,
-                              size: 40,
-                            ),
-                          ),
-                          loadingBuilder: (_, child, progress) =>
-                              progress == null
-                              ? child
-                              : Container(
+                        w.isVideo && w.videoURL != null
+                            ? VideoWallpaperThumb(
+                                videoUrl: w.videoURL!,
+                                thumbUrl: thumbUrl,
+                              )
+                            : Image.network(
+                                thumbUrl,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => Container(
                                   color: const Color(0xFF2A2A2E),
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Color(0xFFFF3B30),
-                                    ),
+                                  child: const Icon(
+                                    Icons.image,
+                                    color: Colors.white24,
+                                    size: 40,
                                   ),
                                 ),
-                        ),
+                                loadingBuilder: (_, child, progress) =>
+                                    progress == null
+                                        ? child
+                                        : Container(
+                                            color: const Color(0xFF2A2A2E),
+                                            child: const Center(
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: Color(0xFFFF3B30),
+                                              ),
+                                            ),
+                                          ),
+                              ),
                         if (isSelected)
                           Positioned(
                             top: 8,
