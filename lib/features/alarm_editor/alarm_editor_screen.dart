@@ -4,47 +4,80 @@ import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
 
 class AlarmEditorScreen extends StatefulWidget {
-  const AlarmEditorScreen({super.key});
+  final AlarmModel? alarm;
+  const AlarmEditorScreen({super.key, this.alarm});
 
   @override
   _AlarmEditorScreenState createState() => _AlarmEditorScreenState();
 }
 
 class _AlarmEditorScreenState extends State<AlarmEditorScreen> {
-  int selectedHour = DateTime.now().hour;
-  int selectedMinute = DateTime.now().minute;
-  String selectedMission = 'default';
+  late int selectedHour;
+  late int selectedMinute;
+  late String selectedMission;
+  late List<int> activeDays;
 
   final List<Map<String, dynamic>> missions = [
     {'id': 'default', 'icon': Icons.touch_app, 'name': 'Default'},
     {'id': 'math', 'icon': Icons.calculate, 'name': 'Math'},
     {'id': 'shake', 'icon': Icons.vibration, 'name': 'Shake'},
-    {'id': 'memory', 'icon': Icons.grid_view, 'name': 'Memory'},
+    {'id': 'tiles', 'icon': Icons.grid_view, 'name': 'Tiles'},
     {'id': 'typing', 'icon': Icons.keyboard, 'name': 'Typing'},
     {'id': 'qr', 'icon': Icons.qr_code_scanner, 'name': 'Barcode'},
     {'id': 'photo', 'icon': Icons.camera_alt, 'name': 'Photo'},
   ];
 
-  void _saveAlarm() async {
-    final newAlarm = AlarmModel(
-      id: Uuid().v4(),
-      hour: selectedHour,
-      minute: selectedMinute,
-      isActive: true,
-      missionType: selectedMission,
-    );
-    await DatabaseHelper.instance.create(newAlarm);
-    Navigator.pop(context);
+  @override
+  void initState() {
+    super.initState();
+    selectedHour = widget.alarm?.hour ?? DateTime.now().hour;
+    selectedMinute = widget.alarm?.minute ?? DateTime.now().minute;
+    selectedMission = widget.alarm?.missionType ?? 'default';
+    activeDays = widget.alarm?.activeDays ?? [1, 2, 3, 4, 5];
   }
 
-  Widget _buildWheelPicker(int itemCount, int initialValue, ValueChanged<int> onSelectedItemChanged, bool isHour) {
-    return Container(
+  void _saveAlarm() async {
+    if (widget.alarm == null) {
+      final newAlarm = AlarmModel(
+        id: const Uuid().v4(),
+        hour: selectedHour,
+        minute: selectedMinute,
+        isActive: true,
+        missionType: selectedMission,
+        activeDays: activeDays,
+      );
+      await DatabaseHelper.instance.create(newAlarm);
+    } else {
+      final updatedAlarm = widget.alarm!.copyWith(
+        hour: selectedHour,
+        minute: selectedMinute,
+        missionType: selectedMission,
+        activeDays: activeDays,
+      );
+      await DatabaseHelper.instance.update(updatedAlarm);
+    }
+    if (mounted) Navigator.pop(context);
+  }
+
+  void _deleteAlarm() async {
+    if (widget.alarm != null) {
+      await DatabaseHelper.instance.delete(widget.alarm!.id);
+      if (mounted) Navigator.pop(context);
+    }
+  }
+
+  Widget _buildWheelPicker(
+    int itemCount,
+    int initialValue,
+    ValueChanged<int> onSelectedItemChanged,
+  ) {
+    return SizedBox(
       height: 200,
-      width: 100,
+      width: 80,
       child: ListWheelScrollView.useDelegate(
         itemExtent: 60,
         perspective: 0.005,
-        physics: FixedExtentScrollPhysics(),
+        physics: const FixedExtentScrollPhysics(),
         controller: FixedExtentScrollController(initialItem: initialValue),
         onSelectedItemChanged: onSelectedItemChanged,
         childDelegate: ListWheelChildBuilderDelegate(
@@ -53,7 +86,11 @@ class _AlarmEditorScreenState extends State<AlarmEditorScreen> {
             return Center(
               child: Text(
                 index.toString().padLeft(2, '0'),
-                style: TextStyle(fontSize: 48, fontWeight: FontWeight.w300, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
               ),
             );
           },
@@ -65,125 +102,183 @@ class _AlarmEditorScreenState extends State<AlarmEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121212),
+      backgroundColor: const Color(0xFF101014),
       appBar: AppBar(
-        backgroundColor: Color(0xFF121212),
+        backgroundColor: const Color(0xFF101014),
         elevation: 0,
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.white70, fontSize: 16)),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(color: Colors.white70, fontSize: 16),
+          ),
         ),
         leadingWidth: 80,
         actions: [
+          if (widget.alarm != null)
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: Color(0xFFFF3B30)),
+              onPressed: _deleteAlarm,
+            ),
           TextButton(
             onPressed: _saveAlarm,
-            child: Text('Save', style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 18, fontWeight: FontWeight.bold)),
-          )
+            child: const Text(
+              'Save',
+              style: TextStyle(
+                color: Color(0xFFFF3B30),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Time Picker Wheels
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 32.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildWheelPicker(24, selectedHour, (val) => selectedHour = val, true),
-                  Text(':', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w300, color: Colors.white)),
-                  _buildWheelPicker(60, selectedMinute, (val) => selectedMinute = val, false),
+                  _buildWheelPicker(24, selectedHour, (val) {
+                    setState(() => selectedHour = val);
+                  }),
+                  const Text(
+                    ':',
+                    style: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
+                  ),
+                  _buildWheelPicker(60, selectedMinute, (val) {
+                    setState(() => selectedMinute = val);
+                  }),
                 ],
               ),
             ),
-            
-            // Mission Selection Horizontal Scroll
-            Container(
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Color(0xFF1E1E1E),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Mission', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 16),
-                  Container(
-                    height: 90,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: missions.length,
-                      itemBuilder: (context, index) {
-                        final mission = missions[index];
-                        final id = mission['id'] as String;
-                        final isSelected = selectedMission == id;
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedMission = id;
-                            });
-                          },
-                          child: Container(
-                            width: 80,
-                            margin: const EdgeInsets.only(right: 12),
-                            decoration: BoxDecoration(
-                              color: isSelected ? Colors.deepOrangeAccent.withValues(alpha: 0.2) : const Color(0xFF2C2C2C),
-                              border: Border.all(color: isSelected ? Colors.deepOrangeAccent : Colors.transparent, width: 2),
-                              borderRadius: BorderRadius.circular(16),
+            _buildSection('Mission', Column(
+              children: [
+                SizedBox(
+                  height: 90,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: missions.length,
+                    itemBuilder: (context, index) {
+                      final mission = missions[index];
+                      final id = mission['id'] as String;
+                      final isSelected = selectedMission == id;
+                      return GestureDetector(
+                        onTap: () => setState(() => selectedMission = id),
+                        child: Container(
+                          width: 80,
+                          margin: const EdgeInsets.only(right: 12),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? const Color(0xFFFF3B30).withValues(alpha: 0.1)
+                                : const Color(0xFF2C2C2C),
+                            border: Border.all(
+                              color: isSelected
+                                  ? const Color(0xFFFF3B30)
+                                  : Colors.transparent,
+                              width: 1.5,
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(mission['icon'] as IconData, color: isSelected ? Colors.deepOrangeAccent : Colors.white70, size: 32),
-                                const SizedBox(height: 8),
-                                Text(mission['name'] as String, style: TextStyle(color: isSelected ? Colors.deepOrangeAccent : Colors.white70, fontSize: 12)),
-                              ],
-                            ),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-            
-            // Sound and Volume Mock
-            Container(
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              decoration: BoxDecoration(
-                color: Color(0xFF1E1E1E),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text('Sound', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    subtitle: Text('Loud Roaster', style: TextStyle(color: Colors.white54)),
-                    trailing: Icon(Icons.chevron_right, color: Colors.white54),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                mission['icon'] as IconData,
+                                color: isSelected
+                                    ? const Color(0xFFFF3B30)
+                                    : Colors.white70,
+                                size: 28,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                mission['name'] as String,
+                                style: TextStyle(
+                                  color: isSelected
+                                      ? const Color(0xFFFF3B30)
+                                      : Colors.white70,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Divider(color: Colors.white12),
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text('Volume', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    subtitle: Slider(
-                      value: 0.8,
-                      onChanged: (val) {},
-                      activeColor: Colors.deepOrangeAccent,
-                      inactiveColor: Colors.white12,
+                ),
+              ],
+            )),
+            _buildSection('Repeat', Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(7, (index) {
+                final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+                final isSelected = activeDays.contains(index);
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (isSelected) {
+                        activeDays.remove(index);
+                      } else {
+                        activeDays.add(index);
+                      }
+                    });
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: isSelected ? const Color(0xFFFF3B30) : Colors.transparent,
+                      shape: BoxShape.circle,
+                      border: isSelected ? null : Border.all(color: Colors.white24),
+                    ),
+                    child: Text(
+                      days[index],
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.white54,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ],
-              ),
-            )
+                );
+              }),
+            )),
           ],
         ),
       ),
     );
   }
-}
 
+  Widget _buildSection(String title, Widget content) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1C1D24),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          content,
+        ],
+      ),
+    );
+  }
+}

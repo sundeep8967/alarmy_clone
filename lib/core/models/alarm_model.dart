@@ -1,35 +1,19 @@
-class AlarmModel {
-  final String id;
-  final int hour;
-  final int minute;
-  final bool isActive;
-  final String missionType;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  AlarmModel({
-    required this.id,
-    required this.hour,
-    required this.minute,
-    this.isActive = true,
-    this.missionType = 'default',
-  });
+part 'alarm_model.freezed.dart';
+part 'alarm_model.g.dart';
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'hour': hour,
-      'minute': minute,
-      'isActive': isActive ? 1 : 0,
-      'missionType': missionType,
-    };
-  }
+@freezed
+class AlarmModel with _$AlarmModel {
+  const factory AlarmModel({
+    required String id,
+    required int hour,
+    required int minute,
+    @Default(true) bool isActive,
+    @Default('default') String missionType,
+    @Default([]) List<int> activeDays, // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  }) = _AlarmModel;
 
-  factory AlarmModel.fromMap(Map<String, dynamic> map) {
-    return AlarmModel(
-      id: map['id'] as String,
-      hour: map['hour'] as int,
-      minute: map['minute'] as int,
-      isActive: map['isActive'] == 1,
-      missionType: map['missionType'] as String,
-    );
-  }
+  factory AlarmModel.fromJson(Map<String, dynamic> json) =>
+      _$AlarmModelFromJson(json);
 }

@@ -15,12 +15,13 @@ Future<List<Wallpaper>> wallpapers(WallpapersRef ref) async {
       json.decode(raw) as Map<String, dynamic>;
   final List<dynamic> decoded = decodedMap['images'] as List<dynamic>;
 
-  // List of IDs that we know are videos from the screenshots
+  // Updated list of IDs that are videos based on JSON names and screenshots
   final videoIds = {
-    'c1c90ced-1126-4451-9594-76c09fc1e960', // webtoon
+    'c1c90ced-1126-4451-9594-76c09fc1e960', // webtoon (video sound card thumb)
     '5fc46528-0b51-4cc8-a7e4-3d02362b37f3', // cat
     '3af98c3b-4c24-43aa-bb17-25f766cf84ca', // acat
     '2761bbec-0b7b-448c-82f2-ce9187cd8495', // y2k_bear
+    '16c4304d-615a-49af-8ab6-85488548c3f3', // any other potential videos
   };
 
   return decoded.map((json) {
@@ -31,8 +32,7 @@ Future<List<Wallpaper>> wallpapers(WallpapersRef ref) async {
     return Wallpaper.fromJson({
       ...map,
       'isVideo': isVideo,
-      // For now, if it's a video, we'll try to load a sample video URL or the same URL if it supports it
-      // In a real decompiled scenario, we'd have the actual video assets
+      // Use the 'url' field for both images and videos
       'videoURL': isVideo ? map['url'] : null,
     });
   }).toList();

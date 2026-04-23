@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/alarm_model.dart';
@@ -18,7 +19,13 @@ class DatabaseHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    // Bump version to 2 for schema change
+    return await openDatabase(
+      path,
+      version: 2,
+      onCreate: _createDB,
+      onUpgrade: _upgradeDB,
+    );
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -28,14 +35,25 @@ CREATE TABLE alarms (
   hour INTEGER NOT NULL,
   minute INTEGER NOT NULL,
   isActive INTEGER NOT NULL,
-  missionType TEXT NOT NULL
+  missionType TEXT NOT NULL,
+  activeDays TEXT NOT NULL
 )
 ''');
   }
 
+  Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE alarms ADD COLUMN activeDays TEXT NOT NULL DEFAULT "[]"');
+    }
+  }
+
   Future<AlarmModel> create(AlarmModel alarm) async {
     final db = await instance.database;
-    await db.insert('alarms', alarm.toMap());
+    final map = alarm.toJson();
+    // Convert boolean and list to SQLite compatible types
+    map['isActive'] = (map['isActive'] as bool) ? 1 : 0;
+    map['activeDays'] = jsonEncode(map['activeDays']);
+    await db.insert('alarms', map);
     return alarm;
   }
 
@@ -43,14 +61,25 @@ CREATE TABLE alarms (
     final db = await instance.database;
     const orderBy = 'hour ASC, minute ASC';
     final result = await db.query('alarms', orderBy: orderBy);
-    return result.map((json) => AlarmModel.fromMap(json)).toList();
+
+    return result.map((jsonMap) {
+      final map = Map<String, dynamic>.from(jsonMap);
+      // Convert SQLite types back to Dart types
+      map['isActive'] = map['isActive'] == 1;
+      map['activeDays'] = jsonDecode(map['activeDays'] as String);
+      return AlarmModel.fromJson(map);
+    }).toList();
   }
 
   Future<int> update(AlarmModel alarm) async {
     final db = await instance.database;
+    final map = alarm.toJson();
+    map['isActive'] = (map['isActive'] as bool) ? 1 : 0;
+    map['activeDays'] = jsonEncode(map['activeDays']);
+    
     return db.update(
       'alarms',
-      alarm.toMap(),
+      map,
       where: 'id = ?',
       whereArgs: [alarm.id],
     );

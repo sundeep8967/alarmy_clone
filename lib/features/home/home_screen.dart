@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -23,110 +26,305 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _showMoreMenu(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Uninstall blocker', style: TextStyle(color: Colors.white)),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Settings', style: TextStyle(color: Colors.white)),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Tutorial', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel', style: TextStyle(color: Color(0xFFFF3B30))),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121212),
+      backgroundColor: const Color(0xFF101014),
       appBar: AppBar(
-        backgroundColor: Color(0xFF121212),
+        backgroundColor: const Color(0xFF101014),
         elevation: 0,
-        title: Text(
-          'Next alarm in 8 hours 30 mins',
-          style: TextStyle(fontSize: 16, color: Colors.white70),
+        titleSpacing: 16,
+        title: GestureDetector(
+          onTap: () {
+            debugPrint('🎯 [Home] Pro badge tapped - Opening subscription');
+            // Navigate to PurchaseHomeActivity logic here
+          },
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFFFF3B30), width: 1.5),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFF3B30),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.flash_on, color: Colors.white, size: 12),
+                    ),
+                    const SizedBox(width: 6),
+                    const Text(
+                      'PRO Free Trial',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.white),
-            onPressed: () {},
-          )
+            icon: const Icon(Icons.more_horiz, color: Colors.white),
+            onPressed: () => _showMoreMenu(context),
+          ),
         ],
       ),
       body: FutureBuilder<List<AlarmModel>>(
         future: alarms,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No alarms set', style: TextStyle(color: Colors.white70)));
-          } else {
-            return ListView.builder(
-              padding: EdgeInsets.all(16),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final alarm = snapshot.data![index];
-                return Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  padding: EdgeInsets.all(20),
+          final alarmList = snapshot.data ?? [];
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            children: [
+              // Promo Banner
+              GestureDetector(
+                onTap: () {
+                  debugPrint('🎯 [Home] Promo banner tapped');
+                  // Navigate to special mission logic here
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Color(0xFF1E1E1E),
-                    borderRadius: BorderRadius.circular(24),
+                    color: const Color(0xFF1C1D24),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Stack(
+                        alignment: Alignment.center,
                         children: [
-                          Text(
-                            '${alarm.hour.toString().padLeft(2, '0')}:${alarm.minute.toString().padLeft(2, '0')}',
+                          const Icon(Icons.brightness_5, color: Color(0xFFFF3B30), size: 48),
+                          const Text(
+                            'NEW',
                             style: TextStyle(
-                              fontSize: 48,
-                              fontWeight: FontWeight.w300,
-                              color: alarm.isActive ? Colors.white : Colors.white30,
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Icon(Icons.directions_run, size: 16, color: alarm.isActive ? Colors.deepOrangeAccent : Colors.white30),
-                              SizedBox(width: 4),
-                              Text(
-                                alarm.missionType.toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: alarm.isActive ? Colors.white70 : Colors.white30,
-                                ),
-                              ),
-                            ],
-                          )
                         ],
                       ),
-                      Switch(
+                      const SizedBox(width: 16),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Overslept AGAIN?',
+                              style: TextStyle(color: Colors.white70, fontSize: 14),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Try our new mission',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.chevron_right, color: Colors.white, size: 24),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Next Alarm Text
+              GestureDetector(
+                onTap: () => debugPrint('🎯 [Home] Upcoming alarm info tapped'),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Ring in 6 hr. 57 min',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.chevron_right, color: Colors.white54, size: 20),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Alarm List
+              if (snapshot.connectionState == ConnectionState.waiting)
+                const Center(child: CircularProgressIndicator(color: Color(0xFFFF3B30)))
+              else if (alarmList.isEmpty)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: Text('No alarms set', style: TextStyle(color: Colors.white70)),
+                  ),
+                )
+              else
+                ...alarmList.map((alarm) => _buildAlarmCard(alarm)).toList(),
+              const SizedBox(height: 100),
+            ],
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xFFFF3B30),
+        shape: const CircleBorder(),
+        elevation: 8,
+        onPressed: () async {
+          debugPrint('🎯 [Home] FAB tapped - Opening Editor');
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AlarmEditorScreen()),
+          );
+          refreshAlarms();
+        },
+        child: const Icon(Icons.add, size: 36, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildAlarmCard(AlarmModel alarm) {
+    const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    final activeSet = alarm.activeDays.isEmpty ? {1, 2, 3, 4, 5} : alarm.activeDays.toSet();
+
+    return GestureDetector(
+      onTap: () async {
+        debugPrint('🎯 [Home] Alarm card tapped - Editing ${alarm.id}');
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AlarmEditorScreen(alarm: alarm)),
+        );
+        refreshAlarms();
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1C1D24),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: List.generate(7, (index) {
+                        final isActiveDay = activeSet.contains(index);
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            days[index],
+                            style: TextStyle(
+                              color: isActiveDay
+                                  ? Colors.white
+                                  : Colors.white.withValues(alpha: 0.2),
+                              fontSize: 12,
+                              fontWeight: isActiveDay ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '${alarm.hour}:${alarm.minute.toString().padLeft(2, '0')}',
+                          style: TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.w400,
+                            color: alarm.isActive ? Colors.white : Colors.white30,
+                            letterSpacing: -1,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(
+                          _getMissionIcon(alarm.missionType),
+                          color: alarm.isActive ? Colors.white54 : Colors.white24,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Transform.scale(
+                      scale: 1.1,
+                      child: CupertinoSwitch(
                         value: alarm.isActive,
-                        activeColor: Colors.deepOrangeAccent,
+                        activeTrackColor: const Color(0xFF00D1FF),
                         onChanged: (value) async {
-                          final updatedAlarm = AlarmModel(
-                            id: alarm.id,
-                            hour: alarm.hour,
-                            minute: alarm.minute,
-                            isActive: value,
-                            missionType: alarm.missionType,
-                          );
+                          debugPrint('🎯 [Home] Alarm toggle: ${alarm.id} -> $value');
+                          final updatedAlarm = alarm.copyWith(isActive: value);
                           await DatabaseHelper.instance.update(updatedAlarm);
                           refreshAlarms();
                         },
                       ),
-                    ],
-                  ),
-                );
-              },
-            );
-          }
-        },
+                    ),
+                    const SizedBox(height: 16),
+                    const Icon(Icons.more_vert, color: Colors.white54, size: 20),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepOrangeAccent,
-        child: Icon(Icons.add, size: 32, color: Colors.white),
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AlarmEditorScreen()),
-          );
-          refreshAlarms();
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
-}
 
+  IconData _getMissionIcon(String type) {
+    if (type.toLowerCase().contains('math')) return Icons.calculate;
+    if (type.toLowerCase().contains('memory') || type.toLowerCase().contains('tiles')) return Icons.grid_view;
+    if (type.toLowerCase().contains('typing')) return Icons.keyboard;
+    if (type.toLowerCase().contains('shake')) return Icons.vibration;
+    return Icons.grid_view;
+  }
+}

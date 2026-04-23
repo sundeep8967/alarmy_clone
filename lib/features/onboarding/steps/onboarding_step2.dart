@@ -18,7 +18,6 @@ class OnboardingStep2 extends ConsumerWidget {
       {'key': 'morning', 'label': '🌅 Morning'},
       {'key': 'simple', 'label': '✨ Simple'},
       {'key': 'alarmy', 'label': '⏰ Alarmy'},
-      {'key': 'affirmation', 'label': '😌 Affirmation'},
     ];
 
     final state = ref.watch(onboardingProvider);
@@ -26,7 +25,8 @@ class OnboardingStep2 extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 16),
+        // Increased top padding to avoid progress bar overlap
+        const SizedBox(height: 48),
         const Center(
           child: Text(
             'Choose your alarm\nwallpaper',
@@ -39,7 +39,7 @@ class OnboardingStep2 extends ConsumerWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
         Expanded(
           child: ref.watch(wallpapersProvider).when(
             loading:
@@ -57,8 +57,14 @@ class OnboardingStep2 extends ConsumerWidget {
               return ListView(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 children: categories.map((cat) {
-                  final items =
+                  var items =
                       wallpapers.where((w) => w.category == cat['key']).toList();
+                  
+                  // Special logic for 'Into Space' to ensure it has space items if category name differs
+                  if (cat['key'] == 'landscape' && items.isEmpty) {
+                    items = wallpapers.where((w) => w.name.toLowerCase().contains('space') || w.name.toLowerCase().contains('star')).toList();
+                  }
+
                   if (items.isEmpty) return const SizedBox.shrink();
                   return WallpaperSectionWidget(
                     label: cat['label']!,
