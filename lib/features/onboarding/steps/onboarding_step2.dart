@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/onboarding_provider.dart';
 import '../providers/wallpapers_provider.dart';
 import '../widgets/onboarding_widgets.dart';
 
@@ -9,6 +10,7 @@ class OnboardingStep2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint('📄 [Onboarding] ===== PAGE 4: Step 2 (Wallpaper List) =====');
     final categories = [
       {'key': 'trending', 'label': '💖 Trending'},
       {'key': 'morning', 'label': '🌅 Morning'},

@@ -21,7 +21,7 @@ class DatabaseHelper {
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
-  Future _createDB(Database db, int version) async {
+  Future<void> _createDB(Database db, int version) async {
     await db.execute('''
 CREATE TABLE alarms (
   id TEXT PRIMARY KEY,
@@ -41,7 +41,7 @@ CREATE TABLE alarms (
 
   Future<List<AlarmModel>> readAllAlarms() async {
     final db = await instance.database;
-    final orderBy = 'hour ASC, minute ASC';
+    const orderBy = 'hour ASC, minute ASC';
     final result = await db.query('alarms', orderBy: orderBy);
     return result.map((json) => AlarmModel.fromMap(json)).toList();
   }

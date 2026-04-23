@@ -4,6 +4,8 @@ import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
 
 class AlarmEditorScreen extends StatefulWidget {
+  const AlarmEditorScreen({super.key});
+
   @override
   _AlarmEditorScreenState createState() => _AlarmEditorScreenState();
 }
@@ -115,27 +117,28 @@ class _AlarmEditorScreenState extends State<AlarmEditorScreen> {
                       itemCount: missions.length,
                       itemBuilder: (context, index) {
                         final mission = missions[index];
-                        final isSelected = selectedMission == mission['id'];
+                        final id = mission['id'] as String;
+                        final isSelected = selectedMission == id;
                         return GestureDetector(
                           onTap: () {
                             setState(() {
-                              selectedMission = mission['id'];
+                              selectedMission = id;
                             });
                           },
                           child: Container(
                             width: 80,
-                            margin: EdgeInsets.only(right: 12),
+                            margin: const EdgeInsets.only(right: 12),
                             decoration: BoxDecoration(
-                              color: isSelected ? Colors.deepOrangeAccent.withOpacity(0.2) : Color(0xFF2C2C2C),
+                              color: isSelected ? Colors.deepOrangeAccent.withValues(alpha: 0.2) : const Color(0xFF2C2C2C),
                               border: Border.all(color: isSelected ? Colors.deepOrangeAccent : Colors.transparent, width: 2),
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(mission['icon'], color: isSelected ? Colors.deepOrangeAccent : Colors.white70, size: 32),
-                                SizedBox(height: 8),
-                                Text(mission['name'], style: TextStyle(color: isSelected ? Colors.deepOrangeAccent : Colors.white70, fontSize: 12)),
+                                Icon(mission['icon'] as IconData, color: isSelected ? Colors.deepOrangeAccent : Colors.white70, size: 32),
+                                const SizedBox(height: 8),
+                                Text(mission['name'] as String, style: TextStyle(color: isSelected ? Colors.deepOrangeAccent : Colors.white70, fontSize: 12)),
                               ],
                             ),
                           ),

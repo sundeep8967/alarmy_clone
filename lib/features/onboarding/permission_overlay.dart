@@ -20,29 +20,29 @@ class _PermissionOverlayState extends State<PermissionOverlay> {
   bool _isRequesting = false;
 
   Future<void> _handleAllow() async {
+    debugPrint('🔘 [PermissionOverlay] Allow button tapped');
     if (_isRequesting) return;
     setState(() => _isRequesting = true);
 
-    // ✅ Navigate FIRST — close overlay and advance to next page immediately.
-    // This prevents Android activity recreation (triggered by the system
-    // notification permission dialog) from resetting the PageController.
+    debugPrint('🔘 [PermissionOverlay] Triggering onAllow callback');
     widget.onAllow();
 
-    // Request permission in background (fire-and-forget) after navigating.
     try {
       final plugin = FlutterLocalNotificationsPlugin();
+      debugPrint('🔘 [PermissionOverlay] Requesting system notification permission...');
       plugin
           .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin
           >()
           ?.requestNotificationsPermission();
-    } catch (_) {
-      // Ignore — permission is best-effort during onboarding
+    } catch (e) {
+      debugPrint('❌ [PermissionOverlay] Background permission error: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('🏗️ [PermissionOverlay] Building');
     return Container(
       color: Colors.black54,
       child: Center(

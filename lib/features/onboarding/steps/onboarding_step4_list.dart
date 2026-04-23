@@ -9,6 +9,7 @@ class OnboardingStep4List extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint('📄 [Onboarding] ===== PAGE 7: Step 4 (Mission List) =====');
     return Column(
       children: [
         const SizedBox(height: 16),

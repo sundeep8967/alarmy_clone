@@ -9,6 +9,7 @@ class OnboardingStep4Detail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint('📄 [Onboarding] ===== PAGE 8: Step 4 (Mission Detail) =====');
     final state = ref.watch(onboardingProvider);
     return Column(
       children: [

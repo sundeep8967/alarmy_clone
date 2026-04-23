@@ -6,6 +6,7 @@ class IntroStep1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('📄 [Onboarding] ===== PAGE 0: Intro Step 1 =====');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

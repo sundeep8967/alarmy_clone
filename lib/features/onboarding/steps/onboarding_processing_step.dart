@@ -10,6 +10,7 @@ class OnboardingProcessingStep extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint('📄 [Onboarding] ===== PAGE 9: Processing Step =====');
     final state = ref.watch(onboardingProvider);
     final percent = (state.processingProgress * 100).toInt();
 

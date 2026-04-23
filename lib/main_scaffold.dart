@@ -4,6 +4,8 @@ import 'features/records/records_screen.dart';
 import 'features/today/today_screen.dart';
 
 class MainScaffold extends StatefulWidget {
+  const MainScaffold({super.key});
+
   @override
   _MainScaffoldState createState() => _MainScaffoldState();
 }

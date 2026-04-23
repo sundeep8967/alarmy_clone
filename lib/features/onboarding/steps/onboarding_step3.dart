@@ -7,6 +7,7 @@ class OnboardingStep3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('📄 [Onboarding] ===== PAGE 6: Step 3 (Sound) =====');
     return Column(
       children: [
         const SizedBox(height: 16),

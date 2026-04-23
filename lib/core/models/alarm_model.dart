@@ -25,11 +25,11 @@ class AlarmModel {
 
   factory AlarmModel.fromMap(Map<String, dynamic> map) {
     return AlarmModel(
-      id: map['id'],
-      hour: map['hour'],
-      minute: map['minute'],
+      id: map['id'] as String,
+      hour: map['hour'] as int,
+      minute: map['minute'] as int,
       isActive: map['isActive'] == 1,
-      missionType: map['missionType'],
+      missionType: map['missionType'] as String,
     );
   }
 }

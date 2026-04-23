@@ -6,6 +6,7 @@ class IntroStep2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('📄 [Onboarding] ===== PAGE 1: Intro Step 2 =====');
     return Column(
       children: [
         const Spacer(),

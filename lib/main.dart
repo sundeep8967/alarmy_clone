@@ -13,7 +13,7 @@ class AppRoutes {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   final prefs = await SharedPreferences.getInstance();
   final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;
 
@@ -24,15 +24,27 @@ void main() async {
   );
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   final bool hasSeenOnboarding;
 
   const MyApp({super.key, required this.hasSeenOnboarding});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = GoRouter(
-      initialLocation: hasSeenOnboarding ? AppRoutes.home : AppRoutes.onboarding,
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    // Create GoRouter ONCE in initState — never inside build().
+    // Creating it in build() causes the entire route tree to be torn down
+    // and recreated on every rebuild, destroying widget State and PageControllers.
+    _router = GoRouter(
+      initialLocation:
+          widget.hasSeenOnboarding ? AppRoutes.home : AppRoutes.onboarding,
       routes: [
         GoRoute(
           path: AppRoutes.onboarding,
@@ -44,7 +56,16 @@ class MyApp extends ConsumerWidget {
         ),
       ],
     );
+  }
 
+  @override
+  void dispose() {
+    _router.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Alarmy Clone',
       theme: ThemeData(
@@ -55,7 +76,7 @@ class MyApp extends ConsumerWidget {
         ),
         scaffoldBackgroundColor: const Color(0xFF121212),
       ),
-      routerConfig: router,
+      routerConfig: _router,
     );
   }
 }
