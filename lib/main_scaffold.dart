@@ -4,6 +4,7 @@ import 'features/home/home_screen.dart';
 import 'features/records/records_screen.dart';
 import 'features/sleep/sleep_screen.dart';
 import 'features/morning/morning_screen.dart';
+import 'features/setting/setting_screen.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
   const MainScaffold({super.key});
@@ -20,7 +21,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     const SleepScreen(),
     const MorningScreen(),
     RecordsScreen(), // Removed const here
-    const Center(child: Text('Settings', style: TextStyle(color: Colors.white))),
+    const SettingScreen(),
   ];
 
   @override
