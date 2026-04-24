@@ -66,6 +66,7 @@ class _VideoWallpaperThumbState extends State<VideoWallpaperThumb> {
       return Image.network(
         widget.thumbUrl,
         fit: BoxFit.cover,
+        headers: const {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'},
         errorBuilder: (_, __, ___) => Container(color: const Color(0xFF2A2A2E)),
       );
     }
@@ -102,7 +103,7 @@ class WallpaperSectionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
           child: Text(
             label,
             style: const TextStyle(
@@ -113,7 +114,7 @@ class WallpaperSectionWidget extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 220,
+          height: 260, // Taller thumbnails to match 9:16 aspect ratio
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -121,21 +122,21 @@ class WallpaperSectionWidget extends StatelessWidget {
             itemBuilder: (context, i) {
               final w = items[i];
               final id = w.id;
-              final thumbUrl = w.thumbnailURL; // Fix double https:// prefix
+              final thumbUrl = w.thumbnailURL;
               final isSelected = selectedWallpaperId == id;
               return GestureDetector(
                 onTap: () => onSelect(id),
                 child: Container(
-                  width: 130,
+                  width: 140,
                   margin: const EdgeInsets.only(right: 12),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(20),
                     border: isSelected
                         ? Border.all(color: const Color(0xFFFF3B30), width: 2.5)
                         : null,
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
+                    borderRadius: BorderRadius.circular(isSelected ? 18 : 20),
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
@@ -147,6 +148,7 @@ class WallpaperSectionWidget extends StatelessWidget {
                             : Image.network(
                                 thumbUrl,
                                 fit: BoxFit.cover,
+                                headers: const {'User-Agent': 'Mozilla/5.0'},
                                 errorBuilder: (_, __, ___) => Container(
                                   color: const Color(0xFF2A2A2E),
                                   child: const Icon(
@@ -187,56 +189,30 @@ class WallpaperSectionWidget extends StatelessWidget {
                           ),
                         if (w.isVideo)
                           Positioned(
-                            bottom: 30,
-                            left: 8,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  '♪',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [Colors.black87, Colors.transparent],
                                 ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  w.name.length > 10 ? '${w.name.substring(0, 8)}...' : w.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                  ),
+                              ),
+                              child: Text(
+                                '🎵 ${w.name}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ],
-                            ),
-                          ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 6,
-                            ),
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                colors: [Colors.black87, Colors.transparent],
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            child: Text(
-                              w.name.replaceAll('_', ' '),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -245,7 +221,7 @@ class WallpaperSectionWidget extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
       ],
     );
   }

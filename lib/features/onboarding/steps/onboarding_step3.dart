@@ -145,9 +145,9 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                                     borderRadius: BorderRadius.circular(8),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                        'https://${wallpaper.thumbnailURL}',
-                                      ),
-                                      fit: BoxFit.cover,
+                                        wallpaper.thumbnailURL,
+                                        headers: const {'User-Agent': 'Mozilla/5.0'},
+                                      ),                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 );

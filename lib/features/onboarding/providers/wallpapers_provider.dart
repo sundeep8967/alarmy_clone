@@ -39,9 +39,7 @@ Future<List<Wallpaper>> wallpapers(WallpapersRef ref) async {
     String finalUrl = isVideo ? videoUrls[id]! : fullUrl;
     String finalThumb = fullThumb;
 
-    // --- Override to match WhatsApp Screenshots ---
-    
-    // 1. Trending Videos
+    // Optional overrides for names based on UI labels, but DO NOT override space/landscape
     if (id == '5fc46528-0b51-4cc8-a7e4-3d02362b37f3') {
       category = 'trending';
       name = 'At this time you are sleeping?';
@@ -51,23 +49,6 @@ Future<List<Wallpaper>> wallpapers(WallpapersRef ref) async {
     } else if (id == '3af98c3b-4c24-43aa-bb17-25f766cf84ca') {
       category = 'trending';
       name = 'Wake up you lazy';
-    } 
-    // 2. Into Space (Replacing 'landscape' generic images with actual space imagery)
-    else if (id == '018fdf7c-7cb2-4546-82df-df3b7da595d1') {
-      category = 'landscape';
-      name = 'Earth';
-      finalThumb = 'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=500&q=80';
-      finalUrl = finalThumb;
-    } else if (id == '66348cee-7ea2-4556-9b1d-010ce2942bca') {
-      category = 'landscape';
-      name = 'Night Earth';
-      finalThumb = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&q=80';
-      finalUrl = finalThumb;
-    } else if (id == 'dbccf51b-5c23-4441-aca6-a75fa89accae') {
-      category = 'landscape';
-      name = 'Horizon';
-      finalThumb = 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=500&q=80';
-      finalUrl = finalThumb;
     }
 
     return Wallpaper.fromJson({

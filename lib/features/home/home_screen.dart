@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
+import '../alarm_editor/habit_alarm_screen.dart';
+import '../alarm_editor/quick_alarm_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<AlarmModel>> alarms;
+  final GlobalKey _fabKey = GlobalKey();
 
   @override
   void initState() {
@@ -24,6 +27,125 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       alarms = DatabaseHelper.instance.readAllAlarms();
     });
+  }
+
+  void _showFabMenu() {
+    final RenderBox? fabBox = _fabKey.currentContext?.findRenderObject() as RenderBox?;
+    Offset? fabPosition;
+    if (fabBox != null) {
+      fabPosition = fabBox.localToGlobal(Offset.zero);
+    }
+
+    showGeneralDialog(
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.8),
+      barrierDismissible: true,
+      barrierLabel: 'FAB Menu',
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Stack(
+            children: [
+              if (fabPosition != null)
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height - fabPosition.dy + 16,
+                  right: MediaQuery.of(context).size.width - (fabPosition.dx + 56),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 240,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildMenuItem(Icons.calendar_month, 'Habit alarm', const Color(0xFF6B7BFF), () async {
+                              Navigator.pop(context);
+                              debugPrint('🎯 [Home] Habit alarm tapped - Opening HabitAlarmScreen');
+                              await Navigator.push(
+                                this.context,
+                                MaterialPageRoute(builder: (context) => const HabitAlarmScreen()),
+                              );
+                              refreshAlarms();
+                            }),
+                            _buildMenuItem(Icons.flash_on, 'Quick alarm', const Color(0xFF6B7BFF), () {
+                              Navigator.pop(context);
+                              debugPrint('🎯 [Home] Quick alarm tapped - Opening QuickAlarmSheet');
+                              showModalBottomSheet(
+                                context: this.context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => const QuickAlarmSheet(),
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        width: 240,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: _buildMenuItem(Icons.alarm, 'Alarm', const Color(0xFFFF3B30), () async {
+                          Navigator.pop(context);
+                          debugPrint('🎯 [Home] Menu tapped - Opening Editor');
+                          await Navigator.push(
+                            this.context,
+                            MaterialPageRoute(builder: (context) => const AlarmEditorScreen()),
+                          );
+                          refreshAlarms();
+                        }),
+                      ),
+                    ],
+                  ),
+                ),
+              if (fabPosition != null)
+                Positioned(
+                  left: fabPosition.dx,
+                  top: fabPosition.dy,
+                  child: FloatingActionButton(
+                    backgroundColor: const Color(0xFFFF3B30),
+                    shape: const CircleBorder(),
+                    elevation: 0,
+                    onPressed: () => Navigator.pop(context),
+                    child: const Icon(Icons.close, size: 36, color: Colors.white),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMenuItem(IconData icon, String text, Color iconColor, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Row(
+          children: [
+            Icon(icon, color: iconColor, size: 28),
+            const SizedBox(width: 16),
+            Text(
+              text,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showMoreMenu(BuildContext context) {
@@ -204,16 +326,13 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        key: _fabKey,
         backgroundColor: const Color(0xFFFF3B30),
         shape: const CircleBorder(),
         elevation: 8,
-        onPressed: () async {
-          debugPrint('🎯 [Home] FAB tapped - Opening Editor');
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AlarmEditorScreen()),
-          );
-          refreshAlarms();
+        onPressed: () {
+          debugPrint('🎯 [Home] FAB tapped - Opening Custom Menu');
+          _showFabMenu();
         },
         child: const Icon(Icons.add, size: 36, color: Colors.white),
       ),

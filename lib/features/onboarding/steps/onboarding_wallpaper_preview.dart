@@ -118,6 +118,7 @@ class _OnboardingWallpaperPreviewState
               return Image.network(
                 selected.url,
                 fit: BoxFit.cover,
+                headers: const {'User-Agent': 'Mozilla/5.0'},
                 errorBuilder: (context, error, stackTrace) {
                   debugPrint('❌ [WallpaperPreview] Image load failed: $error');
                   return Container(color: const Color(0xFF1E1E20));

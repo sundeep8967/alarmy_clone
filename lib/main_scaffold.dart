@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'features/home/home_screen.dart';
 import 'features/records/records_screen.dart';
+import 'features/sleep/sleep_screen.dart';
+import 'features/morning/morning_screen.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
   const MainScaffold({super.key});
@@ -15,8 +17,8 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    const Center(child: Text('Sleep', style: TextStyle(color: Colors.white))),
-    const Center(child: Text('Morning', style: TextStyle(color: Colors.white))),
+    const SleepScreen(),
+    const MorningScreen(),
     RecordsScreen(), // Removed const here
     const Center(child: Text('Settings', style: TextStyle(color: Colors.white))),
   ];
@@ -29,48 +31,6 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Ad Banner Placeholder
-          Container(
-            width: double.infinity,
-            color: const Color(0xFF1C1D24),
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.white10,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Text(
-                    'AD',
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Text(
-                  'Trade Like a Pro',
-                  style: TextStyle(color: Colors.white70, fontSize: 13),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  width: 1,
-                  height: 12,
-                  color: Colors.white24,
-                ),
-                const SizedBox(width: 8),
-                const Text(
-                  'Install Now >',
-                  style: TextStyle(color: Colors.white70, fontSize: 13),
-                ),
-              ],
-            ),
-          ),
           // Main Bottom Nav
           BottomNavigationBar(
             currentIndex: _currentIndex,
