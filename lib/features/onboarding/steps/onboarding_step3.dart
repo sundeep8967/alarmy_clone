@@ -12,29 +12,87 @@ class OnboardingStep3 extends ConsumerStatefulWidget {
 }
 
 class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
-  String selectedCategory = 'Trending';
+  final ScrollController _scrollController = ScrollController();
+  String _activeCategory = 'Trending';
+
+  // Categories with labels like wallpaper categories
+  final List<Map<String, String>> categories = [
+    {'key': 'Trending', 'label': '💖 Trending'},
+    {'key': 'Loud', 'label': '💥 Loud'},
+    {'key': 'Alarm', 'label': '🔔 Alarm'},
+    {'key': 'Morning', 'label': '🌅 Morning'},
+    {'key': 'Simple', 'label': '✨ Simple'},
+  ];
+
+  late final List<GlobalKey> _sectionKeys;
+
+  @override
+  void initState() {
+    super.initState();
+    _sectionKeys = List.generate(categories.length, (_) => GlobalKey());
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final scrollOffset = _scrollController.offset;
+    final viewportHeight = MediaQuery.of(context).size.height;
+    final centerOffset = scrollOffset + (viewportHeight / 3);
+
+    for (int i = 0; i < _sectionKeys.length; i++) {
+      final key = _sectionKeys[i];
+      final context = key.currentContext;
+      if (context != null) {
+        final box = context.findRenderObject() as RenderBox?;
+        if (box != null) {
+          final position = box.localToGlobal(Offset.zero);
+          final sectionTop = position.dy + scrollOffset - 100; // Adjust for padding
+          final sectionBottom = sectionTop + box.size.height;
+
+          if (centerOffset >= sectionTop && centerOffset < sectionBottom) {
+            if (_activeCategory != categories[i]['key']) {
+              setState(() => _activeCategory = categories[i]['key']!);
+            }
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  void _scrollToCategory(int index) {
+    final key = _sectionKeys[index];
+    final context = key.currentContext;
+    if (context != null) {
+      final box = context.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final position = box.localToGlobal(Offset.zero);
+        final scrollOffset = _scrollController.offset + position.dy - 150; // Offset for header
+        _scrollController.animateTo(
+          scrollOffset.clamp(0.0, _scrollController.position.maxScrollExtent),
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+    setState(() => _activeCategory = categories[index]['key']!);
+  }
 
   @override
   Widget build(BuildContext context) {
     debugPrint('📄 [Onboarding] ===== PAGE 6: Step 3 (Sound) =====');
     final selectedSoundId = ref.watch(selectedSoundProvider);
 
-    final categories = [
-      'Trending',
-      'Loud',
-      'Alarm',
-      'Morning',
-      'Simple',
-    ];
-
-    final filteredSounds =
-        sounds.where((s) => s.category == selectedCategory).toList();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 16),
-        const SizedBox(width: double.infinity), // Force full width
+        const SizedBox(width: double.infinity),
         const Text(
           'Choose your alarm sound',
           textAlign: TextAlign.center,
@@ -44,8 +102,8 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
             color: Colors.white,
           ),
         ),
-        const SizedBox(height: 24),
-        // Category Chips
+        const SizedBox(height: 16),
+        // Category Tabs
         SizedBox(
           height: 40,
           child: ListView.builder(
@@ -54,26 +112,23 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final cat = categories[index];
-              final isSelected = selectedCategory == cat;
+              final isActive = _activeCategory == cat['key'];
               return GestureDetector(
-                onTap: () {
-                  setState(() => selectedCategory = cat);
-                  debugPrint('🎵 [Sounds] Category selected: $cat');
-                },
+                onTap: () => _scrollToCategory(index),
                 child: Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(right: 12),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: isSelected ? Colors.white : const Color(0xFF1E1E20),
+                    color: isActive ? Colors.white : const Color(0xFF1E1E20),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    cat,
+                    cat['label']!,
                     style: TextStyle(
-                      color: isSelected ? Colors.black : Colors.white70,
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
+                      color: isActive ? Colors.black : Colors.white70,
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                      fontSize: 14,
                     ),
                   ),
                 ),
@@ -81,58 +136,34 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
             },
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         Expanded(
           child: Stack(
             children: [
               ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                children: [
-                  // DYNAMIC CATEGORY SECTION
-                  Row(
-                    children: [
-                      Text(
-                        _getCategoryEmoji(selectedCategory),
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        selectedCategory,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1E1E20),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: filteredSounds.length,
-                      separatorBuilder: (context, index) =>
-                          const Divider(color: Colors.white10, height: 1),
-                      itemBuilder: (context, index) {
-                        final sound = filteredSounds[index];
-                        return SoundTileWidget(
-                          title: sound.name,
-                          isSelected: selectedSoundId == sound.id,
-                          onTap: () {
-                            ref.read(selectedSoundProvider.notifier).select(sound.id);
-                          },
-                        );
+                controller: _scrollController,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                children: categories.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final cat = entry.value;
+                  final catKey = cat['key']!;
+                  final catLabel = cat['label']!;
+                  final catSounds = sounds.where((s) => s.category == catKey).toList();
+
+                  if (catSounds.isEmpty) return const SizedBox.shrink();
+
+                  return Container(
+                    key: _sectionKeys[index],
+                    child: _buildSoundSection(
+                      label: catLabel,
+                      sounds: catSounds,
+                      selectedSoundId: selectedSoundId,
+                      onSelect: (id) {
+                        ref.read(selectedSoundProvider.notifier).select(id);
                       },
                     ),
-                  ),
-                  const SizedBox(height: 140),
-                ],
+                  );
+                }).toList(),
               ),
               // VOLUME HINT TOAST
               Positioned(
@@ -206,14 +237,50 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
     );
   }
 
-  String _getCategoryEmoji(String cat) {
-    switch (cat) {
-      case 'Trending': return '💖';
-      case 'Loud': return '💥';
-      case 'Alarm': return '🔔';
-      case 'Morning': return '🌅';
-      case 'Simple': return '✨';
-      default: return '📁';
-    }
+  Widget _buildSoundSection({
+    required String label,
+    required List<AlarmSound> sounds,
+    required String? selectedSoundId,
+    required Function(String) onSelect,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E1E20),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: sounds.length,
+            separatorBuilder: (context, index) =>
+                const Divider(color: Colors.white10, height: 1, indent: 16, endIndent: 16),
+            itemBuilder: (context, index) {
+              final sound = sounds[index];
+              return SoundTileWidget(
+                title: sound.name,
+                isSelected: selectedSoundId == sound.id,
+                onTap: () => onSelect(sound.id),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 24),
+      ],
+    );
   }
 }
