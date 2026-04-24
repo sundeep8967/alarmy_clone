@@ -2,94 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import '../models/wallpaper.dart';
 
-class VideoWallpaperThumb extends StatefulWidget {
-  final String videoUrl;
-  final String thumbUrl;
-
-  const VideoWallpaperThumb({
-    super.key,
-    required this.videoUrl,
-    required this.thumbUrl,
-  });
-
-  @override
-  State<VideoWallpaperThumb> createState() => _VideoWallpaperThumbState();
-}
-
-class _VideoWallpaperThumbState extends State<VideoWallpaperThumb> {
-  VideoPlayerController? _controller;
-  bool _initialized = false;
-  bool _isPlaying = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeVideo();
-  }
-
-  void _initializeVideo() {
-    if (widget.videoUrl.startsWith('assets/')) {
-      _controller = VideoPlayerController.asset(widget.videoUrl);
-    } else {
-      _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
-    }
-
-    _controller!.initialize().then((_) {
-      if (mounted) {
-        setState(() => _initialized = true);
-        _controller!.setVolume(0);
-        _controller!.setLooping(true);
-        _controller!.play();
-        _isPlaying = true;
-      }
-    }).catchError((error) {
-      debugPrint('❌ [VideoWallpaperThumb] Error initializing video: $error');
-      // Fallback to local asset if remote fails
-      if (mounted) {
-        _controller?.dispose();
-        _controller = VideoPlayerController.asset('assets/videos/shake.webm');
-        _controller!.initialize().then((_) {
-          if (mounted) {
-            setState(() => _initialized = true);
-            _controller!.setVolume(0);
-            _controller!.setLooping(true);
-            _controller!.play();
-            _isPlaying = true;
-          }
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!_initialized || _controller == null) {
-      return Image.network(
-        widget.thumbUrl,
-        fit: BoxFit.cover,
-        headers: const {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'},
-        errorBuilder: (_, __, ___) => Container(color: const Color(0xFF2A2A2E)),
-      );
-    }
-    return SizedBox.expand(
-      child: FittedBox(
-        fit: BoxFit.cover,
-        child: SizedBox(
-          width: _controller!.value.size.width,
-          height: _controller!.value.size.height,
-          child: VideoPlayer(_controller!),
-        ),
-      ),
-    );
-  }
-}
-
 class WallpaperSectionWidget extends StatelessWidget {
   final String label;
   final List<Wallpaper> items;
@@ -147,16 +59,7 @@ class WallpaperSectionWidget extends StatelessWidget {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        w.mediaType == 'VIDEO' && w.videoURL != null
-                            ? KeepAlive(
-                                keepAlive: true,
-                                child: VideoWallpaperThumb(
-                                  key: ValueKey(w.videoURL!), // Stable key for same video
-                                  videoUrl: w.videoURL!,
-                                  thumbUrl: thumbUrl,
-                                ),
-                              )
-                            : Image.network(
+                        Image.network(
                                 thumbUrl,
                                 fit: BoxFit.cover,
                                 headers: const {'User-Agent': 'Mozilla/5.0'},
@@ -195,32 +98,6 @@ class WallpaperSectionWidget extends StatelessWidget {
                                 Icons.check,
                                 color: Colors.white,
                                 size: 14,
-                              ),
-                            ),
-                          ),
-                        if (w.mediaType == 'VIDEO')
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                  colors: [Colors.black87, Colors.transparent],
-                                ),
-                              ),
-                              child: Text(
-                                '🎵 ${w.name}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),

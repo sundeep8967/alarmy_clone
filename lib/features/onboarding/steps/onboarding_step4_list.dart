@@ -11,14 +11,18 @@ class OnboardingStep4List extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     debugPrint('📄 [Onboarding] ===== PAGE 7: Step 4 (Mission List) =====');
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 16),
+        const SizedBox(width: double.infinity), // Force full width
         const Text(
-          'Choose a wake-up mission',
+          'Choose a mission to make you\nwide awake',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.bold,
             color: Colors.white,
+            height: 1.2,
           ),
         ),
         const SizedBox(height: 32),

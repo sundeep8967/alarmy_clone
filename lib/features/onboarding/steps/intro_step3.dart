@@ -8,21 +8,10 @@ class IntroStep3 extends StatelessWidget {
     debugPrint('📄 [Onboarding] ===== PAGE 2: Intro Step 3 =====');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // University Logos (Placeholder style matching screenshot)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildUniversityLogo(Icons.account_balance, 'University'),
-            const SizedBox(width: 16),
-            _buildUniversityLogo(Icons.school, 'HANYANG'),
-            const SizedBox(width: 16),
-            _buildUniversityLogo(Icons.location_city, 'College'),
-          ],
-        ),
-        const SizedBox(height: 48),
         const Text(
-          'The only alarm listed in\nmedical journals',
+          'Scientific sounds to\nactivate your brainwave',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 28,
@@ -31,27 +20,30 @@ class IntroStep3 extends StatelessWidget {
             height: 1.2,
           ),
         ),
+        const SizedBox(height: 16),
+        const Text(
+          'Wake up instantly',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white54,
+          ),
+        ),
         const SizedBox(height: 64),
-        Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
+        // Sound wave visualization
+        Container(
+          width: 280,
+          height: 120,
+          child: CustomPaint(painter: SoundWavePainter()),
+        ),
+        const SizedBox(height: 48),
+        // Feature badges
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Brain Graphic (Using CustomPainter for accuracy)
-            SizedBox(
-              width: 200,
-              height: 200,
-              child: CustomPaint(painter: BrainPainter()),
-            ),
-            Positioned(
-              left: -60,
-              top: 40,
-              child: _buildBrainBadge('Morning\nProductivity', '2x'),
-            ),
-            Positioned(
-              right: -60,
-              top: 40,
-              child: _buildBrainBadge('Goal\nAchievement', '+15%'),
-            ),
+            _buildFeatureBadge(Icons.psychology, 'Brain\nStimulation'),
+            const SizedBox(width: 32),
+            _buildFeatureBadge(Icons.bolt, 'Energy\nBoost'),
           ],
         ),
         const SizedBox(height: 40),
@@ -59,88 +51,55 @@ class IntroStep3 extends StatelessWidget {
     );
   }
 
-  Widget _buildUniversityLogo(IconData icon, String label) {
+  Widget _buildFeatureBadge(IconData icon, String label) {
     return Column(
       children: [
-        Icon(icon, color: Colors.white24, size: 32),
-        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF2A2A2E),
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white10),
+          ),
+          child: Icon(icon, color: Colors.white70, size: 32),
+        ),
+        const SizedBox(height: 8),
         Text(
           label,
-          style: const TextStyle(color: Colors.white12, fontSize: 8),
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white54, fontSize: 12),
         ),
       ],
     );
   }
-
-  Widget _buildBrainBadge(String title, String stat) {
-    return Container(
-      width: 100,
-      height: 100,
-      decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2E).withValues(alpha: 0.9),
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70, fontSize: 11),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            stat,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
-class BrainPainter extends CustomPainter {
+class SoundWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = const Color(0xFFFF7A6A)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3;
+    final paint = Paint()
+      ..color = const Color(0xFFFF7A6A)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
 
-    final center = Offset(size.width / 2, size.height / 2);
+    final centerY = size.height / 2;
+    final barWidth = 6.0;
+    final gap = 8.0;
 
-    // Simplified Brain Outline (Two lobes)
-    final path = Path();
-    // Left Lobe
-    path.addOval(
-      Rect.fromCenter(
-        center: center.translate(-30, 0),
-        width: 80,
-        height: 120,
-      ),
-    );
-    // Right Lobe
-    path.addOval(
-      Rect.fromCenter(
-        center: center.translate(30, 0),
-        width: 80,
-        height: 120,
-      ),
-    );
-
-    // Neural connections (dots and lines)
-    canvas.drawPath(path, paint);
-
-    final dotPaint = Paint()..color = Colors.white;
-    canvas.drawCircle(center.translate(-40, -20), 3, dotPaint);
-    canvas.drawCircle(center.translate(40, 30), 3, dotPaint);
-    canvas.drawCircle(center.translate(0, -40), 3, dotPaint);
+    // Draw sound wave bars
+    final barHeights = [20.0, 40.0, 60.0, 80.0, 60.0, 40.0, 30.0, 50.0, 70.0, 50.0, 30.0, 20.0];
+    
+    for (int i = 0; i < barHeights.length; i++) {
+      final x = (size.width - (barHeights.length * (barWidth + gap))) / 2 + i * (barWidth + gap);
+      final height = barHeights[i];
+      
+      canvas.drawLine(
+        Offset(x + barWidth / 2, centerY - height / 2),
+        Offset(x + barWidth / 2, centerY + height / 2),
+        paint,
+      );
+    }
   }
 
   @override

@@ -51,7 +51,7 @@ class OnboardingProcessingStep extends ConsumerWidget {
         ),
         const SizedBox(height: 32),
         const Text(
-          'Trusted by 100M+\nYour alarm is almost ready',
+          'Setting up alarm for\ntomorrow',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24,
@@ -60,9 +60,16 @@ class OnboardingProcessingStep extends ConsumerWidget {
             height: 1.3,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 32),
+        // Checklist
+        _buildCheckItem('Setting up alarm time', state.processingProgress >= 0.3),
+        const SizedBox(height: 12),
+        _buildCheckItem('Setting up a refreshing wake-up sound', state.processingProgress >= 0.6),
+        const SizedBox(height: 12),
+        _buildCheckItem('Setting up a mission to make you wide awake', state.processingProgress >= 0.9),
+        const SizedBox(height: 24),
         Text(
-          '${_getStatusText(state.processingProgress)} $percent%',
+          '$percent%',
           style: const TextStyle(color: Colors.white54, fontSize: 16),
         ),
         const SizedBox(height: 40),
@@ -96,10 +103,24 @@ class OnboardingProcessingStep extends ConsumerWidget {
     );
   }
 
-  String _getStatusText(double progress) {
-    if (progress < 0.3) return 'Setting up your alarm...';
-    if (progress < 0.6) return 'Downloading high-quality assets...';
-    if (progress < 0.9) return 'Finding the right mission...';
-    return 'Finalizing...';
+  Widget _buildCheckItem(String text, bool isComplete) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          isComplete ? Icons.check_circle : Icons.radio_button_unchecked,
+          color: isComplete ? const Color(0xFFFF3B30) : Colors.white24,
+          size: 20,
+        ),
+        const SizedBox(width: 12),
+        Text(
+          text,
+          style: TextStyle(
+            color: isComplete ? Colors.white : Colors.white54,
+            fontSize: 14,
+          ),
+        ),
+      ],
+    );
   }
 }

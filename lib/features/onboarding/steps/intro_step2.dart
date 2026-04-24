@@ -8,32 +8,48 @@ class IntroStep2 extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('📄 [Onboarding] ===== PAGE 1: Intro Step 2 =====');
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Spacer(),
+        // University/Research logos placeholder
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildJournalBadge('Science'),
+            const SizedBox(width: 16),
+            _buildJournalBadge('Nature'),
+            const SizedBox(width: 16),
+            _buildJournalBadge('Cell'),
+          ],
+        ),
+        const SizedBox(height: 48),
         const Text(
-          'No more snoozing\nOwn your day',
+          'The only alarm listed in\nmedical journals',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 32,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
             color: Colors.white,
             height: 1.2,
           ),
         ),
+        const SizedBox(height: 16),
+        const Text(
+          'Based on behavioral science',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white54,
+          ),
+        ),
         const SizedBox(height: 48),
+        // Research highlights
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildPhoneCard('Other Apps', false, [
-              {'time': '6:55', 'opacity': 1.0},
-              {'time': '7:10', 'opacity': 0.8},
-              {'time': '7:20', 'opacity': 0.5},
-              {'time': '7:30', 'opacity': 0.2},
-            ]),
-            const SizedBox(width: 16),
-            _buildPhoneCard('Alarmy', true, [
-              {'time': '7:00', 'opacity': 1.0},
-            ]),
+            _buildStatCard('2M+', 'Users studied'),
+            const SizedBox(width: 24),
+            _buildStatCard('97%', 'Wake-up rate'),
           ],
         ),
         const Spacer(),
@@ -41,69 +57,44 @@ class IntroStep2 extends StatelessWidget {
     );
   }
 
-  Widget _buildPhoneCard(
-    String title,
-    bool isAlarmy,
-    List<Map<String, dynamic>> alarms,
-  ) {
+  Widget _buildJournalBadge(String name) {
     return Container(
-      width: 160,
-      height: 340,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: const Color(0xFF1E1E20),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white10, width: 2),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white24),
       ),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: isAlarmy ? const Color(0xFFFF3B30) : Colors.white54,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 24),
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                children: alarms
-                    .map<Widget>(
-                      (alarm) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Opacity(
-                          opacity: alarm['opacity'] as double,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                alarm['time'] as String,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                ),
-                              ),
-                              CupertinoSwitch(
-                                value: true,
-                                activeTrackColor: isAlarmy
-                                    ? const Color(0xFFFF3B30)
-                                    : Colors.green,
-                                onChanged: (bool value) {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ),
-        ],
+      child: Text(
+        name,
+        style: const TextStyle(
+          color: Colors.white70,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
       ),
+    );
+  }
+
+  Widget _buildStatCard(String value, String label) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white54,
+            fontSize: 14,
+          ),
+        ),
+      ],
     );
   }
 }

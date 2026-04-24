@@ -11,13 +11,17 @@ class OnboardingStep2 extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     debugPrint('📄 [Onboarding] ===== PAGE 4: Step 2 (Wallpaper List) =====');
+    // Categories matching APK exactly
     final categories = [
       {'key': 'trending', 'label': '💖 Trending'},
-      {'key': 'landscape', 'label': '🪐 Into Space'},
+      {'key': 'alarmy', 'label': '⏰ Alarmy'},
       {'key': 'animal', 'label': '🐾 Animal'},
       {'key': 'morning', 'label': '🌅 Morning'},
       {'key': 'simple', 'label': '✨ Simple'},
-      {'key': 'alarmy', 'label': '⏰ Alarmy'},
+      {'key': 'landscape', 'label': '🪐 Into Space'},  // APK has 'landscape' category, displayed as 'Into Space'
+      {'key': 'affirmation', 'label': '💪 Affirmation'},
+      {'key': 'religion', 'label': '🙏 Religion'},
+      {'key': 'authentic', 'label': '☕ Authentic'},
     ];
 
     final state = ref.watch(onboardingProvider);
@@ -57,13 +61,8 @@ class OnboardingStep2 extends ConsumerWidget {
               return ListView(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 children: categories.map((cat) {
-                  var items =
+                  final items =
                       wallpapers.where((w) => w.category == cat['key']).toList();
-                  
-                  // Special logic for 'Into Space' to ensure it has space items if category name differs
-                  if (cat['key'] == 'landscape' && items.isEmpty) {
-                    items = wallpapers.where((w) => w.name.toLowerCase().contains('space') || w.name.toLowerCase().contains('star')).toList();
-                  }
 
                   if (items.isEmpty) return const SizedBox.shrink();
                   return WallpaperSectionWidget(

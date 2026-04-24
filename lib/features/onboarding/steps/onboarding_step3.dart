@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/onboarding_provider.dart';
 import '../providers/sounds_provider.dart';
-import '../providers/wallpapers_provider.dart';
 import '../widgets/onboarding_widgets.dart';
 
 class OnboardingStep3 extends ConsumerStatefulWidget {
@@ -20,11 +18,8 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
   Widget build(BuildContext context) {
     debugPrint('📄 [Onboarding] ===== PAGE 6: Step 3 (Sound) =====');
     final selectedSoundId = ref.watch(selectedSoundProvider);
-    final state = ref.watch(onboardingProvider);
-    final wallpapersAsync = ref.watch(wallpapersProvider);
 
     final categories = [
-      'In Use',
       'Trending',
       'Loud',
       'Alarm',
@@ -32,13 +27,14 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
       'Simple',
     ];
 
-    final displayCategory = selectedCategory == 'In Use' ? 'Trending' : selectedCategory;
     final filteredSounds =
-        sounds.where((s) => s.category == displayCategory).toList();
+        sounds.where((s) => s.category == selectedCategory).toList();
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 16),
+        const SizedBox(width: double.infinity), // Force full width
         const Text(
           'Choose your alarm sound',
           textAlign: TextAlign.center,
@@ -92,86 +88,16 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
               ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 children: [
-                  // IN USE SECTION
-                  if (selectedCategory == 'In Use' || selectedCategory == 'Trending') ...[
-                    const Text(
-                      'In Use',
-                      style: TextStyle(color: Colors.white54, fontSize: 14),
-                    ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () {
-                        ref.read(selectedSoundProvider.notifier).select('video_sound');
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1E1E20),
-                          borderRadius: BorderRadius.circular(16),
-                          border: selectedSoundId == 'video_sound'
-                              ? Border.all(color: const Color(0xFF42A5F5), width: 1.5)
-                              : null,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              selectedSoundId == 'video_sound'
-                                  ? Icons.radio_button_checked
-                                  : Icons.radio_button_unchecked,
-                              color: selectedSoundId == 'video_sound'
-                                  ? const Color(0xFF42A5F5)
-                                  : Colors.white54,
-                            ),
-                            const SizedBox(width: 16),
-                            const Text(
-                              'video sound',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const Spacer(),
-                            wallpapersAsync.when(
-                              data: (wallpapers) {
-                                final wallpaper = wallpapers.firstWhere(
-                                  (w) => w.id == state.selectedWallpaperId,
-                                  orElse: () => wallpapers.first,
-                                );
-                                return Container(
-                                  width: 44,
-                                  height: 44,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        wallpaper.thumbnailURL,
-                                        headers: const {'User-Agent': 'Mozilla/5.0'},
-                                      ),                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                );
-                              },
-                              loading: () => _buildThumbnailPlaceholder(),
-                              error: (_, __) => _buildThumbnailPlaceholder(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                  ],
-
                   // DYNAMIC CATEGORY SECTION
                   Row(
                     children: [
                       Text(
-                        _getCategoryEmoji(displayCategory),
+                        _getCategoryEmoji(selectedCategory),
                         style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        displayCategory,
+                        selectedCategory,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -277,18 +203,6 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildThumbnailPlaceholder() {
-    return Container(
-      width: 44,
-      height: 44,
-      decoration: BoxDecoration(
-        color: Colors.white10,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: const Icon(Icons.videocam, color: Colors.white24, size: 20),
     );
   }
 

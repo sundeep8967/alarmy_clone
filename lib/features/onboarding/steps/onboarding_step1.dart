@@ -8,10 +8,12 @@ class OnboardingStep1 extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('📄 [Onboarding] ===== PAGE 3: Step 1 (Time Picker) =====');
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 32),
         const Text(
-          'Set your alarm time',
+          'Set the time to wake up',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,

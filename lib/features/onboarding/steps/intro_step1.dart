@@ -12,37 +12,50 @@ class IntroStep1 extends StatelessWidget {
       children: [
         // Star field background
         Positioned.fill(child: CustomPaint(painter: StarFieldPainter())),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 120,
-              child: Lottie.asset(
-                'assets/lottie/lottie_trophy.lottie',
-                fit: BoxFit.contain,
-                errorBuilder:
-                    (context, error, stackTrace) =>
-                        const Icon(Icons.emoji_events, color: Colors.amber, size: 80),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 120,
+                child: Lottie.asset(
+                  'assets/lottie/lottie_trophy.lottie',
+                  fit: BoxFit.contain,
+                  errorBuilder:
+                      (context, error, stackTrace) =>
+                          const Icon(Icons.emoji_events, color: Colors.amber, size: 80),
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'The most trusted\nalarm worldwide',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                height: 1.2,
+              const SizedBox(height: 24),
+              const Text(
+                'Alarmy never fails\nto wake you up',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  height: 1.2,
+                ),
               ),
-            ),
-            const SizedBox(height: 60),
-            _buildTrustBadge('#1 Alarm App', 'in 97 countries'),
-            const SizedBox(height: 32),
-            _buildTrustBadge('4.8★', 'Rating'),
-            const SizedBox(height: 32),
-            _buildTrustBadge('100M+', 'Downloads'),
-          ],
+              const SizedBox(height: 16),
+              const Text(
+                'Wake up refreshed everyday',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white54,
+                ),
+              ),
+              const SizedBox(height: 48),
+              _buildTrustBadge('#1 Ranked alarm app', 'in 97 countries'),
+              const SizedBox(height: 32),
+              _buildTrustBadge('4.8★', 'Rating'),
+              const SizedBox(height: 32),
+              _buildTrustBadge('100M+', 'Downloads'),
+            ],
+          ),
         ),
       ],
     );
@@ -50,9 +63,11 @@ class IntroStep1 extends StatelessWidget {
 
   Widget _buildTrustBadge(String title, String subtitle) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 24,
@@ -61,6 +76,7 @@ class IntroStep1 extends StatelessWidget {
         ),
         Text(
           subtitle,
+          textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white54, fontSize: 16),
         ),
       ],
