@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'alarm_optimization_screen.dart';
 import 'general_setting_screen.dart';
+import 'permission_doa_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -112,7 +113,15 @@ class SettingScreen extends StatelessWidget {
                 },
               ),
               _buildSettingItem('Alarm Setting'),
-              _buildSettingItem('Dismiss Alarm/Mission'),
+              _buildSettingItem(
+                'Dismiss Alarm/Mission',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PermissionDoaScreen()),
+                  );
+                },
+              ),
               _buildSettingItem(
                 'General',
                 onTap: () {

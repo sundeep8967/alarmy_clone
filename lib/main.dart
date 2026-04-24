@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main_scaffold.dart';
 import 'features/onboarding/onboarding_screen.dart';
+import 'core/services/alarm_service.dart';
 
 // Route constants
 class AppRoutes {
@@ -13,6 +14,8 @@ class AppRoutes {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  await AlarmService.init();
 
   final prefs = await SharedPreferences.getInstance();
   final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;

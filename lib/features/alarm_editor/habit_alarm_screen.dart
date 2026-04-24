@@ -21,15 +21,10 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
   ) {
     return SizedBox(
       height: 180,
-      width: 100,
+      width: 80,
       child: CupertinoPicker(
         itemExtent: 64,
-        selectionOverlay: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
+        selectionOverlay: const SizedBox.shrink(), // Overlay handled behind the row
         scrollController: FixedExtentScrollController(initialItem: initialValue),
         onSelectedItemChanged: onSelectedItemChanged,
         children: List.generate(itemCount, (index) {
@@ -38,7 +33,7 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
               index.toString().padLeft(2, '0'),
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 40,
+                fontSize: 32,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -56,7 +51,7 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
         backgroundColor: const Color(0xFF0F0F11),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white, size: 28),
+          icon: const Icon(Icons.close, color: Colors.white, size: 24),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -69,23 +64,26 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 24),
                   // Alarm Name Row
-                  Row(
-                    children: [
-                      const Icon(Icons.wb_sunny, color: Colors.amber, size: 28),
-                      const SizedBox(width: 16),
-                      const Expanded(
-                        child: Text(
-                          'Please fill in the alarm\nname',
-                          style: TextStyle(color: Colors.white30, fontSize: 18, height: 1.3),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.wb_sunny, color: Colors.amber, size: 28),
+                        const SizedBox(width: 16),
+                        const Expanded(
+                          child: Text(
+                            'Please fill in the alarm\nname',
+                            style: TextStyle(color: Colors.white30, fontSize: 18, height: 1.3),
+                          ),
                         ),
-                      ),
-                      Icon(Icons.edit, color: Colors.white.withValues(alpha: 0.2), size: 20),
-                    ],
+                        Icon(Icons.edit, color: Colors.white.withValues(alpha: 0.2), size: 20),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 48),
 
@@ -98,109 +96,129 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
                   ),
                   const SizedBox(height: 32),
 
-                  // Time Picker
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  // Time Picker with continuous overlay
+                  Stack(
+                    alignment: Alignment.center,
                     children: [
-                      _buildWheelPicker(24, selectedHour, (val) => setState(() => selectedHour = val)),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          ':',
-                          style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w400),
+                      Container(
+                        height: 64,
+                        margin: const EdgeInsets.symmetric(horizontal: 40),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E20), // Dark grey pill
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      _buildWheelPicker(60, selectedMinute, (val) => setState(() => selectedMinute = val)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildWheelPicker(24, selectedHour, (val) => setState(() => selectedHour = val)),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 24.0),
+                            child: Text(
+                              ':',
+                              style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                          _buildWheelPicker(60, selectedMinute, (val) => setState(() => selectedMinute = val)),
+                        ],
+                      ),
                     ],
                   ),
                   const SizedBox(height: 48),
 
                   // Repeat Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Daily', style: TextStyle(color: Colors.white, fontSize: 16)),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: Checkbox(
-                              value: isDailyChecked,
-                              onChanged: (val) {
-                                setState(() {
-                                  isDailyChecked = val ?? false;
-                                  if (isDailyChecked) {
-                                    activeDays = [0, 1, 2, 3, 4, 5, 6];
-                                  } else {
-                                    activeDays.clear();
-                                  }
-                                });
-                              },
-                              activeColor: const Color(0xFF00D1FF),
-                              checkColor: Colors.white,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                              side: const BorderSide(color: Colors.white54),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Daily', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: Checkbox(
+                                value: isDailyChecked,
+                                onChanged: (val) {
+                                  setState(() {
+                                    isDailyChecked = val ?? false;
+                                    if (isDailyChecked) {
+                                      activeDays = [0, 1, 2, 3, 4, 5, 6];
+                                    } else {
+                                      activeDays.clear();
+                                    }
+                                  });
+                                },
+                                activeColor: const Color(0xFF00D1FF),
+                                checkColor: Colors.black,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                side: BorderSide.none,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          const Text('Daily', style: TextStyle(color: Colors.white, fontSize: 16)),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 8),
+                            const Text('Daily', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Day buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(7, (index) {
-                      final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-                      final isSelected = activeDays.contains(index);
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (isSelected) {
-                              activeDays.remove(index);
-                              isDailyChecked = false;
-                            } else {
-                              activeDays.add(index);
-                              if (activeDays.length == 7) isDailyChecked = true;
-                            }
-                          });
-                        },
-                        child: Container(
-                          width: 44,
-                          height: 44,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF101820),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected ? const Color(0xFF00D1FF) : Colors.white12,
-                              width: 1.5,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(7, (index) {
+                        final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+                        final isSelected = activeDays.contains(index);
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (isSelected) {
+                                activeDays.remove(index);
+                                isDailyChecked = false;
+                              } else {
+                                activeDays.add(index);
+                                if (activeDays.length == 7) isDailyChecked = true;
+                              }
+                            });
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: isSelected ? const Color(0xFF112D36) : const Color(0xFF1E1E20),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isSelected ? const Color(0xFF00D1FF) : Colors.transparent,
+                                width: 1,
+                              ),
+                            ),
+                            child: Text(
+                              days[index],
+                              style: TextStyle(
+                                color: isSelected ? const Color(0xFF00D1FF) : Colors.white54,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                          child: Text(
-                            days[index],
-                            style: TextStyle(
-                              color: isSelected ? const Color(0xFF00D1FF) : Colors.white54,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                   const SizedBox(height: 48),
 
                   // Bottom Container (Mission)
                   Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1C1D24),
-                      borderRadius: BorderRadius.circular(24),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(24),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF1C1D24),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,49 +236,30 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
-                        // Mock mission slots as seen in screenshot edge
-                        Row(
-                          children: List.generate(4, (index) => Container(
-                            width: 60,
-                            height: 60,
-                            margin: const EdgeInsets.only(right: 12),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF2C2C2C),
-                              borderRadius: BorderRadius.circular(16),
+                        const SizedBox(height: 32),
+                        
+                        // Save Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFFF3B30),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
-                          )),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text(
+                              'Save',
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 40),
                 ],
-              ),
-            ),
-          ),
-          // Sticky Save Button
-          Container(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-            decoration: const BoxDecoration(
-              color: Color(0xFF0F0F11),
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF3B30),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
-                onPressed: () {
-                  // Save logic would go here
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Save',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
               ),
             ),
           ),

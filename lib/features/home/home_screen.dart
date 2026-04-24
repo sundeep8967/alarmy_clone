@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
+import '../../core/services/alarm_service.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
 import '../alarm_editor/habit_alarm_screen.dart';
 import '../alarm_editor/quick_alarm_sheet.dart';
@@ -433,6 +434,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onChanged: (value) async {
                       final updatedAlarm = alarm.copyWith(isActive: value);
                       await DatabaseHelper.instance.update(updatedAlarm);
+                      await AlarmService.scheduleAlarm(updatedAlarm);
                       refreshAlarms();
                     },
                   ),
