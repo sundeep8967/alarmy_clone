@@ -5,11 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'main_scaffold.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'core/services/alarm_service.dart';
+import 'features/alarm_ring/alarm_ring_screen.dart';
+import 'core/models/alarm_model.dart';
 
 // Route constants
 class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String home = '/';
+  static const String ring = '/ring';
 }
 
 void main() async {
@@ -54,8 +57,23 @@ class _MyAppState extends ConsumerState<MyApp> {
           path: AppRoutes.home,
           builder: (context, state) => const MainScaffold(),
         ),
+        GoRoute(
+          path: AppRoutes.ring,
+          builder: (context, state) {
+            final alarm = state.extra as AlarmModel;
+            return AlarmRingScreen(alarm: alarm);
+          },
+        ),
       ],
     );
+
+    // Listen for alarm ring events from the background isolate
+    AlarmService.port.listen((message) {
+      if (message is Map && message['type'] == 'ring') {
+        final alarm = AlarmModel.fromJson(message['alarm']);
+        _router.push(AppRoutes.ring, extra: alarm);
+      }
+    });
   }
 
   @override

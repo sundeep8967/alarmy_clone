@@ -19,10 +19,15 @@ class VideoWallpaperThumb extends StatefulWidget {
 class _VideoWallpaperThumbState extends State<VideoWallpaperThumb> {
   VideoPlayerController? _controller;
   bool _initialized = false;
+  bool _isPlaying = false;
 
   @override
   void initState() {
     super.initState();
+    _initializeVideo();
+  }
+
+  void _initializeVideo() {
     if (widget.videoUrl.startsWith('assets/')) {
       _controller = VideoPlayerController.asset(widget.videoUrl);
     } else {
@@ -35,6 +40,7 @@ class _VideoWallpaperThumbState extends State<VideoWallpaperThumb> {
         _controller!.setVolume(0);
         _controller!.setLooping(true);
         _controller!.play();
+        _isPlaying = true;
       }
     }).catchError((error) {
       debugPrint('❌ [VideoWallpaperThumb] Error initializing video: $error');
@@ -48,6 +54,7 @@ class _VideoWallpaperThumbState extends State<VideoWallpaperThumb> {
             _controller!.setVolume(0);
             _controller!.setLooping(true);
             _controller!.play();
+            _isPlaying = true;
           }
         });
       }
@@ -140,10 +147,14 @@ class WallpaperSectionWidget extends StatelessWidget {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        w.isVideo && w.videoURL != null
-                            ? VideoWallpaperThumb(
-                                videoUrl: w.videoURL!,
-                                thumbUrl: thumbUrl,
+                        w.mediaType == 'VIDEO' && w.videoURL != null
+                            ? KeepAlive(
+                                keepAlive: true,
+                                child: VideoWallpaperThumb(
+                                  key: ValueKey(w.videoURL!), // Stable key for same video
+                                  videoUrl: w.videoURL!,
+                                  thumbUrl: thumbUrl,
+                                ),
                               )
                             : Image.network(
                                 thumbUrl,
@@ -187,7 +198,7 @@ class WallpaperSectionWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                        if (w.isVideo)
+                        if (w.mediaType == 'VIDEO')
                           Positioned(
                             bottom: 0,
                             left: 0,

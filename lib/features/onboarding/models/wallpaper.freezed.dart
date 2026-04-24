@@ -26,8 +26,9 @@ mixin _$Wallpaper {
   String get name => throw _privateConstructorUsedError;
   String get thumbnailURL => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
-  bool get isVideo => throw _privateConstructorUsedError;
+  String get mediaType => throw _privateConstructorUsedError;
   String? get videoURL => throw _privateConstructorUsedError;
+  String? get audioPath => throw _privateConstructorUsedError;
 
   /// Serializes this Wallpaper to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,8 +51,9 @@ abstract class $WallpaperCopyWith<$Res> {
     String name,
     String thumbnailURL,
     String url,
-    bool isVideo,
+    String mediaType,
     String? videoURL,
+    String? audioPath,
   });
 }
 
@@ -75,8 +77,9 @@ class _$WallpaperCopyWithImpl<$Res, $Val extends Wallpaper>
     Object? name = null,
     Object? thumbnailURL = null,
     Object? url = null,
-    Object? isVideo = null,
+    Object? mediaType = null,
     Object? videoURL = freezed,
+    Object? audioPath = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -100,13 +103,17 @@ class _$WallpaperCopyWithImpl<$Res, $Val extends Wallpaper>
                 ? _value.url
                 : url // ignore: cast_nullable_to_non_nullable
                       as String,
-            isVideo: null == isVideo
-                ? _value.isVideo
-                : isVideo // ignore: cast_nullable_to_non_nullable
-                      as bool,
+            mediaType: null == mediaType
+                ? _value.mediaType
+                : mediaType // ignore: cast_nullable_to_non_nullable
+                      as String,
             videoURL: freezed == videoURL
                 ? _value.videoURL
                 : videoURL // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            audioPath: freezed == audioPath
+                ? _value.audioPath
+                : audioPath // ignore: cast_nullable_to_non_nullable
                       as String?,
           )
           as $Val,
@@ -129,8 +136,9 @@ abstract class _$$WallpaperImplCopyWith<$Res>
     String name,
     String thumbnailURL,
     String url,
-    bool isVideo,
+    String mediaType,
     String? videoURL,
+    String? audioPath,
   });
 }
 
@@ -153,8 +161,9 @@ class __$$WallpaperImplCopyWithImpl<$Res>
     Object? name = null,
     Object? thumbnailURL = null,
     Object? url = null,
-    Object? isVideo = null,
+    Object? mediaType = null,
     Object? videoURL = freezed,
+    Object? audioPath = freezed,
   }) {
     return _then(
       _$WallpaperImpl(
@@ -178,13 +187,17 @@ class __$$WallpaperImplCopyWithImpl<$Res>
             ? _value.url
             : url // ignore: cast_nullable_to_non_nullable
                   as String,
-        isVideo: null == isVideo
-            ? _value.isVideo
-            : isVideo // ignore: cast_nullable_to_non_nullable
-                  as bool,
+        mediaType: null == mediaType
+            ? _value.mediaType
+            : mediaType // ignore: cast_nullable_to_non_nullable
+                  as String,
         videoURL: freezed == videoURL
             ? _value.videoURL
             : videoURL // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        audioPath: freezed == audioPath
+            ? _value.audioPath
+            : audioPath // ignore: cast_nullable_to_non_nullable
                   as String?,
       ),
     );
@@ -200,8 +213,9 @@ class _$WallpaperImpl implements _Wallpaper {
     required this.name,
     required this.thumbnailURL,
     required this.url,
-    this.isVideo = false,
+    this.mediaType = 'IMAGE',
     this.videoURL,
+    this.audioPath,
   });
 
   factory _$WallpaperImpl.fromJson(Map<String, dynamic> json) =>
@@ -219,13 +233,15 @@ class _$WallpaperImpl implements _Wallpaper {
   final String url;
   @override
   @JsonKey()
-  final bool isVideo;
+  final String mediaType;
   @override
   final String? videoURL;
+  @override
+  final String? audioPath;
 
   @override
   String toString() {
-    return 'Wallpaper(id: $id, category: $category, name: $name, thumbnailURL: $thumbnailURL, url: $url, isVideo: $isVideo, videoURL: $videoURL)';
+    return 'Wallpaper(id: $id, category: $category, name: $name, thumbnailURL: $thumbnailURL, url: $url, mediaType: $mediaType, videoURL: $videoURL, audioPath: $audioPath)';
   }
 
   @override
@@ -240,9 +256,12 @@ class _$WallpaperImpl implements _Wallpaper {
             (identical(other.thumbnailURL, thumbnailURL) ||
                 other.thumbnailURL == thumbnailURL) &&
             (identical(other.url, url) || other.url == url) &&
-            (identical(other.isVideo, isVideo) || other.isVideo == isVideo) &&
+            (identical(other.mediaType, mediaType) ||
+                other.mediaType == mediaType) &&
             (identical(other.videoURL, videoURL) ||
-                other.videoURL == videoURL));
+                other.videoURL == videoURL) &&
+            (identical(other.audioPath, audioPath) ||
+                other.audioPath == audioPath));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -254,8 +273,9 @@ class _$WallpaperImpl implements _Wallpaper {
     name,
     thumbnailURL,
     url,
-    isVideo,
+    mediaType,
     videoURL,
+    audioPath,
   );
 
   /// Create a copy of Wallpaper
@@ -279,8 +299,9 @@ abstract class _Wallpaper implements Wallpaper {
     required final String name,
     required final String thumbnailURL,
     required final String url,
-    final bool isVideo,
+    final String mediaType,
     final String? videoURL,
+    final String? audioPath,
   }) = _$WallpaperImpl;
 
   factory _Wallpaper.fromJson(Map<String, dynamic> json) =
@@ -297,9 +318,11 @@ abstract class _Wallpaper implements Wallpaper {
   @override
   String get url;
   @override
-  bool get isVideo;
+  String get mediaType;
   @override
   String? get videoURL;
+  @override
+  String? get audioPath;
 
   /// Create a copy of Wallpaper
   /// with the given fields replaced by the non-null parameter values.

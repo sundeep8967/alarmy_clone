@@ -11,9 +11,13 @@ class AlarmService {
       FlutterLocalNotificationsPlugin();
 
   static const String isolateName = 'alarm_isolate';
+  static final ReceivePort port = ReceivePort();
 
   static Future<void> init() async {
     await AndroidAlarmManager.initialize();
+
+    // Register isolate port for UI communication
+    IsolateNameServer.registerPortWithName(port.sendPort, isolateName);
 
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -24,23 +28,37 @@ class AlarmService {
     );
 
     await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
-        debugPrint('Notification clicked: ${response.payload}');
-        // Handle notification click to open Ring screen
+        if (response.payload != null) {
+          final alarm = await _getAlarmById(response.payload!);
+          if (alarm != null) {
+            port.sendPort.send({'type': 'ring', 'alarm': alarm.toJson()});
+          }
+        }
       },
     );
+  }
+
+  static Future<AlarmModel?> _getAlarmById(String id) async {
+    final alarms = await DatabaseHelper.instance.readAllAlarms();
+    try {
+      return alarms.firstWhere((a) => a.id == id);
+    } catch (_) {
+      return null;
+    }
   }
 
   // Top-level function for Alarm Manager
   @pragma('vm:entry-point')
   static void alarmCallback(int id, Map<String, dynamic> params) async {
-    debugPrint('⏰ Alarm Fired! ID: $id');
+    debugPrint('⏰ Alarm Fired in Isolate! ID: $id');
     
+    // Notify UI if app is running
     final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
-    send?.send(params);
+    send?.send({'type': 'ring', 'alarm': params});
 
-    // Show Notification
+    // Show Notification (with fullScreenIntent potential)
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'alarm_channel',
@@ -50,7 +68,6 @@ class AlarmService {
       priority: Priority.high,
       fullScreenIntent: true,
       playSound: true,
-      ticker: 'ticker',
     );
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -58,10 +75,10 @@ class AlarmService {
     final missionType = params['missionType'] ?? 'default';
     
     await flutterLocalNotificationsPlugin.show(
-      id,
-      'Alarmy Clone',
-      'Time to wake up! Mission: $missionType',
-      platformChannelSpecifics,
+      id: id,
+      title: 'Alarmy Clone',
+      body: 'Time to wake up! Mission: $missionType',
+      notificationDetails: platformChannelSpecifics,
       payload: params['id'],
     );
   }
@@ -102,10 +119,7 @@ class AlarmService {
       exact: true,
       wakeup: true,
       rescheduleOnReboot: true,
-      params: {
-        'id': alarm.id,
-        'missionType': alarm.missionType,
-      },
+      params: alarm.toJson(),
     );
   }
 

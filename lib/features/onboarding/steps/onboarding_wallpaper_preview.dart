@@ -98,7 +98,7 @@ class _OnboardingWallpaperPreviewState
                 orElse: () => wallpapers.first,
               );
 
-              if (selected.isVideo) {
+              if (selected.mediaType == 'VIDEO') {
                 _setupVideo(selected.url);
                 return _videoController != null &&
                         _videoController!.value.isInitialized

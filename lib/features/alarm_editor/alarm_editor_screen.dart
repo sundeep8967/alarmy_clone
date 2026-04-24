@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
+import '../../core/services/alarm_service.dart';
+// import 'alarm_wallpaper_screen.dart';
 
 class AlarmEditorScreen extends StatefulWidget {
   final AlarmModel? alarm;
@@ -37,8 +39,9 @@ class _AlarmEditorScreenState extends State<AlarmEditorScreen> {
   }
 
   void _saveAlarm() async {
+    AlarmModel alarmToSchedule;
     if (widget.alarm == null) {
-      final newAlarm = AlarmModel(
+      alarmToSchedule = AlarmModel(
         id: const Uuid().v4(),
         hour: selectedHour,
         minute: selectedMinute,
@@ -46,21 +49,23 @@ class _AlarmEditorScreenState extends State<AlarmEditorScreen> {
         missionType: selectedMission,
         activeDays: activeDays,
       );
-      await DatabaseHelper.instance.create(newAlarm);
+      await DatabaseHelper.instance.create(alarmToSchedule);
     } else {
-      final updatedAlarm = widget.alarm!.copyWith(
+      alarmToSchedule = widget.alarm!.copyWith(
         hour: selectedHour,
         minute: selectedMinute,
         missionType: selectedMission,
         activeDays: activeDays,
       );
-      await DatabaseHelper.instance.update(updatedAlarm);
+      await DatabaseHelper.instance.update(alarmToSchedule);
     }
+    await AlarmService.scheduleAlarm(alarmToSchedule);
     if (mounted) Navigator.pop(context);
   }
 
   void _deleteAlarm() async {
     if (widget.alarm != null) {
+      await AlarmService.cancelAlarm(widget.alarm!.id);
       await DatabaseHelper.instance.delete(widget.alarm!.id);
       if (mounted) Navigator.pop(context);
     }
@@ -250,6 +255,31 @@ class _AlarmEditorScreenState extends State<AlarmEditorScreen> {
                 );
               }),
             )),
+            _buildSection('Background', InkWell(
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const AlarmWallpaperScreen()),
+                // );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Wallpaper', style: TextStyle(color: Colors.white, fontSize: 16)),
+                    Row(
+                      children: [
+                        const Text('Default', style: TextStyle(color: Colors.white54, fontSize: 16)),
+                        const SizedBox(width: 4),
+                        Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.5), size: 20),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )),
+            const SizedBox(height: 32),
           ],
         ),
       ),

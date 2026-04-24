@@ -6,7 +6,7 @@ part of 'wallpapers_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$wallpapersHash() => r'55977d8b2ba589167d3d8e593452322eef9978d8';
+String _$wallpapersHash() => r'31c6c7f18df33052a63a06433658064a54a69347';
 
 /// See also [wallpapers].
 @ProviderFor(wallpapers)

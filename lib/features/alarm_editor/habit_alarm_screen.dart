@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+import '../../core/database/database_helper.dart';
+import '../../core/services/alarm_service.dart';
+import '../../core/models/alarm_model.dart';
 
 class HabitAlarmScreen extends StatefulWidget {
   const HabitAlarmScreen({super.key});
@@ -247,8 +251,18 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
                               backgroundColor: const Color(0xFFFF3B30),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
+                            onPressed: () async {
+                              final newAlarm = AlarmModel(
+                                id: const Uuid().v4(),
+                                hour: selectedHour,
+                                minute: selectedMinute,
+                                isActive: true,
+                                missionType: 'math', // Default for Habit alarm in this mockup
+                                activeDays: activeDays,
+                              );
+                              await DatabaseHelper.instance.create(newAlarm);
+                              await AlarmService.scheduleAlarm(newAlarm);
+                              if (mounted) Navigator.pop(context);
                             },
                             child: const Text(
                               'Save',
