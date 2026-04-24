@@ -55,7 +55,7 @@ class RecordsScreen extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18),
+                      const Icon(Icons.chevron_left, color: Colors.white, size: 24),
                       const SizedBox(width: 8),
                       const Text(
                         'This week Apr 19 - Apr 25',
@@ -66,7 +66,7 @@ class RecordsScreen extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Icon(Icons.arrow_forward_ios, color: Colors.white.withValues(alpha: 0.4), size: 18),
+                      Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.4), size: 24),
                     ],
                   ),
                 ),
@@ -113,7 +113,7 @@ class RecordsScreen extends ConsumerWidget {
                                   'Avg. wake-up time',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontSize: 15,
                                   ),
                                 ),
                                 const SizedBox(width: 6),
@@ -142,7 +142,7 @@ class RecordsScreen extends ConsumerWidget {
                                   'Avg. time to wake up',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontSize: 15,
                                   ),
                                 ),
                                 const SizedBox(width: 6),
@@ -184,7 +184,7 @@ class RecordsScreen extends ConsumerWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

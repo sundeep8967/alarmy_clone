@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'alarm_optimization_screen.dart';
+import 'general_setting_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -27,7 +28,7 @@ class SettingScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // Profile & Pro Section Container
+              // Pro Section Container
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
@@ -37,46 +38,10 @@ class SettingScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      // Profile Row
-                      InkWell(
-                        onTap: () {},
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 56,
-                                height: 56,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF5A5A5E),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(Icons.sentiment_satisfied_alt, color: Colors.black45, size: 36),
-                              ),
-                              const SizedBox(width: 20),
-                              const Expanded(
-                                child: Text(
-                                  'Sign in to your\naccount',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.2,
-                                  ),
-                                ),
-                              ),
-                              const Icon(Icons.chevron_right, color: Colors.white, size: 24),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Divider
-                      const Divider(color: Colors.white10, height: 1, thickness: 1),
                       // Pro Row
                       InkWell(
                         onTap: () {},
-                        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
+                        borderRadius: BorderRadius.circular(24),
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Row(
@@ -148,7 +113,15 @@ class SettingScreen extends StatelessWidget {
               ),
               _buildSettingItem('Alarm Setting'),
               _buildSettingItem('Dismiss Alarm/Mission'),
-              _buildSettingItem('General'),
+              _buildSettingItem(
+                'General',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const GeneralSettingScreen()),
+                  );
+                },
+              ),
               _buildSettingItem(
                 'Notices', 
                 badge: Container(
