@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class TypingMissionScreen extends StatefulWidget {
@@ -106,40 +106,44 @@ class _TypingMissionScreenState extends State<TypingMissionScreen> {
     final currentInput = _controller.text;
     
     return FadeInDown(
-      child: GlassContainer(
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
-        padding: const EdgeInsets.all(32),
-        blur: 20,
-        opacity: 0.1,
-        borderRadius: BorderRadius.circular(32),
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            children: List.generate(_targetQuote.length, (index) {
-              final char = _targetQuote[index];
-              Color color = Colors.white24;
-              FontWeight weight = FontWeight.w300;
-              
-              if (index < currentInput.length) {
-                if (currentInput[index] == char) {
-                  color = const Color(0xFF00FF85); // Correct
-                  weight = FontWeight.bold;
-                } else {
-                  color = const Color(0xFFFF3B30); // Incorrect
-                  weight = FontWeight.bold;
-                }
-              }
-              
-              return TextSpan(
-                text: char,
-                style: TextStyle(
-                  color: color,
-                  fontSize: 24,
-                  fontWeight: weight,
-                  letterSpacing: 0.5,
-                ),
-              );
-            }),
+        child: GlassContainer(
+          blur: 20,
+          opacity: 0.1,
+          borderRadius: BorderRadius.circular(32),
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: List.generate(_targetQuote.length, (index) {
+                  final char = _targetQuote[index];
+                  Color color = Colors.white24;
+                  FontWeight weight = FontWeight.w300;
+                  
+                  if (index < currentInput.length) {
+                    if (currentInput[index] == char) {
+                      color = const Color(0xFF00FF85); // Correct
+                      weight = FontWeight.bold;
+                    } else {
+                      color = const Color(0xFFFF3B30); // Incorrect
+                      weight = FontWeight.bold;
+                    }
+                  }
+                  
+                  return TextSpan(
+                    text: char,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 24,
+                      fontWeight: weight,
+                      letterSpacing: 0.5,
+                    ),
+                  );
+                }),
+              ),
+            ),
           ),
         ),
       ),

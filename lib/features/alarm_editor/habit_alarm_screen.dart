@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import '../../core/database/database_helper.dart';
-import '../../core/services/alarm_service.dart';
 import '../../core/models/alarm_model.dart';
+import '../../core/repositories/alarm_repository.dart';
 
-class HabitAlarmScreen extends StatefulWidget {
+class HabitAlarmScreen extends ConsumerStatefulWidget {
   const HabitAlarmScreen({super.key});
 
   @override
-  State<HabitAlarmScreen> createState() => _HabitAlarmScreenState();
+  ConsumerState<HabitAlarmScreen> createState() => _HabitAlarmScreenState();
 }
 
-class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
+class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
   int selectedHour = 0;
   int selectedMinute = 6;
   bool isDailyChecked = true;
@@ -260,8 +260,7 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
                                 missionTypes: const ['math'], // Default for Habit alarm
                                 activeDays: activeDays,
                               );
-                              await DatabaseHelper.instance.create(newAlarm);
-                              await AlarmService.scheduleAlarm(newAlarm);
+                              await ref.read(alarmsProvider.notifier).createAlarm(newAlarm);
                               if (mounted) Navigator.pop(context);
                             },
                             child: const Text(

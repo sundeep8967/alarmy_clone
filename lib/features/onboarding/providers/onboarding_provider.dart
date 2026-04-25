@@ -1,21 +1,43 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'onboarding_provider.freezed.dart';
 part 'onboarding_provider.g.dart';
 
-@freezed
-class OnboardingState with _$OnboardingState {
-  const factory OnboardingState({
-    @Default(0) int currentPage,
-    @Default('Math') String selectedMission,
-    @Default('assets/videos/math.webm') String selectedMissionVideo,
-    @Default('') String selectedWallpaperId,
-    @Default(0.0) double processingProgress,
-    @Default(false) bool showPermissionOverlay,
-  }) = _OnboardingState;
+class OnboardingState {
+  final int currentPage;
+  final String selectedMission;
+  final String selectedMissionVideo;
+  final String selectedWallpaperId;
+  final double processingProgress;
+  final bool showPermissionOverlay;
+
+  const OnboardingState({
+    this.currentPage = 0,
+    this.selectedMission = 'Math',
+    this.selectedMissionVideo = 'assets/videos/math.webm',
+    this.selectedWallpaperId = '',
+    this.processingProgress = 0.0,
+    this.showPermissionOverlay = false,
+  });
+
+  OnboardingState copyWith({
+    int? currentPage,
+    String? selectedMission,
+    String? selectedMissionVideo,
+    String? selectedWallpaperId,
+    double? processingProgress,
+    bool? showPermissionOverlay,
+  }) {
+    return OnboardingState(
+      currentPage: currentPage ?? this.currentPage,
+      selectedMission: selectedMission ?? this.selectedMission,
+      selectedMissionVideo: selectedMissionVideo ?? this.selectedMissionVideo,
+      selectedWallpaperId: selectedWallpaperId ?? this.selectedWallpaperId,
+      processingProgress: processingProgress ?? this.processingProgress,
+      showPermissionOverlay: showPermissionOverlay ?? this.showPermissionOverlay,
+    );
+  }
 }
 
 @riverpod

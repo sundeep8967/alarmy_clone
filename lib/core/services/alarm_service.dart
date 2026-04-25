@@ -19,7 +19,7 @@ class AlarmService {
     const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
         if (response.payload != null) {
           if (response.payload!.startsWith('wakeup_confirm_')) {
@@ -49,7 +49,13 @@ class AlarmService {
       'alarm_channel', 'Alarm Notifications',
       importance: Importance.max, priority: Priority.high, fullScreenIntent: true, playSound: true,
     );
-    await flutterLocalNotificationsPlugin.show(id, 'Alarmy Clone', 'Time to wake up!', const NotificationDetails(android: androidDetails), payload: params['id']);
+    await flutterLocalNotificationsPlugin.show(
+      id: id,
+      title: 'Alarmy Clone',
+      body: 'Time to wake up!',
+      notificationDetails: const NotificationDetails(android: androidDetails),
+      payload: params['id'],
+    );
   }
 
   static Future<void> snoozeAlarm(AlarmModel alarm) async {
@@ -68,7 +74,13 @@ class AlarmService {
       'wakeup_check_channel', 'Wake Up Check',
       importance: Importance.max, priority: Priority.high, fullScreenIntent: true,
     );
-    await flutterLocalNotificationsPlugin.show(id, 'Wake Up Check', 'Tap to confirm you are awake, or the alarm will ring again!', const NotificationDetails(android: androidDetails), payload: 'wakeup_confirm_${params['id']}');
+    await flutterLocalNotificationsPlugin.show(
+      id: id,
+      title: 'Wake Up Check',
+      body: 'Tap to confirm you are awake, or the alarm will ring again!',
+      notificationDetails: const NotificationDetails(android: androidDetails),
+      payload: 'wakeup_confirm_${params['id']}',
+    );
 
     // Schedule Re-fire task in 60 seconds if not confirmed
     final reFireTime = DateTime.now().add(const Duration(minutes: 1));
@@ -77,7 +89,7 @@ class AlarmService {
 
   static Future<void> cancelReFireTask(String alarmId) async {
     await AndroidAlarmManager.cancel(alarmId.hashCode + 300000);
-    await flutterLocalNotificationsPlugin.cancel(alarmId.hashCode + 200000);
+    await flutterLocalNotificationsPlugin.cancel(id: alarmId.hashCode + 200000);
   }
 
   static Future<void> scheduleAlarm(AlarmModel alarm) async {

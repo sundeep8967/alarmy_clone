@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class MathMissionScreen extends StatefulWidget {
@@ -152,40 +152,44 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
   }
 
   Widget _buildProblemCard() {
-    return GlassContainer(
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(40),
-      blur: 20,
-      opacity: 0.1,
-      borderRadius: BorderRadius.circular(32),
-      child: Column(
-        children: [
-          Text(
-            num3 == 0 ? '$num1 + $num2' : '$num1 + $num2 + $num3',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 56,
-              fontWeight: FontWeight.w300,
-              letterSpacing: -1,
-            ),
-          ),
-          const SizedBox(height: 24),
-          Container(
-            height: 80,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.1), width: 2)),
-            ),
-            child: Text(
-              _input.isEmpty ? '?' : _input,
-              style: TextStyle(
-                color: _input.isEmpty ? Colors.white24 : const Color(0xFFFF3B30),
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
+      child: GlassContainer(
+        blur: 20,
+        opacity: 0.1,
+        borderRadius: BorderRadius.circular(32),
+        child: Padding(
+          padding: const EdgeInsets.all(40),
+          child: Column(
+            children: [
+              Text(
+                num3 == 0 ? '$num1 + $num2' : '$num1 + $num2 + $num3',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 56,
+                  fontWeight: FontWeight.w300,
+                  letterSpacing: -1,
+                ),
               ),
-            ),
+              const SizedBox(height: 24),
+              Container(
+                height: 80,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.1), width: 2)),
+                ),
+                child: Text(
+                  _input.isEmpty ? '?' : _input,
+                  style: TextStyle(
+                    color: _input.isEmpty ? Colors.white24 : const Color(0xFFFF3B30),
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

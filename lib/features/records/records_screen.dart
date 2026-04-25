@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
-import '../../core/database/database_helper.dart';
+import '../../core/repositories/alarm_repository.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
 
-class RecordsScreen extends StatefulWidget {
+class RecordsScreen extends ConsumerStatefulWidget {
   const RecordsScreen({super.key});
 
   @override
-  State<RecordsScreen> createState() => _RecordsScreenState();
+  ConsumerState<RecordsScreen> createState() => _RecordsScreenState();
 }
 
-class _RecordsScreenState extends State<RecordsScreen> {
+class _RecordsScreenState extends ConsumerState<RecordsScreen> {
   late Future<Map<String, dynamic>> _statsFuture;
 
   @override
@@ -21,8 +22,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
   }
 
   Future<Map<String, dynamic>> _loadStats() async {
-    final successRate = await DatabaseHelper.instance.getSuccessRate();
-    final recentRecords = await DatabaseHelper.instance.getRecentRecords(30);
+    final repo = ref.read(alarmRepositoryProvider);
+    final successRate = await repo.getSuccessRate();
+    final recentRecords = await repo.getRecentRecords(30);
     
     double avgSolvingTime = 0.0;
     if (recentRecords.isNotEmpty) {
@@ -114,13 +116,15 @@ class _RecordsScreenState extends State<RecordsScreen> {
         return Padding(
           padding: const EdgeInsets.only(right: 12.0),
           child: GlassContainer(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             blur: 10,
             opacity: isSelected ? 0.2 : 0.05,
             borderRadius: BorderRadius.circular(20),
-            child: Text(
-              entry.value,
-              style: TextStyle(color: isSelected ? const Color(0xFFFF3B30) : Colors.white38, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                entry.value,
+                style: TextStyle(color: isSelected ? const Color(0xFFFF3B30) : Colors.white38, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+              ),
             ),
           ),
         );
@@ -131,48 +135,50 @@ class _RecordsScreenState extends State<RecordsScreen> {
   Widget _buildSuccessRateCard(int percent) {
     return FadeInUp(
       child: GlassContainer(
-        padding: const EdgeInsets.all(24),
         blur: 20,
         opacity: 0.1,
         borderRadius: BorderRadius.circular(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Success Rate', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                Text('$percent%', style: const TextStyle(color: Color(0xFF00FF85), fontSize: 24, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: List.generate(7, (i) {
-                final height = [40, 60, 30, 50, 45, 70, percent > 0 ? percent * 0.8 : 10.0][i];
-                final isToday = i == 6;
-                return Column(
-                  children: [
-                    Container(
-                      width: 32,
-                      height: height.toDouble(),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: isToday ? [const Color(0xFFFF3B30), const Color(0xFFFF7A00)] : [Colors.white12, Colors.white10],
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Success Rate', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text('$percent%', style: const TextStyle(color: Color(0xFF00FF85), fontSize: 24, fontWeight: FontWeight.bold)),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: List.generate(7, (i) {
+                  final height = [40, 60, 30, 50, 45, 70, percent > 0 ? percent * 0.8 : 10.0][i];
+                  final isToday = i == 6;
+                  return Column(
+                    children: [
+                      Container(
+                        width: 32,
+                        height: height.toDouble(),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: isToday ? [const Color(0xFFFF3B30), const Color(0xFFFF7A00)] : [Colors.white12, Colors.white10],
+                          ),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(['M', 'T', 'W', 'T', 'F', 'S', 'S'][i], style: TextStyle(color: isToday ? Colors.white : Colors.white24, fontSize: 12)),
-                  ],
-                );
-              }),
-            ),
-          ],
+                      const SizedBox(height: 8),
+                      Text(['M', 'T', 'W', 'T', 'F', 'S', 'S'][i], style: TextStyle(color: isToday ? Colors.white : Colors.white24, fontSize: 12)),
+                    ],
+                  );
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -192,19 +198,21 @@ class _RecordsScreenState extends State<RecordsScreen> {
     return Expanded(
       child: FadeInUp(
         child: GlassContainer(
-          padding: const EdgeInsets.all(20),
           blur: 15,
           opacity: 0.05,
           borderRadius: BorderRadius.circular(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(value, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 4),
-              Text(label, style: const TextStyle(color: Colors.white38, fontSize: 12)),
-              const SizedBox(height: 12),
-              Container(height: 2, width: 40, color: color),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(value, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(label, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                const SizedBox(height: 12),
+                Container(height: 2, width: 40, color: color),
+              ],
+            ),
           ),
         ),
       ),

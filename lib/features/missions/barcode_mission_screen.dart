@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class BarcodeMissionScreen extends StatefulWidget {
@@ -114,8 +114,10 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with Single
                 blur: 10,
                 opacity: 0.1,
                 borderRadius: BorderRadius.circular(12),
-                padding: const EdgeInsets.all(8),
-                child: const Icon(Icons.qr_code_scanner, color: Color(0xFF00D1FF)),
+                child: const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.qr_code_scanner, color: Color(0xFF00D1FF)),
+                ),
               ),
             ],
           ),
@@ -207,31 +209,33 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with Single
       right: 24,
       child: FadeInUp(
         child: GlassContainer(
-          padding: const EdgeInsets.all(24),
           blur: 20,
           opacity: 0.1,
           borderRadius: BorderRadius.circular(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.info_outline, color: Colors.white54, size: 24),
-              const SizedBox(height: 12),
-              Text(
-                targetBarcode == null 
-                    ? 'Scan any barcode to stop' 
-                    : 'Scan your registered barcode',
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                targetBarcode == null 
-                    ? 'Go to your bathroom or kitchen and scan a product.' 
-                    : 'Target: $targetBarcode',
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white38, fontSize: 13),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.info_outline, color: Colors.white54, size: 24),
+                const SizedBox(height: 12),
+                Text(
+                  targetBarcode == null 
+                      ? 'Scan any barcode to stop' 
+                      : 'Scan your registered barcode',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  targetBarcode == null 
+                      ? 'Go to your bathroom or kitchen and scan a product.' 
+                      : 'Target: $targetBarcode',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white38, fontSize: 13),
+                ),
+              ],
+            ),
           ),
         ),
       ),

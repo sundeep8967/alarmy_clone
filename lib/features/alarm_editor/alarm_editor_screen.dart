@@ -1,16 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/widgets/glass_card.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/alarm_model.dart';
-import '../../core/database/database_helper.dart';
-import '../../core/services/alarm_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/repositories/alarm_repository.dart';
+import 'mission_settings_screen.dart';
 import 'alarm_sound_screen.dart';
 import 'alarm_wallpaper_screen.dart';
-import 'mission_settings_screen.dart';
 import '../onboarding/providers/sounds_provider.dart';
 import '../onboarding/providers/wallpapers_provider.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 
 class AlarmEditorScreen extends ConsumerStatefulWidget {
   final AlarmModel? alarm;
@@ -90,7 +90,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         isWakeUpCheckEnabled: isWakeUpCheckEnabled,
         wakeUpCheckMinutes: wakeUpCheckMinutes,
       );
-      await DatabaseHelper.instance.create(alarmToSchedule);
+      await ref.read(alarmsProvider.notifier).createAlarm(alarmToSchedule);
     } else {
       alarmToSchedule = widget.alarm!.copyWith(
         hour: selectedHour,
@@ -109,9 +109,9 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         isWakeUpCheckEnabled: isWakeUpCheckEnabled,
         wakeUpCheckMinutes: wakeUpCheckMinutes,
       );
-      await DatabaseHelper.instance.update(alarmToSchedule);
+      await ref.read(alarmsProvider.notifier).updateAlarm(alarmToSchedule);
     }
-    await AlarmService.scheduleAlarm(alarmToSchedule);
+    
     if (mounted) Navigator.pop(context);
   }
 
@@ -317,11 +317,13 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             child: Text(title.toUpperCase(), style: const TextStyle(color: Colors.white24, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
           ),
           GlassContainer(
-            padding: const EdgeInsets.all(20),
             blur: 15,
             opacity: 0.05,
             borderRadius: BorderRadius.circular(24),
-            child: child,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: child,
+            ),
           ),
         ],
       ),

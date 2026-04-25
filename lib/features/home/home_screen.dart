@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import '../../core/models/alarm_model.dart';
-import '../../core/database/database_helper.dart';
+import '../../core/repositories/alarm_repository.dart';
 import '../../core/services/alarm_service.dart';
 import '../../core/services/today_data_service.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
@@ -12,34 +13,26 @@ import '../alarm_editor/quick_alarm_sheet.dart';
 import 'alarm_settings_screen.dart';
 import 'rating_dialog.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<AlarmModel>> alarms;
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   late Future<TodayData> todayData;
   final GlobalKey _fabKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    refreshAlarms();
     refreshTodayData();
   }
 
   void refreshTodayData() {
     setState(() {
       todayData = TodayDataService.fetchAll();
-    });
-  }
-
-  void refreshAlarms() {
-    setState(() {
-      alarms = DatabaseHelper.instance.readAllAlarms();
     });
   }
 
@@ -74,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         _buildFabMenuItem('Habit alarm', Icons.calendar_month, const Color(0xFF6B7BFF), () async {
                           Navigator.pop(context);
                           await Navigator.push(this.context, MaterialPageRoute(builder: (_) => const HabitAlarmScreen()));
-                          refreshAlarms();
                         }),
                         const SizedBox(height: 12),
                         _buildFabMenuItem('Quick alarm', Icons.bolt, const Color(0xFF00D1FF), () {
@@ -90,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         _buildFabMenuItem('New Alarm', Icons.alarm_add, const Color(0xFFFF3B30), () async {
                           Navigator.pop(context);
                           await Navigator.push(this.context, MaterialPageRoute(builder: (_) => const AlarmEditorScreen()));
-                          refreshAlarms();
                         }),
                       ],
                     ),
@@ -124,11 +115,13 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           GlassContainer(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             blur: 10,
             opacity: 0.1,
             borderRadius: BorderRadius.circular(12),
-            child: Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            ),
           ),
           const SizedBox(width: 12),
           Container(
@@ -144,6 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final alarmsAsync = ref.watch(alarmsProvider);
+    
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
       body: Container(
@@ -155,60 +150,66 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         child: SafeArea(
-          child: FutureBuilder(
-            future: Future.wait([alarms, todayData]),
-            builder: (context, snapshot) {
-              final alarmList = snapshot.hasData ? (snapshot.data![0] as List<AlarmModel>) : <AlarmModel>[];
-              final todayInfo = snapshot.hasData ? (snapshot.data![1] as TodayData) : TodayData();
+          child: alarmsAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.white))),
+            data: (alarmList) {
+              return FutureBuilder<TodayData>(
+                future: todayData,
+                builder: (context, snapshot) {
+                  final todayInfo = snapshot.data ?? TodayData();
 
-              return CustomScrollView(
-                slivers: [
-                  _buildSliverAppBar(),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildTodayPanel(todayInfo),
-                          const SizedBox(height: 32),
-                          _buildUpcomingHeader(alarmList.where((a) => a.isActive).toList()),
-                          const SizedBox(height: 16),
-                        ],
+                  return CustomScrollView(
+                    slivers: [
+                      _buildSliverAppBar(),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildTodayPanel(todayInfo),
+                              const SizedBox(height: 32),
+                              _buildUpcomingHeader(alarmList.where((a) => a.isActive).toList()),
+                              const SizedBox(height: 16),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          if (alarmList.isEmpty) {
-                            return const Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 40),
-                                child: Text('No alarms set yet', style: TextStyle(color: Colors.white24)),
-                              ),
-                            );
-                          }
-                          final alarm = alarmList[index];
-                          return FadeInUp(
-                            delay: Duration(milliseconds: 100 * index),
-                            child: _buildAlarmCard(alarm),
-                          );
-                        },
-                        childCount: alarmList.isEmpty ? 1 : alarmList.length,
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              if (alarmList.isEmpty) {
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 40),
+                                    child: Text('No alarms set yet', style: TextStyle(color: Colors.white24)),
+                                  ),
+                                );
+                              }
+                              final alarm = alarmList[index];
+                              return FadeInUp(
+                                delay: Duration(milliseconds: 100 * index),
+                                child: _buildAlarmCard(alarm),
+                              );
+                            },
+                            childCount: alarmList.isEmpty ? 1 : alarmList.length,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
-                ],
+                      const SliverToBoxAdapter(child: SizedBox(height: 100)),
+                    ],
+                  );
+                },
               );
             },
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
+
         key: _fabKey,
         backgroundColor: const Color(0xFFFF3B30),
         shape: const CircleBorder(),
@@ -239,36 +240,38 @@ class _HomeScreenState extends State<HomeScreen> {
     final greeting = hour < 12 ? 'Good Morning' : (hour < 17 ? 'Good Afternoon' : 'Good Evening');
     
     return GlassContainer(
-      padding: const EdgeInsets.all(24),
       blur: 20,
       opacity: 0.1,
       borderRadius: BorderRadius.circular(32),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(greeting, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  const Text('April 25, Saturday', style: TextStyle(color: Colors.white38, fontSize: 14)),
-                ],
-              ),
-              const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 32),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _TodayInfoItem(icon: Icons.cloud, label: 'Weather', value: data.weatherValue),
-              _TodayInfoItem(icon: Icons.auto_graph, label: 'Success', value: '94%'),
-              _TodayInfoItem(icon: Icons.newspaper, label: 'News', value: 'Top 5'),
-            ],
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(greeting, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    const Text('April 25, Saturday', style: TextStyle(color: Colors.white38, fontSize: 14)),
+                  ],
+                ),
+                const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 32),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _TodayInfoItem(icon: Icons.cloud, label: 'Weather', value: data.weatherValue),
+                _TodayInfoItem(icon: Icons.auto_graph, label: 'Success', value: '94%'),
+                _TodayInfoItem(icon: Icons.newspaper, label: 'News', value: 'Top 5'),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -295,76 +298,77 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: () async {
         await Navigator.push(context, MaterialPageRoute(builder: (_) => AlarmEditorScreen(alarm: alarm)));
-        refreshAlarms();
+        // Refresh alarms when coming back
+        ref.invalidate(alarmsProvider);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         child: GlassContainer(
-          padding: const EdgeInsets.all(24),
           blur: 15,
           opacity: alarm.isActive ? 0.1 : 0.05,
           borderRadius: BorderRadius.circular(32),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: List.generate(7, (i) {
-                      final active = activeSet.contains(i);
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: Text(
-                          days[i],
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: List.generate(7, (i) {
+                        final active = activeSet.contains(i);
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: Text(
+                            days[i],
+                            style: TextStyle(
+                              color: active ? Colors.white : Colors.white10,
+                              fontWeight: active ? FontWeight.bold : FontWeight.normal,
+                              fontSize: 13,
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    const Icon(Icons.more_vert, color: Colors.white12),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '$hour:${alarm.minute.toString().padLeft(2, '0')}',
                           style: TextStyle(
-                            color: active ? Colors.white : Colors.white10,
-                            fontWeight: active ? FontWeight.bold : FontWeight.normal,
-                            fontSize: 13,
+                            color: alarm.isActive ? Colors.white : Colors.white12,
+                            fontSize: 56,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: -2,
                           ),
                         ),
-                      );
-                    }),
-                  ),
-                  const Icon(Icons.more_vert, color: Colors.white12),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        '$hour:${alarm.minute.toString().padLeft(2, '0')}',
-                        style: TextStyle(
-                          color: alarm.isActive ? Colors.white : Colors.white12,
-                          fontSize: 56,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: -2,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(amPm, style: TextStyle(color: alarm.isActive ? Colors.white38 : Colors.white10, fontSize: 18)),
-                    ],
-                  ),
-                  Transform.scale(
-                    scale: 0.9,
-                    child: CupertinoSwitch(
-                      value: alarm.isActive,
-                      activeTrackColor: const Color(0xFFFF3B30),
-                      onChanged: (v) async {
-                        final updated = alarm.copyWith(isActive: v);
-                        await DatabaseHelper.instance.update(updated);
-                        if (v) await AlarmService.scheduleAlarm(updated);
-                        refreshAlarms();
-                      },
+                        const SizedBox(width: 8),
+                        Text(amPm, style: TextStyle(color: alarm.isActive ? Colors.white38 : Colors.white10, fontSize: 18)),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Transform.scale(
+                      scale: 0.9,
+                      child: CupertinoSwitch(
+                        value: alarm.isActive,
+                        activeTrackColor: const Color(0xFFFF3B30),
+                        onChanged: (v) async {
+                          final updated = alarm.copyWith(isActive: v);
+                          await ref.read(alarmsProvider.notifier).updateAlarm(updated);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/services/settings_service.dart';
 
-final settingsProvider = StateNotifierProvider<SettingsNotifier, AppSettings>((ref) {
-  return SettingsNotifier();
-});
+final settingsProvider = NotifierProvider<SettingsNotifier, AppSettings>(SettingsNotifier.new);
 
 class AppSettings {
   final bool vibrationEnabled;
@@ -39,9 +37,11 @@ class AppSettings {
   }
 }
 
-class SettingsNotifier extends StateNotifier<AppSettings> {
-  SettingsNotifier() : super(const AppSettings()) {
+class SettingsNotifier extends Notifier<AppSettings> {
+  @override
+  AppSettings build() {
     _loadSettings();
+    return const AppSettings();
   }
 
   Future<void> _loadSettings() async {

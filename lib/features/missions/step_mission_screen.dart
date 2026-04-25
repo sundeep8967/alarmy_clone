@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class StepMissionScreen extends StatefulWidget {
@@ -125,8 +125,10 @@ class _StepMissionScreenState extends State<StepMissionScreen> {
             blur: 10,
             opacity: 0.1,
             borderRadius: BorderRadius.circular(12),
-            padding: const EdgeInsets.all(8),
-            child: const Icon(Icons.directions_walk, color: Color(0xFF00FF85)),
+            child: const Padding(
+              padding: EdgeInsets.all(8),
+              child: Icon(Icons.directions_walk, color: Color(0xFF00FF85)),
+            ),
           ),
         ],
       ),
@@ -195,23 +197,27 @@ class _StepMissionScreenState extends State<StepMissionScreen> {
 
   Widget _buildBottomInfo() {
     return FadeInUp(
-      child: GlassContainer(
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
-        padding: const EdgeInsets.all(24),
-        blur: 10,
-        opacity: 0.05,
-        borderRadius: BorderRadius.circular(32),
-        child: const Row(
-          children: [
-            Icon(Icons.directions_run, color: Color(0xFF00FF85), size: 24),
-            SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                'Walking helps your body wake up naturally. Keep moving!',
-                style: TextStyle(color: Colors.white70, fontSize: 14, height: 1.4),
-              ),
+        child: GlassContainer(
+          blur: 10,
+          opacity: 0.05,
+          borderRadius: BorderRadius.circular(32),
+          child: const Padding(
+            padding: EdgeInsets.all(24),
+            child: Row(
+              children: [
+                Icon(Icons.directions_run, color: Color(0xFF00FF85), size: 24),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    'Walking helps your body wake up naturally. Keep moving!',
+                    style: TextStyle(color: Colors.white70, fontSize: 14, height: 1.4),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

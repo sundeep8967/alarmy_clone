@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/alarm_model.dart';
-import '../../core/database/database_helper.dart';
-import '../../core/services/alarm_service.dart';
+import '../../core/repositories/alarm_repository.dart';
 import 'alarm_sound_screen.dart';
 import '../onboarding/providers/sounds_provider.dart';
 
-class QuickAlarmSheet extends StatefulWidget {
+class QuickAlarmSheet extends ConsumerStatefulWidget {
   const QuickAlarmSheet({super.key});
 
   @override
-  State<QuickAlarmSheet> createState() => _QuickAlarmSheetState();
+  ConsumerState<QuickAlarmSheet> createState() => _QuickAlarmSheetState();
 }
 
-class _QuickAlarmSheetState extends State<QuickAlarmSheet> {
+class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
   int _addedMinutes = 10; // Default to 10 mins like original app
   bool _isVibrateEnabled = true;
   double _volume = 0.8;
@@ -68,8 +68,7 @@ class _QuickAlarmSheetState extends State<QuickAlarmSheet> {
       soundId: _selectedSoundId,
     );
 
-    await DatabaseHelper.instance.create(alarm);
-    await AlarmService.scheduleAlarm(alarm);
+    await ref.read(alarmsProvider.notifier).createAlarm(alarm);
 
     if (mounted) {
       Navigator.pop(context);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class MorningScreen extends StatelessWidget {
@@ -143,45 +143,47 @@ class MorningScreen extends StatelessWidget {
   Widget _buildHourlyForecast() {
     return FadeInUp(
       child: GlassContainer(
-        padding: const EdgeInsets.all(20),
         blur: 20,
         opacity: 0.1,
         borderRadius: BorderRadius.circular(24),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Hourly Forecast', style: TextStyle(color: Colors.white70, fontSize: 14)),
-                Text('Next 24h', style: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 12)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 32.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${8 + index}AM', style: const TextStyle(color: Colors.white38, fontSize: 12)),
-                        Icon(
-                          index == 0 ? Icons.wb_sunny : (index < 3 ? Icons.cloud : Icons.wb_cloudy_outlined),
-                          color: index == 0 ? const Color(0xFFFFD700) : Colors.white70,
-                          size: 24,
-                        ),
-                        Text('${22 + index}°', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  );
-                },
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Hourly Forecast', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  Text('Next 24h', style: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 12)),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 8,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 32.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('${8 + index}AM', style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                          Icon(
+                            index == 0 ? Icons.wb_sunny : (index < 3 ? Icons.cloud : Icons.wb_cloudy_outlined),
+                            color: index == 0 ? const Color(0xFFFFD700) : Colors.white70,
+                            size: 24,
+                          ),
+                          Text('${22 + index}°', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

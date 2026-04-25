@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:vibration/vibration.dart';
 import '../../core/services/alarm_service.dart';
 import '../../core/models/alarm_model.dart';
-import '../../core/database/database_helper.dart';
+import '../../core/repositories/alarm_repository.dart';
 import '../missions/math_mission_screen.dart';
 import '../missions/shake_mission_screen.dart';
 import '../missions/memory_mission_screen.dart';
@@ -16,16 +17,16 @@ import '../missions/barcode_mission_screen.dart';
 import '../missions/photo_mission_screen.dart';
 import 'wake_up_check_screen.dart';
 
-class AlarmRingScreen extends StatefulWidget {
+class AlarmRingScreen extends ConsumerStatefulWidget {
   final AlarmModel alarm;
 
   const AlarmRingScreen({super.key, required this.alarm});
 
   @override
-  State<AlarmRingScreen> createState() => _AlarmRingScreenState();
+  ConsumerState<AlarmRingScreen> createState() => _AlarmRingScreenState();
 }
 
-class _AlarmRingScreenState extends State<AlarmRingScreen> {
+class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
   late String _currentTime;
   late String _currentDate;
   late DateTime _startTime;
@@ -130,9 +131,9 @@ class _AlarmRingScreenState extends State<AlarmRingScreen> {
 
     // Track Record
     final solvingTime = DateTime.now().difference(_startTime).inSeconds;
-    await DatabaseHelper.instance.addRecord(
-      alarmId: widget.alarm.id,
-      isSuccess: !isAuto,
+    await ref.read(alarmRepositoryProvider).addRecord(
+      widget.alarm.id,
+      !isAuto,
       solvingTimeSeconds: solvingTime,
     );
 

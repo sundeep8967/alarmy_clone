@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class SquatMissionScreen extends StatefulWidget {
@@ -124,8 +124,10 @@ class _SquatMissionScreenState extends State<SquatMissionScreen> {
             blur: 10,
             opacity: 0.1,
             borderRadius: BorderRadius.circular(12),
-            padding: const EdgeInsets.all(8),
-            child: const Icon(Icons.accessibility_new, color: Color(0xFFFF7A00)),
+            child: const Padding(
+              padding: EdgeInsets.all(8),
+              child: Icon(Icons.accessibility_new, color: Color(0xFFFF7A00)),
+            ),
           ),
         ],
       ),
@@ -194,33 +196,37 @@ class _SquatMissionScreenState extends State<SquatMissionScreen> {
 
   Widget _buildBottomIllustration() {
     return FadeInUp(
-      child: GlassContainer(
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
-        padding: const EdgeInsets.all(24),
-        blur: 15,
-        opacity: 0.05,
-        borderRadius: BorderRadius.circular(32),
-        child: Column(
-          children: [
-            Row(
+        child: GlassContainer(
+          blur: 15,
+          opacity: 0.05,
+          borderRadius: BorderRadius.circular(32),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
               children: [
-                Icon(_isGoingDown ? Icons.arrow_downward : Icons.arrow_upward, 
-                     color: const Color(0xFFFF7A00), size: 32),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Text(
-                    _isGoingDown ? 'Keep going down...' : 'Stand back up to count!',
-                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
+                Row(
+                  children: [
+                    Icon(_isGoingDown ? Icons.arrow_downward : Icons.arrow_upward, 
+                         color: const Color(0xFFFF7A00), size: 32),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Text(
+                        _isGoingDown ? 'Keep going down...' : 'Stand back up to count!',
+                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Hold your phone firmly in both hands in front of your chest while squatting.',
+                  style: TextStyle(color: Colors.white38, fontSize: 12, height: 1.4),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            const Text(
-              'Hold your phone firmly in both hands in front of your chest while squatting.',
-              style: TextStyle(color: Colors.white38, fontSize: 12, height: 1.4),
-            ),
-          ],
+          ),
         ),
       ),
     );

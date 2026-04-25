@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class AlarmOptimizationScreen extends StatelessWidget {
@@ -125,33 +125,35 @@ class AlarmOptimizationScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
                 child: GlassContainer(
-                  padding: const EdgeInsets.all(20),
                   blur: 20,
                   opacity: 0.1,
                   borderRadius: BorderRadius.circular(24),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: item.color.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: item.color.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Icon(item.icon, color: item.color, size: 24),
                         ),
-                        child: Icon(item.icon, color: item.color, size: 24),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 4),
-                            Text(item.subtitle, style: const TextStyle(color: Colors.white38, fontSize: 13)),
-                          ],
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 4),
+                              Text(item.subtitle, style: const TextStyle(color: Colors.white38, fontSize: 13)),
+                            ],
+                          ),
                         ),
-                      ),
-                      const Icon(Icons.chevron_right, color: Colors.white12),
-                    ],
+                        const Icon(Icons.chevron_right, color: Colors.white12),
+                      ],
+                    ),
                   ),
                 ),
               ),

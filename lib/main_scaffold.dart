@@ -5,6 +5,7 @@ import 'features/records/records_screen.dart';
 import 'features/sleep/sleep_screen.dart';
 import 'features/morning/morning_screen.dart';
 import 'features/setting/setting_screen.dart';
+import 'features/quest/quest_screen.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
   const MainScaffold({super.key});
@@ -20,7 +21,8 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     const HomeScreen(),
     const SleepScreen(),
     const MorningScreen(),
-    RecordsScreen(), // Removed const here
+    RecordsScreen(),
+    const QuestScreen(),
     const SettingScreen(),
   ];
 
@@ -74,6 +76,13 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
                   child: Icon(Icons.article_outlined, size: 28),
                 ),
                 label: 'Report',
+              ),
+              const BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Icon(Icons.emoji_events_outlined, size: 28),
+                ),
+                label: 'Quest',
               ),
               BottomNavigationBarItem(
                 icon: Stack(

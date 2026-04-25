@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import 'alarm_optimization_screen.dart';
 import 'general_setting_screen.dart';
 import 'permission_doa_screen.dart';
+import '../quest/ramadan_screen.dart';
+import '../home/alarm_settings_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -52,7 +54,18 @@ class SettingScreen extends StatelessWidget {
                 FadeInUp(
                   duration: const Duration(milliseconds: 800),
                   child: _buildSettingsGroup([
-                    _SettingModel('Alarm Settings', Icons.alarm, const Color(0xFFFF9500)),
+                    _SettingModel(
+                      'Alarm Settings',
+                      Icons.alarm,
+                      const Color(0xFFFF9500),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AlarmSettingsScreen())),
+                    ),
+                    _SettingModel(
+                      'Ramadan Mode',
+                      Icons.nightlight_round,
+                      const Color(0xFF00D1FF),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RamadanScreen())),
+                    ),
                     _SettingModel(
                       'General',
                       Icons.settings,
