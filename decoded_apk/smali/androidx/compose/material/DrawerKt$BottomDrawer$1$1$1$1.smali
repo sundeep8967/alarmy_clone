@@ -1,0 +1,124 @@
+.class final Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;
+.super Lkotlin/jvm/internal/z;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/a;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Landroidx/compose/material/DrawerKt$BottomDrawer$1;->b(Landroidx/compose/foundation/layout/BoxWithConstraintsScope;Landroidx/compose/runtime/Composer;I)V
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x18
+    name = null
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Lkotlin/jvm/internal/z;",
+        "Lza0/a<",
+        "Lja0/h0;",
+        ">;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0008\n\u0002\u0018\u0002\n\u0002\u0008\u0003\u0010\u0003\u001a\u00020\u0000H\n\u00a2\u0006\u0004\u0008\u0001\u0010\u0002"
+    }
+    d2 = {
+        "Lja0/h0;",
+        "invoke",
+        "()V",
+        "<anonymous>"
+    }
+    k = 0x3
+    mv = {
+        0x1,
+        0x9,
+        0x0
+    }
+.end annotation
+
+
+# instance fields
+.field final synthetic l:Z
+
+.field final synthetic m:Landroidx/compose/material/BottomDrawerState;
+
+.field final synthetic n:Lkotlinx/coroutines/p0;
+
+
+# direct methods
+.method constructor <init>(ZLandroidx/compose/material/BottomDrawerState;Lkotlinx/coroutines/p0;)V
+    .locals 0
+
+    iput-boolean p1, p0, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->l:Z
+
+    iput-object p2, p0, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->m:Landroidx/compose/material/BottomDrawerState;
+
+    iput-object p3, p0, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->n:Lkotlinx/coroutines/p0;
+
+    const/4 p1, 0x0
+
+    invoke-direct {p0, p1}, Lkotlin/jvm/internal/z;-><init>(I)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public bridge synthetic invoke()Ljava/lang/Object;
+    .locals 1
+
+    .line 1
+    invoke-virtual {p0}, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->invoke()V
+
+    sget-object v0, Lja0/h0;->a:Lja0/h0;
+
+    return-object v0
+.end method
+
+.method public final invoke()V
+    .locals 7
+
+    .line 2
+    iget-boolean v0, p0, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->l:Z
+
+    if-eqz v0, :cond_0
+
+    iget-object v0, p0, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->m:Landroidx/compose/material/BottomDrawerState;
+
+    sget-object v1, Landroidx/compose/material/BottomDrawerValue;->b:Landroidx/compose/material/BottomDrawerValue;
+
+    invoke-virtual {v0, v1}, Landroidx/compose/material/BottomDrawerState;->b(Landroidx/compose/material/BottomDrawerValue;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_0
+
+    .line 3
+    iget-object v1, p0, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->n:Lkotlinx/coroutines/p0;
+
+    new-instance v4, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1$1;
+
+    iget-object v0, p0, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1;->m:Landroidx/compose/material/BottomDrawerState;
+
+    const/4 v2, 0x0
+
+    invoke-direct {v4, v0, v2}, Landroidx/compose/material/DrawerKt$BottomDrawer$1$1$1$1$1;-><init>(Landroidx/compose/material/BottomDrawerState;Lpa0/e;)V
+
+    const/4 v5, 0x3
+
+    const/4 v6, 0x0
+
+    const/4 v3, 0x0
+
+    invoke-static/range {v1 .. v6}, Lkotlinx/coroutines/i;->d(Lkotlinx/coroutines/p0;Lpa0/i;Lkotlinx/coroutines/r0;Lza0/p;ILjava/lang/Object;)Lkotlinx/coroutines/c2;
+
+    :cond_0
+    return-void
+.end method

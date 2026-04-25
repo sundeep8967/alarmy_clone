@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="airbridge-internal" />
+        <exclude domain="sharedpref" path="airbridge-install" />
+        <exclude domain="sharedpref" path="airbridge-user-info" />
+        <exclude domain="sharedpref" path="airbridge-user-alias" />
+        <exclude domain="sharedpref" path="airbridge-user-attributes" />
+        <exclude domain="sharedpref" path="airbridge-device-alias" />
+        <exclude domain="database" path="airbridge.db" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="airbridge-internal" />
+        <exclude domain="sharedpref" path="airbridge-install" />
+        <exclude domain="sharedpref" path="airbridge-user-info" />
+        <exclude domain="sharedpref" path="airbridge-user-alias" />
+        <exclude domain="sharedpref" path="airbridge-user-attributes" />
+        <exclude domain="sharedpref" path="airbridge-device-alias" />
+        <exclude domain="database" path="airbridge.db" />
+    </device-transfer>
+</data-extraction-rules>

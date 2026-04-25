@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:paddingTop="25.0dip" android:clipToPadding="false" android:layout_width="0.0dip" android:layout_height="wrap_content" android:paddingStart="24.0dip" android:paddingEnd="24.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView android:id="@id/vendors_subtext" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="16.0dip" style="@style/DidomiTextSmallPlus" />
+    <Button android:id="@id/button_save" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="16.0dip" style="@style/DidomiActionButton" />
+    <androidx.appcompat.widget.AppCompatImageView android:id="@id/vendor_logo_bottom_bar" android:layout_width="fill_parent" android:layout_height="13.0dip" android:layout_marginBottom="12.0dip" app:srcCompat="@drawable/didomi_privacy_management_logo" />
+</LinearLayout>

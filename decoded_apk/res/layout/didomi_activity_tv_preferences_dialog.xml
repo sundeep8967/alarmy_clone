@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/include_ctv_preferences_menu" layout="@layout/didomi_view_tv_preferences_menu" />
+    <FrameLayout android:id="@id/container_ctv_preferences_primary" android:layout_width="0.0dip" android:layout_height="fill_parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@id/include_ctv_preferences_menu" />
+    <View android:id="@id/view_ctv_preferences_background" android:background="@color/didomi_tv_secondary_brand" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <FrameLayout android:id="@id/container_ctv_preferences_secondary" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginStart="@dimen/didomi_tv_slider_margin_start" />
+</androidx.constraintlayout.widget.ConstraintLayout>

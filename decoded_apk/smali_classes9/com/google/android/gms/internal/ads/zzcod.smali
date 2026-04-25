@@ -1,0 +1,75 @@
+.class final Lcom/google/android/gms/internal/ads/zzcod;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lcom/google/android/gms/internal/ads/zzcnu;
+
+
+# instance fields
+.field private final zza:Lcom/google/android/gms/internal/ads/zzehi;
+
+
+# direct methods
+.method constructor <init>(Lcom/google/android/gms/internal/ads/zzehi;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lcom/google/android/gms/internal/ads/zzcod;->zza:Lcom/google/android/gms/internal/ads/zzehi;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final zza(Ljava/util/Map;)V
+    .locals 3
+
+    sget-object p1, Lcom/google/android/gms/internal/ads/zzbeu;->zzlu:Lcom/google/android/gms/internal/ads/zzbel;
+
+    invoke-static {}, Lcom/google/android/gms/ads/internal/client/zzbd;->zzc()Lcom/google/android/gms/internal/ads/zzbes;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p1}, Lcom/google/android/gms/internal/ads/zzbes;->zzd(Lcom/google/android/gms/internal/ads/zzbel;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    check-cast p1, Ljava/lang/Boolean;
+
+    invoke-virtual {p1}, Ljava/lang/Boolean;->booleanValue()Z
+
+    move-result p1
+
+    if-nez p1, :cond_0
+
+    return-void
+
+    :cond_0
+    iget-object p1, p0, Lcom/google/android/gms/internal/ads/zzcod;->zza:Lcom/google/android/gms/internal/ads/zzehi;
+
+    const/4 v0, 0x1
+
+    invoke-virtual {p1, v0}, Lcom/google/android/gms/internal/ads/zzehi;->zza(Z)Lcom/google/common/util/concurrent/m;
+
+    move-result-object p1
+
+    invoke-static {p1}, Lcom/google/android/gms/internal/ads/zzgua;->zzw(Lcom/google/common/util/concurrent/m;)Lcom/google/android/gms/internal/ads/zzgua;
+
+    move-result-object p1
+
+    sget-object v0, Lcom/google/android/gms/internal/ads/zzcoc;->zza:Lcom/google/android/gms/internal/ads/zzcoc;
+
+    sget-object v1, Lcom/google/android/gms/internal/ads/zzcbv;->zza:Lcom/google/android/gms/internal/ads/zzgus;
+
+    const-class v2, Ljava/lang/Throwable;
+
+    invoke-static {p1, v2, v0, v1}, Lcom/google/android/gms/internal/ads/zzgui;->zzh(Lcom/google/common/util/concurrent/m;Ljava/lang/Class;Lcom/google/android/gms/internal/ads/zzgtq;Ljava/util/concurrent/Executor;)Lcom/google/common/util/concurrent/m;
+
+    move-result-object p1
+
+    check-cast p1, Lcom/google/android/gms/internal/ads/zzgua;
+
+    return-void
+.end method

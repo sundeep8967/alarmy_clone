@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/ringtoneGraph" app:startDestination="@id/ringtone"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="RingtoneFragment" android:name="droom.sleepIfUCan.feature.ringtone.RingtoneFragment" android:id="@id/ringtone">
+        <argument android:name="usingVideoRing" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="selectedRingtone" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="videoWallpaperId" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="departure" app:argType="droom.sleepIfUCan.feature.ringtone.model.RingtoneDeparture" />
+        <argument android:name="categoryCanonicalName" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="alarmHour" android:defaultValue="-1" app:argType="integer" />
+        <argument android:name="alarmMinute" android:defaultValue="-1" app:argType="integer" />
+    </fragment>
+</navigation>

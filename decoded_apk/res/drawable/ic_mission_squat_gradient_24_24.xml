@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="24.0dip" android:width="24.0dip" android:viewportWidth="24.0" android:viewportHeight="24.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <group>
+        <clip-path android:pathData="M4,2h16v20h-16z" />
+        <path android:fillColor="@drawable/$ic_mission_squat_gradient_24_24__0" android:pathData="M11.3968,6.6333C12.6781,6.6333 13.7098,5.6 13.7098,4.3167C13.7098,3.0333 12.6781,2 11.3968,2C10.1154,2 9.092,3.0333 9.092,4.3167C9.092,5.6 10.1238,6.6333 11.3968,6.6333Z" />
+        <path android:fillColor="@drawable/$ic_mission_squat_gradient_24_24__1" android:pathData="M18.7186,7.225H13.0858H8.4264H8.2517V7.25C7.6276,7.3083 7.0785,7.6583 6.7873,8.2167L4.2163,13.1333C3.5673,14.3667 4.4659,15.85 5.8554,15.85H7.9688H8.651H11.7961L9.5996,20.2083C9.2834,20.8417 9.4914,21.5917 10.0655,21.8833C10.6396,22.175 11.3635,21.8917 11.6796,21.2583L14.8164,15.0417L14.833,14.9917C14.8414,14.975 14.8497,14.95 14.858,14.925L14.8747,14.875C14.9246,14.725 14.9579,14.5667 14.9579,14.3917C14.9579,13.5833 14.3089,12.9333 13.5018,12.9333H10.1487L11.8877,9.55H18.727C19.4342,9.55 20.0083,9.025 20.0083,8.3833C20.0083,7.7417 19.4259,7.225 18.7186,7.225Z" />
+    </group>
+</vector>

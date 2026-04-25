@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="24.0dip" android:width="24.0dip" android:viewportWidth="24.0" android:viewportHeight="24.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <path android:fillColor="@drawable/$ic_timepressure_gradient_24_24__0" android:pathData="M22,12C22,17.5228 17.5228,22 12,22C10.2845,22 8.6699,21.568 7.259,20.8069L7.23,20.82C6.78,21.03 6.3,21.17 5.83,21.26C4.52,21.51 3.17,21.32 2,20.74C2.06,20.73 2.12,20.7 2.18,20.67C3.2149,20.2021 3.942,19.3454 4.2667,18.3405C2.8502,16.6149 2,14.4067 2,12C2,6.4771 6.4771,2 12,2C17.5228,2 22,6.4771 22,12ZM12,19.5C16.1421,19.5 19.5,16.1421 19.5,12C19.5,7.8579 16.1421,4.5 12,4.5C7.8579,4.5 4.5,7.8579 4.5,12C4.5,16.1421 7.8579,19.5 12,19.5Z" android:fillType="evenOdd" />
+    <path android:fillColor="@drawable/$ic_timepressure_gradient_24_24__1" android:pathData="M12.3999,6.5557C11.8476,6.5557 11.3999,7.0034 11.3999,7.5557V11.4339L9.1076,12.8093C8.6341,13.0934 8.4805,13.7077 8.7646,14.1813C9.0488,14.6549 9.663,14.8084 10.1366,14.5243L12.9144,12.8576C13.2156,12.6769 13.3999,12.3514 13.3999,12.0001V7.5557C13.3999,7.0034 12.9522,6.5557 12.3999,6.5557Z" android:fillType="evenOdd" />
+</vector>

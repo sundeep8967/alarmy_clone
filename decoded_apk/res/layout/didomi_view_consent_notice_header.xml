@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.AppCompatButton android:id="@id/button_notice_header_disagree_link" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/DidomiCloseNoticeLink" />
+    <androidx.appcompat.widget.AppCompatImageButton android:layout_gravity="end" android:id="@id/button_notice_header_disagree_cross" android:background="@android:color/transparent" android:padding="4.0dip" android:layout_width="48.0dip" android:layout_height="48.0dip" android:scaleType="centerCrop" app:srcCompat="@drawable/didomi_ic_round_close_24px" />
+</FrameLayout>

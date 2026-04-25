@@ -1,0 +1,119 @@
+.class final Lcom/delightroom/alarmy/feature/report/ui/weekly/c1$g;
+.super Lkotlin/coroutines/jvm/internal/d;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;->j2(Ljava/time/LocalDate;Ljava/time/LocalDate;Lpa0/e;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x18
+    name = null
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    k = 0x3
+    mv = {
+        0x2,
+        0x1,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+.annotation runtime Lkotlin/coroutines/jvm/internal/f;
+    c = "com.delightroom.alarmy.feature.report.ui.weekly.WeeklyReportViewModel"
+    f = "WeeklyReportViewModel.kt"
+    l = {
+        0x256,
+        0x26d,
+        0x272,
+        0x273,
+        0x274
+    }
+    m = "fetchHabitReportState"
+.end annotation
+
+
+# instance fields
+.field A:Ljava/lang/Object;
+
+.field B:Ljava/lang/Object;
+
+.field C:I
+
+.field D:I
+
+.field E:I
+
+.field synthetic F:Ljava/lang/Object;
+
+.field final synthetic G:Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;
+
+.field H:I
+
+.field s:Ljava/lang/Object;
+
+.field t:Ljava/lang/Object;
+
+.field u:Ljava/lang/Object;
+
+.field v:Ljava/lang/Object;
+
+.field w:Ljava/lang/Object;
+
+.field x:Ljava/lang/Object;
+
+.field y:Ljava/lang/Object;
+
+.field z:Ljava/lang/Object;
+
+
+# direct methods
+.method constructor <init>(Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;Lpa0/e;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;",
+            "Lpa0/e<",
+            "-",
+            "Lcom/delightroom/alarmy/feature/report/ui/weekly/c1$g;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Lcom/delightroom/alarmy/feature/report/ui/weekly/c1$g;->G:Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;
+
+    invoke-direct {p0, p2}, Lkotlin/coroutines/jvm/internal/d;-><init>(Lpa0/e;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    iput-object p1, p0, Lcom/delightroom/alarmy/feature/report/ui/weekly/c1$g;->F:Ljava/lang/Object;
+
+    iget p1, p0, Lcom/delightroom/alarmy/feature/report/ui/weekly/c1$g;->H:I
+
+    const/high16 v0, -0x80000000
+
+    or-int/2addr p1, v0
+
+    iput p1, p0, Lcom/delightroom/alarmy/feature/report/ui/weekly/c1$g;->H:I
+
+    iget-object p1, p0, Lcom/delightroom/alarmy/feature/report/ui/weekly/c1$g;->G:Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;
+
+    const/4 v0, 0x0
+
+    invoke-static {p1, v0, v0, p0}, Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;->e(Lcom/delightroom/alarmy/feature/report/ui/weekly/c1;Ljava/time/LocalDate;Ljava/time/LocalDate;Lpa0/e;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:tag="layout/_layout_alarm_list_fab_0" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:id="@id/fabBackground" android:tag="binding_1" android:background="?colorScrim" android:focusable="true" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:gravity="end" android:orientation="vertical" android:id="@id/fabMenus" android:tag="binding_2" android:paddingBottom="28.0dip" android:layoutAnimation="@anim/fab_menu_show" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintBottom_toTopOf="@id/fabParent" app:layout_constraintEnd_toEndOf="@id/fabParent" />
+    <include android:id="@id/fabParent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="32.0dip" android:layout_marginEnd="16.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" layout="@layout/design_fab_menu" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:tag="layout/fragment_today_panel_horoscope_0" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.compose.ui.platform.ComposeView android:id="@id/viewBackground" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <androidx.compose.ui.platform.ComposeView android:id="@id/viewTitle" android:tag="binding_1" android:layout_width="0.0dip" android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView android:scrollbarStyle="outsideOverlay" android:id="@id/viewHoroscope" android:tag="binding_2" android:scrollbars="vertical" android:clipToPadding="false" android:layout_width="0.0dip" android:layout_height="0.0dip" android:fillViewport="true" android:fadeScrollbars="true" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/viewTitle">
+        <androidx.appcompat.widget.LinearLayoutCompat android:orientation="vertical" android:tag="binding_3" android:paddingTop="22.0dip" android:paddingBottom="36.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <androidx.compose.ui.platform.ComposeView android:id="@id/viewComposeToday" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            <include android:id="@id/viewAdMrec" android:visibility="gone" layout="@layout/layout_ad_mrec" />
+            <androidx.compose.ui.platform.ComposeView android:id="@id/viewComposeTomorrow" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+    <include android:id="@id/viewError" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="0.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/viewTitle" layout="@layout/layout_today_panel_detail_error" />
+    <ProgressBar android:layout_gravity="center" android:id="@id/viewLoading" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/viewTitle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

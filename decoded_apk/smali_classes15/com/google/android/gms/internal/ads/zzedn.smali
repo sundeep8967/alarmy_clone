@@ -1,0 +1,64 @@
+.class final synthetic Lcom/google/android/gms/internal/ads/zzedn;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Ljava/util/concurrent/Callable;
+
+
+# instance fields
+.field private final synthetic zza:Lcom/google/common/util/concurrent/m;
+
+.field private final synthetic zzb:Lcom/google/common/util/concurrent/m;
+
+
+# direct methods
+.method synthetic constructor <init>(Lcom/google/common/util/concurrent/m;Lcom/google/common/util/concurrent/m;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lcom/google/android/gms/internal/ads/zzedn;->zza:Lcom/google/common/util/concurrent/m;
+
+    iput-object p2, p0, Lcom/google/android/gms/internal/ads/zzedn;->zzb:Lcom/google/common/util/concurrent/m;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final synthetic call()Ljava/lang/Object;
+    .locals 4
+
+    new-instance v0, Lcom/google/android/gms/internal/ads/zzedx;
+
+    iget-object v1, p0, Lcom/google/android/gms/internal/ads/zzedn;->zza:Lcom/google/common/util/concurrent/m;
+
+    invoke-interface {v1}, Ljava/util/concurrent/Future;->get()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/google/android/gms/internal/ads/zzeed;
+
+    iget-object v2, p0, Lcom/google/android/gms/internal/ads/zzedn;->zzb:Lcom/google/common/util/concurrent/m;
+
+    invoke-interface {v2}, Ljava/util/concurrent/Future;->get()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/google/android/gms/internal/ads/zzedv;
+
+    iget-object v3, v3, Lcom/google/android/gms/internal/ads/zzedv;->zzb:Lorg/json/JSONObject;
+
+    invoke-interface {v2}, Ljava/util/concurrent/Future;->get()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Lcom/google/android/gms/internal/ads/zzedv;
+
+    iget-object v2, v2, Lcom/google/android/gms/internal/ads/zzedv;->zza:Lcom/google/android/gms/internal/ads/zzbxl;
+
+    invoke-direct {v0, v1, v3, v2}, Lcom/google/android/gms/internal/ads/zzedx;-><init>(Lcom/google/android/gms/internal/ads/zzeed;Lorg/json/JSONObject;Lcom/google/android/gms/internal/ads/zzbxl;)V
+
+    return-object v0
+.end method

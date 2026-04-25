@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:paddingBottom="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:importantForAccessibility="yes"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/image_data_processing" android:layout_width="14.0dip" android:layout_height="wrap_content" android:src="@drawable/didomi_bullet_point" android:importantForAccessibility="no" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+    <TextView android:id="@id/text_data_processing_label" android:layout_width="0.0dip" android:layout_height="wrap_content" android:importantForAccessibility="no" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@id/image_data_processing" app:layout_constraintTop_toTopOf="parent" style="@style/DidomiDataProcessingLabel" />
+    <TextView android:id="@id/text_data_processing_retention_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:importantForAccessibility="no" app:layout_constraintStart_toStartOf="@id/text_data_processing_label" app:layout_constraintTop_toBottomOf="@id/text_data_processing_label" style="@style/DidomiRetentionTime" />
+</androidx.constraintlayout.widget.ConstraintLayout>

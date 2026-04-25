@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/alarmy" app:startDestination="@id/alarmList"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <action android:id="@id/action_global_onboarding" app:destination="@id/onboardingGraph" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <action android:id="@id/action_global_alarmList" app:destination="@id/alarmList" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <action android:id="@id/action_global_quest" app:destination="@id/quest" app:launchSingleTop="true" />
+    <action android:id="@id/action_global_sleep" app:destination="@id/sleep" app:enterAnim="@android:anim/fade_in" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <action android:id="@id/action_global_report" app:destination="@id/report" app:enterAnim="@android:anim/fade_in" app:launchSingleTop="true" app:popUpTo="@id/alarmy">
+        <argument android:name="entryPoint" app:argType="string" />
+    </action>
+    <action android:id="@id/action_global_todayPanel" app:destination="@id/todayPanelGraph" app:launchSingleTop="true" app:popUpTo="@id/alarmy">
+        <argument android:name="fromDismiss" android:defaultValue="false" app:argType="boolean" />
+    </action>
+    <action android:id="@id/action_global_todayPanelWeather" app:destination="@id/todayPanelWeatherGraph" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right" />
+    <action android:id="@id/action_global_setting" app:destination="@id/settingGraph" app:enterAnim="@android:anim/fade_in" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <action android:id="@id/action_global_habit_onboarding" app:destination="@id/habit_onboarding_graph" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <action android:id="@id/action_global_account" app:destination="@id/accountGraph" app:launchSingleTop="true">
+        <argument android:name="entryPoint" app:argType="string" />
+    </action>
+    <include app:graph="@navigation/onboarding" />
+    <fragment android:label="AlarmListFragment" android:name="droom.sleepIfUCan.feature.alarmlist.AlarmListFragment" android:id="@id/alarmList">
+        <deepLink app:uri="@string/deeplink_uri_home" />
+        <argument android:name="willShowRatingDialog" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="showAlarmEffectId" android:defaultValue="0" app:argType="integer" />
+        <argument android:name="willShowDiscountPageForPaymentIssue" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="willNavigateToEditor" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="willShowWelcomePremiumBackDialog" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="fromQuest" android:defaultValue="false" app:argType="boolean" />
+        <action android:id="@id/action_to_alarmEditorGraph" app:destination="@id/alarmEditorGraph" app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim">
+            <argument android:name="alarmId" android:defaultValue="0" app:argType="integer" />
+            <argument android:name="alarmType" android:defaultValue="NORMAL" app:argType="com.delightroom.alarmy.domain.model.alarm.AlarmType" />
+        </action>
+        <action android:id="@id/action_to_webView" app:destination="@id/webview" app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim">
+            <argument android:name="url" app:argType="string" />
+        </action>
+    </fragment>
+    <fragment android:label="QuestFragment" android:name="droom.sleepIfUCan.feature.quest.QuestFragment" android:id="@id/quest">
+        <deepLink app:uri="@string/deeplink_path_quest" />
+        <action android:id="@id/action_to_alarmList" app:destination="@id/alarmList" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right">
+            <argument android:name="fromQuest" app:argType="boolean" />
+        </action>
+    </fragment>
+    <fragment android:label="SleepFragment" android:name="droom.sleepIfUCan.feature.sleep.SleepFragment" android:id="@id/sleep">
+        <deepLink app:uri="@string/deeplink_uri_sleep_sound" />
+        <argument android:name="destination" android:defaultValue="sleep" app:argType="string" />
+    </fragment>
+    <fragment android:label="ReportFragment" android:name="droom.sleepIfUCan.feature.report.ReportFragment" android:id="@id/report">
+        <argument android:name="entryPoint" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="deeplinkURI" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <action android:id="@id/action_to_alarmEditorGraph" app:destination="@id/alarmEditorGraph" app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim">
+            <argument android:name="alarmId" android:defaultValue="0" app:argType="integer" />
+            <argument android:name="alarmType" android:defaultValue="NORMAL" app:argType="com.delightroom.alarmy.domain.model.alarm.AlarmType" />
+        </action>
+    </fragment>
+    <fragment android:name="droom.sleepIfUCan.feature.webview.WebViewFragment" android:id="@id/webview">
+        <argument android:name="url" app:argType="string" />
+    </fragment>
+    <fragment android:label="SignInFragment" android:name="droom.sleepIfUCan.feature.auth.signin.SignInFragment" android:id="@id/settingSignIn">
+        <argument android:name="entryPoint" app:argType="string" />
+        <argument android:name="shouldGoAccountAfterSignIn" android:defaultValue="true" app:argType="boolean" />
+        <action android:id="@id/action_to_settingMyAccount" app:destination="@id/settingMyAccount" app:popUpTo="@id/settingSignIn" app:popUpToInclusive="true">
+            <argument android:name="entryPoint" app:argType="string" />
+        </action>
+    </fragment>
+    <include app:graph="@navigation/today_panel" />
+    <include app:graph="@navigation/today_panel_weather" />
+    <include app:graph="@navigation/setting" />
+    <include app:graph="@navigation/alarm_editor" />
+    <include app:graph="@navigation/ringtone" />
+    <include app:graph="@navigation/account" />
+    <include app:graph="@navigation/habit_onboarding" />
+</navigation>

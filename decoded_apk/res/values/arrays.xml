@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="alarm_dismiss_good_morning">
+        <item>Let time tell the story and give yourself a rest.</item>
+        <item>"It's okay to be off the track. You can catch up soon."</item>
+        <item>"Don't push yourself too hard to be happy :)"</item>
+        <item>"When you're lost, ask others for help."</item>
+        <item>Hope the rest of your day goes well.</item>
+        <item>I hope all goes well with you.</item>
+        <item>"If you're tired, take a good rest."</item>
+        <item>Have a beautiful day ahead!</item>
+        <item>"Things don't always work out the way you wanted, but it's okay."</item>
+        <item>Change your mornings with Alarmy</item>
+        <item>Happiness is a habit, just like anything else.</item>
+        <item>"Don't be afraid to fail. You can do it."</item>
+        <item>Alarmy is here for you.</item>
+        <item>See yourself change every morning with Alarmy :)</item>
+        <item>Wow! Can your future BE any brighter?</item>
+        <item>Let me share my good luck to you .</item>
+        <item>If today was rough, another day will turn out to be great.</item>
+        <item>I have a strong feeling something good will happen today.</item>
+        <item>I wish you a day as colorful as the rainbow.</item>
+        <item>What songs do you feel like listening to?</item>
+        <item>Good things will happen today.</item>
+        <item>I think everything will turn out great for you.</item>
+        <item>"It's okay to be a little bit lost. I sometimes am too."</item>
+        <item>I get a feeling that good news is coming for you.</item>
+        <item>You are good enough.</item>
+    </string-array>
+    <string-array name="category_names">
+        <item>@string/emoji_category_emotions</item>
+        <item>@string/emoji_category_people</item>
+        <item>@string/emoji_category_animals_nature</item>
+        <item>@string/emoji_category_food_drink</item>
+        <item>@string/emoji_category_travel_places</item>
+        <item>@string/emoji_category_activity</item>
+        <item>@string/emoji_category_objects</item>
+        <item>@string/emoji_category_symbols</item>
+        <item>@string/emoji_category_flags</item>
+    </string-array>
+    <array name="co_ab180_airbridge_custom_domains" />
+    <array name="emoji_by_category_raw_resources">
+        <item>@raw/emoji_category_emotions</item>
+        <item>@raw/emoji_category_people</item>
+        <item>@raw/emoji_category_animals_nature</item>
+        <item>@raw/emoji_category_food_drink</item>
+        <item>@raw/emoji_category_travel_places</item>
+        <item>@raw/emoji_category_activity</item>
+        <item>@raw/emoji_category_objects</item>
+        <item>@raw/emoji_category_symbols</item>
+        <item>@raw/emoji_category_flags</item>
+    </array>
+    <array name="emoji_by_category_raw_resources_gender_inclusive">
+        <item>@raw/emoji_category_emotions</item>
+        <item>@raw/emoji_category_people_gender_inclusive</item>
+        <item>@raw/emoji_category_animals_nature</item>
+        <item>@raw/emoji_category_food_drink</item>
+        <item>@raw/emoji_category_travel_places</item>
+        <item>@raw/emoji_category_activity</item>
+        <item>@raw/emoji_category_objects</item>
+        <item>@raw/emoji_category_symbols</item>
+        <item>@raw/emoji_category_flags</item>
+    </array>
+    <array name="emoji_categories_icons">
+        <item>@drawable/gm_filled_emoji_emotions_vd_theme_24</item>
+        <item>@drawable/gm_filled_emoji_people_vd_theme_24</item>
+        <item>@drawable/gm_filled_emoji_nature_vd_theme_24</item>
+        <item>@drawable/gm_filled_emoji_food_beverage_vd_theme_24</item>
+        <item>@drawable/gm_filled_emoji_transportation_vd_theme_24</item>
+        <item>@drawable/gm_filled_emoji_events_vd_theme_24</item>
+        <item>@drawable/gm_filled_emoji_objects_vd_theme_24</item>
+        <item>@drawable/gm_filled_emoji_symbols_vd_theme_24</item>
+        <item>@drawable/gm_filled_flag_vd_theme_24</item>
+    </array>
+    <string-array name="exo_controls_playback_speeds">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>0.75x</item>
+        <item>Normal</item>
+        <item>1.25x</item>
+        <item>1.5x</item>
+        <item>2x</item>
+    </string-array>
+    <string-array name="graph_time_range_entries">
+        <item>Morning</item>
+        <item>Afternoon</item>
+        <item>All day</item>
+    </string-array>
+    <string-array name="greeting_0_to_3">
+        <item>"Do you know it's already past midnight?
+
+Hope you have a great day"</item>
+        <item>I normally watch YouTube videos at this time.</item>
+        <item>"Thank you for using me.
+
+I will get better tomorrow!"</item>
+        <item>"You will wake up easily with me, 'Alarmy', no worries needed :)"</item>
+        <item>"Can't get to sleep?
+
+Lay aside your worries and close your eyes"</item>
+        <item>"It's fine to get lost and wander.
+
+I do so too in such hard times"</item>
+        <item>"Don't get too stuck on what went wrong, there are always ways to solve them"</item>
+        <item>I will never give up on waking you up!</item>
+    </string-array>
+    <string-array name="greeting_12_to_15">
+        <item>"Did you eat well?
+
+Have a great day!"</item>
+        <item>"I always get sleepy after having a meal.
+
+When you feel so, take a short nap :)"</item>
+        <item>"I will get better.
+
+I want to be an application you like"</item>
+        <item>"Anything you wish that would happen today?
+
+I will pray for you. bye :)"</item>
+        <item>"I want you to be satisfied.
+
+If you have any problems, please tell me."</item>
+    </string-array>
+    <string-array name="greeting_15_to_18">
+        <item>"The day's almost over.
+
+Hope you enjoy the rest of the day"</item>
+        <item>"Tictoc…Tictoc…
+
+We are concentrating on making Alarmy"</item>
+        <item>"Cheer up!
+
+We'll be cheering you on too, from afar."</item>
+        <item>"You know Alarmy is always cheering for you, right?
+
+You can do it!"</item>
+        <item>"You are my precious friend.
+
+Very best regards"</item>
+        <item>"This is not a goodbye, right?
+
+See you tomorrow :)"</item>
+    </string-array>
+    <string-array name="greeting_18_to_21">
+        <item>"You did a good job today
+
+See you tomorrow :)"</item>
+        <item>"Not the best of days?
+
+Here's to a happier tomorrow, I promise."</item>
+        <item>"Thank you for using Alarmy
+
+You're the best!"</item>
+        <item>"All things will be well.
+
+No worries"</item>
+        <item>"Cheer up!
+
+You did a great job."</item>
+        <item>"Let's call it a day, bye!
+
+Cheers!"</item>
+        <item>"You are a good person.
+
+Like me :)"</item>
+    </string-array>
+    <string-array name="greeting_21_to_24">
+        <item>"How was your day?
+
+Sleep tight for a brighter tomorrow."</item>
+        <item>"Any worries?
+
+Stop thinking for a while"</item>
+        <item>"I am casting a spell on you so you can sleep well!
+
+Good night :)"</item>
+        <item>"Sleep tight!
+
+Thanks for today!"</item>
+        <item>"Going to bed?
+
+Sleep well :)"</item>
+        <item>"Don't use your phone too much.
+
+Give your eyes some rest."</item>
+        <item>"It was an unpredictable day.
+
+Hope tomorrow is full of happiness"</item>
+        <item>"Sometimes, just let things happen.
+
+All will pass in time."</item>
+        <item>"You must be a good person.
+
+You are using Alarmy!"</item>
+        <item>"I will be waiting for you.
+
+See ya!"</item>
+    </string-array>
+    <string-array name="greeting_3_to_6">
+        <item>"Still up?
+
+It's better to sleep early :)"</item>
+        <item>"Sleep is critical to flushing out toxins from the body.
+
+Have a good night"</item>
+        <item>"Alarmy hopes you don't get tired tomorrow"</item>
+        <item>"It's time to put your phone down and close your eyes… good night!"</item>
+        <item>It pains me to see people struggling to wake up in the morning</item>
+        <item>When lost, just ask for directions!</item>
+        <item>Keep up the good work, you are doing great :)</item>
+    </string-array>
+    <string-array name="greeting_6_to_9">
+        <item>"Hope you have an energetic day.
+
+Yeah!"</item>
+        <item>"You must be a diligent person, using me at this time.
+
+Have a good day :)"</item>
+        <item>It feels like something good will happen today.</item>
+        <item>To a day without regrets!</item>
+        <item>Hope you have a wonderfully happy day :)</item>
+        <item>Today I feel like wanting to say hi like this, and wish all things well :)</item>
+        <item>Good things will happen today</item>
+        <item>Whether it be a good, bad or any normal day, each day being with you is a great day for me</item>
+    </string-array>
+    <string-array name="greeting_9_to_12">
+        <item>"It's almost lunchtime!
+
+Grab something delicious!"</item>
+        <item>"Enjoy your lunch!
+
+Don't go overboard on the carbs though.."</item>
+        <item>"I just like you
+
+Wish you all the best today."</item>
+        <item>"Something good will happen in the afternoon.
+
+I can feel it."</item>
+        <item>"Seeing how you use Alarmy, I can tell that you're a person who cares about time.
+
+See ya!"</item>
+        <item>"What are you going to eat?
+
+Have a good lunch!"</item>
+    </string-array>
+    <string-array name="premium_reviews_content">
+        <item>@string/premium_reviews_user_desc_01</item>
+        <item>@string/premium_reviews_user_desc_02</item>
+        <item>@string/premium_reviews_user_desc_03</item>
+        <item>@string/premium_reviews_user_desc_04</item>
+        <item>@string/premium_reviews_user_desc_05</item>
+    </string-array>
+    <string-array name="premium_reviews_user">
+        <item>@string/premium_reviews_user_name_01</item>
+        <item>@string/premium_reviews_user_name_02</item>
+        <item>@string/premium_reviews_user_name_03</item>
+        <item>@string/premium_reviews_user_name_04</item>
+        <item>@string/premium_reviews_user_name_05</item>
+    </string-array>
+    <string-array name="ringtone_mode_entries">
+        <item>Ringtone</item>
+        <item>Music</item>
+        <item>Silent</item>
+        <item>Loud ringtone</item>
+    </string-array>
+    <string-array name="settings_alarm_gradually_increase_entries">
+        <item>Off</item>
+        <item>30 seconds</item>
+        <item>60 seconds</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>30 minutes</item>
+        <item>60 minutes</item>
+    </string-array>
+    <string-array name="settings_mute_during_mission_limit_entries">
+        <item>Unlimited</item>
+        <item>1 time</item>
+        <item>2 times</item>
+        <item>3 times</item>
+        <item>4 times</item>
+        <item>5 times</item>
+    </string-array>
+    <string-array name="snooze_duration_entries">
+        <item>Off</item>
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+        <item>25 minutes</item>
+        <item>30 minutes</item>
+    </string-array>
+    <string-array name="snooze_setting_entries">
+        <item>Off</item>
+        <item>On(default dismiss mode only)</item>
+        <item>On(all modes)</item>
+    </string-array>
+    <string-array name="timer_notifications">
+        <item>Less than a minute remaining</item>
+    </string-array>
+    <string-array name="today_panel_horoscope_hooking_string">
+        <item>What color is best for me today?</item>
+        <item>Seeking for advice? Check it out here!</item>
+        <item>You might get some help for your day.</item>
+        <item>"What's my lucky number today?"</item>
+        <item>Today may be a special day. Get a sneak peek!</item>
+    </string-array>
+    <array name="zui_avatar_view__background_color_palette">
+        <item>#ffb35827</item>
+        <item>#ff03363d</item>
+        <item>#ff144a75</item>
+        <item>#ff03363d</item>
+        <item>#ff68737d</item>
+    </array>
+</resources>

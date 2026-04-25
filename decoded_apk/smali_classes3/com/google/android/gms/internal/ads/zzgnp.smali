@@ -1,0 +1,18 @@
+.class final Lcom/google/android/gms/internal/ads/zzgnp;
+.super Lcom/google/android/gms/internal/ads/zzgnv;
+.source "SourceFile"
+
+# interfaces
+.implements Ljava/util/RandomAccess;
+
+
+# direct methods
+.method constructor <init>(Lcom/google/android/gms/internal/ads/zzgnw;Ljava/lang/Object;Ljava/util/List;Lcom/google/android/gms/internal/ads/zzgnt;)V
+    .locals 0
+
+    invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
+
+    invoke-direct {p0, p1, p2, p3, p4}, Lcom/google/android/gms/internal/ads/zzgnv;-><init>(Lcom/google/android/gms/internal/ads/zzgnw;Ljava/lang/Object;Ljava/util/List;Lcom/google/android/gms/internal/ads/zzgnt;)V
+
+    return-void
+.end method

@@ -1,0 +1,35 @@
+.class public Lcom/yandex/div/core/images/DivImageDownloadCallback;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public onError()V
+    .locals 0
+
+    return-void
+.end method
+
+.method public onSuccess(Landroid/graphics/drawable/PictureDrawable;)V
+    .locals 0
+
+    .line 1
+    return-void
+.end method
+
+.method public onSuccess(Lcom/yandex/div/core/images/CachedBitmap;)V
+    .locals 0
+
+    .line 2
+    return-void
+.end method

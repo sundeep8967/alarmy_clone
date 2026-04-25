@@ -1,0 +1,88 @@
+.class final Lio/ktor/utils/io/c$b;
+.super Lkotlin/coroutines/jvm/internal/d;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lio/ktor/utils/io/c;->f(Lpa0/e;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x18
+    name = null
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    k = 0x3
+    mv = {
+        0x2,
+        0x1,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+.annotation runtime Lkotlin/coroutines/jvm/internal/f;
+    c = "io.ktor.utils.io.ByteChannelScanner"
+    f = "ByteChannelScanner.kt"
+    l = {
+        0x7c,
+        0x8e
+    }
+    m = "checkFullMatch"
+.end annotation
+
+
+# instance fields
+.field synthetic s:Ljava/lang/Object;
+
+.field final synthetic t:Lio/ktor/utils/io/c;
+
+.field u:I
+
+
+# direct methods
+.method constructor <init>(Lio/ktor/utils/io/c;Lpa0/e;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lio/ktor/utils/io/c;",
+            "Lpa0/e<",
+            "-",
+            "Lio/ktor/utils/io/c$b;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Lio/ktor/utils/io/c$b;->t:Lio/ktor/utils/io/c;
+
+    invoke-direct {p0, p2}, Lkotlin/coroutines/jvm/internal/d;-><init>(Lpa0/e;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    iput-object p1, p0, Lio/ktor/utils/io/c$b;->s:Ljava/lang/Object;
+
+    iget p1, p0, Lio/ktor/utils/io/c$b;->u:I
+
+    const/high16 v0, -0x80000000
+
+    or-int/2addr p1, v0
+
+    iput p1, p0, Lio/ktor/utils/io/c$b;->u:I
+
+    iget-object p1, p0, Lio/ktor/utils/io/c$b;->t:Lio/ktor/utils/io/c;
+
+    invoke-static {p1, p0}, Lio/ktor/utils/io/c;->b(Lio/ktor/utils/io/c;Lpa0/e;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method

@@ -1,0 +1,44 @@
+.class public final Lyads/f02;
+.super Lkotlin/jvm/internal/z;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/a;
+
+
+# instance fields
+.field public final synthetic b:Lyads/mi2;
+
+.field public final synthetic c:Lyads/u41;
+
+
+# direct methods
+.method public constructor <init>(Lyads/mi2;Lyads/u41;)V
+    .locals 0
+
+    iput-object p1, p0, Lyads/f02;->b:Lyads/mi2;
+
+    iput-object p2, p0, Lyads/f02;->c:Lyads/u41;
+
+    const/4 p1, 0x0
+
+    invoke-direct {p0, p1}, Lkotlin/jvm/internal/z;-><init>(I)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invoke()Ljava/lang/Object;
+    .locals 2
+
+    iget-object v0, p0, Lyads/f02;->b:Lyads/mi2;
+
+    iget-object v1, p0, Lyads/f02;->c:Lyads/u41;
+
+    invoke-virtual {v0, v1}, Lyads/mi2;->a(Lyads/u41;)Landroid/graphics/Bitmap;
+
+    move-result-object v0
+
+    return-object v0
+.end method

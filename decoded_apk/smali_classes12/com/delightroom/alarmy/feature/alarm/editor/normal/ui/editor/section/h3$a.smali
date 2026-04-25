@@ -1,0 +1,188 @@
+.class public final Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$a;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "a"
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0003\u0008\u0086\u0003\u0018\u00002\u00020\u0001B\t\u0008\u0002\u00a2\u0006\u0004\u0008\u0002\u0010\u0003J\u0013\u0010\u0006\u001a\u0008\u0012\u0004\u0012\u00020\u00050\u0004\u00a2\u0006\u0004\u0008\u0006\u0010\u0007\u00a8\u0006\u0008"
+    }
+    d2 = {
+        "Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$a;",
+        "",
+        "<init>",
+        "()V",
+        "Lkotlinx/serialization/KSerializer;",
+        "Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3;",
+        "serializer",
+        "()Lkotlinx/serialization/KSerializer;",
+        "alarm-editor-normal_release"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x1,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# static fields
+.field static final synthetic a:Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$a;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 1
+
+    new-instance v0, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$a;
+
+    invoke-direct {v0}, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$a;-><init>()V
+
+    sput-object v0, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$a;->a:Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$a;
+
+    return-void
+.end method
+
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final serializer()Lkotlinx/serialization/KSerializer;
+    .locals 14
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Lkotlinx/serialization/KSerializer<",
+            "Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3;",
+            ">;"
+        }
+    .end annotation
+
+    new-instance v6, Lwb0/m;
+
+    const-class v0, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3;
+
+    invoke-static {v0}, Lkotlin/jvm/internal/v0;->b(Ljava/lang/Class;)Lkotlin/reflect/KClass;
+
+    move-result-object v2
+
+    const-class v0, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$b;
+
+    invoke-static {v0}, Lkotlin/jvm/internal/v0;->b(Ljava/lang/Class;)Lkotlin/reflect/KClass;
+
+    move-result-object v0
+
+    const-class v1, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$c;
+
+    invoke-static {v1}, Lkotlin/jvm/internal/v0;->b(Ljava/lang/Class;)Lkotlin/reflect/KClass;
+
+    move-result-object v1
+
+    const-class v3, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$d;
+
+    invoke-static {v3}, Lkotlin/jvm/internal/v0;->b(Ljava/lang/Class;)Lkotlin/reflect/KClass;
+
+    move-result-object v3
+
+    const-class v4, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$e;
+
+    invoke-static {v4}, Lkotlin/jvm/internal/v0;->b(Ljava/lang/Class;)Lkotlin/reflect/KClass;
+
+    move-result-object v4
+
+    const/4 v5, 0x4
+
+    new-array v7, v5, [Lkotlin/reflect/KClass;
+
+    const/4 v8, 0x0
+
+    aput-object v0, v7, v8
+
+    const/4 v0, 0x1
+
+    aput-object v1, v7, v0
+
+    const/4 v1, 0x2
+
+    aput-object v3, v7, v1
+
+    const/4 v3, 0x3
+
+    aput-object v4, v7, v3
+
+    new-instance v4, Lac0/w1;
+
+    sget-object v9, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$b;->INSTANCE:Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$b;
+
+    new-array v10, v8, [Ljava/lang/annotation/Annotation;
+
+    const-string v11, "com.delightroom.alarmy.feature.alarm.editor.normal.ui.editor.section.LocationState.Initial"
+
+    invoke-direct {v4, v11, v9, v10}, Lac0/w1;-><init>(Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/annotation/Annotation;)V
+
+    new-instance v9, Lac0/w1;
+
+    sget-object v10, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$c;->INSTANCE:Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$c;
+
+    new-array v11, v8, [Ljava/lang/annotation/Annotation;
+
+    const-string v12, "com.delightroom.alarmy.feature.alarm.editor.normal.ui.editor.section.LocationState.NoLocation"
+
+    invoke-direct {v9, v12, v10, v11}, Lac0/w1;-><init>(Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/annotation/Annotation;)V
+
+    new-instance v10, Lac0/w1;
+
+    sget-object v11, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$d;->INSTANCE:Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$d;
+
+    new-array v12, v8, [Ljava/lang/annotation/Annotation;
+
+    const-string v13, "com.delightroom.alarmy.feature.alarm.editor.normal.ui.editor.section.LocationState.NoPermission"
+
+    invoke-direct {v10, v13, v11, v12}, Lac0/w1;-><init>(Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/annotation/Annotation;)V
+
+    new-array v5, v5, [Lkotlinx/serialization/KSerializer;
+
+    aput-object v4, v5, v8
+
+    aput-object v9, v5, v0
+
+    aput-object v10, v5, v1
+
+    sget-object v0, Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$e$a;->a:Lcom/delightroom/alarmy/feature/alarm/editor/normal/ui/editor/section/h3$e$a;
+
+    aput-object v0, v5, v3
+
+    new-array v8, v8, [Ljava/lang/annotation/Annotation;
+
+    const-string v1, "com.delightroom.alarmy.feature.alarm.editor.normal.ui.editor.section.LocationState"
+
+    move-object v0, v6
+
+    move-object v3, v7
+
+    move-object v4, v5
+
+    move-object v5, v8
+
+    invoke-direct/range {v0 .. v5}, Lwb0/m;-><init>(Ljava/lang/String;Lkotlin/reflect/KClass;[Lkotlin/reflect/KClass;[Lkotlinx/serialization/KSerializer;[Ljava/lang/annotation/Annotation;)V
+
+    return-object v6
+.end method

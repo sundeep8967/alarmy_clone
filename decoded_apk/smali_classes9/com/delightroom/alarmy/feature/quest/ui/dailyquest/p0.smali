@@ -1,0 +1,64 @@
+.class public final synthetic Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/l;
+
+
+# instance fields
+.field public final synthetic b:Z
+
+.field public final synthetic c:Ljava/util/List;
+
+.field public final synthetic d:Ljava/util/List;
+
+.field public final synthetic e:I
+
+.field public final synthetic f:Lok/b;
+
+
+# direct methods
+.method public synthetic constructor <init>(ZLjava/util/List;Ljava/util/List;ILok/b;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-boolean p1, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->b:Z
+
+    iput-object p2, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->c:Ljava/util/List;
+
+    iput-object p3, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->d:Ljava/util/List;
+
+    iput p4, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->e:I
+
+    iput-object p5, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->f:Lok/b;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invoke(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 6
+
+    iget-boolean v0, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->b:Z
+
+    iget-object v1, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->c:Ljava/util/List;
+
+    iget-object v2, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->d:Ljava/util/List;
+
+    iget v3, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->e:I
+
+    iget-object v4, p0, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/p0;->f:Lok/b;
+
+    move-object v5, p1
+
+    check-cast v5, Lnc0/c;
+
+    invoke-static/range {v0 .. v5}, Lcom/delightroom/alarmy/feature/quest/ui/dailyquest/j0$i;->j(ZLjava/util/List;Ljava/util/List;ILok/b;Lnc0/c;)Lok/b;
+
+    move-result-object p1
+
+    return-object p1
+.end method

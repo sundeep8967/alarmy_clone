@@ -1,0 +1,84 @@
+.class public final Lcom/fyber/inneractive/sdk/util/m;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Landroid/view/View$OnApplyWindowInsetsListener;
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final onApplyWindowInsets(Landroid/view/View;Landroid/view/WindowInsets;)Landroid/view/WindowInsets;
+    .locals 4
+
+    invoke-static {}, Landroidx/core/view/j1;->a()I
+
+    move-result v0
+
+    invoke-static {p2, v0}, Landroidx/core/view/a1;->a(Landroid/view/WindowInsets;I)Landroid/graphics/Insets;
+
+    move-result-object v0
+
+    invoke-static {}, Lcom/fyber/inneractive/sdk/util/o;->b()I
+
+    move-result v1
+
+    const/4 v2, 0x1
+
+    const/4 v3, 0x0
+
+    if-eq v1, v2, :cond_2
+
+    const/4 v2, 0x2
+
+    if-eq v1, v2, :cond_1
+
+    const/4 v2, 0x3
+
+    if-eq v1, v2, :cond_0
+
+    invoke-static {v0}, Landroidx/appcompat/widget/k;->a(Landroid/graphics/Insets;)I
+
+    move-result v0
+
+    invoke-virtual {p1, v3, v0, v3, v3}, Landroid/view/View;->setPadding(IIII)V
+
+    goto :goto_0
+
+    :cond_0
+    invoke-static {v0}, Landroidx/appcompat/widget/l;->a(Landroid/graphics/Insets;)I
+
+    move-result v0
+
+    invoke-virtual {p1, v3, v3, v0, v3}, Landroid/view/View;->setPadding(IIII)V
+
+    goto :goto_0
+
+    :cond_1
+    invoke-static {v0}, Landroidx/appcompat/widget/m;->a(Landroid/graphics/Insets;)I
+
+    move-result v0
+
+    invoke-virtual {p1, v3, v3, v3, v0}, Landroid/view/View;->setPadding(IIII)V
+
+    goto :goto_0
+
+    :cond_2
+    invoke-static {v0}, Landroidx/appcompat/widget/j;->a(Landroid/graphics/Insets;)I
+
+    move-result v0
+
+    invoke-virtual {p1, v0, v3, v3, v3}, Landroid/view/View;->setPadding(IIII)V
+
+    :goto_0
+    return-object p2
+.end method

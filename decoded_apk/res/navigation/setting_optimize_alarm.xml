@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/settingOptimizeAlarmGraph" app:startDestination="@id/settingOptimizeAlarm"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="OptimizeAlarmFragment" android:name="droom.sleepIfUCan.feature.setting.optimization.OptimizeAlarmFragment" android:id="@id/settingOptimizeAlarm">
+        <argument android:name="openManufacturerMenu" android:defaultValue="false" app:argType="boolean" />
+        <action android:id="@id/action_to_settingFaq" app:destination="@id/settingFaq">
+            <argument android:name="faqPage" app:argType="droom.sleepIfUCan.feature.setting.faq.FaqPage" />
+        </action>
+        <action android:id="@id/action_to_sendFeedback" app:destination="@id/optimizeSendFeedback" />
+    </fragment>
+    <fragment android:label="FaqFragment" android:name="droom.sleepIfUCan.feature.setting.faq.FaqFragment" android:id="@id/settingFaq">
+        <argument android:name="faqPage" app:argType="droom.sleepIfUCan.feature.setting.faq.FaqPage" />
+    </fragment>
+    <fragment android:label="SendFeedbackFragment" android:name="droom.sleepIfUCan.feature.setting.feedback.SendFeedbackFragment" android:id="@id/optimizeSendFeedback" />
+</navigation>

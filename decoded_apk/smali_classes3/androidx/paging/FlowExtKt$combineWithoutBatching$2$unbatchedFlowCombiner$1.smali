@@ -1,0 +1,291 @@
+.class public final Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;
+.super Lkotlin/coroutines/jvm/internal/l;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/r;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Landroidx/paging/FlowExtKt$combineWithoutBatching$2;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Lkotlin/coroutines/jvm/internal/l;",
+        "Lza0/r<",
+        "Ljava/lang/Object;",
+        "Ljava/lang/Object;",
+        "Landroidx/paging/CombineSource;",
+        "Lpa0/e<",
+        "-",
+        "Lja0/h0;",
+        ">;",
+        "Ljava/lang/Object;",
+        ">;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0010\n\u0002\u0008\u0005\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u0010\u0008\u001a\u00020\u0007\"\u0004\u0008\u0000\u0010\u0000\"\u0004\u0008\u0001\u0010\u0001\"\u0004\u0008\u0002\u0010\u00022\u0006\u0010\u0003\u001a\u00028\u00002\u0006\u0010\u0004\u001a\u00028\u00012\u0006\u0010\u0006\u001a\u00020\u0005H\u008a@"
+    }
+    d2 = {
+        "T1",
+        "T2",
+        "R",
+        "t1",
+        "t2",
+        "Landroidx/paging/CombineSource;",
+        "updateFrom",
+        "Lja0/h0;",
+        "<anonymous>"
+    }
+    k = 0x3
+    mv = {
+        0x1,
+        0x8,
+        0x0
+    }
+.end annotation
+
+.annotation runtime Lkotlin/coroutines/jvm/internal/f;
+    c = "androidx.paging.FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1"
+    f = "FlowExt.kt"
+    l = {
+        0x8d,
+        0x8d
+    }
+    m = "invokeSuspend"
+.end annotation
+
+
+# instance fields
+.field s:I
+
+.field synthetic t:Ljava/lang/Object;
+
+.field synthetic u:Ljava/lang/Object;
+
+.field synthetic v:Ljava/lang/Object;
+
+.field final synthetic w:Landroidx/paging/SimpleProducerScope;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Landroidx/paging/SimpleProducerScope<",
+            "Ljava/lang/Object;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+.field final synthetic x:Lza0/r;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lza0/r<",
+            "Ljava/lang/Object;",
+            "Ljava/lang/Object;",
+            "Landroidx/paging/CombineSource;",
+            "Lpa0/e<",
+            "Ljava/lang/Object;",
+            ">;",
+            "Ljava/lang/Object;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+
+# direct methods
+.method public constructor <init>(Landroidx/paging/SimpleProducerScope;Lza0/r;Lpa0/e;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Landroidx/paging/SimpleProducerScope<",
+            "Ljava/lang/Object;",
+            ">;",
+            "Lza0/r<",
+            "Ljava/lang/Object;",
+            "Ljava/lang/Object;",
+            "-",
+            "Landroidx/paging/CombineSource;",
+            "-",
+            "Lpa0/e<",
+            "Ljava/lang/Object;",
+            ">;+",
+            "Ljava/lang/Object;",
+            ">;",
+            "Lpa0/e<",
+            "-",
+            "Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->w:Landroidx/paging/SimpleProducerScope;
+
+    iput-object p2, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->x:Lza0/r;
+
+    const/4 p1, 0x4
+
+    invoke-direct {p0, p1, p3}, Lkotlin/coroutines/jvm/internal/l;-><init>(ILpa0/e;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final i(Ljava/lang/Object;Ljava/lang/Object;Landroidx/paging/CombineSource;Lpa0/e;)Ljava/lang/Object;
+    .locals 3
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Ljava/lang/Object;",
+            "Ljava/lang/Object;",
+            "Landroidx/paging/CombineSource;",
+            "Lpa0/e<",
+            "-",
+            "Lja0/h0;",
+            ">;)",
+            "Ljava/lang/Object;"
+        }
+    .end annotation
+
+    new-instance v0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;
+
+    iget-object v1, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->w:Landroidx/paging/SimpleProducerScope;
+
+    iget-object v2, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->x:Lza0/r;
+
+    invoke-direct {v0, v1, v2, p4}, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;-><init>(Landroidx/paging/SimpleProducerScope;Lza0/r;Lpa0/e;)V
+
+    iput-object p1, v0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->t:Ljava/lang/Object;
+
+    iput-object p2, v0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->u:Ljava/lang/Object;
+
+    iput-object p3, v0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->v:Ljava/lang/Object;
+
+    sget-object p1, Lja0/h0;->a:Lja0/h0;
+
+    invoke-virtual {v0, p1}, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 0
+
+    check-cast p3, Landroidx/paging/CombineSource;
+
+    check-cast p4, Lpa0/e;
+
+    invoke-virtual {p0, p1, p2, p3, p4}, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->i(Ljava/lang/Object;Ljava/lang/Object;Landroidx/paging/CombineSource;Lpa0/e;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 8
+
+    invoke-static {}, Lqa0/b;->g()Ljava/lang/Object;
+
+    move-result-object v0
+
+    iget v1, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->s:I
+
+    const/4 v2, 0x0
+
+    const/4 v3, 0x2
+
+    const/4 v4, 0x1
+
+    if-eqz v1, :cond_2
+
+    if-eq v1, v4, :cond_1
+
+    if-ne v1, v3, :cond_0
+
+    invoke-static {p1}, Lja0/t;->b(Ljava/lang/Object;)V
+
+    goto :goto_1
+
+    :cond_0
+    new-instance p1, Ljava/lang/IllegalStateException;
+
+    const-string v0, "call to \'resume\' before \'invoke\' with coroutine"
+
+    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw p1
+
+    :cond_1
+    iget-object v1, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->t:Ljava/lang/Object;
+
+    check-cast v1, Landroidx/paging/SimpleProducerScope;
+
+    invoke-static {p1}, Lja0/t;->b(Ljava/lang/Object;)V
+
+    goto :goto_0
+
+    :cond_2
+    invoke-static {p1}, Lja0/t;->b(Ljava/lang/Object;)V
+
+    iget-object p1, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->t:Ljava/lang/Object;
+
+    iget-object v1, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->u:Ljava/lang/Object;
+
+    iget-object v5, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->v:Ljava/lang/Object;
+
+    check-cast v5, Landroidx/paging/CombineSource;
+
+    iget-object v6, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->w:Landroidx/paging/SimpleProducerScope;
+
+    iget-object v7, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->x:Lza0/r;
+
+    iput-object v6, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->t:Ljava/lang/Object;
+
+    iput-object v2, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->u:Ljava/lang/Object;
+
+    iput v4, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->s:I
+
+    invoke-interface {v7, p1, v1, v5, p0}, Lza0/r;->invoke(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    if-ne p1, v0, :cond_3
+
+    return-object v0
+
+    :cond_3
+    move-object v1, v6
+
+    :goto_0
+    iput-object v2, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->t:Ljava/lang/Object;
+
+    iput v3, p0, Landroidx/paging/FlowExtKt$combineWithoutBatching$2$unbatchedFlowCombiner$1;->s:I
+
+    invoke-interface {v1, p1, p0}, Lkotlinx/coroutines/channels/e0;->z(Ljava/lang/Object;Lpa0/e;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    if-ne p1, v0, :cond_4
+
+    return-object v0
+
+    :cond_4
+    :goto_1
+    sget-object p1, Lja0/h0;->a:Lja0/h0;
+
+    return-object p1
+.end method

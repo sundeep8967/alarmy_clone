@@ -1,0 +1,3564 @@
+.class public final Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# annotations
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000X\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0005\n\u0002\u0018\u0002\n\u0002\u0008\u0003\n\u0002\u0018\u0002\n\u0002\u0008\t\u001a\u008a\u0001\u0010\u0017\u001a\u00020\u00152\u0006\u0010\u0001\u001a\u00020\u00002\u0008\u0008\u0002\u0010\u0003\u001a\u00020\u00022\u0008\u0008\u0002\u0010\u0005\u001a\u00020\u00042\u0008\u0008\u0002\u0010\u0007\u001a\u00020\u00062\u0008\u0008\u0002\u0010\t\u001a\u00020\u00082\u0008\u0008\u0002\u0010\u000b\u001a\u00020\n2\u0008\u0008\u0002\u0010\r\u001a\u00020\u000c2\u0008\u0008\u0002\u0010\u000f\u001a\u00020\u000e2\u0008\u0008\u0002\u0010\u0010\u001a\u00020\u00082\n\u0008\u0002\u0010\u0012\u001a\u0004\u0018\u00010\u00112\u0012\u0010\u0016\u001a\u000e\u0012\u0004\u0012\u00020\u0014\u0012\u0004\u0012\u00020\u00150\u0013H\u0007\u00f8\u0001\u0000\u00a2\u0006\u0004\u0008\u0017\u0010\u0018\u001a~\u0010\u0019\u001a\u00020\u00152\u0006\u0010\u0001\u001a\u00020\u00002\u0008\u0008\u0002\u0010\u0003\u001a\u00020\u00022\u0008\u0008\u0002\u0010\u0005\u001a\u00020\u00042\u0008\u0008\u0002\u0010\u0007\u001a\u00020\u00062\u0008\u0008\u0002\u0010\t\u001a\u00020\u00082\u0008\u0008\u0002\u0010\u000b\u001a\u00020\n2\u0008\u0008\u0002\u0010\r\u001a\u00020\u000c2\u0008\u0008\u0002\u0010\u000f\u001a\u00020\u000e2\u0008\u0008\u0002\u0010\u0010\u001a\u00020\u00082\u0012\u0010\u0016\u001a\u000e\u0012\u0004\u0012\u00020\u0014\u0012\u0004\u0012\u00020\u00150\u0013H\u0007\u00f8\u0001\u0000\u00a2\u0006\u0004\u0008\u0019\u0010\u001a\u001a\'\u0010\u001c\u001a\u00020\u001b2\u0006\u0010\u0001\u001a\u00020\u00002\u0006\u0010\r\u001a\u00020\u000c2\u0006\u0010\u0007\u001a\u00020\u0006H\u0003\u00a2\u0006\u0004\u0008\u001c\u0010\u001d\u001a\u008a\u0001\u0010\"\u001a\u00020\u00152\u0006\u0010\u001e\u001a\u00020\u00002\u0008\u0008\u0002\u0010\u0003\u001a\u00020\u00022\u0008\u0008\u0002\u0010\u0005\u001a\u00020\u00042\u0008\u0008\u0002\u0010\u0007\u001a\u00020\u00062\u0008\u0008\u0002\u0010\t\u001a\u00020\u00082\u0008\u0008\u0002\u0010 \u001a\u00020\u001f2\u0008\u0008\u0002\u0010!\u001a\u00020\n2\u0008\u0008\u0002\u0010\u000f\u001a\u00020\u000e2\u0008\u0008\u0002\u0010\u0010\u001a\u00020\u00082\n\u0008\u0002\u0010\u0012\u001a\u0004\u0018\u00010\u00112\u0012\u0010\u0016\u001a\u000e\u0012\u0004\u0012\u00020\u0014\u0012\u0004\u0012\u00020\u00150\u0013H\u0007\u00f8\u0001\u0000\u00a2\u0006\u0004\u0008\"\u0010#\u001a~\u0010$\u001a\u00020\u00152\u0006\u0010\u001e\u001a\u00020\u00002\u0008\u0008\u0002\u0010\u0003\u001a\u00020\u00022\u0008\u0008\u0002\u0010\u0005\u001a\u00020\u00042\u0008\u0008\u0002\u0010\u0007\u001a\u00020\u00062\u0008\u0008\u0002\u0010\t\u001a\u00020\u00082\u0008\u0008\u0002\u0010 \u001a\u00020\u001f2\u0008\u0008\u0002\u0010!\u001a\u00020\n2\u0008\u0008\u0002\u0010\u000f\u001a\u00020\u000e2\u0008\u0008\u0002\u0010\u0010\u001a\u00020\u00082\u0012\u0010\u0016\u001a\u000e\u0012\u0004\u0012\u00020\u0014\u0012\u0004\u0012\u00020\u00150\u0013H\u0007\u00f8\u0001\u0000\u00a2\u0006\u0004\u0008$\u0010%\u001a\'\u0010&\u001a\u00020\u001b2\u0006\u0010\u001e\u001a\u00020\u00002\u0006\u0010 \u001a\u00020\u001f2\u0006\u0010\u0007\u001a\u00020\u0006H\u0003\u00a2\u0006\u0004\u0008&\u0010\'\u0082\u0002\u0007\n\u0005\u0008\u00a1\u001e0\u0001\u00a8\u0006("
+    }
+    d2 = {
+        "Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;",
+        "columns",
+        "Landroidx/compose/ui/Modifier;",
+        "modifier",
+        "Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;",
+        "state",
+        "Landroidx/compose/foundation/layout/PaddingValues;",
+        "contentPadding",
+        "",
+        "reverseLayout",
+        "Landroidx/compose/ui/unit/Dp;",
+        "verticalItemSpacing",
+        "Landroidx/compose/foundation/layout/Arrangement$Horizontal;",
+        "horizontalArrangement",
+        "Landroidx/compose/foundation/gestures/FlingBehavior;",
+        "flingBehavior",
+        "userScrollEnabled",
+        "Landroidx/compose/foundation/OverscrollEffect;",
+        "overscrollEffect",
+        "Lkotlin/Function1;",
+        "Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridScope;",
+        "Lja0/h0;",
+        "content",
+        "c",
+        "(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZFLandroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;Landroidx/compose/runtime/Composer;III)V",
+        "d",
+        "(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZFLandroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/gestures/FlingBehavior;ZLza0/l;Landroidx/compose/runtime/Composer;II)V",
+        "Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;",
+        "e",
+        "(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;",
+        "rows",
+        "Landroidx/compose/foundation/layout/Arrangement$Vertical;",
+        "verticalArrangement",
+        "horizontalItemSpacing",
+        "a",
+        "(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/layout/Arrangement$Vertical;FLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;Landroidx/compose/runtime/Composer;III)V",
+        "b",
+        "(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/layout/Arrangement$Vertical;FLandroidx/compose/foundation/gestures/FlingBehavior;ZLza0/l;Landroidx/compose/runtime/Composer;II)V",
+        "f",
+        "(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;",
+        "foundation_release"
+    }
+    k = 0x2
+    mv = {
+        0x1,
+        0x9,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# direct methods
+.method public static final a(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/layout/Arrangement$Vertical;FLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;Landroidx/compose/runtime/Composer;III)V
+    .locals 33
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;",
+            "Landroidx/compose/ui/Modifier;",
+            "Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;",
+            "Landroidx/compose/foundation/layout/PaddingValues;",
+            "Z",
+            "Landroidx/compose/foundation/layout/Arrangement$Vertical;",
+            "F",
+            "Landroidx/compose/foundation/gestures/FlingBehavior;",
+            "Z",
+            "Landroidx/compose/foundation/OverscrollEffect;",
+            "Lza0/l<",
+            "-",
+            "Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridScope;",
+            "Lja0/h0;",
+            ">;",
+            "Landroidx/compose/runtime/Composer;",
+            "III)V"
+        }
+    .end annotation
+
+    move-object/from16 v1, p0
+
+    move/from16 v12, p12
+
+    move/from16 v14, p14
+
+    const v0, -0x27fa9d1c
+
+    move-object/from16 v2, p11
+
+    invoke-interface {v2, v0}, Landroidx/compose/runtime/Composer;->D(I)Landroidx/compose/runtime/Composer;
+
+    move-result-object v2
+
+    and-int/lit8 v3, v14, 0x1
+
+    if-eqz v3, :cond_0
+
+    or-int/lit8 v3, v12, 0x6
+
+    goto :goto_1
+
+    :cond_0
+    and-int/lit8 v3, v12, 0x6
+
+    if-nez v3, :cond_2
+
+    invoke-interface {v2, v1}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_1
+
+    const/4 v3, 0x4
+
+    goto :goto_0
+
+    :cond_1
+    const/4 v3, 0x2
+
+    :goto_0
+    or-int/2addr v3, v12
+
+    goto :goto_1
+
+    :cond_2
+    move v3, v12
+
+    :goto_1
+    and-int/lit8 v6, v14, 0x2
+
+    if-eqz v6, :cond_4
+
+    or-int/lit8 v3, v3, 0x30
+
+    :cond_3
+    move-object/from16 v7, p1
+
+    goto :goto_3
+
+    :cond_4
+    and-int/lit8 v7, v12, 0x30
+
+    if-nez v7, :cond_3
+
+    move-object/from16 v7, p1
+
+    invoke-interface {v2, v7}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v8
+
+    if-eqz v8, :cond_5
+
+    const/16 v8, 0x20
+
+    goto :goto_2
+
+    :cond_5
+    const/16 v8, 0x10
+
+    :goto_2
+    or-int/2addr v3, v8
+
+    :goto_3
+    and-int/lit16 v8, v12, 0x180
+
+    if-nez v8, :cond_8
+
+    and-int/lit8 v8, v14, 0x4
+
+    if-nez v8, :cond_6
+
+    move-object/from16 v8, p2
+
+    invoke-interface {v2, v8}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_7
+
+    const/16 v9, 0x100
+
+    goto :goto_4
+
+    :cond_6
+    move-object/from16 v8, p2
+
+    :cond_7
+    const/16 v9, 0x80
+
+    :goto_4
+    or-int/2addr v3, v9
+
+    goto :goto_5
+
+    :cond_8
+    move-object/from16 v8, p2
+
+    :goto_5
+    and-int/lit8 v9, v14, 0x8
+
+    if-eqz v9, :cond_a
+
+    or-int/lit16 v3, v3, 0xc00
+
+    :cond_9
+    move-object/from16 v10, p3
+
+    goto :goto_7
+
+    :cond_a
+    and-int/lit16 v10, v12, 0xc00
+
+    if-nez v10, :cond_9
+
+    move-object/from16 v10, p3
+
+    invoke-interface {v2, v10}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v11
+
+    if-eqz v11, :cond_b
+
+    const/16 v11, 0x800
+
+    goto :goto_6
+
+    :cond_b
+    const/16 v11, 0x400
+
+    :goto_6
+    or-int/2addr v3, v11
+
+    :goto_7
+    and-int/lit8 v11, v14, 0x10
+
+    if-eqz v11, :cond_d
+
+    or-int/lit16 v3, v3, 0x6000
+
+    :cond_c
+    move/from16 v13, p4
+
+    goto :goto_9
+
+    :cond_d
+    and-int/lit16 v13, v12, 0x6000
+
+    if-nez v13, :cond_c
+
+    move/from16 v13, p4
+
+    invoke-interface {v2, v13}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v15
+
+    if-eqz v15, :cond_e
+
+    const/16 v15, 0x4000
+
+    goto :goto_8
+
+    :cond_e
+    const/16 v15, 0x2000
+
+    :goto_8
+    or-int/2addr v3, v15
+
+    :goto_9
+    and-int/lit8 v15, v14, 0x20
+
+    const/high16 v16, 0x30000
+
+    if-eqz v15, :cond_f
+
+    or-int v3, v3, v16
+
+    move-object/from16 v5, p5
+
+    goto :goto_b
+
+    :cond_f
+    and-int v16, v12, v16
+
+    move-object/from16 v5, p5
+
+    if-nez v16, :cond_11
+
+    invoke-interface {v2, v5}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v16
+
+    if-eqz v16, :cond_10
+
+    const/high16 v16, 0x20000
+
+    goto :goto_a
+
+    :cond_10
+    const/high16 v16, 0x10000
+
+    :goto_a
+    or-int v3, v3, v16
+
+    :cond_11
+    :goto_b
+    and-int/lit8 v16, v14, 0x40
+
+    const/high16 v17, 0x180000
+
+    if-eqz v16, :cond_12
+
+    or-int v3, v3, v17
+
+    move/from16 v0, p6
+
+    goto :goto_d
+
+    :cond_12
+    and-int v17, v12, v17
+
+    move/from16 v0, p6
+
+    if-nez v17, :cond_14
+
+    invoke-interface {v2, v0}, Landroidx/compose/runtime/Composer;->w(F)Z
+
+    move-result v18
+
+    if-eqz v18, :cond_13
+
+    const/high16 v18, 0x100000
+
+    goto :goto_c
+
+    :cond_13
+    const/high16 v18, 0x80000
+
+    :goto_c
+    or-int v3, v3, v18
+
+    :cond_14
+    :goto_d
+    const/high16 v18, 0xc00000
+
+    and-int v18, v12, v18
+
+    if-nez v18, :cond_17
+
+    and-int/lit16 v4, v14, 0x80
+
+    if-nez v4, :cond_15
+
+    move-object/from16 v4, p7
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_16
+
+    const/high16 v19, 0x800000
+
+    goto :goto_e
+
+    :cond_15
+    move-object/from16 v4, p7
+
+    :cond_16
+    const/high16 v19, 0x400000
+
+    :goto_e
+    or-int v3, v3, v19
+
+    goto :goto_f
+
+    :cond_17
+    move-object/from16 v4, p7
+
+    :goto_f
+    and-int/lit16 v0, v14, 0x100
+
+    const/high16 v19, 0x6000000
+
+    if-eqz v0, :cond_18
+
+    or-int v3, v3, v19
+
+    move/from16 v4, p8
+
+    goto :goto_11
+
+    :cond_18
+    and-int v19, v12, v19
+
+    move/from16 v4, p8
+
+    if-nez v19, :cond_1a
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_19
+
+    const/high16 v19, 0x4000000
+
+    goto :goto_10
+
+    :cond_19
+    const/high16 v19, 0x2000000
+
+    :goto_10
+    or-int v3, v3, v19
+
+    :cond_1a
+    :goto_11
+    const/high16 v19, 0x30000000
+
+    and-int v19, v12, v19
+
+    if-nez v19, :cond_1d
+
+    and-int/lit16 v4, v14, 0x200
+
+    if-nez v4, :cond_1b
+
+    move-object/from16 v4, p9
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_1c
+
+    const/high16 v19, 0x20000000
+
+    goto :goto_12
+
+    :cond_1b
+    move-object/from16 v4, p9
+
+    :cond_1c
+    const/high16 v19, 0x10000000
+
+    :goto_12
+    or-int v3, v3, v19
+
+    goto :goto_13
+
+    :cond_1d
+    move-object/from16 v4, p9
+
+    :goto_13
+    and-int/lit16 v4, v14, 0x400
+
+    if-eqz v4, :cond_1e
+
+    or-int/lit8 v4, p13, 0x6
+
+    goto :goto_15
+
+    :cond_1e
+    and-int/lit8 v4, p13, 0x6
+
+    if-nez v4, :cond_20
+
+    move-object/from16 v4, p10
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->S(Ljava/lang/Object;)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_1f
+
+    const/16 v19, 0x4
+
+    goto :goto_14
+
+    :cond_1f
+    const/16 v19, 0x2
+
+    :goto_14
+    or-int v19, p13, v19
+
+    move/from16 v4, v19
+
+    goto :goto_15
+
+    :cond_20
+    move-object/from16 v4, p10
+
+    move/from16 v4, p13
+
+    :goto_15
+    const v19, 0x12492493
+
+    and-int v5, v3, v19
+
+    const v7, 0x12492492
+
+    const/16 v19, 0x1
+
+    if-ne v5, v7, :cond_22
+
+    and-int/lit8 v5, v4, 0x3
+
+    const/4 v7, 0x2
+
+    if-eq v5, v7, :cond_21
+
+    goto :goto_16
+
+    :cond_21
+    const/4 v5, 0x0
+
+    goto :goto_17
+
+    :cond_22
+    :goto_16
+    move/from16 v5, v19
+
+    :goto_17
+    and-int/lit8 v7, v3, 0x1
+
+    invoke-interface {v2, v5, v7}, Landroidx/compose/runtime/Composer;->d(ZI)Z
+
+    move-result v5
+
+    if-eqz v5, :cond_33
+
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->T()V
+
+    and-int/lit8 v5, v12, 0x1
+
+    const v7, -0x70000001
+
+    const v18, -0x1c00001
+
+    const/4 v8, 0x3
+
+    if-eqz v5, :cond_27
+
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->m()Z
+
+    move-result v5
+
+    if-eqz v5, :cond_23
+
+    goto :goto_18
+
+    :cond_23
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->l()V
+
+    and-int/lit8 v0, v14, 0x4
+
+    if-eqz v0, :cond_24
+
+    and-int/lit16 v3, v3, -0x381
+
+    :cond_24
+    and-int/lit16 v0, v14, 0x80
+
+    if-eqz v0, :cond_25
+
+    and-int v3, v3, v18
+
+    :cond_25
+    and-int/lit16 v0, v14, 0x200
+
+    if-eqz v0, :cond_26
+
+    and-int/2addr v3, v7
+
+    :cond_26
+    move-object/from16 v5, p1
+
+    move-object/from16 v0, p2
+
+    move/from16 v6, p6
+
+    move-object/from16 v11, p7
+
+    move-object/from16 v7, p9
+
+    move v15, v3
+
+    move-object v9, v10
+
+    move-object/from16 v10, p5
+
+    move/from16 v3, p8
+
+    goto/16 :goto_21
+
+    :cond_27
+    :goto_18
+    if-eqz v6, :cond_28
+
+    sget-object v5, Landroidx/compose/ui/Modifier;->G8:Landroidx/compose/ui/Modifier$Companion;
+
+    goto :goto_19
+
+    :cond_28
+    move-object/from16 v5, p1
+
+    :goto_19
+    and-int/lit8 v6, v14, 0x4
+
+    if-eqz v6, :cond_29
+
+    const/4 v6, 0x0
+
+    invoke-static {v6, v6, v2, v6, v8}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridStateKt;->a(IILandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;
+
+    move-result-object v20
+
+    and-int/lit16 v3, v3, -0x381
+
+    goto :goto_1a
+
+    :cond_29
+    const/4 v6, 0x0
+
+    move-object/from16 v20, p2
+
+    :goto_1a
+    if-eqz v9, :cond_2a
+
+    int-to-float v9, v6
+
+    invoke-static {v9}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v9
+
+    invoke-static {v9}, Landroidx/compose/foundation/layout/PaddingKt;->a(F)Landroidx/compose/foundation/layout/PaddingValues;
+
+    move-result-object v9
+
+    goto :goto_1b
+
+    :cond_2a
+    move-object v9, v10
+
+    :goto_1b
+    if-eqz v11, :cond_2b
+
+    move v13, v6
+
+    :cond_2b
+    if-eqz v15, :cond_2c
+
+    sget-object v10, Landroidx/compose/foundation/layout/Arrangement;->a:Landroidx/compose/foundation/layout/Arrangement;
+
+    int-to-float v11, v6
+
+    invoke-static {v11}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v11
+
+    invoke-virtual {v10, v11}, Landroidx/compose/foundation/layout/Arrangement;->n(F)Landroidx/compose/foundation/layout/Arrangement$HorizontalOrVertical;
+
+    move-result-object v10
+
+    goto :goto_1c
+
+    :cond_2c
+    move-object/from16 v10, p5
+
+    :goto_1c
+    if-eqz v16, :cond_2d
+
+    int-to-float v11, v6
+
+    invoke-static {v11}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v6
+
+    goto :goto_1d
+
+    :cond_2d
+    move/from16 v6, p6
+
+    :goto_1d
+    and-int/lit16 v11, v14, 0x80
+
+    if-eqz v11, :cond_2e
+
+    sget-object v11, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a:Landroidx/compose/foundation/gestures/ScrollableDefaults;
+
+    const/4 v15, 0x6
+
+    invoke-virtual {v11, v2, v15}, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/gestures/FlingBehavior;
+
+    move-result-object v11
+
+    and-int v3, v3, v18
+
+    goto :goto_1e
+
+    :cond_2e
+    move-object/from16 v11, p7
+
+    :goto_1e
+    if-eqz v0, :cond_2f
+
+    goto :goto_1f
+
+    :cond_2f
+    move/from16 v19, p8
+
+    :goto_1f
+    and-int/lit16 v0, v14, 0x200
+
+    if-eqz v0, :cond_30
+
+    const/4 v0, 0x0
+
+    invoke-static {v2, v0}, Landroidx/compose/foundation/OverscrollKt;->b(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/OverscrollEffect;
+
+    move-result-object v0
+
+    and-int/2addr v3, v7
+
+    move-object v7, v0
+
+    :goto_20
+    move v15, v3
+
+    move/from16 v3, v19
+
+    move-object/from16 v0, v20
+
+    goto :goto_21
+
+    :cond_30
+    move-object/from16 v7, p9
+
+    goto :goto_20
+
+    :goto_21
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->K()V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v16
+
+    if-eqz v16, :cond_31
+
+    const-string v8, "androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid (LazyStaggeredGridDsl.kt:206)"
+
+    const v12, -0x27fa9d1c
+
+    invoke-static {v12, v15, v4, v8}, Landroidx/compose/runtime/ComposerKt;->U(IIILjava/lang/String;)V
+
+    :cond_31
+    sget-object v16, Landroidx/compose/foundation/gestures/Orientation;->c:Landroidx/compose/foundation/gestures/Orientation;
+
+    invoke-interface {v10}, Landroidx/compose/foundation/layout/Arrangement$Vertical;->a()F
+
+    move-result v25
+
+    and-int/lit8 v8, v15, 0xe
+
+    shr-int/lit8 v12, v15, 0xc
+
+    and-int/lit8 v12, v12, 0x70
+
+    or-int/2addr v8, v12
+
+    shr-int/lit8 v12, v15, 0x3
+
+    and-int/lit16 v14, v12, 0x380
+
+    or-int/2addr v8, v14
+
+    invoke-static {v1, v10, v9, v2, v8}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt;->f(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;
+
+    move-result-object v17
+
+    shr-int/lit8 v8, v15, 0x6
+
+    and-int/lit8 v8, v8, 0xe
+
+    or-int/lit8 v8, v8, 0x30
+
+    shl-int/lit8 v14, v15, 0x6
+
+    and-int/lit16 v14, v14, 0x1c00
+
+    or-int/2addr v8, v14
+
+    shl-int/lit8 v14, v15, 0x3
+
+    const v18, 0xe000
+
+    and-int v18, v14, v18
+
+    or-int v8, v8, v18
+
+    const/high16 v18, 0x70000
+
+    and-int v14, v14, v18
+
+    or-int/2addr v8, v14
+
+    const/high16 v14, 0x380000
+
+    and-int/2addr v14, v12
+
+    or-int/2addr v8, v14
+
+    const/high16 v14, 0x1c00000
+
+    and-int/2addr v14, v12
+
+    or-int/2addr v8, v14
+
+    const/high16 v14, 0xe000000
+
+    and-int/2addr v12, v14
+
+    or-int/2addr v8, v12
+
+    shl-int/lit8 v12, v15, 0x9
+
+    const/high16 v14, 0x70000000
+
+    and-int/2addr v12, v14
+
+    or-int v28, v8, v12
+
+    const/4 v8, 0x3
+
+    shl-int/2addr v4, v8
+
+    and-int/lit8 v29, v4, 0x70
+
+    const/16 v30, 0x0
+
+    move-object v15, v0
+
+    move-object/from16 v18, v5
+
+    move-object/from16 v19, v9
+
+    move/from16 v20, v13
+
+    move-object/from16 v21, v11
+
+    move/from16 v22, v3
+
+    move-object/from16 v23, v7
+
+    move/from16 v24, v6
+
+    move-object/from16 v26, p10
+
+    move-object/from16 v27, v2
+
+    invoke-static/range {v15 .. v30}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridKt;->a(Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/gestures/Orientation;Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;FFLza0/l;Landroidx/compose/runtime/Composer;III)V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_32
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->T()V
+
+    :cond_32
+    move-object v4, v9
+
+    move-object v8, v11
+
+    move v9, v3
+
+    move-object v3, v0
+
+    move-object/from16 v32, v7
+
+    move v7, v6
+
+    move-object v6, v10
+
+    move-object/from16 v10, v32
+
+    goto :goto_22
+
+    :cond_33
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->l()V
+
+    move-object/from16 v5, p1
+
+    move-object/from16 v3, p2
+
+    move-object/from16 v6, p5
+
+    move/from16 v7, p6
+
+    move-object/from16 v8, p7
+
+    move/from16 v9, p8
+
+    move-object v4, v10
+
+    move-object/from16 v10, p9
+
+    :goto_22
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->F()Landroidx/compose/runtime/ScopeUpdateScope;
+
+    move-result-object v15
+
+    if-eqz v15, :cond_34
+
+    new-instance v14, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyHorizontalStaggeredGrid$1;
+
+    move-object v0, v14
+
+    move-object/from16 v1, p0
+
+    move-object v2, v5
+
+    move v5, v13
+
+    move-object/from16 v11, p10
+
+    move/from16 v12, p12
+
+    move/from16 v13, p13
+
+    move-object/from16 v31, v14
+
+    move/from16 v14, p14
+
+    invoke-direct/range {v0 .. v14}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyHorizontalStaggeredGrid$1;-><init>(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/layout/Arrangement$Vertical;FLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;III)V
+
+    move-object/from16 v0, v31
+
+    invoke-interface {v15, v0}, Landroidx/compose/runtime/ScopeUpdateScope;->a(Lza0/p;)V
+
+    :cond_34
+    return-void
+.end method
+
+.method public static final synthetic b(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/layout/Arrangement$Vertical;FLandroidx/compose/foundation/gestures/FlingBehavior;ZLza0/l;Landroidx/compose/runtime/Composer;II)V
+    .locals 29
+    .annotation runtime Lja0/e;
+    .end annotation
+
+    move/from16 v11, p11
+
+    move/from16 v12, p12
+
+    const v0, -0x843bda
+
+    move-object/from16 v1, p10
+
+    invoke-interface {v1, v0}, Landroidx/compose/runtime/Composer;->D(I)Landroidx/compose/runtime/Composer;
+
+    move-result-object v1
+
+    and-int/lit8 v2, v12, 0x1
+
+    if-eqz v2, :cond_0
+
+    or-int/lit8 v2, v11, 0x6
+
+    move v3, v2
+
+    move-object/from16 v2, p0
+
+    goto :goto_1
+
+    :cond_0
+    and-int/lit8 v2, v11, 0x6
+
+    if-nez v2, :cond_2
+
+    move-object/from16 v2, p0
+
+    invoke-interface {v1, v2}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_1
+
+    const/4 v3, 0x4
+
+    goto :goto_0
+
+    :cond_1
+    const/4 v3, 0x2
+
+    :goto_0
+    or-int/2addr v3, v11
+
+    goto :goto_1
+
+    :cond_2
+    move-object/from16 v2, p0
+
+    move v3, v11
+
+    :goto_1
+    and-int/lit8 v4, v12, 0x2
+
+    if-eqz v4, :cond_4
+
+    or-int/lit8 v3, v3, 0x30
+
+    :cond_3
+    move-object/from16 v5, p1
+
+    goto :goto_3
+
+    :cond_4
+    and-int/lit8 v5, v11, 0x30
+
+    if-nez v5, :cond_3
+
+    move-object/from16 v5, p1
+
+    invoke-interface {v1, v5}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v6
+
+    if-eqz v6, :cond_5
+
+    const/16 v6, 0x20
+
+    goto :goto_2
+
+    :cond_5
+    const/16 v6, 0x10
+
+    :goto_2
+    or-int/2addr v3, v6
+
+    :goto_3
+    and-int/lit16 v6, v11, 0x180
+
+    if-nez v6, :cond_8
+
+    and-int/lit8 v6, v12, 0x4
+
+    if-nez v6, :cond_6
+
+    move-object/from16 v6, p2
+
+    invoke-interface {v1, v6}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v7
+
+    if-eqz v7, :cond_7
+
+    const/16 v7, 0x100
+
+    goto :goto_4
+
+    :cond_6
+    move-object/from16 v6, p2
+
+    :cond_7
+    const/16 v7, 0x80
+
+    :goto_4
+    or-int/2addr v3, v7
+
+    goto :goto_5
+
+    :cond_8
+    move-object/from16 v6, p2
+
+    :goto_5
+    and-int/lit8 v7, v12, 0x8
+
+    if-eqz v7, :cond_a
+
+    or-int/lit16 v3, v3, 0xc00
+
+    :cond_9
+    move-object/from16 v8, p3
+
+    goto :goto_7
+
+    :cond_a
+    and-int/lit16 v8, v11, 0xc00
+
+    if-nez v8, :cond_9
+
+    move-object/from16 v8, p3
+
+    invoke-interface {v1, v8}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_b
+
+    const/16 v9, 0x800
+
+    goto :goto_6
+
+    :cond_b
+    const/16 v9, 0x400
+
+    :goto_6
+    or-int/2addr v3, v9
+
+    :goto_7
+    and-int/lit8 v9, v12, 0x10
+
+    if-eqz v9, :cond_d
+
+    or-int/lit16 v3, v3, 0x6000
+
+    :cond_c
+    move/from16 v10, p4
+
+    goto :goto_9
+
+    :cond_d
+    and-int/lit16 v10, v11, 0x6000
+
+    if-nez v10, :cond_c
+
+    move/from16 v10, p4
+
+    invoke-interface {v1, v10}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v13
+
+    if-eqz v13, :cond_e
+
+    const/16 v13, 0x4000
+
+    goto :goto_8
+
+    :cond_e
+    const/16 v13, 0x2000
+
+    :goto_8
+    or-int/2addr v3, v13
+
+    :goto_9
+    and-int/lit8 v13, v12, 0x20
+
+    const/high16 v14, 0x30000
+
+    if-eqz v13, :cond_10
+
+    or-int/2addr v3, v14
+
+    :cond_f
+    move-object/from16 v14, p5
+
+    goto :goto_b
+
+    :cond_10
+    and-int/2addr v14, v11
+
+    if-nez v14, :cond_f
+
+    move-object/from16 v14, p5
+
+    invoke-interface {v1, v14}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v15
+
+    if-eqz v15, :cond_11
+
+    const/high16 v15, 0x20000
+
+    goto :goto_a
+
+    :cond_11
+    const/high16 v15, 0x10000
+
+    :goto_a
+    or-int/2addr v3, v15
+
+    :goto_b
+    and-int/lit8 v15, v12, 0x40
+
+    const/high16 v16, 0x180000
+
+    if-eqz v15, :cond_12
+
+    or-int v3, v3, v16
+
+    move/from16 v0, p6
+
+    goto :goto_d
+
+    :cond_12
+    and-int v16, v11, v16
+
+    move/from16 v0, p6
+
+    if-nez v16, :cond_14
+
+    invoke-interface {v1, v0}, Landroidx/compose/runtime/Composer;->w(F)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_13
+
+    const/high16 v17, 0x100000
+
+    goto :goto_c
+
+    :cond_13
+    const/high16 v17, 0x80000
+
+    :goto_c
+    or-int v3, v3, v17
+
+    :cond_14
+    :goto_d
+    const/high16 v17, 0xc00000
+
+    and-int v17, v11, v17
+
+    if-nez v17, :cond_17
+
+    and-int/lit16 v0, v12, 0x80
+
+    if-nez v0, :cond_15
+
+    move-object/from16 v0, p7
+
+    invoke-interface {v1, v0}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_16
+
+    const/high16 v17, 0x800000
+
+    goto :goto_e
+
+    :cond_15
+    move-object/from16 v0, p7
+
+    :cond_16
+    const/high16 v17, 0x400000
+
+    :goto_e
+    or-int v3, v3, v17
+
+    goto :goto_f
+
+    :cond_17
+    move-object/from16 v0, p7
+
+    :goto_f
+    and-int/lit16 v0, v12, 0x100
+
+    const/high16 v17, 0x6000000
+
+    if-eqz v0, :cond_18
+
+    or-int v3, v3, v17
+
+    move/from16 v2, p8
+
+    goto :goto_11
+
+    :cond_18
+    and-int v17, v11, v17
+
+    move/from16 v2, p8
+
+    if-nez v17, :cond_1a
+
+    invoke-interface {v1, v2}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_19
+
+    const/high16 v17, 0x4000000
+
+    goto :goto_10
+
+    :cond_19
+    const/high16 v17, 0x2000000
+
+    :goto_10
+    or-int v3, v3, v17
+
+    :cond_1a
+    :goto_11
+    and-int/lit16 v2, v12, 0x200
+
+    const/high16 v17, 0x30000000
+
+    if-eqz v2, :cond_1c
+
+    or-int v3, v3, v17
+
+    :cond_1b
+    move-object/from16 v2, p9
+
+    goto :goto_13
+
+    :cond_1c
+    and-int v2, v11, v17
+
+    if-nez v2, :cond_1b
+
+    move-object/from16 v2, p9
+
+    invoke-interface {v1, v2}, Landroidx/compose/runtime/Composer;->S(Ljava/lang/Object;)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_1d
+
+    const/high16 v17, 0x20000000
+
+    goto :goto_12
+
+    :cond_1d
+    const/high16 v17, 0x10000000
+
+    :goto_12
+    or-int v3, v3, v17
+
+    :goto_13
+    const v17, 0x12492493
+
+    and-int v2, v3, v17
+
+    const v5, 0x12492492
+
+    const/4 v6, 0x0
+
+    const/16 v17, 0x1
+
+    if-eq v2, v5, :cond_1e
+
+    move/from16 v2, v17
+
+    goto :goto_14
+
+    :cond_1e
+    move v2, v6
+
+    :goto_14
+    and-int/lit8 v5, v3, 0x1
+
+    invoke-interface {v1, v2, v5}, Landroidx/compose/runtime/Composer;->d(ZI)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_2d
+
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->T()V
+
+    and-int/lit8 v2, v11, 0x1
+
+    const v5, -0x1c00001
+
+    if-eqz v2, :cond_22
+
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->m()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_1f
+
+    goto :goto_16
+
+    :cond_1f
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->l()V
+
+    and-int/lit8 v0, v12, 0x4
+
+    if-eqz v0, :cond_20
+
+    and-int/lit16 v3, v3, -0x381
+
+    :cond_20
+    and-int/lit16 v0, v12, 0x80
+
+    if-eqz v0, :cond_21
+
+    and-int/2addr v3, v5
+
+    :cond_21
+    move-object/from16 v2, p1
+
+    move-object/from16 v4, p2
+
+    move/from16 v9, p6
+
+    move-object/from16 v0, p7
+
+    move v5, v3
+
+    move-object v7, v8
+
+    move-object v8, v14
+
+    :goto_15
+    move/from16 v3, p8
+
+    goto/16 :goto_1d
+
+    :cond_22
+    :goto_16
+    if-eqz v4, :cond_23
+
+    sget-object v2, Landroidx/compose/ui/Modifier;->G8:Landroidx/compose/ui/Modifier$Companion;
+
+    goto :goto_17
+
+    :cond_23
+    move-object/from16 v2, p1
+
+    :goto_17
+    and-int/lit8 v4, v12, 0x4
+
+    if-eqz v4, :cond_24
+
+    const/4 v4, 0x3
+
+    invoke-static {v6, v6, v1, v6, v4}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridStateKt;->a(IILandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;
+
+    move-result-object v4
+
+    and-int/lit16 v3, v3, -0x381
+
+    goto :goto_18
+
+    :cond_24
+    move-object/from16 v4, p2
+
+    :goto_18
+    if-eqz v7, :cond_25
+
+    int-to-float v7, v6
+
+    invoke-static {v7}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v7
+
+    invoke-static {v7}, Landroidx/compose/foundation/layout/PaddingKt;->a(F)Landroidx/compose/foundation/layout/PaddingValues;
+
+    move-result-object v7
+
+    goto :goto_19
+
+    :cond_25
+    move-object v7, v8
+
+    :goto_19
+    if-eqz v9, :cond_26
+
+    move v10, v6
+
+    :cond_26
+    if-eqz v13, :cond_27
+
+    sget-object v8, Landroidx/compose/foundation/layout/Arrangement;->a:Landroidx/compose/foundation/layout/Arrangement;
+
+    int-to-float v9, v6
+
+    invoke-static {v9}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v9
+
+    invoke-virtual {v8, v9}, Landroidx/compose/foundation/layout/Arrangement;->n(F)Landroidx/compose/foundation/layout/Arrangement$HorizontalOrVertical;
+
+    move-result-object v8
+
+    goto :goto_1a
+
+    :cond_27
+    move-object v8, v14
+
+    :goto_1a
+    if-eqz v15, :cond_28
+
+    int-to-float v9, v6
+
+    invoke-static {v9}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v9
+
+    goto :goto_1b
+
+    :cond_28
+    move/from16 v9, p6
+
+    :goto_1b
+    and-int/lit16 v13, v12, 0x80
+
+    if-eqz v13, :cond_29
+
+    sget-object v13, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a:Landroidx/compose/foundation/gestures/ScrollableDefaults;
+
+    const/4 v14, 0x6
+
+    invoke-virtual {v13, v1, v14}, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/gestures/FlingBehavior;
+
+    move-result-object v13
+
+    and-int/2addr v3, v5
+
+    goto :goto_1c
+
+    :cond_29
+    move-object/from16 v13, p7
+
+    :goto_1c
+    move v5, v3
+
+    if-eqz v0, :cond_2a
+
+    move-object v0, v13
+
+    move/from16 v3, v17
+
+    goto :goto_1d
+
+    :cond_2a
+    move-object v0, v13
+
+    goto :goto_15
+
+    :goto_1d
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->K()V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v13
+
+    if-eqz v13, :cond_2b
+
+    const/4 v13, -0x1
+
+    const-string v14, "androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid (LazyStaggeredGridDsl.kt:236)"
+
+    const v15, -0x843bda
+
+    invoke-static {v15, v5, v13, v14}, Landroidx/compose/runtime/ComposerKt;->U(IIILjava/lang/String;)V
+
+    :cond_2b
+    invoke-static {v1, v6}, Landroidx/compose/foundation/OverscrollKt;->b(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/OverscrollEffect;
+
+    move-result-object v22
+
+    const v6, 0xffffffe
+
+    and-int v25, v5, v6
+
+    shr-int/lit8 v5, v5, 0x1b
+
+    and-int/lit8 v26, v5, 0xe
+
+    const/16 v27, 0x0
+
+    move-object/from16 v13, p0
+
+    move-object v14, v2
+
+    move-object v15, v4
+
+    move-object/from16 v16, v7
+
+    move/from16 v17, v10
+
+    move-object/from16 v18, v8
+
+    move/from16 v19, v9
+
+    move-object/from16 v20, v0
+
+    move/from16 v21, v3
+
+    move-object/from16 v23, p9
+
+    move-object/from16 v24, v1
+
+    invoke-static/range {v13 .. v27}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt;->a(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/layout/Arrangement$Vertical;FLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;Landroidx/compose/runtime/Composer;III)V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v5
+
+    if-eqz v5, :cond_2c
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->T()V
+
+    :cond_2c
+    move-object v6, v8
+
+    move v5, v10
+
+    move-object v8, v0
+
+    move/from16 v28, v9
+
+    move v9, v3
+
+    move-object v3, v4
+
+    move-object v4, v7
+
+    move/from16 v7, v28
+
+    goto :goto_1e
+
+    :cond_2d
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->l()V
+
+    move-object/from16 v2, p1
+
+    move-object/from16 v3, p2
+
+    move/from16 v7, p6
+
+    move/from16 v9, p8
+
+    move-object v4, v8
+
+    move v5, v10
+
+    move-object v6, v14
+
+    move-object/from16 v8, p7
+
+    :goto_1e
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->F()Landroidx/compose/runtime/ScopeUpdateScope;
+
+    move-result-object v13
+
+    if-eqz v13, :cond_2e
+
+    new-instance v14, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyHorizontalStaggeredGrid$2;
+
+    move-object v0, v14
+
+    move-object/from16 v1, p0
+
+    move-object/from16 v10, p9
+
+    move/from16 v11, p11
+
+    move/from16 v12, p12
+
+    invoke-direct/range {v0 .. v12}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyHorizontalStaggeredGrid$2;-><init>(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/layout/Arrangement$Vertical;FLandroidx/compose/foundation/gestures/FlingBehavior;ZLza0/l;II)V
+
+    invoke-interface {v13, v14}, Landroidx/compose/runtime/ScopeUpdateScope;->a(Lza0/p;)V
+
+    :cond_2e
+    return-void
+.end method
+
+.method public static final c(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZFLandroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;Landroidx/compose/runtime/Composer;III)V
+    .locals 33
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;",
+            "Landroidx/compose/ui/Modifier;",
+            "Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;",
+            "Landroidx/compose/foundation/layout/PaddingValues;",
+            "ZF",
+            "Landroidx/compose/foundation/layout/Arrangement$Horizontal;",
+            "Landroidx/compose/foundation/gestures/FlingBehavior;",
+            "Z",
+            "Landroidx/compose/foundation/OverscrollEffect;",
+            "Lza0/l<",
+            "-",
+            "Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridScope;",
+            "Lja0/h0;",
+            ">;",
+            "Landroidx/compose/runtime/Composer;",
+            "III)V"
+        }
+    .end annotation
+
+    move-object/from16 v1, p0
+
+    move/from16 v12, p12
+
+    move/from16 v14, p14
+
+    const v0, -0x2281ca08
+
+    move-object/from16 v2, p11
+
+    invoke-interface {v2, v0}, Landroidx/compose/runtime/Composer;->D(I)Landroidx/compose/runtime/Composer;
+
+    move-result-object v2
+
+    and-int/lit8 v3, v14, 0x1
+
+    if-eqz v3, :cond_0
+
+    or-int/lit8 v3, v12, 0x6
+
+    goto :goto_1
+
+    :cond_0
+    and-int/lit8 v3, v12, 0x6
+
+    if-nez v3, :cond_2
+
+    invoke-interface {v2, v1}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_1
+
+    const/4 v3, 0x4
+
+    goto :goto_0
+
+    :cond_1
+    const/4 v3, 0x2
+
+    :goto_0
+    or-int/2addr v3, v12
+
+    goto :goto_1
+
+    :cond_2
+    move v3, v12
+
+    :goto_1
+    and-int/lit8 v6, v14, 0x2
+
+    if-eqz v6, :cond_4
+
+    or-int/lit8 v3, v3, 0x30
+
+    :cond_3
+    move-object/from16 v7, p1
+
+    goto :goto_3
+
+    :cond_4
+    and-int/lit8 v7, v12, 0x30
+
+    if-nez v7, :cond_3
+
+    move-object/from16 v7, p1
+
+    invoke-interface {v2, v7}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v8
+
+    if-eqz v8, :cond_5
+
+    const/16 v8, 0x20
+
+    goto :goto_2
+
+    :cond_5
+    const/16 v8, 0x10
+
+    :goto_2
+    or-int/2addr v3, v8
+
+    :goto_3
+    and-int/lit16 v8, v12, 0x180
+
+    if-nez v8, :cond_8
+
+    and-int/lit8 v8, v14, 0x4
+
+    if-nez v8, :cond_6
+
+    move-object/from16 v8, p2
+
+    invoke-interface {v2, v8}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_7
+
+    const/16 v9, 0x100
+
+    goto :goto_4
+
+    :cond_6
+    move-object/from16 v8, p2
+
+    :cond_7
+    const/16 v9, 0x80
+
+    :goto_4
+    or-int/2addr v3, v9
+
+    goto :goto_5
+
+    :cond_8
+    move-object/from16 v8, p2
+
+    :goto_5
+    and-int/lit8 v9, v14, 0x8
+
+    if-eqz v9, :cond_a
+
+    or-int/lit16 v3, v3, 0xc00
+
+    :cond_9
+    move-object/from16 v10, p3
+
+    goto :goto_7
+
+    :cond_a
+    and-int/lit16 v10, v12, 0xc00
+
+    if-nez v10, :cond_9
+
+    move-object/from16 v10, p3
+
+    invoke-interface {v2, v10}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v11
+
+    if-eqz v11, :cond_b
+
+    const/16 v11, 0x800
+
+    goto :goto_6
+
+    :cond_b
+    const/16 v11, 0x400
+
+    :goto_6
+    or-int/2addr v3, v11
+
+    :goto_7
+    and-int/lit8 v11, v14, 0x10
+
+    if-eqz v11, :cond_d
+
+    or-int/lit16 v3, v3, 0x6000
+
+    :cond_c
+    move/from16 v13, p4
+
+    goto :goto_9
+
+    :cond_d
+    and-int/lit16 v13, v12, 0x6000
+
+    if-nez v13, :cond_c
+
+    move/from16 v13, p4
+
+    invoke-interface {v2, v13}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v15
+
+    if-eqz v15, :cond_e
+
+    const/16 v15, 0x4000
+
+    goto :goto_8
+
+    :cond_e
+    const/16 v15, 0x2000
+
+    :goto_8
+    or-int/2addr v3, v15
+
+    :goto_9
+    and-int/lit8 v15, v14, 0x20
+
+    const/high16 v16, 0x30000
+
+    if-eqz v15, :cond_f
+
+    or-int v3, v3, v16
+
+    move/from16 v5, p5
+
+    goto :goto_b
+
+    :cond_f
+    and-int v16, v12, v16
+
+    move/from16 v5, p5
+
+    if-nez v16, :cond_11
+
+    invoke-interface {v2, v5}, Landroidx/compose/runtime/Composer;->w(F)Z
+
+    move-result v16
+
+    if-eqz v16, :cond_10
+
+    const/high16 v16, 0x20000
+
+    goto :goto_a
+
+    :cond_10
+    const/high16 v16, 0x10000
+
+    :goto_a
+    or-int v3, v3, v16
+
+    :cond_11
+    :goto_b
+    and-int/lit8 v16, v14, 0x40
+
+    const/high16 v17, 0x180000
+
+    if-eqz v16, :cond_12
+
+    or-int v3, v3, v17
+
+    move-object/from16 v0, p6
+
+    goto :goto_d
+
+    :cond_12
+    and-int v17, v12, v17
+
+    move-object/from16 v0, p6
+
+    if-nez v17, :cond_14
+
+    invoke-interface {v2, v0}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v18
+
+    if-eqz v18, :cond_13
+
+    const/high16 v18, 0x100000
+
+    goto :goto_c
+
+    :cond_13
+    const/high16 v18, 0x80000
+
+    :goto_c
+    or-int v3, v3, v18
+
+    :cond_14
+    :goto_d
+    const/high16 v18, 0xc00000
+
+    and-int v18, v12, v18
+
+    if-nez v18, :cond_17
+
+    and-int/lit16 v4, v14, 0x80
+
+    if-nez v4, :cond_15
+
+    move-object/from16 v4, p7
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_16
+
+    const/high16 v19, 0x800000
+
+    goto :goto_e
+
+    :cond_15
+    move-object/from16 v4, p7
+
+    :cond_16
+    const/high16 v19, 0x400000
+
+    :goto_e
+    or-int v3, v3, v19
+
+    goto :goto_f
+
+    :cond_17
+    move-object/from16 v4, p7
+
+    :goto_f
+    and-int/lit16 v0, v14, 0x100
+
+    const/high16 v19, 0x6000000
+
+    if-eqz v0, :cond_18
+
+    or-int v3, v3, v19
+
+    move/from16 v4, p8
+
+    goto :goto_11
+
+    :cond_18
+    and-int v19, v12, v19
+
+    move/from16 v4, p8
+
+    if-nez v19, :cond_1a
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_19
+
+    const/high16 v19, 0x4000000
+
+    goto :goto_10
+
+    :cond_19
+    const/high16 v19, 0x2000000
+
+    :goto_10
+    or-int v3, v3, v19
+
+    :cond_1a
+    :goto_11
+    const/high16 v19, 0x30000000
+
+    and-int v19, v12, v19
+
+    if-nez v19, :cond_1d
+
+    and-int/lit16 v4, v14, 0x200
+
+    if-nez v4, :cond_1b
+
+    move-object/from16 v4, p9
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_1c
+
+    const/high16 v19, 0x20000000
+
+    goto :goto_12
+
+    :cond_1b
+    move-object/from16 v4, p9
+
+    :cond_1c
+    const/high16 v19, 0x10000000
+
+    :goto_12
+    or-int v3, v3, v19
+
+    goto :goto_13
+
+    :cond_1d
+    move-object/from16 v4, p9
+
+    :goto_13
+    and-int/lit16 v4, v14, 0x400
+
+    if-eqz v4, :cond_1e
+
+    or-int/lit8 v4, p13, 0x6
+
+    goto :goto_15
+
+    :cond_1e
+    and-int/lit8 v4, p13, 0x6
+
+    if-nez v4, :cond_20
+
+    move-object/from16 v4, p10
+
+    invoke-interface {v2, v4}, Landroidx/compose/runtime/Composer;->S(Ljava/lang/Object;)Z
+
+    move-result v19
+
+    if-eqz v19, :cond_1f
+
+    const/16 v19, 0x4
+
+    goto :goto_14
+
+    :cond_1f
+    const/16 v19, 0x2
+
+    :goto_14
+    or-int v19, p13, v19
+
+    move/from16 v4, v19
+
+    goto :goto_15
+
+    :cond_20
+    move-object/from16 v4, p10
+
+    move/from16 v4, p13
+
+    :goto_15
+    const v19, 0x12492493
+
+    and-int v5, v3, v19
+
+    const v7, 0x12492492
+
+    const/16 v19, 0x1
+
+    if-ne v5, v7, :cond_22
+
+    and-int/lit8 v5, v4, 0x3
+
+    const/4 v7, 0x2
+
+    if-eq v5, v7, :cond_21
+
+    goto :goto_16
+
+    :cond_21
+    const/4 v5, 0x0
+
+    goto :goto_17
+
+    :cond_22
+    :goto_16
+    move/from16 v5, v19
+
+    :goto_17
+    and-int/lit8 v7, v3, 0x1
+
+    invoke-interface {v2, v5, v7}, Landroidx/compose/runtime/Composer;->d(ZI)Z
+
+    move-result v5
+
+    if-eqz v5, :cond_33
+
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->T()V
+
+    and-int/lit8 v5, v12, 0x1
+
+    const v7, -0x70000001
+
+    const v18, -0x1c00001
+
+    const/4 v8, 0x3
+
+    if-eqz v5, :cond_27
+
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->m()Z
+
+    move-result v5
+
+    if-eqz v5, :cond_23
+
+    goto :goto_18
+
+    :cond_23
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->l()V
+
+    and-int/lit8 v0, v14, 0x4
+
+    if-eqz v0, :cond_24
+
+    and-int/lit16 v3, v3, -0x381
+
+    :cond_24
+    and-int/lit16 v0, v14, 0x80
+
+    if-eqz v0, :cond_25
+
+    and-int v3, v3, v18
+
+    :cond_25
+    and-int/lit16 v0, v14, 0x200
+
+    if-eqz v0, :cond_26
+
+    and-int/2addr v3, v7
+
+    :cond_26
+    move-object/from16 v5, p1
+
+    move-object/from16 v0, p2
+
+    move-object/from16 v6, p6
+
+    move-object/from16 v11, p7
+
+    move-object/from16 v7, p9
+
+    move v15, v3
+
+    move-object v9, v10
+
+    move/from16 v10, p5
+
+    move/from16 v3, p8
+
+    goto/16 :goto_21
+
+    :cond_27
+    :goto_18
+    if-eqz v6, :cond_28
+
+    sget-object v5, Landroidx/compose/ui/Modifier;->G8:Landroidx/compose/ui/Modifier$Companion;
+
+    goto :goto_19
+
+    :cond_28
+    move-object/from16 v5, p1
+
+    :goto_19
+    and-int/lit8 v6, v14, 0x4
+
+    if-eqz v6, :cond_29
+
+    const/4 v6, 0x0
+
+    invoke-static {v6, v6, v2, v6, v8}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridStateKt;->a(IILandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;
+
+    move-result-object v20
+
+    and-int/lit16 v3, v3, -0x381
+
+    goto :goto_1a
+
+    :cond_29
+    const/4 v6, 0x0
+
+    move-object/from16 v20, p2
+
+    :goto_1a
+    if-eqz v9, :cond_2a
+
+    int-to-float v9, v6
+
+    invoke-static {v9}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v9
+
+    invoke-static {v9}, Landroidx/compose/foundation/layout/PaddingKt;->a(F)Landroidx/compose/foundation/layout/PaddingValues;
+
+    move-result-object v9
+
+    goto :goto_1b
+
+    :cond_2a
+    move-object v9, v10
+
+    :goto_1b
+    if-eqz v11, :cond_2b
+
+    move v13, v6
+
+    :cond_2b
+    if-eqz v15, :cond_2c
+
+    int-to-float v10, v6
+
+    invoke-static {v10}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v10
+
+    goto :goto_1c
+
+    :cond_2c
+    move/from16 v10, p5
+
+    :goto_1c
+    if-eqz v16, :cond_2d
+
+    sget-object v11, Landroidx/compose/foundation/layout/Arrangement;->a:Landroidx/compose/foundation/layout/Arrangement;
+
+    int-to-float v15, v6
+
+    invoke-static {v15}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v6
+
+    invoke-virtual {v11, v6}, Landroidx/compose/foundation/layout/Arrangement;->n(F)Landroidx/compose/foundation/layout/Arrangement$HorizontalOrVertical;
+
+    move-result-object v6
+
+    goto :goto_1d
+
+    :cond_2d
+    move-object/from16 v6, p6
+
+    :goto_1d
+    and-int/lit16 v11, v14, 0x80
+
+    if-eqz v11, :cond_2e
+
+    sget-object v11, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a:Landroidx/compose/foundation/gestures/ScrollableDefaults;
+
+    const/4 v15, 0x6
+
+    invoke-virtual {v11, v2, v15}, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/gestures/FlingBehavior;
+
+    move-result-object v11
+
+    and-int v3, v3, v18
+
+    goto :goto_1e
+
+    :cond_2e
+    move-object/from16 v11, p7
+
+    :goto_1e
+    if-eqz v0, :cond_2f
+
+    goto :goto_1f
+
+    :cond_2f
+    move/from16 v19, p8
+
+    :goto_1f
+    and-int/lit16 v0, v14, 0x200
+
+    if-eqz v0, :cond_30
+
+    const/4 v0, 0x0
+
+    invoke-static {v2, v0}, Landroidx/compose/foundation/OverscrollKt;->b(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/OverscrollEffect;
+
+    move-result-object v0
+
+    and-int/2addr v3, v7
+
+    move-object v7, v0
+
+    :goto_20
+    move v15, v3
+
+    move/from16 v3, v19
+
+    move-object/from16 v0, v20
+
+    goto :goto_21
+
+    :cond_30
+    move-object/from16 v7, p9
+
+    goto :goto_20
+
+    :goto_21
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->K()V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v16
+
+    if-eqz v16, :cond_31
+
+    const-string v8, "androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid (LazyStaggeredGridDsl.kt:81)"
+
+    const v12, -0x2281ca08
+
+    invoke-static {v12, v15, v4, v8}, Landroidx/compose/runtime/ComposerKt;->U(IIILjava/lang/String;)V
+
+    :cond_31
+    sget-object v16, Landroidx/compose/foundation/gestures/Orientation;->b:Landroidx/compose/foundation/gestures/Orientation;
+
+    invoke-interface {v6}, Landroidx/compose/foundation/layout/Arrangement$Horizontal;->a()F
+
+    move-result v25
+
+    and-int/lit8 v8, v15, 0xe
+
+    shr-int/lit8 v12, v15, 0xf
+
+    and-int/lit8 v12, v12, 0x70
+
+    or-int/2addr v8, v12
+
+    shr-int/lit8 v12, v15, 0x3
+
+    and-int/lit16 v14, v12, 0x380
+
+    or-int/2addr v8, v14
+
+    invoke-static {v1, v6, v9, v2, v8}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt;->e(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;
+
+    move-result-object v17
+
+    shr-int/lit8 v8, v15, 0x6
+
+    and-int/lit8 v8, v8, 0xe
+
+    or-int/lit8 v8, v8, 0x30
+
+    shl-int/lit8 v14, v15, 0x6
+
+    and-int/lit16 v14, v14, 0x1c00
+
+    or-int/2addr v8, v14
+
+    shl-int/lit8 v14, v15, 0x3
+
+    const v18, 0xe000
+
+    and-int v18, v14, v18
+
+    or-int v8, v8, v18
+
+    const/high16 v18, 0x70000
+
+    and-int v14, v14, v18
+
+    or-int/2addr v8, v14
+
+    const/high16 v14, 0x380000
+
+    and-int/2addr v14, v12
+
+    or-int/2addr v8, v14
+
+    const/high16 v14, 0x1c00000
+
+    and-int/2addr v14, v12
+
+    or-int/2addr v8, v14
+
+    const/high16 v14, 0xe000000
+
+    and-int/2addr v12, v14
+
+    or-int/2addr v8, v12
+
+    shl-int/lit8 v12, v15, 0xc
+
+    const/high16 v14, 0x70000000
+
+    and-int/2addr v12, v14
+
+    or-int v28, v8, v12
+
+    const/4 v8, 0x3
+
+    shl-int/2addr v4, v8
+
+    and-int/lit8 v29, v4, 0x70
+
+    const/16 v30, 0x0
+
+    move-object v15, v0
+
+    move-object/from16 v18, v5
+
+    move-object/from16 v19, v9
+
+    move/from16 v20, v13
+
+    move-object/from16 v21, v11
+
+    move/from16 v22, v3
+
+    move-object/from16 v23, v7
+
+    move/from16 v24, v10
+
+    move-object/from16 v26, p10
+
+    move-object/from16 v27, v2
+
+    invoke-static/range {v15 .. v30}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridKt;->a(Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/gestures/Orientation;Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/PaddingValues;ZLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;FFLza0/l;Landroidx/compose/runtime/Composer;III)V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_32
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->T()V
+
+    :cond_32
+    move-object v4, v9
+
+    move-object v8, v11
+
+    move v9, v3
+
+    move-object v3, v0
+
+    move-object/from16 v32, v7
+
+    move-object v7, v6
+
+    move v6, v10
+
+    move-object/from16 v10, v32
+
+    goto :goto_22
+
+    :cond_33
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->l()V
+
+    move-object/from16 v5, p1
+
+    move-object/from16 v3, p2
+
+    move/from16 v6, p5
+
+    move-object/from16 v7, p6
+
+    move-object/from16 v8, p7
+
+    move/from16 v9, p8
+
+    move-object v4, v10
+
+    move-object/from16 v10, p9
+
+    :goto_22
+    invoke-interface {v2}, Landroidx/compose/runtime/Composer;->F()Landroidx/compose/runtime/ScopeUpdateScope;
+
+    move-result-object v15
+
+    if-eqz v15, :cond_34
+
+    new-instance v14, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyVerticalStaggeredGrid$1;
+
+    move-object v0, v14
+
+    move-object/from16 v1, p0
+
+    move-object v2, v5
+
+    move v5, v13
+
+    move-object/from16 v11, p10
+
+    move/from16 v12, p12
+
+    move/from16 v13, p13
+
+    move-object/from16 v31, v14
+
+    move/from16 v14, p14
+
+    invoke-direct/range {v0 .. v14}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyVerticalStaggeredGrid$1;-><init>(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZFLandroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;III)V
+
+    move-object/from16 v0, v31
+
+    invoke-interface {v15, v0}, Landroidx/compose/runtime/ScopeUpdateScope;->a(Lza0/p;)V
+
+    :cond_34
+    return-void
+.end method
+
+.method public static final synthetic d(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZFLandroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/gestures/FlingBehavior;ZLza0/l;Landroidx/compose/runtime/Composer;II)V
+    .locals 29
+    .annotation runtime Lja0/e;
+    .end annotation
+
+    move/from16 v11, p11
+
+    move/from16 v12, p12
+
+    const v0, 0x650c9692
+
+    move-object/from16 v1, p10
+
+    invoke-interface {v1, v0}, Landroidx/compose/runtime/Composer;->D(I)Landroidx/compose/runtime/Composer;
+
+    move-result-object v1
+
+    and-int/lit8 v2, v12, 0x1
+
+    if-eqz v2, :cond_0
+
+    or-int/lit8 v2, v11, 0x6
+
+    move v3, v2
+
+    move-object/from16 v2, p0
+
+    goto :goto_1
+
+    :cond_0
+    and-int/lit8 v2, v11, 0x6
+
+    if-nez v2, :cond_2
+
+    move-object/from16 v2, p0
+
+    invoke-interface {v1, v2}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v3
+
+    if-eqz v3, :cond_1
+
+    const/4 v3, 0x4
+
+    goto :goto_0
+
+    :cond_1
+    const/4 v3, 0x2
+
+    :goto_0
+    or-int/2addr v3, v11
+
+    goto :goto_1
+
+    :cond_2
+    move-object/from16 v2, p0
+
+    move v3, v11
+
+    :goto_1
+    and-int/lit8 v4, v12, 0x2
+
+    if-eqz v4, :cond_4
+
+    or-int/lit8 v3, v3, 0x30
+
+    :cond_3
+    move-object/from16 v5, p1
+
+    goto :goto_3
+
+    :cond_4
+    and-int/lit8 v5, v11, 0x30
+
+    if-nez v5, :cond_3
+
+    move-object/from16 v5, p1
+
+    invoke-interface {v1, v5}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v6
+
+    if-eqz v6, :cond_5
+
+    const/16 v6, 0x20
+
+    goto :goto_2
+
+    :cond_5
+    const/16 v6, 0x10
+
+    :goto_2
+    or-int/2addr v3, v6
+
+    :goto_3
+    and-int/lit16 v6, v11, 0x180
+
+    if-nez v6, :cond_8
+
+    and-int/lit8 v6, v12, 0x4
+
+    if-nez v6, :cond_6
+
+    move-object/from16 v6, p2
+
+    invoke-interface {v1, v6}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v7
+
+    if-eqz v7, :cond_7
+
+    const/16 v7, 0x100
+
+    goto :goto_4
+
+    :cond_6
+    move-object/from16 v6, p2
+
+    :cond_7
+    const/16 v7, 0x80
+
+    :goto_4
+    or-int/2addr v3, v7
+
+    goto :goto_5
+
+    :cond_8
+    move-object/from16 v6, p2
+
+    :goto_5
+    and-int/lit8 v7, v12, 0x8
+
+    if-eqz v7, :cond_a
+
+    or-int/lit16 v3, v3, 0xc00
+
+    :cond_9
+    move-object/from16 v8, p3
+
+    goto :goto_7
+
+    :cond_a
+    and-int/lit16 v8, v11, 0xc00
+
+    if-nez v8, :cond_9
+
+    move-object/from16 v8, p3
+
+    invoke-interface {v1, v8}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v9
+
+    if-eqz v9, :cond_b
+
+    const/16 v9, 0x800
+
+    goto :goto_6
+
+    :cond_b
+    const/16 v9, 0x400
+
+    :goto_6
+    or-int/2addr v3, v9
+
+    :goto_7
+    and-int/lit8 v9, v12, 0x10
+
+    if-eqz v9, :cond_d
+
+    or-int/lit16 v3, v3, 0x6000
+
+    :cond_c
+    move/from16 v10, p4
+
+    goto :goto_9
+
+    :cond_d
+    and-int/lit16 v10, v11, 0x6000
+
+    if-nez v10, :cond_c
+
+    move/from16 v10, p4
+
+    invoke-interface {v1, v10}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v13
+
+    if-eqz v13, :cond_e
+
+    const/16 v13, 0x4000
+
+    goto :goto_8
+
+    :cond_e
+    const/16 v13, 0x2000
+
+    :goto_8
+    or-int/2addr v3, v13
+
+    :goto_9
+    and-int/lit8 v13, v12, 0x20
+
+    const/high16 v14, 0x30000
+
+    if-eqz v13, :cond_10
+
+    or-int/2addr v3, v14
+
+    :cond_f
+    move/from16 v14, p5
+
+    goto :goto_b
+
+    :cond_10
+    and-int/2addr v14, v11
+
+    if-nez v14, :cond_f
+
+    move/from16 v14, p5
+
+    invoke-interface {v1, v14}, Landroidx/compose/runtime/Composer;->w(F)Z
+
+    move-result v15
+
+    if-eqz v15, :cond_11
+
+    const/high16 v15, 0x20000
+
+    goto :goto_a
+
+    :cond_11
+    const/high16 v15, 0x10000
+
+    :goto_a
+    or-int/2addr v3, v15
+
+    :goto_b
+    and-int/lit8 v15, v12, 0x40
+
+    const/high16 v16, 0x180000
+
+    if-eqz v15, :cond_12
+
+    or-int v3, v3, v16
+
+    move-object/from16 v0, p6
+
+    goto :goto_d
+
+    :cond_12
+    and-int v16, v11, v16
+
+    move-object/from16 v0, p6
+
+    if-nez v16, :cond_14
+
+    invoke-interface {v1, v0}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_13
+
+    const/high16 v17, 0x100000
+
+    goto :goto_c
+
+    :cond_13
+    const/high16 v17, 0x80000
+
+    :goto_c
+    or-int v3, v3, v17
+
+    :cond_14
+    :goto_d
+    const/high16 v17, 0xc00000
+
+    and-int v17, v11, v17
+
+    if-nez v17, :cond_17
+
+    and-int/lit16 v0, v12, 0x80
+
+    if-nez v0, :cond_15
+
+    move-object/from16 v0, p7
+
+    invoke-interface {v1, v0}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_16
+
+    const/high16 v17, 0x800000
+
+    goto :goto_e
+
+    :cond_15
+    move-object/from16 v0, p7
+
+    :cond_16
+    const/high16 v17, 0x400000
+
+    :goto_e
+    or-int v3, v3, v17
+
+    goto :goto_f
+
+    :cond_17
+    move-object/from16 v0, p7
+
+    :goto_f
+    and-int/lit16 v0, v12, 0x100
+
+    const/high16 v17, 0x6000000
+
+    if-eqz v0, :cond_18
+
+    or-int v3, v3, v17
+
+    move/from16 v2, p8
+
+    goto :goto_11
+
+    :cond_18
+    and-int v17, v11, v17
+
+    move/from16 v2, p8
+
+    if-nez v17, :cond_1a
+
+    invoke-interface {v1, v2}, Landroidx/compose/runtime/Composer;->v(Z)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_19
+
+    const/high16 v17, 0x4000000
+
+    goto :goto_10
+
+    :cond_19
+    const/high16 v17, 0x2000000
+
+    :goto_10
+    or-int v3, v3, v17
+
+    :cond_1a
+    :goto_11
+    and-int/lit16 v2, v12, 0x200
+
+    const/high16 v17, 0x30000000
+
+    if-eqz v2, :cond_1c
+
+    or-int v3, v3, v17
+
+    :cond_1b
+    move-object/from16 v2, p9
+
+    goto :goto_13
+
+    :cond_1c
+    and-int v2, v11, v17
+
+    if-nez v2, :cond_1b
+
+    move-object/from16 v2, p9
+
+    invoke-interface {v1, v2}, Landroidx/compose/runtime/Composer;->S(Ljava/lang/Object;)Z
+
+    move-result v17
+
+    if-eqz v17, :cond_1d
+
+    const/high16 v17, 0x20000000
+
+    goto :goto_12
+
+    :cond_1d
+    const/high16 v17, 0x10000000
+
+    :goto_12
+    or-int v3, v3, v17
+
+    :goto_13
+    const v17, 0x12492493
+
+    and-int v2, v3, v17
+
+    const v5, 0x12492492
+
+    const/4 v6, 0x0
+
+    const/16 v17, 0x1
+
+    if-eq v2, v5, :cond_1e
+
+    move/from16 v2, v17
+
+    goto :goto_14
+
+    :cond_1e
+    move v2, v6
+
+    :goto_14
+    and-int/lit8 v5, v3, 0x1
+
+    invoke-interface {v1, v2, v5}, Landroidx/compose/runtime/Composer;->d(ZI)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_2d
+
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->T()V
+
+    and-int/lit8 v2, v11, 0x1
+
+    const v5, -0x1c00001
+
+    if-eqz v2, :cond_22
+
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->m()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_1f
+
+    goto :goto_16
+
+    :cond_1f
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->l()V
+
+    and-int/lit8 v0, v12, 0x4
+
+    if-eqz v0, :cond_20
+
+    and-int/lit16 v3, v3, -0x381
+
+    :cond_20
+    and-int/lit16 v0, v12, 0x80
+
+    if-eqz v0, :cond_21
+
+    and-int/2addr v3, v5
+
+    :cond_21
+    move-object/from16 v2, p1
+
+    move-object/from16 v4, p2
+
+    move-object/from16 v9, p6
+
+    move-object/from16 v0, p7
+
+    move v5, v3
+
+    move-object v7, v8
+
+    move v8, v14
+
+    :goto_15
+    move/from16 v3, p8
+
+    goto/16 :goto_1d
+
+    :cond_22
+    :goto_16
+    if-eqz v4, :cond_23
+
+    sget-object v2, Landroidx/compose/ui/Modifier;->G8:Landroidx/compose/ui/Modifier$Companion;
+
+    goto :goto_17
+
+    :cond_23
+    move-object/from16 v2, p1
+
+    :goto_17
+    and-int/lit8 v4, v12, 0x4
+
+    if-eqz v4, :cond_24
+
+    const/4 v4, 0x3
+
+    invoke-static {v6, v6, v1, v6, v4}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridStateKt;->a(IILandroidx/compose/runtime/Composer;II)Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;
+
+    move-result-object v4
+
+    and-int/lit16 v3, v3, -0x381
+
+    goto :goto_18
+
+    :cond_24
+    move-object/from16 v4, p2
+
+    :goto_18
+    if-eqz v7, :cond_25
+
+    int-to-float v7, v6
+
+    invoke-static {v7}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v7
+
+    invoke-static {v7}, Landroidx/compose/foundation/layout/PaddingKt;->a(F)Landroidx/compose/foundation/layout/PaddingValues;
+
+    move-result-object v7
+
+    goto :goto_19
+
+    :cond_25
+    move-object v7, v8
+
+    :goto_19
+    if-eqz v9, :cond_26
+
+    move v10, v6
+
+    :cond_26
+    if-eqz v13, :cond_27
+
+    int-to-float v8, v6
+
+    invoke-static {v8}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v8
+
+    goto :goto_1a
+
+    :cond_27
+    move v8, v14
+
+    :goto_1a
+    if-eqz v15, :cond_28
+
+    sget-object v9, Landroidx/compose/foundation/layout/Arrangement;->a:Landroidx/compose/foundation/layout/Arrangement;
+
+    int-to-float v13, v6
+
+    invoke-static {v13}, Landroidx/compose/ui/unit/Dp;->i(F)F
+
+    move-result v13
+
+    invoke-virtual {v9, v13}, Landroidx/compose/foundation/layout/Arrangement;->n(F)Landroidx/compose/foundation/layout/Arrangement$HorizontalOrVertical;
+
+    move-result-object v9
+
+    goto :goto_1b
+
+    :cond_28
+    move-object/from16 v9, p6
+
+    :goto_1b
+    and-int/lit16 v13, v12, 0x80
+
+    if-eqz v13, :cond_29
+
+    sget-object v13, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a:Landroidx/compose/foundation/gestures/ScrollableDefaults;
+
+    const/4 v14, 0x6
+
+    invoke-virtual {v13, v1, v14}, Landroidx/compose/foundation/gestures/ScrollableDefaults;->a(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/gestures/FlingBehavior;
+
+    move-result-object v13
+
+    and-int/2addr v3, v5
+
+    goto :goto_1c
+
+    :cond_29
+    move-object/from16 v13, p7
+
+    :goto_1c
+    move v5, v3
+
+    if-eqz v0, :cond_2a
+
+    move-object v0, v13
+
+    move/from16 v3, v17
+
+    goto :goto_1d
+
+    :cond_2a
+    move-object v0, v13
+
+    goto :goto_15
+
+    :goto_1d
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->K()V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v13
+
+    if-eqz v13, :cond_2b
+
+    const/4 v13, -0x1
+
+    const-string v14, "androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid (LazyStaggeredGridDsl.kt:111)"
+
+    const v15, 0x650c9692
+
+    invoke-static {v15, v5, v13, v14}, Landroidx/compose/runtime/ComposerKt;->U(IIILjava/lang/String;)V
+
+    :cond_2b
+    invoke-static {v1, v6}, Landroidx/compose/foundation/OverscrollKt;->b(Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/OverscrollEffect;
+
+    move-result-object v22
+
+    const v6, 0xffffffe
+
+    and-int v25, v5, v6
+
+    shr-int/lit8 v5, v5, 0x1b
+
+    and-int/lit8 v26, v5, 0xe
+
+    const/16 v27, 0x0
+
+    move-object/from16 v13, p0
+
+    move-object v14, v2
+
+    move-object v15, v4
+
+    move-object/from16 v16, v7
+
+    move/from16 v17, v10
+
+    move/from16 v18, v8
+
+    move-object/from16 v19, v9
+
+    move-object/from16 v20, v0
+
+    move/from16 v21, v3
+
+    move-object/from16 v23, p9
+
+    move-object/from16 v24, v1
+
+    invoke-static/range {v13 .. v27}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt;->c(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZFLandroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;Lza0/l;Landroidx/compose/runtime/Composer;III)V
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v5
+
+    if-eqz v5, :cond_2c
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->T()V
+
+    :cond_2c
+    move v6, v8
+
+    move v5, v10
+
+    move-object v8, v0
+
+    move-object/from16 v28, v9
+
+    move v9, v3
+
+    move-object v3, v4
+
+    move-object v4, v7
+
+    move-object/from16 v7, v28
+
+    goto :goto_1e
+
+    :cond_2d
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->l()V
+
+    move-object/from16 v2, p1
+
+    move-object/from16 v3, p2
+
+    move-object/from16 v7, p6
+
+    move/from16 v9, p8
+
+    move-object v4, v8
+
+    move v5, v10
+
+    move v6, v14
+
+    move-object/from16 v8, p7
+
+    :goto_1e
+    invoke-interface {v1}, Landroidx/compose/runtime/Composer;->F()Landroidx/compose/runtime/ScopeUpdateScope;
+
+    move-result-object v13
+
+    if-eqz v13, :cond_2e
+
+    new-instance v14, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyVerticalStaggeredGrid$2;
+
+    move-object v0, v14
+
+    move-object/from16 v1, p0
+
+    move-object/from16 v10, p9
+
+    move/from16 v11, p11
+
+    move/from16 v12, p12
+
+    invoke-direct/range {v0 .. v12}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$LazyVerticalStaggeredGrid$2;-><init>(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridState;Landroidx/compose/foundation/layout/PaddingValues;ZFLandroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/gestures/FlingBehavior;ZLza0/l;II)V
+
+    invoke-interface {v13, v14}, Landroidx/compose/runtime/ScopeUpdateScope;->a(Lza0/p;)V
+
+    :cond_2e
+    return-void
+.end method
+
+.method private static final e(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;
+    .locals 5
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_0
+
+    const/4 v0, -0x1
+
+    const-string v1, "androidx.compose.foundation.lazy.staggeredgrid.rememberColumnSlots (LazyStaggeredGridDsl.kt:134)"
+
+    const v2, -0x4b860ee9
+
+    invoke-static {v2, p4, v0, v1}, Landroidx/compose/runtime/ComposerKt;->U(IIILjava/lang/String;)V
+
+    :cond_0
+    and-int/lit8 v0, p4, 0xe
+
+    xor-int/lit8 v0, v0, 0x6
+
+    const/4 v1, 0x4
+
+    const/4 v2, 0x0
+
+    const/4 v3, 0x1
+
+    if-le v0, v1, :cond_1
+
+    invoke-interface {p3, p0}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_2
+
+    :cond_1
+    and-int/lit8 v0, p4, 0x6
+
+    if-ne v0, v1, :cond_3
+
+    :cond_2
+    move v0, v3
+
+    goto :goto_0
+
+    :cond_3
+    move v0, v2
+
+    :goto_0
+    and-int/lit8 v1, p4, 0x70
+
+    xor-int/lit8 v1, v1, 0x30
+
+    const/16 v4, 0x20
+
+    if-le v1, v4, :cond_4
+
+    invoke-interface {p3, p1}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_5
+
+    :cond_4
+    and-int/lit8 v1, p4, 0x30
+
+    if-ne v1, v4, :cond_6
+
+    :cond_5
+    move v1, v3
+
+    goto :goto_1
+
+    :cond_6
+    move v1, v2
+
+    :goto_1
+    or-int/2addr v0, v1
+
+    and-int/lit16 v1, p4, 0x380
+
+    xor-int/lit16 v1, v1, 0x180
+
+    const/16 v4, 0x100
+
+    if-le v1, v4, :cond_7
+
+    invoke-interface {p3, p2}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_8
+
+    :cond_7
+    and-int/lit16 p4, p4, 0x180
+
+    if-ne p4, v4, :cond_9
+
+    :cond_8
+    move v2, v3
+
+    :cond_9
+    or-int p4, v0, v2
+
+    invoke-interface {p3}, Landroidx/compose/runtime/Composer;->Q()Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-nez p4, :cond_a
+
+    sget-object p4, Landroidx/compose/runtime/Composer;->a:Landroidx/compose/runtime/Composer$Companion;
+
+    invoke-virtual {p4}, Landroidx/compose/runtime/Composer$Companion;->a()Ljava/lang/Object;
+
+    move-result-object p4
+
+    if-ne v0, p4, :cond_b
+
+    :cond_a
+    new-instance v0, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridSlotCache;
+
+    new-instance p4, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$rememberColumnSlots$1$1;
+
+    invoke-direct {p4, p2, p0, p1}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$rememberColumnSlots$1$1;-><init>(Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Horizontal;)V
+
+    invoke-direct {v0, p4}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridSlotCache;-><init>(Lza0/p;)V
+
+    invoke-interface {p3, v0}, Landroidx/compose/runtime/Composer;->J(Ljava/lang/Object;)V
+
+    :cond_b
+    check-cast v0, Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result p0
+
+    if-eqz p0, :cond_c
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->T()V
+
+    :cond_c
+    return-object v0
+.end method
+
+.method private static final f(Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;
+    .locals 5
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_0
+
+    const/4 v0, -0x1
+
+    const-string v1, "androidx.compose.foundation.lazy.staggeredgrid.rememberRowSlots (LazyStaggeredGridDsl.kt:259)"
+
+    const v2, -0x5b564f4d
+
+    invoke-static {v2, p4, v0, v1}, Landroidx/compose/runtime/ComposerKt;->U(IIILjava/lang/String;)V
+
+    :cond_0
+    and-int/lit8 v0, p4, 0xe
+
+    xor-int/lit8 v0, v0, 0x6
+
+    const/4 v1, 0x4
+
+    const/4 v2, 0x0
+
+    const/4 v3, 0x1
+
+    if-le v0, v1, :cond_1
+
+    invoke-interface {p3, p0}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_2
+
+    :cond_1
+    and-int/lit8 v0, p4, 0x6
+
+    if-ne v0, v1, :cond_3
+
+    :cond_2
+    move v0, v3
+
+    goto :goto_0
+
+    :cond_3
+    move v0, v2
+
+    :goto_0
+    and-int/lit8 v1, p4, 0x70
+
+    xor-int/lit8 v1, v1, 0x30
+
+    const/16 v4, 0x20
+
+    if-le v1, v4, :cond_4
+
+    invoke-interface {p3, p1}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_5
+
+    :cond_4
+    and-int/lit8 v1, p4, 0x30
+
+    if-ne v1, v4, :cond_6
+
+    :cond_5
+    move v1, v3
+
+    goto :goto_1
+
+    :cond_6
+    move v1, v2
+
+    :goto_1
+    or-int/2addr v0, v1
+
+    and-int/lit16 v1, p4, 0x380
+
+    xor-int/lit16 v1, v1, 0x180
+
+    const/16 v4, 0x100
+
+    if-le v1, v4, :cond_7
+
+    invoke-interface {p3, p2}, Landroidx/compose/runtime/Composer;->r(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_8
+
+    :cond_7
+    and-int/lit16 p4, p4, 0x180
+
+    if-ne p4, v4, :cond_9
+
+    :cond_8
+    move v2, v3
+
+    :cond_9
+    or-int p4, v0, v2
+
+    invoke-interface {p3}, Landroidx/compose/runtime/Composer;->Q()Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-nez p4, :cond_a
+
+    sget-object p4, Landroidx/compose/runtime/Composer;->a:Landroidx/compose/runtime/Composer$Companion;
+
+    invoke-virtual {p4}, Landroidx/compose/runtime/Composer$Companion;->a()Ljava/lang/Object;
+
+    move-result-object p4
+
+    if-ne v0, p4, :cond_b
+
+    :cond_a
+    new-instance v0, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridSlotCache;
+
+    new-instance p4, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$rememberRowSlots$1$1;
+
+    invoke-direct {p4, p2, p0, p1}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridDslKt$rememberRowSlots$1$1;-><init>(Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/lazy/staggeredgrid/StaggeredGridCells;Landroidx/compose/foundation/layout/Arrangement$Vertical;)V
+
+    invoke-direct {v0, p4}, Landroidx/compose/foundation/lazy/staggeredgrid/LazyStaggeredGridSlotCache;-><init>(Lza0/p;)V
+
+    invoke-interface {p3, v0}, Landroidx/compose/runtime/Composer;->J(Ljava/lang/Object;)V
+
+    :cond_b
+    check-cast v0, Landroidx/compose/foundation/lazy/staggeredgrid/LazyGridStaggeredGridSlotsProvider;
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->M()Z
+
+    move-result p0
+
+    if-eqz p0, :cond_c
+
+    invoke-static {}, Landroidx/compose/runtime/ComposerKt;->T()V
+
+    :cond_c
+    return-object v0
+.end method

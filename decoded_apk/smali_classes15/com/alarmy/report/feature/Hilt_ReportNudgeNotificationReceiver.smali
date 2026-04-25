@@ -1,0 +1,126 @@
+.class public abstract Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;
+.super Landroid/content/BroadcastReceiver;
+.source "SourceFile"
+
+
+# instance fields
+.field private volatile a:Z
+
+.field private final b:Ljava/lang/Object;
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 1
+
+    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
+
+    const/4 v0, 0x0
+
+    iput-boolean v0, p0, Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;->a:Z
+
+    new-instance v0, Ljava/lang/Object;
+
+    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
+
+    iput-object v0, p0, Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;->b:Ljava/lang/Object;
+
+    return-void
+.end method
+
+.method public static synthetic a$001(Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;Landroid/content/Context;)V
+    .locals 1
+
+    invoke-virtual/range {p0 .. p1}, Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;->a(Landroid/content/Context;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method protected a(Landroid/content/Context;)V
+    .locals 2
+
+    iget-boolean v0, p0, Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;->a:Z
+
+    if-nez v0, :cond_1
+
+    iget-object v0, p0, Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;->b:Ljava/lang/Object;
+
+    monitor-enter v0
+
+    :try_start_0
+    iget-boolean v1, p0, Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;->a:Z
+
+    if-nez v1, :cond_0
+
+    invoke-static {p1}, Ldagger/hilt/android/internal/managers/e;->a(Landroid/content/Context;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    check-cast p1, Lm5/a;
+
+    invoke-static {p0}, Low/d;->a(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/alarmy/report/feature/ReportNudgeNotificationReceiver;
+
+    invoke-interface {p1, v1}, Lm5/a;->s(Lcom/alarmy/report/feature/ReportNudgeNotificationReceiver;)V
+
+    const/4 p1, 0x1
+
+    iput-boolean p1, p0, Lcom/alarmy/report/feature/Hilt_ReportNudgeNotificationReceiver;->a:Z
+
+    goto :goto_0
+
+    :catchall_0
+    move-exception p1
+
+    goto :goto_1
+
+    :cond_0
+    :goto_0
+    monitor-exit v0
+
+    goto :goto_2
+
+    :goto_1
+    monitor-exit v0
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    throw p1
+
+    :cond_1
+    :goto_2
+    return-void
+.end method
+
+.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+    .locals 5
+
+    const v0, 0x3
+
+    new-array v2, v0, [Ljava/lang/Object;
+
+    const v0, 0x0
+
+    aput-object p0, v2, v0
+
+    const v0, 0x1
+
+    aput-object p1, v2, v0
+
+    const v0, 0x2
+
+    aput-object p2, v2, v0
+
+    const-string/jumbo v1, "mBMr0DJcQWZkH7Ze"
+
+    invoke-static {v1, v2}, Lcom/pairip/VMRunner;->invoke(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    return-void
+.end method

@@ -1,0 +1,36 @@
+.class public final synthetic Lcom/alarmy/ad/impl/debugger/c;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/a;
+
+
+# instance fields
+.field public final synthetic b:Lcom/alarmy/ad/impl/debugger/DebugLogActivity;
+
+
+# direct methods
+.method public synthetic constructor <init>(Lcom/alarmy/ad/impl/debugger/DebugLogActivity;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lcom/alarmy/ad/impl/debugger/c;->b:Lcom/alarmy/ad/impl/debugger/DebugLogActivity;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invoke()Ljava/lang/Object;
+    .locals 1
+
+    iget-object v0, p0, Lcom/alarmy/ad/impl/debugger/c;->b:Lcom/alarmy/ad/impl/debugger/DebugLogActivity;
+
+    invoke-static {v0}, Lcom/alarmy/ad/impl/debugger/DebugLogActivity$b$a;->b(Lcom/alarmy/ad/impl/debugger/DebugLogActivity;)Lja0/h0;
+
+    move-result-object v0
+
+    return-object v0
+.end method

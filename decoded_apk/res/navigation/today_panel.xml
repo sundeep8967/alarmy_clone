@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/todayPanelGraph" app:startDestination="@id/todayPanel"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="TodayPanelFragment" android:name="droom.sleepIfUCan.feature.today.TodayPanelFragment" android:id="@id/todayPanel">
+        <deepLink app:uri="@string/deeplink_uri_today_panel" />
+        <deepLink app:uri="@string/deeplink_uri_today_panel_from_dismiss" />
+        <argument android:name="fromDismiss" android:defaultValue="false" app:argType="boolean" />
+        <action android:id="@id/action_to_todayPanelWeather" app:destination="@id/todayPanelWeather" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right" />
+        <action android:id="@id/action_to_todayPanelHoroscope" app:destination="@id/todayPanelHoroscope" />
+        <action android:id="@id/action_to_horoscopeSetting" app:destination="@id/horoscopeSetting" />
+        <action android:id="@id/action_to_morningFeelingHistory" app:destination="@id/MorningFeelingHistory" />
+        <action android:id="@id/action_to_wucDirectDismiss" app:destination="@id/WUCDirectDismiss" />
+        <action android:id="@id/action_to_quest" app:destination="@id/quest" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right" />
+        <action android:id="@id/action_to_motivation" app:destination="@id/motivation" />
+    </fragment>
+    <fragment android:label="TodayPanelHoroscopeFragment" android:name="droom.sleepIfUCan.feature.today.TodayPanelHoroscopeFragment" android:id="@id/todayPanelHoroscope">
+        <action android:id="@id/action_to_horoscopeSetting" app:destination="@id/horoscopeSetting" />
+    </fragment>
+    <fragment android:label="HoroscopeSettingFragment" android:name="droom.sleepIfUCan.feature.today.horoscope.HoroscopeSettingFragment" android:id="@id/horoscopeSetting">
+        <action android:id="@id/action_to_todayPanelHoroscope" app:destination="@id/todayPanelHoroscope" app:popUpTo="@id/todayPanel" />
+    </fragment>
+    <fragment android:label="TodayPanelMorningFeelingFragment" android:name="droom.sleepIfUCan.feature.today.feeling.TodayPanelMorningFeelingHistoryFragment" android:id="@id/MorningFeelingHistory" />
+    <fragment android:label="WUCDirectDismissFragment" android:name="droom.sleepIfUCan.feature.wakeupcheck.WUCDirectDismissFragment" android:id="@id/WUCDirectDismiss" />
+    <fragment android:label="MotivationFragment" android:name="droom.sleepIfUCan.feature.today.motivation.MotivationFragment" android:id="@id/motivation">
+        <argument android:name="entryType" android:defaultValue="" app:argType="string" />
+    </fragment>
+</navigation>

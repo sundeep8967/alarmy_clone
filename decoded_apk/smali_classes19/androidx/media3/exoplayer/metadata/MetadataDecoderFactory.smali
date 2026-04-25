@@ -1,0 +1,29 @@
+.class public interface abstract Landroidx/media3/exoplayer/metadata/MetadataDecoderFactory;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# static fields
+.field public static final a:Landroidx/media3/exoplayer/metadata/MetadataDecoderFactory;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 1
+
+    new-instance v0, Landroidx/media3/exoplayer/metadata/MetadataDecoderFactory$1;
+
+    invoke-direct {v0}, Landroidx/media3/exoplayer/metadata/MetadataDecoderFactory$1;-><init>()V
+
+    sput-object v0, Landroidx/media3/exoplayer/metadata/MetadataDecoderFactory;->a:Landroidx/media3/exoplayer/metadata/MetadataDecoderFactory;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public abstract a(Landroidx/media3/common/Format;)Z
+.end method
+
+.method public abstract b(Landroidx/media3/common/Format;)Landroidx/media3/extractor/metadata/MetadataDecoder;
+.end method

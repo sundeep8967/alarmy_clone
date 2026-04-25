@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/settingGraph" app:startDestination="@id/setting"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <action android:id="@id/action_global_alarmListGraph" app:destination="@id/alarmList" app:launchSingleTop="true" app:popUpTo="@id/alarmy">
+        <argument android:name="willShowWelcomePremiumBackDialog" android:defaultValue="false" app:argType="boolean" />
+    </action>
+    <action android:id="@id/action_global_setting" app:destination="@id/setting" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <fragment android:label="SettingFragment" android:name="droom.sleepIfUCan.feature.setting.SettingFragment" android:id="@id/setting">
+        <action android:id="@id/action_to_settingPremium" app:destination="@id/settingPremium" />
+        <action android:id="@id/action_to_settingSignIn" app:destination="@id/accountGraph">
+            <argument android:name="entryPoint" android:defaultValue="setting" app:argType="string" />
+        </action>
+        <action android:id="@id/action_to_settingMyAccount" app:destination="@id/settingMyAccount" />
+        <action android:id="@id/action_to_settingOptimizeAlarm" app:destination="@id/settingOptimizeAlarmGraph" />
+        <action android:id="@id/action_to_settingNotice" app:destination="@id/settingNotice" />
+        <action android:id="@id/action_to_settingAlarm" app:destination="@id/settingAlarm" />
+        <action android:id="@id/action_to_settingDismissMission" app:destination="@id/settingDismissMission" />
+        <action android:id="@id/action_to_settingFaq" app:destination="@id/settingFaq">
+            <argument android:name="faqPage" android:defaultValue="ALL" app:argType="droom.sleepIfUCan.feature.setting.faq.FaqPage" />
+        </action>
+        <action android:id="@id/action_to_sendFeedback" app:destination="@id/sendFeedback" />
+        <deepLink app:uri="@string/deeplink_uri_setting" />
+    </fragment>
+    <fragment android:label="SettingPremiumFragment" android:name="droom.sleepIfUCan.feature.setting.premium.SettingPremiumFragment" android:id="@id/settingPremium">
+        <deepLink app:uri="@string/deeplink_uri_premium_features" />
+        <action android:id="@id/action_to_settingAlarm" app:destination="@id/settingAlarm">
+            <argument android:name="scrollToPreventEdit" android:defaultValue="true" app:argType="boolean" />
+        </action>
+        <action android:id="@id/action_to_settingGeneral" app:destination="@id/settingGeneral" />
+    </fragment>
+    <fragment android:label="NoticeFragment" android:name="droom.sleepIfUCan.feature.setting.notice.NoticeFragment" android:id="@id/settingNotice" />
+    <fragment android:label="SettingAlarmFragment" android:name="droom.sleepIfUCan.feature.setting.alarm.SettingAlarmFragment" android:id="@id/settingAlarm">
+        <deepLink app:uri="@string/deeplink_uri_setting_alarm" />
+        <argument android:name="scrollToPreventEdit" android:defaultValue="false" app:argType="boolean" />
+    </fragment>
+    <fragment android:label="SettingDismissMissionFragment" android:name="droom.sleepIfUCan.feature.setting.dismiss.SettingDismissMissionFragment" android:id="@id/settingDismissMission">
+        <deepLink app:uri="@string/deeplink_uri_setting_dismiss" />
+    </fragment>
+    <fragment android:label="GeneralFragment" android:name="droom.sleepIfUCan.feature.setting.general.GeneralFragment" android:id="@id/settingGeneral" />
+    <fragment android:label="FaqFragment" android:name="droom.sleepIfUCan.feature.setting.faq.FaqFragment" android:id="@id/settingFaq">
+        <argument android:name="faqPage" app:argType="droom.sleepIfUCan.feature.setting.faq.FaqPage" />
+    </fragment>
+    <fragment android:label="AccountFragment" android:name="droom.sleepIfUCan.feature.auth.myaccount.AccountFragment" android:id="@id/settingMyAccount">
+        <argument android:name="entryPoint" android:defaultValue="setting" app:argType="string" />
+        <action android:id="@id/action_to_settingDeleteAccount" app:destination="@id/settingDeleteAccount">
+            <argument android:name="entryPoint" android:defaultValue="setting" app:argType="string" />
+        </action>
+    </fragment>
+    <fragment android:label="DeleteAccountFragment" android:name="droom.sleepIfUCan.feature.auth.deleteaccount.DeleteAccountFragment" android:id="@id/settingDeleteAccount">
+        <argument android:name="entryPoint" android:defaultValue="setting" app:argType="string" />
+    </fragment>
+    <fragment android:label="SendFeedbackFragment" android:name="droom.sleepIfUCan.feature.setting.feedback.SendFeedbackFragment" android:id="@id/sendFeedback">
+        <deepLink app:uri="@string/deeplink_uri_setting_send_feedback_type" />
+    </fragment>
+    <include app:graph="@navigation/setting_optimize_alarm" />
+    <include app:graph="@navigation/account" />
+</navigation>

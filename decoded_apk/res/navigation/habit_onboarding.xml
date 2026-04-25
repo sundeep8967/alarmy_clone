@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/habit_onboarding_graph" app:startDestination="@id/habit_onboarding"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <action android:id="@id/action_global_alarmListGraph" app:destination="@id/alarmList" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <action android:id="@id/action_to_alarmEditorGraph" app:destination="@id/alarmEditorGraph" app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim">
+        <argument android:name="alarmId" android:defaultValue="0" app:argType="integer" />
+        <argument android:name="alarmType" android:defaultValue="NORMAL" app:argType="com.delightroom.alarmy.domain.model.alarm.AlarmType" />
+    </action>
+    <fragment android:label="HabitOnboardingFragment" android:name="droom.sleepIfUCan.feature.alarmhabit.HabitOnboardingFragment" android:id="@id/habit_onboarding" />
+</navigation>

@@ -1,0 +1,45 @@
+.class final synthetic Lcom/google/android/gms/internal/ads/zzchf;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Ljava/lang/Runnable;
+
+
+# instance fields
+.field private final synthetic zza:Lcom/google/android/gms/internal/ads/zzchj;
+
+
+# direct methods
+.method synthetic constructor <init>(Lcom/google/android/gms/internal/ads/zzchj;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lcom/google/android/gms/internal/ads/zzchf;->zza:Lcom/google/android/gms/internal/ads/zzchj;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final synthetic run()V
+    .locals 1
+
+    iget-object v0, p0, Lcom/google/android/gms/internal/ads/zzchf;->zza:Lcom/google/android/gms/internal/ads/zzchj;
+
+    iget-object v0, v0, Lcom/google/android/gms/internal/ads/zzchj;->zza:Lcom/google/android/gms/internal/ads/zzcgy;
+
+    invoke-interface {v0}, Lcom/google/android/gms/internal/ads/zzcgy;->zzah()V
+
+    invoke-interface {v0}, Lcom/google/android/gms/internal/ads/zzcgy;->zzL()Lcom/google/android/gms/ads/internal/overlay/zzm;
+
+    move-result-object v0
+
+    if-eqz v0, :cond_0
+
+    invoke-virtual {v0}, Lcom/google/android/gms/ads/internal/overlay/zzm;->zzv()V
+
+    :cond_0
+    return-void
+.end method

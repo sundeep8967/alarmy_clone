@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="24.0dip" android:width="24.0dip" android:viewportWidth="24.0" android:viewportHeight="24.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <path android:fillColor="#fffec410" android:pathData="M20,11C20,11 14.5,10.5 12,10.5C9.5,10.5 4,11 4,11C4,6.582 7.582,3 12,3C16.418,3 20,6.582 20,11Z" />
+    <path android:fillColor="@drawable/$ic_weather_mist__0" android:pathData="M2,11C2,10.448 2.448,10 3,10H21C21.552,10 22,10.448 22,11C22,11.552 21.552,12 21,12H3C2.448,12 2,11.552 2,11Z" />
+    <path android:fillColor="#ffaddce9" android:pathData="M1,15C1,14.448 1.448,14 2,14H5.5C6.052,14 6.5,14.448 6.5,15C6.5,15.552 6.052,16 5.5,16H2C1.448,16 1,15.552 1,15Z" />
+    <path android:fillColor="@drawable/$ic_weather_mist__1" android:pathData="M8,15C8,14.448 8.448,14 9,14H22C22.552,14 23,14.448 23,15C23,15.552 22.552,16 22,16H9C8.448,16 8,15.552 8,15Z" />
+    <path android:fillColor="@drawable/$ic_weather_mist__2" android:pathData="M3,19C3,18.448 3.448,18 4,18H20C20.552,18 21,18.448 21,19C21,19.552 20.552,20 20,20H4C3.448,20 3,19.552 3,19Z" />
+</vector>

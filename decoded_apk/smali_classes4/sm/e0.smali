@@ -1,0 +1,34 @@
+.class public final synthetic Lsm/e0;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Ljava/lang/Runnable;
+
+
+# instance fields
+.field public final synthetic b:Lcom/five_corp/ad/FiveAdNative$LoadImageCallback;
+
+
+# direct methods
+.method public synthetic constructor <init>(Lcom/five_corp/ad/FiveAdNative$LoadImageCallback;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lsm/e0;->b:Lcom/five_corp/ad/FiveAdNative$LoadImageCallback;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final run()V
+    .locals 1
+
+    iget-object v0, p0, Lsm/e0;->b:Lcom/five_corp/ad/FiveAdNative$LoadImageCallback;
+
+    invoke-static {v0}, Lcom/five_corp/ad/FiveAdNative;->c(Lcom/five_corp/ad/FiveAdNative$LoadImageCallback;)V
+
+    return-void
+.end method

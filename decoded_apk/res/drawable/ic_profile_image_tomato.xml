@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="120.0dip" android:width="120.0dip" android:viewportWidth="120.0" android:viewportHeight="120.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <path android:fillColor="#ffb82d2d" android:pathData="M22,64a38,35 0,1 0,76 0a38,35 0,1 0,-76 0z" />
+    <path android:fillColor="#00000000" android:pathData="M29,65.5C28,55 35.5,44 43.5,41" android:strokeColor="@drawable/$ic_profile_image_tomato__0" android:strokeWidth="3.0" android:strokeLineCap="round" />
+    <path android:fillColor="#00000000" android:pathData="M54,61C54,61 51.59,58.5 48.5,58.5C45.41,58.5 43,61 43,61" android:strokeColor="#ff2e2424" android:strokeWidth="3.6" android:strokeLineCap="round" />
+    <path android:fillColor="#00000000" android:pathData="M76,61C76,61 73.59,58.5 70.5,58.5C67.41,58.5 65,61 65,61" android:strokeColor="#ff2e2424" android:strokeWidth="3.6" android:strokeLineCap="round" />
+    <path android:fillColor="#ff2e2424" android:pathData="M57,73.5a3,4.5 0,1 0,6 0a3,4.5 0,1 0,-6 0z" />
+    <path android:fillColor="#ffdb4949" android:pathData="M34,74.5a7,5.5 0,1 0,14 0a7,5.5 0,1 0,-14 0z" />
+    <path android:fillColor="#ffdb4949" android:pathData="M72,74.5a7,5.5 0,1 0,14 0a7,5.5 0,1 0,-14 0z" />
+    <path android:fillColor="#00000000" android:pathData="M54,41C54,41 57.28,43 61.5,43C65.72,43 69,41 69,41" android:strokeColor="#ff7a2929" android:strokeWidth="3.6" android:strokeLineCap="round" />
+    <path android:fillColor="#ff392a2a" android:pathData="M57,19H66L64.36,38.46C64.36,38.46 63.55,39.5 61.5,39.5C59.45,39.5 58.64,38.46 58.64,38.46L57,19Z" />
+</vector>

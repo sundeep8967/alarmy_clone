@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>an_notice_update_date</key>
+        <value>200821</value>
+    </entry>
+    <entry>
+        <key>enable_discount_for_payment_error_user</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>an_disable_local_banner</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>braze_allow_countries</key>
+        <value>US, KR</value>
+    </entry>
+    <entry>
+        <key>an_dismiss_photo_mission_similarity</key>
+        <value>65</value>
+    </entry>
+    <entry>
+        <key>an_airbridge_ad_log_enabled</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>an_ad_use_dismiss_bidding</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>an_ad_check_russia_network_condition</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>an_ad_native_ad_use_distinct_cta</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>an_ad_applovin_mediation_available</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>

@@ -1,0 +1,100 @@
+.class final Lco/ab180/airbridge/AirbridgePlacement$_impression$1;
+.super Lkotlin/coroutines/jvm/internal/d;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lco/ab180/airbridge/AirbridgePlacement;->_impression(Ljava/lang/String;ZLpa0/e;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x18
+    name = null
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u001e\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0000\n\u0002\u0008\u0002\u0010\u0008\u001a\u0004\u0018\u00010\u00072\u0006\u0010\u0001\u001a\u00020\u00002\u0006\u0010\u0003\u001a\u00020\u00022\u000c\u0010\u0006\u001a\u0008\u0012\u0004\u0012\u00020\u00050\u0004H\u0086@\u00a2\u0006\u0004\u0008\u0008\u0010\t"
+    }
+    d2 = {
+        "",
+        "trackingLink",
+        "",
+        "incognito",
+        "Lpa0/e;",
+        "Lja0/h0;",
+        "continuation",
+        "",
+        "_impression",
+        "(Ljava/lang/String;ZLpa0/e;)Ljava/lang/Object;"
+    }
+    k = 0x3
+    mv = {
+        0x1,
+        0x4,
+        0x3
+    }
+.end annotation
+
+.annotation runtime Lkotlin/coroutines/jvm/internal/f;
+    c = "co.ab180.airbridge.AirbridgePlacement"
+    f = "AirbridgePlacement.kt"
+    l = {
+        0x4d,
+        0x53
+    }
+    m = "_impression"
+.end annotation
+
+
+# instance fields
+.field synthetic a:Ljava/lang/Object;
+
+.field b:I
+
+.field final synthetic c:Lco/ab180/airbridge/AirbridgePlacement;
+
+.field d:Ljava/lang/Object;
+
+.field e:Ljava/lang/Object;
+
+
+# direct methods
+.method constructor <init>(Lco/ab180/airbridge/AirbridgePlacement;Lpa0/e;)V
+    .locals 0
+
+    iput-object p1, p0, Lco/ab180/airbridge/AirbridgePlacement$_impression$1;->c:Lco/ab180/airbridge/AirbridgePlacement;
+
+    invoke-direct {p0, p2}, Lkotlin/coroutines/jvm/internal/d;-><init>(Lpa0/e;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 2
+
+    iput-object p1, p0, Lco/ab180/airbridge/AirbridgePlacement$_impression$1;->a:Ljava/lang/Object;
+
+    iget p1, p0, Lco/ab180/airbridge/AirbridgePlacement$_impression$1;->b:I
+
+    const/high16 v0, -0x80000000
+
+    or-int/2addr p1, v0
+
+    iput p1, p0, Lco/ab180/airbridge/AirbridgePlacement$_impression$1;->b:I
+
+    iget-object p1, p0, Lco/ab180/airbridge/AirbridgePlacement$_impression$1;->c:Lco/ab180/airbridge/AirbridgePlacement;
+
+    const/4 v0, 0x0
+
+    const/4 v1, 0x0
+
+    invoke-virtual {p1, v0, v1, p0}, Lco/ab180/airbridge/AirbridgePlacement;->_impression(Ljava/lang/String;ZLpa0/e;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method

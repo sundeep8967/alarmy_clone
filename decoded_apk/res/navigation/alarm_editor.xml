@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/alarmEditorGraph" app:startDestination="@id/alarmEditor"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="AlarmEditorFragment" android:name="droom.sleepIfUCan.feature.alarmeditor.AlarmEditorFragment" android:id="@id/alarmEditor">
+        <argument android:name="alarmId" android:defaultValue="0" app:argType="integer" />
+        <argument android:name="alarmType" android:defaultValue="NORMAL" app:argType="com.delightroom.alarmy.domain.model.alarm.AlarmType" />
+        <argument android:name="deeplinkURI" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="shouldCreateNewHabitAlarm" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="deeplinkDestination" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <action android:id="@id/action_to_ringtone" app:destination="@id/ringtoneGraph" app:launchSingleTop="true">
+            <argument android:name="usingVideoRing" app:argType="boolean" />
+            <argument android:name="selectedRingtone" app:argType="string" app:nullable="true" />
+            <argument android:name="videoWallpaperId" app:argType="string" app:nullable="true" />
+            <argument android:name="departure" android:defaultValue="ALARM_EDITOR" app:argType="droom.sleepIfUCan.feature.ringtone.model.RingtoneDeparture" />
+        </action>
+        <action android:id="@id/action_to_alarmList" app:destination="@id/alarmList" app:popUpTo="@id/alarmy">
+            <argument android:name="willShowRatingDialog" android:defaultValue="false" app:argType="boolean" />
+            <argument android:name="dismissTutorial" android:defaultValue="false" app:argType="boolean" />
+        </action>
+    </fragment>
+</navigation>

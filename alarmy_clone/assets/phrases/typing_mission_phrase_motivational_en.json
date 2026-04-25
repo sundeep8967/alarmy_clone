@@ -1,0 +1,982 @@
+[
+  {
+    "text": "To remember who you are, you need to forget who they told you to be.",
+    "speaker": "unknown",
+    "id": "2a7f7216-8fc1-437f-8428-77a472834c1b"
+  },
+  {
+    "text": "You didn't fail. You just haven't figured it out yet. Don't give up.",
+    "speaker": "unknown",
+    "id": "862b519a-cc55-4e21-a938-771f390e02ac"
+  },
+  {
+    "text": "Work hard in silence, let your success be your noise.",
+    "speaker": "unknown",
+    "id": "59b91a7c-8820-4cfe-8021-75c46955a68c"
+  },
+  {
+    "text": "Don't expect everyone to understand your journey, especially if they have never had to walk your path.",
+    "speaker": "unknown",
+    "id": "39d2d061-e7f9-4e07-9e8f-5947acf4c77c"
+  },
+  {
+    "text": "Keep going. Everything you need will come to you at the perfect time.",
+    "speaker": "unknown",
+    "id": "806ea448-5691-4d38-8678-94a70a3a0455"
+  },
+  {
+    "text": "Every morning you have two choices. Continue to sleep with your dreams, or wake up and chase them.",
+    "speaker": "unknown",
+    "id": "11524da1-ff3c-48c0-8965-8705e0db6fdf"
+  },
+  {
+    "text": "The bad news is time flies. The good news is you're the pilot.",
+    "speaker": "unknown",
+    "id": "13186b4b-40c2-4f4c-9d9f-baf9c89cf0ff"
+  },
+  {
+    "text": "Everything is hard before it is easy.",
+    "speaker": "unknown",
+    "id": "486d1e02-cd85-4451-97ce-f3c3d052dceb"
+  },
+  {
+    "text": "The best time for new beginnings is now.",
+    "speaker": "unknown",
+    "id": "8f1b2ae4-ec11-4144-9366-eccc1db00f25"
+  },
+  {
+    "text": "Attract what you expect. Reflect what you desire. Become what you respect. Mirror what you admire.",
+    "speaker": "unknown",
+    "id": "175fee09-4683-42d0-aa0d-0f27093dd1b5"
+  },
+  {
+    "text": "Don't think you can. Know you can.",
+    "speaker": "unknown",
+    "id": "40d19f0b-7656-49fb-8003-3b00b39f3168"
+  },
+  {
+    "text": "People too weak to follow their own dreams will always find a way to discourage yours.",
+    "speaker": "unknown",
+    "id": "7f494163-23a4-4cdb-96a6-97c0e1aba0e6"
+  },
+  {
+    "text": "It's not about having time. It's about making time.",
+    "speaker": "unknown",
+    "id": "32771fb1-4f7b-49ef-8414-547c936c593e"
+  },
+  {
+    "text": "There is no if. There is when.",
+    "speaker": "unknown",
+    "id": "aef996f2-78f7-4933-a6e0-1befd3620c8c"
+  },
+  {
+    "text": "If somebody offers you an amazing and challenging opportunity, say yes. Then learn how to do it later.",
+    "speaker": "unknown",
+    "id": "0e875502-88e0-42fd-adfc-698f572dd6d1"
+  },
+  {
+    "text": "One day you'll wake up to see there's no more time to do the things you've always wanted. Do it now.",
+    "speaker": "unknown",
+    "id": "88d32fa0-2042-46ba-9434-98a8eb8999d5"
+  },
+  {
+    "text": "It all begins and ends in your mind. What you give power to has power over you.",
+    "speaker": "unknown",
+    "id": "c33c7b78-050b-45b4-bf86-2bbe192e4780"
+  },
+  {
+    "text": "First they laugh, then they copy.",
+    "speaker": "unknown",
+    "id": "01d1a779-5a86-47ea-801b-e4e77a1e89de"
+  },
+  {
+    "text": "The quality of your thinking determines the quality of your life.",
+    "speaker": "unknown",
+    "id": "426597b3-5883-4340-8fca-cfb0577df7ba"
+  },
+  {
+    "text": "Make it happen. Shock everyone.",
+    "speaker": "unknown",
+    "id": "158080a6-3217-44c9-9429-e45d97bf9928"
+  },
+  {
+    "text": "Forget the mistake. Remember the lesson.",
+    "speaker": "unknown",
+    "id": "5e6f464e-beb2-4f7f-9ff3-6a40eec9d6fb"
+  },
+  {
+    "text": "The future belongs to those who believe in the beauty of their dreams.",
+    "speaker": "unknown",
+    "id": "4b4b1e9c-7147-482a-bcf4-807a7bde9eb1"
+  },
+  {
+    "text": "Decide what kind of life you actually want, then say no to everything that isn't that.",
+    "speaker": "unknown",
+    "id": "2ab7996c-aee0-456d-a041-818a8b0d5f33"
+  },
+  {
+    "text": "Depend on no one. Get it done yourself.",
+    "speaker": "unknown",
+    "id": "6d6fc46c-185b-452c-82d5-832855722153"
+  },
+  {
+    "text": "What defines us is how well we rise after falling.",
+    "speaker": "unknown",
+    "id": "7788b052-3b4a-4cda-a9a7-306c47186057"
+  },
+  {
+    "text": "Stay low key. Not everyone needs to know everything about you.",
+    "speaker": "unknown",
+    "id": "692b7f10-0497-4101-b2e4-11b305b968ce"
+  },
+  {
+    "text": "Once you become fearless life becomes limitless.",
+    "speaker": "unknown",
+    "id": "3aabce46-63d2-4bdd-9fa4-1be14501089b"
+  },
+  {
+    "text": "We generate fears while we sit. We overcome them by action.",
+    "speaker": "unknown",
+    "id": "68d0a445-6779-4b77-85f8-a6a6c7037ecf"
+  },
+  {
+    "text": "If you always do what you've always done, you'll always get what you've always got.",
+    "speaker": "unknown",
+    "id": "a14890d9-dc24-4575-b1dc-0712af3dad79"
+  },
+  {
+    "text": "Give the world a reason to remember your name.",
+    "speaker": "unknown",
+    "id": "25954514-3365-44e2-80cf-f2a21257a00a"
+  },
+  {
+    "text": "For every reason it's not possible, there are hundreds of people who've faced the same but succeeded.",
+    "speaker": "unknown",
+    "id": "7c58761f-ee94-4b8b-be9e-df716c1cfb7d"
+  },
+  {
+    "text": "Never announce your moves before you make them.",
+    "speaker": "unknown",
+    "id": "f02f72c5-61ea-4ac1-a7d0-c1d481d295b3"
+  },
+  {
+    "text": "Accept the situation and move on.",
+    "speaker": "unknown",
+    "id": "1b4b08fe-fe9d-474f-bf14-9abb3da87222"
+  },
+  {
+    "text": "When you are no longer able to change a situation, change yourself. And that changes everything.",
+    "speaker": "unknown",
+    "id": "65b897d7-576d-418b-a610-cfed6de1b947"
+  },
+  {
+    "text": "Being positive doesn't mean ignoring the negative. Being positive means overcoming the negative.",
+    "speaker": "unknown",
+    "id": "621df55c-04fd-492a-8800-93b7a3ed52f4"
+  },
+  {
+    "text": "Invest your time and energy into getting to where you want to go, not fighting against where you are.",
+    "speaker": "unknown",
+    "id": "794e4db6-443b-4dbf-b1f3-b8e48482e47c"
+  },
+  {
+    "text": "Always remember that your present situation is not your final destination. The best is yet to come.",
+    "speaker": "unknown",
+    "id": "ce41b819-302b-4faf-ba17-6831ab1e18c2"
+  },
+  {
+    "text": "If you are working on something you care about, you don't have to be pushed. The vision pulls you.",
+    "speaker": "unknown",
+    "id": "4037594e-8783-4a56-ae9a-57d8e6319f76"
+  },
+  {
+    "text": "When it is obvious that the goals cannot be reached, don't adjust the goals, adjust the action steps.",
+    "speaker": "unknown",
+    "id": "deb5e053-4eaf-43e0-82cd-e6e19e75f608"
+  },
+  {
+    "text": "Your past mistakes are meant to guide you, not define you.",
+    "speaker": "unknown",
+    "id": "45904add-0b2c-4da2-a28e-76dc65000227"
+  },
+  {
+    "text": "Be brave. Take risks. Nothing can substitute experience.",
+    "speaker": "unknown",
+    "id": "671792e5-917d-41d4-9879-b79f3bf27822"
+  },
+  {
+    "text": "The first step towards getting somewhere is to decide that you are not going to stay where you are.",
+    "speaker": "unknown",
+    "id": "8dfee995-2071-4cfe-b408-46aff474a659"
+  },
+  {
+    "text": "Slow progress is always better than no progress.",
+    "speaker": "unknown",
+    "id": "60b487df-20ac-4916-9297-7ab906776027"
+  },
+  {
+    "text": "When you try to control everything, you enjoy nothing. Relax, breathe, let go, and live in the moment.",
+    "speaker": "unknown",
+    "id": "6263d144-f1c1-4cd2-9f13-b8f7b8ce5026"
+  },
+  {
+    "text": "Don't let yesterday use up too much of today.",
+    "speaker": "unknown",
+    "id": "442700a9-f352-4642-bac2-3389a5157e7e"
+  },
+  {
+    "text": "Life tests a person's will either by having nothing happen at all or everything happen all at once.",
+    "speaker": "unknown",
+    "id": "7aaef220-f5bb-480d-aeab-343dca42ca2c"
+  },
+  {
+    "text": "Go after dreams, not people.",
+    "speaker": "unknown",
+    "id": "70a874dc-ed89-44c1-8aed-2858dbd5d131"
+  },
+  {
+    "text": "Keep your mind on the things you want and off the things you don't want.",
+    "speaker": "unknown",
+    "id": "561fed93-e238-4122-af15-2c4d688ee47a"
+  },
+  {
+    "text": "Stand up for what you believe in, even if it means standing alone.",
+    "speaker": "unknown",
+    "id": "c2647b7a-e42a-404f-820f-d07376f88570"
+  },
+  {
+    "text": "The fundamental key to success is what you believe is true for yourself.",
+    "speaker": "Oprah Winfrey",
+    "id": "fc28ff34-4559-436b-ae59-3b0e6f89b55e"
+  },
+  {
+    "text": "Whether you believe you can do a thing or not, you are right.",
+    "speaker": "Henry Ford",
+    "id": "26ce2b42-d312-485e-952f-57c8113be4f3"
+  },
+  {
+    "text": "The mind is everything, what you think you become.",
+    "speaker": "Buddha",
+    "id": "9e562fe4-d84e-41fc-ba88-20fc5842c2d2"
+  },
+  {
+    "text": "The size of your dream must always exceed your current capacity to achieve them.",
+    "speaker": "Ellen Johnson Sirleaf",
+    "id": "890a19d1-daff-480a-a395-ae681ccfd280"
+  },
+  {
+    "text": "It's your game, make up your own rules.",
+    "speaker": "Barbara Corcoran",
+    "id": "84ec0c44-b830-4ad9-96e7-ae1b37386d17"
+  },
+  {
+    "text": "I've failed over and over again in my life. That's why I succeed.",
+    "speaker": "Michael Jordan",
+    "id": "348da7b9-e3d2-4465-9699-5be2de720042"
+  },
+  {
+    "text": "Life is 10% what happens to you and 90% how you react it.",
+    "speaker": "unknown",
+    "id": "73ac6895-b470-4f17-8ada-32d778444b35"
+  },
+  {
+    "text": "The meaning of life is to find your gift. The purpose of life is to give it away.",
+    "speaker": "unknown",
+    "id": "6cf7fff4-4c6a-48bf-8a61-8adbdb425a14"
+  },
+  {
+    "text": "The most important investment you can make is in yourself. Nobody can tax it or take it away from you.",
+    "speaker": "Warren Buffett",
+    "id": "c758f73a-85fd-4839-8030-bd463138d18e"
+  },
+  {
+    "text": "Prove them wrong. Prove yourself right.",
+    "speaker": "unknown",
+    "id": "e1e7dd6f-5265-43da-b348-5da27229622d"
+  },
+  {
+    "text": "Don't stop dreaming just because you had a nightmare.",
+    "speaker": "unknown",
+    "id": "5cb1b635-3fcc-42f0-9f36-0292fcf484d9"
+  },
+  {
+    "text": "Don't cry because it's over, smile because it happened.",
+    "speaker": "unknown",
+    "id": "819282f4-132c-446e-8905-e608899d4801"
+  },
+  {
+    "text": "All our dreams can come true, if we have the courage to pursue them.",
+    "speaker": "Walt Disney",
+    "id": "5a94c79c-68d4-48f7-8111-d7cd9d9102bc"
+  },
+  {
+    "text": "Everything you've ever wanted is on the other side of fear.",
+    "speaker": "George Addair",
+    "id": "bf7f8d1d-ea1b-4ffc-9ea8-df906741b358"
+  },
+  {
+    "text": "Success is not final, failure is not fatal. It is the courage to continue that counts.",
+    "speaker": "Winston Churchill",
+    "id": "2ce06f10-aa5f-4a0c-bd29-be79a3e973ca"
+  },
+  {
+    "text": "Hardships often prepare ordinary people for an extraordinary destiny.",
+    "speaker": "C.S. Lewis",
+    "id": "cea41a77-de65-4baf-9d75-4c896db761f4"
+  },
+  {
+    "text": "You are braver than you think, more talented than you know, and capable of more than you imagine.",
+    "speaker": "Roy T. Bennett",
+    "id": "17041c17-5df8-433a-9679-ee9997a6583a"
+  },
+  {
+    "text": "The brave man is not he who does not feel afraid, but he who conquers that fear.",
+    "speaker": "Nelson Mandela",
+    "id": "fb907ef2-829b-4d6d-8674-286ea574f9cb"
+  },
+  {
+    "text": "There is only one thing that makes a dream. Impossible to achieve, the fear of failure.",
+    "speaker": "Paulo Coelho",
+    "id": "0ea9ed95-1d77-4c70-96ce-509365108c6c"
+  },
+  {
+    "text": "Your true success in life begins only when you make the commitment to become excellent at what you do.",
+    "speaker": "Brian Tracy",
+    "id": "af663b11-fc58-439d-a2e2-1325f7b58580"
+  },
+  {
+    "text": "If you believe it'll work out, you'll see opportunities. If you believe it won't, you'll see obstacles.",
+    "speaker": "Wayne Dyer",
+    "id": "e53cd09a-1a04-4056-949e-b319068bc4d8"
+  },
+  {
+    "text": "If you go after your goals with all your determination, your gifts will take you to amazing places.",
+    "speaker": "Les Brown",
+    "id": "f16b81b9-3d7b-429b-9d50-0fc0dabcff20"
+  },
+  {
+    "text": "Hard times don't create heroes. It is during the hard times when the hero within us is revealed.",
+    "speaker": "Bob Riley",
+    "id": "97b7c931-152b-4478-802e-cad883877e51"
+  },
+  {
+    "text": "Believe you can and you're halfway there.",
+    "speaker": "Theodore Roosevelt",
+    "id": "a1d0fec6-e70b-4c2f-b385-62bf3fda4e7f"
+  },
+  {
+    "text": "Start by doing what's necessary, then do what's possible. And suddenly you are doing the impossible.",
+    "speaker": "Francis of Assisi",
+    "id": "a11d0a3a-e734-44e6-adb6-ae1a15309945"
+  },
+  {
+    "text": "I attribute my success to this. I never gave or took any excuse.",
+    "speaker": "Florence Nightingale",
+    "id": "67eb1724-4e43-4c2c-a7b4-4b793b7a2c1a"
+  },
+  {
+    "text": "I am not a product of my circumstances. I am a product of my decisions.",
+    "speaker": "Stephen Covey",
+    "id": "f789a247-4f88-467f-ab39-2313ff65f53f"
+  },
+  {
+    "text": "Don't wish it were easier. Wish you were better.",
+    "speaker": "Jim Rohn",
+    "id": "ce72bf9d-9bd7-4ca6-9734-33cc3fb95e56"
+  },
+  {
+    "text": "It's not about perfect but about effort. When you bring that effort every single day, change happens.",
+    "speaker": "Jillian Michaels",
+    "id": "836a2e46-1c26-4417-8576-9ef2d8c431e7"
+  },
+  {
+    "text": "Strength doesn't come from what you can do but from overcoming the things you thought you couldn't.",
+    "speaker": "Rikki Rogers",
+    "id": "7798e19a-d234-41a8-a246-78d5ef4d159a"
+  },
+  {
+    "text": "We develop courage by surviving difficult times and challenging adversity.",
+    "speaker": "Barbara De Angelis",
+    "id": "445ea0b3-f21b-476a-84be-c1ec6aca76e0"
+  },
+  {
+    "text": "Failure will never overtake me if my determination to succeed is strong enough.",
+    "speaker": "Og Mandino",
+    "id": "06451f23-7be6-4a8b-a723-b0b384ad0c71"
+  },
+  {
+    "text": "Limitation live only in our minds. But if we use our imaginations, our possibilities become limitless.",
+    "speaker": "Jamie Paolinetti",
+    "id": "57ba2d56-6ff8-4245-af05-fe9dbe1cc4f1"
+  },
+  {
+    "text": "Setting goals is the first step into turning the invisible into the visible.",
+    "speaker": "Tony Robbins",
+    "id": "f4941e6c-4ef2-4ed0-b9c0-e1b2d4a8d63c"
+  },
+  {
+    "text": "Only those who dare to fail greatly can ever achieve greatly.",
+    "speaker": "Robert F. Kennedy",
+    "id": "e3ce76a4-cf6a-43ea-9c50-f3a0c09f52c0"
+  },
+  {
+    "text": "Remember that not getting what you want is sometimes a wonderful stroke of luck.",
+    "speaker": "Dalai Lama",
+    "id": "48419d3c-6f8c-4ce4-bb46-2e22ee8ac1e0"
+  },
+  {
+    "text": "Staying positive is knowing that you will be okay no matter how things turn out.",
+    "speaker": "unknown",
+    "id": "471beffd-2049-42c8-b432-f7d15247ad82"
+  },
+  {
+    "text": "We may encounter many defeats but we must not be defeated.",
+    "speaker": "Maya Angelou",
+    "id": "1b0fec14-ca82-4f76-9b87-8cd4cfd16348"
+  },
+  {
+    "text": "Twenty years from now you will be more disappointed by the things you didn't do than by those you did.",
+    "speaker": "Mark Twain",
+    "id": "65b36405-94f0-4a6c-9630-e23ccf012e8b"
+  },
+  {
+    "text": "Your time is limited, so don't waste it living someone else's life.",
+    "speaker": "Steve Jobs",
+    "id": "3bd5a7ed-3612-42bd-b634-774665d5df23"
+  },
+  {
+    "text": "Challenges are what make life interesting and overcoming them is what makes life meaningful.",
+    "speaker": "Joshua Marine",
+    "id": "6ff7a266-45ae-418b-ae1a-04cc3db3c6dd"
+  },
+  {
+    "text": "I never dreamed about success. I worked for it.",
+    "speaker": "Estee Lauder",
+    "id": "f250ff27-aa97-4c28-80e4-8fc3ab35940d"
+  },
+  {
+    "text": "It is never too late to be what you might have been.",
+    "speaker": "George Eliot",
+    "id": "df1cffd0-b93f-4f9c-b8f9-d3dad38058df"
+  },
+  {
+    "text": "There is no greater disability in society than the inability to see a person as more.",
+    "speaker": "Robert M. Hensel",
+    "id": "857691c3-0962-4174-bc95-df138cb225eb"
+  },
+  {
+    "text": "The best way to gain self-confidence is to do what you are afraid to do.",
+    "speaker": "Swati Sharma",
+    "id": "acebd82e-f336-4cf4-9503-a1103695c29b"
+  },
+  {
+    "text": "You will never find time for anything. If you want time you must make it.",
+    "speaker": "Charles Buxton",
+    "id": "3e840483-38c1-46ca-a4b9-68bb79c36f14"
+  },
+  {
+    "text": "The greatest danger is not that our aim is too high and we miss it, but that it's too low and we reach it.",
+    "speaker": "Michaelangelo",
+    "id": "1a1b3c28-5af6-47f2-8c56-ed05b53a4910"
+  },
+  {
+    "text": "The two most important days in your life are the day you are born and the day you find out why.",
+    "speaker": "Mark Twain",
+    "id": "aeb07fce-d8ce-439e-9311-9aff6828f827"
+  },
+  {
+    "text": "Free yourself from your past mistakes by forgiving yourself for what you have done or went through.",
+    "speaker": "un",
+    "id": "50a24f8c-bda8-4dbe-9c38-36bd5cb3df33"
+  },
+  {
+    "text": "By making yourself a life-long learner you'll keep discovering new and exciting things about the world.",
+    "speaker": "Rachel Robins",
+    "id": "6ee05e46-e9d2-420b-b366-20a346a7548b"
+  },
+  {
+    "text": "Success is not final, failure is not fatal. It is the courage to continue that counts.",
+    "speaker": "Winston Churchill",
+    "id": "65244851-6e3d-47ea-8323-7c87df741273"
+  },
+  {
+    "text": "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack of will.",
+    "speaker": "Vince Lombardi",
+    "id": "a1c8d6c2-69c2-4590-9440-4dfac91ca91e"
+  },
+  {
+    "text": "Believe you can and you're halfway there.",
+    "speaker": "Theodore Roosevelt",
+    "id": "43c34b3b-7dd9-4ad6-ba64-c4b55b6f3367"
+  },
+  {
+    "text": "Your time is limited, don't waste it living someone else's life.",
+    "speaker": "Steve Jobs",
+    "id": "ef742b5f-2fee-46de-875c-092a32c20a71"
+  },
+  {
+    "text": "The only way to do great work is to love what you do.",
+    "speaker": "Steve Jobs",
+    "id": "d1844161-8e8d-4580-927d-e92517fc4d53"
+  },
+  {
+    "text": "The harder I work, the luckier I get.",
+    "speaker": "Samuel Goldwyn",
+    "id": "f0a32c59-1cbf-459e-9830-2352f6bea589"
+  },
+  {
+    "text": "Don't watch the clock, do what it does. Keep going.",
+    "speaker": "Sam Levenson",
+    "id": "853aee58-360b-44cb-bde2-2b9707848eed"
+  },
+  {
+    "text": "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.",
+    "speaker": "Roy T. Bennett",
+    "id": "5c934c08-577b-4319-8e66-2fec2691375f"
+  },
+  {
+    "text": "The best way to predict the future is to create it.",
+    "speaker": "Peter Drucker",
+    "id": "e1f6724d-0ef2-441a-b6fc-5737f0678465"
+  },
+  {
+    "text": "The only person you should try to be better than is the person you were yesterday.",
+    "speaker": "Matty Mullins",
+    "id": "8f1593de-1e02-4e38-828f-a160a8d9e666"
+  },
+  {
+    "text": "The biggest risk is not taking any risk. In a world that is changing quickly, the only strategy that is guaranteed to fail is not taking risks.",
+    "speaker": "Mark Zuckerberg",
+    "id": "1892400a-735d-41b8-b168-8b069f3d5201"
+  },
+  {
+    "text": "The secret of getting ahead is getting started.",
+    "speaker": "Mark Twain",
+    "id": "53f3cb94-0952-4f7c-a219-be64ee9e15d9"
+  },
+  {
+    "text": "The future depends on what you do today.",
+    "speaker": "Mahatma Gandhi",
+    "id": "bad426db-c445-4cb8-b0f0-88d0a97f4ee0"
+  },
+  {
+    "text": "Success usually comes to those who are too busy to be looking for it.",
+    "speaker": "Henry David Thoreau",
+    "id": "f8690d3e-b699-4937-9868-4ed1ec118a39"
+  },
+  {
+    "text": "The only limit to our realization of tomorrow will be our doubts of today.",
+    "speaker": "Franklin D. Roosevelt",
+    "id": "b5631b10-8213-4548-9d6b-fd3940f7ff16"
+  },
+  {
+    "text": "The future belongs to those who believe in the beauty of their dreams.",
+    "speaker": "Eleanor Roosevelt",
+    "id": "f8e2203c-d4ec-44f3-ab85-117695791848"
+  },
+  {
+    "text": "Believe in yourself, take on your challenges, dig deep within yourself to conquer fears. Never let anyone bring you down. You got this.",
+    "speaker": "Chantal Sutherland",
+    "id": "5aaade4a-65b7-433c-8870-5328e6ef860f"
+  },
+  {
+    "text": "Success is not in what you have, but who you are.",
+    "speaker": "Bo Bennett",
+    "id": "d9adbd62-a65b-45d5-81b2-355ba930d373"
+  },
+  {
+    "text": "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.",
+    "speaker": "Albert Schweitzer",
+    "id": "fb607eeb-0b3f-4c69-aee9-821261a53299"
+  },
+  {
+    "text": "Success is not the absence of failure, it's the persistence through failure.",
+    "speaker": "Aisha Tyler",
+    "id": "a12a7eec-719b-4d23-aae4-793b85a48106"
+  },
+  {
+    "text": "The only limit to your impact is your imagination.",
+    "speaker": "Tony Robbins",
+    "id": "adc1dd9f-415d-4242-8c70-ed8597e81953"
+  },
+  {
+    "text": "Success is not about being the best. It's about being better than you were yesterday.",
+    "speaker": "Unknown",
+    "id": "0f2bbdec-b011-44be-bbbf-68b657a81156"
+  },
+  {
+    "text": "Dream big and dare to fail",
+    "speaker": "Norman Vaughan",
+    "id": "eab3bb3b-b6f1-47fd-a2da-14867cd7a0eb"
+  },
+  {
+    "text": "Believe in yourself, and the rest will fall into place.",
+    "speaker": "Unknown",
+    "id": "26ad0b2b-890c-43a4-b78c-a0fb8ca43784"
+  },
+  {
+    "text": "Your life does not get better by chance, it gets better by change.",
+    "speaker": "Jim Rohn",
+    "id": "5b6942fd-5376-43aa-9f2d-4475f47d7b43"
+  },
+  {
+    "text": "Success is not overnight. It's when every day you get a little better than the day before.",
+    "speaker": "Dwayne Johnson",
+    "id": "30a627b1-90f8-49a1-b9c2-703ae3110509"
+  },
+  {
+    "text": "The only way to achieve the impossible is to believe it is possible.",
+    "speaker": "Charles Kingsleigh",
+    "id": "1462c958-a34a-4046-9043-75c6484ad136"
+  },
+  {
+    "text": "Don't wait for opportunity. Create it.",
+    "speaker": "Unknown",
+    "id": "2ddd4751-4bf6-46e1-a59e-cdf5e958bf40"
+  },
+  {
+    "text": "The harder you work for something, the greater you'll feel when you achieve it.",
+    "speaker": "Unknown",
+    "id": "be706ecd-9128-451c-be5f-5c7767245506"
+  },
+  {
+    "text": "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+    "speaker": "Nelson Mandela",
+    "id": "583ce49d-0789-4397-bf17-5ad8274eefaf"
+  },
+  {
+    "id": "4674848a-05ba-4416-bd78-3bbb3c7e599d",
+    "speaker": "Unknown",
+    "text": "Failures happen, setbacks happen, keep going because eventually victories happen"
+  },
+  {
+    "id": "a3ebb96e-eca7-41f3-8dab-b115f3c549bf",
+    "speaker": "Tryon Edwards",
+    "text": "Right actions in the future are the best apologies for bad actions in the past."
+  },
+  {
+    "id": "558a57c5-3635-42d2-a7a6-9acb276b6f33",
+    "speaker": "Robert H. Schuller",
+    "text": "I'd rather attempt to do something great and fail than do nothing and succeed."
+  },
+  {
+    "id": "d2535504-957f-4313-9c38-ec8aedfa1aa4",
+    "speaker": "Unknown",
+    "text": "You've been pushing yourself so hard, and now your best days are on their way."
+  },
+  {
+    "id": "a37d0bc7-ef36-411d-b58c-5fcc5f5fab09",
+    "speaker": "Unknown",
+    "text": "Your strength comes from overcoming the things you once thought you couldn't."
+  },
+  {
+    "id": "8cbcd2d1-a273-45f5-a4b7-c793f6efeeac",
+    "speaker": "Tony Robbins",
+    "text": "Setting goals is the first step in turning the invisible into the visible."
+  },
+  {
+    "id": "5169e91d-a8b3-4ac6-b322-4e49977ee355",
+    "speaker": "Unknown",
+    "text": "You never know how strong you are, until being strong is your only choice."
+  },
+  {
+    "id": "3e4ffc29-00b3-4fec-8d0a-01accd3cad4a",
+    "speaker": "Unknown",
+    "text": "Excitement starts the race, but discipline carries you to the finish line."
+  },
+  {
+    "id": "725493f4-cf91-4c29-905e-81f9f3cf8767",
+    "speaker": "Keanu Reeves",
+    "text": "Every struggle in your life has shaped you into the person you are today."
+  },
+  {
+    "id": "81921bd7-ffc1-47b3-9e67-c06a2736ada8",
+    "speaker": "Unknown",
+    "text": "Stop being afraid of what could go wrong, think of what could go right."
+  },
+  {
+    "id": "5f61445c-0338-43bc-a08d-af5cf7338a6e",
+    "speaker": "Unknown",
+    "text": "The results you desire are already there, waiting for you to earn them."
+  },
+  {
+    "id": "97d079e4-856a-4acd-9956-60cef8780e95",
+    "speaker": "Unknown",
+    "text": "Don't just end the chapter. Close the whole book, and start a new one."
+  },
+  {
+    "id": "6196fea4-342a-438a-848e-3c2c4fa59fd7",
+    "speaker": "Unknown",
+    "text": "The strongest people are those who win battles we know nothing about."
+  },
+  {
+    "id": "a23b5aa9-8552-46d8-b357-f3d2f9d2d41a",
+    "speaker": "Unknown",
+    "text": "If you want to find your results, you'll have to lose your excuses."
+  },
+  {
+    "id": "cdfb71ca-93e6-4c65-a65c-31db03ae3045",
+    "speaker": "Unknown",
+    "text": "Your willingness to begin again is one of your greatest strengths."
+  },
+  {
+    "id": "a08ed80c-409c-45b0-967a-9119e54a5328",
+    "speaker": "Unknown",
+    "text": "Rehashing the past wouldn't change anything. Time to move forward."
+  },
+  {
+    "id": "3e9d5073-3148-4968-bed0-9bd76283c633",
+    "speaker": "Unknown",
+    "text": "End the chapter, turn the page, close the book, start a new story."
+  },
+  {
+    "id": "933de75f-b862-422f-92e2-052f6bc1ab7a",
+    "speaker": "Ralph Marston",
+    "text": "The direction of your focus is the direction your life will move."
+  },
+  {
+    "id": "c6047cb9-a6d6-4b0b-8aec-7f1f782670d6",
+    "speaker": "Unknown",
+    "text": "You don't have to know the ending, you just need to begin today."
+  },
+  {
+    "id": "57367a88-db25-4495-83f3-f05c90f80b2e",
+    "speaker": "Unknown",
+    "text": "The baby bird never flies if it is not kicked out of the nest."
+  },
+  {
+    "id": "01b7b90d-48b6-4f35-a4d5-5da90c914e02",
+    "speaker": "Unknown",
+    "text": "Success isn't always about greatness. It's about consistency."
+  },
+  {
+    "id": "3055dccb-08a4-4f95-9f8d-f48e66641095",
+    "speaker": "Unknown",
+    "text": "The past cannot be edited or erased. It can only be accepted."
+  },
+  {
+    "id": "320b4553-ee1f-4882-89d3-533d4b902d6f",
+    "speaker": "Unknown",
+    "text": "More powerful than the will to win is the courage to begin."
+  },
+  {
+    "id": "d7e71f59-3c67-4b15-9e9c-d87dd4c336e3",
+    "speaker": "Unknown",
+    "text": "Good things come from change, and change comes from choice."
+  },
+  {
+    "id": "d9f3a969-34b6-448e-818f-7dfdaae88c78",
+    "speaker": "Unknown",
+    "text": "Don't aim for perfection. Aim for better than yesterday."
+  },
+  {
+    "id": "579a53a6-ea5c-4257-9d12-11de61e61f4a",
+    "speaker": "Unknown",
+    "text": "Continue to push yourself, the finish line is right there."
+  },
+  {
+    "id": "338d0b12-17d8-4a42-ae67-ba73dbb9ebd9",
+    "speaker": "Unknown",
+    "text": "If you want the grass to be greener, you have to water it."
+  },
+  {
+    "id": "7c8b5113-feda-4a2b-96bd-75196c6d288c",
+    "speaker": "Unknown",
+    "text": "Strength grows in the moments when you keep going anyway."
+  },
+  {
+    "id": "d6a19809-8ee4-466e-bc62-520e186ddf0e",
+    "speaker": "George Bernard Shaw",
+    "text": "Those who can't change their minds can't change anything."
+  },
+  {
+    "id": "d1072f09-e8f2-488d-b7d0-5a043482078e",
+    "speaker": "Unknown",
+    "text": "Stay on the path. Each day, you're closer to your goals."
+  },
+  {
+    "id": "aefb1090-fd04-4746-af9b-096f8e40c53c",
+    "speaker": "Unknown",
+    "text": "Success in life comes when you simply refuse to give up."
+  },
+  {
+    "id": "c0753742-390f-4e14-b279-72c89947820f",
+    "speaker": "Unknown",
+    "text": "Courage is learning to let go of what was once familiar."
+  },
+  {
+    "id": "5db05a69-7c36-4ba0-8278-68c7acbda4de",
+    "speaker": "Alan Moore",
+    "text": "The past can't hurt you anymore, not unless you let it."
+  },
+  {
+    "id": "4bd12a47-a367-4485-b8de-a6513e8b249b",
+    "speaker": "Unknown",
+    "text": "Don't ruin a good today thinking about a bad yesterday."
+  },
+  {
+    "id": "620ff93d-f034-4c0d-95d6-2cdc746478f7",
+    "speaker": "Unknown",
+    "text": "Success is always possible as long as you keep trying."
+  },
+  {
+    "id": "59908fa6-d9c4-4baf-a65d-a14187b7fe36",
+    "speaker": "Unknown",
+    "text": "Consistency will overpower talent any day of the week."
+  },
+  {
+    "id": "1108b7d9-8553-44ca-a105-c7b42ead5079",
+    "speaker": "Unknown",
+    "text": "When you try to control everything, you enjoy nothing."
+  },
+  {
+    "id": "eb70e0ad-1abc-4299-ad43-1e81d6f7bc6f",
+    "speaker": "Unknown",
+    "text": "Success isn't an accident because hustle is a choice."
+  },
+  {
+    "id": "76ebfbdc-1e7d-403b-9864-e8077dcf73ae",
+    "speaker": "Roy Bennett",
+    "text": "Success, like happiness, is a by-product, not a goal."
+  },
+  {
+    "id": "a837b5e9-2889-46c5-8944-ee1aecdd6d42",
+    "speaker": "Sara Evans",
+    "text": "Even on my weakest days, I get a little bit stronger."
+  },
+  {
+    "id": "6a244b2f-2724-4ec6-b86e-260f19281de6",
+    "speaker": "Bob Proctor",
+    "text": "Change is inevitable but personal growth is a choice."
+  },
+  {
+    "id": "92932c6b-d3b8-43c7-917b-90f8fb710bbd",
+    "speaker": "Unknown",
+    "text": "It's never a failure if you learn something from it."
+  },
+  {
+    "id": "3d1ca39a-8159-40f3-9b21-7680a9a0532a",
+    "speaker": "LeBron James",
+    "text": "You have to be able to accept failure to get better."
+  },
+  {
+    "id": "44eb0011-264e-479e-8d75-4c06f8191319",
+    "speaker": "Unknown",
+    "text": "Your biggest dreams require your biggest efforts."
+  },
+  {
+    "id": "eae76b98-c5bd-45b8-92bc-789600f10ced",
+    "speaker": "Unknown",
+    "text": "You get what you work for, not what you wish for."
+  },
+  {
+    "id": "5885a81d-f645-48e8-a12a-63c0379f1c53",
+    "speaker": "Unknown",
+    "text": "When you focus on the good, the good gets better."
+  },
+  {
+    "id": "2904630e-a2c6-4aaa-aa40-395ef29c91c6",
+    "speaker": "Unknown",
+    "text": "Even little steps are leading to your best life."
+  },
+  {
+    "id": "52b4636e-9c82-4ca8-bdb2-bb971b1b3138",
+    "speaker": "Albert Einstein",
+    "text": "In the middle of a difficulty lies opportunity."
+  },
+  {
+    "id": "ed8abd02-9ced-426e-812f-5b758b49b22f",
+    "speaker": "Unknown",
+    "text": "If it's worth having, it's worth working for."
+  },
+  {
+    "id": "0e1968b3-d56a-49b1-ba1c-157bd33eb194",
+    "speaker": "Victor Hugo",
+    "text": "Change your opinions, keep to your principles"
+  },
+  {
+    "id": "c594f990-653f-46f7-9fae-3797596828d0",
+    "speaker": "Unknown",
+    "text": "Your goal is so much closer than you think."
+  },
+  {
+    "id": "38a5c56f-92b2-49e7-ac77-919f40b0cb75",
+    "speaker": "Nathaniel Branden",
+    "text": "The first step toward change is awareness."
+  },
+  {
+    "id": "c5dc6dd9-673f-4778-adde-3d4e2fdd8900",
+    "speaker": "Unknown",
+    "text": "Always concentrate on how far you've come."
+  },
+  {
+    "id": "d15288e3-38c3-451b-98e6-7732832fdc22",
+    "speaker": "Unknown",
+    "text": "Quite often it's ok to put yourself first."
+  },
+  {
+    "id": "b546b7e3-8880-40c5-8816-107256a880a0",
+    "speaker": "Unknown",
+    "text": "Chase your true goals instead of impulse."
+  },
+  {
+    "id": "502e0c65-f4c3-4c3e-8374-e500780dbb1a",
+    "speaker": "Unknown",
+    "text": "First, figure out exactly what you want."
+  },
+  {
+    "id": "75fa19a9-174a-4d61-9351-f5c373ac8ebc",
+    "speaker": "Charles Bukowski",
+    "text": "That's what kills a man, lack of change."
+  },
+  {
+    "id": "c4370abf-7bed-47fa-b294-fe633ad29c00",
+    "speaker": "Louis Pasteur",
+    "text": "My strength lies solely in my tenacity."
+  },
+  {
+    "id": "b3604446-d9a7-4703-b09f-186c15c48b56",
+    "speaker": "Unknown",
+    "text": "Letting go is a form of strength, too."
+  },
+  {
+    "id": "7dd35bb5-5965-4b0b-b37f-0a83234c9d65",
+    "speaker": "Tony Robbins",
+    "text": "Your past does not equal your future."
+  },
+  {
+    "id": "afbe451f-b929-4d6e-a0bb-6a1ea53f0cb9",
+    "speaker": "Unknown",
+    "text": "Great actions achieve great goals."
+  },
+  {
+    "id": "5a4db8df-c6fe-4940-b1af-3204a44eaee5",
+    "speaker": "Unknown",
+    "text": "Feel the feelings and let them go."
+  },
+  {
+    "id": "e0a06d15-c471-4eb7-9054-ed47640988e1",
+    "speaker": "Unknown",
+    "text": "Hope lies in what action we take."
+  },
+  {
+    "id": "8ae2b18a-c2e7-46b9-b8b4-2824a226e020",
+    "speaker": "Unknown",
+    "text": "Be patient. Your turn is coming."
+  },
+  {
+    "id": "b991c0ce-033f-44f0-b9b1-7058b6596810",
+    "speaker": "Unknown",
+    "text": "Your moment is now. Claim it!"
+  },
+  {
+    "id": "d91ad5e7-ca8e-4f1c-8eef-748a5e836457",
+    "speaker": "Unknown",
+    "text": "Never regress, only progress."
+  },
+  {
+    "id": "7ea10c72-459a-4685-983b-f56b5c0f2101",
+    "speaker": "Unknown",
+    "text": "Just do it."
+  }
+]

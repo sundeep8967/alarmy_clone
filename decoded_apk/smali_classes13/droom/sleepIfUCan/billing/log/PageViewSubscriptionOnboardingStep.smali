@@ -1,0 +1,160 @@
+.class public final Ldroom/sleepIfUCan/billing/log/PageViewSubscriptionOnboardingStep;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Loe/c;
+.implements Loe/b;
+.implements Loe/i;
+
+
+# annotations
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u000e\n\u0002\u0008\u000e\u0008\u0007\u0018\u00002\u00020\u00012\u00020\u00022\u00020\u0003B!\u0012\u0006\u0010\u0005\u001a\u00020\u0004\u0012\u0006\u0010\u0006\u001a\u00020\u0004\u0012\u0008\u0008\u0002\u0010\u0007\u001a\u00020\u0004\u00a2\u0006\u0004\u0008\u0008\u0010\tR\u001a\u0010\u0005\u001a\u00020\u00048\u0006X\u0087\u0004\u00a2\u0006\u000c\n\u0004\u0008\n\u0010\u000b\u001a\u0004\u0008\u000c\u0010\rR\u001a\u0010\u0006\u001a\u00020\u00048\u0006X\u0087\u0004\u00a2\u0006\u000c\n\u0004\u0008\u000e\u0010\u000b\u001a\u0004\u0008\u000f\u0010\rR\u001a\u0010\u0007\u001a\u00020\u00048\u0006X\u0087\u0004\u00a2\u0006\u000c\n\u0004\u0008\u0010\u0010\u000b\u001a\u0004\u0008\u0011\u0010\r\u00a8\u0006\u0012"
+    }
+    d2 = {
+        "Ldroom/sleepIfUCan/billing/log/PageViewSubscriptionOnboardingStep;",
+        "Loe/c;",
+        "Loe/b;",
+        "Loe/i;",
+        "",
+        "stepId",
+        "subscriptionEntryPoint",
+        "screenName",
+        "<init>",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+        "a",
+        "Ljava/lang/String;",
+        "getStepId",
+        "()Ljava/lang/String;",
+        "b",
+        "getSubscriptionEntryPoint",
+        "c",
+        "getScreenName",
+        "billing_release"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x1,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# instance fields
+.field private final a:Ljava/lang/String;
+    .annotation runtime Lir/c;
+        value = "step_id"
+    .end annotation
+.end field
+
+.field private final b:Ljava/lang/String;
+    .annotation runtime Lir/c;
+        value = "subscription_entry_point"
+    .end annotation
+.end field
+
+.field private final c:Ljava/lang/String;
+    .annotation runtime Lir/c;
+        value = "screen_name"
+    .end annotation
+.end field
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 0
+
+    return-void
+.end method
+
+.method public constructor <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    .locals 1
+
+    const-string v0, "stepId"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/x;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    const-string v0, "subscriptionEntryPoint"
+
+    invoke-static {p2, v0}, Lkotlin/jvm/internal/x;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    const-string v0, "screenName"
+
+    invoke-static {p3, v0}, Lkotlin/jvm/internal/x;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    iput-object p1, p0, Ldroom/sleepIfUCan/billing/log/PageViewSubscriptionOnboardingStep;->a:Ljava/lang/String;
+
+    .line 3
+    iput-object p2, p0, Ldroom/sleepIfUCan/billing/log/PageViewSubscriptionOnboardingStep;->b:Ljava/lang/String;
+
+    .line 4
+    iput-object p3, p0, Ldroom/sleepIfUCan/billing/log/PageViewSubscriptionOnboardingStep;->c:Ljava/lang/String;
+
+    return-void
+.end method
+
+.method public synthetic constructor <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+    .locals 0
+
+    and-int/lit8 p4, p4, 0x4
+
+    if-eqz p4, :cond_0
+
+    .line 5
+    const-string p3, "subscription_onboarding_step"
+
+    .line 6
+    :cond_0
+    invoke-direct {p0, p1, p2, p3}, Ldroom/sleepIfUCan/billing/log/PageViewSubscriptionOnboardingStep;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public e()Ljava/lang/String;
+    .locals 1
+
+    invoke-static {p0}, Loe/i$a;->a(Loe/i;)Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public f()Ljava/lang/String;
+    .locals 1
+
+    invoke-static {p0}, Loe/b$a;->a(Loe/b;)Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public getParams()Ljava/util/Map;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/Map<",
+            "Ljava/lang/String;",
+            "Ljava/lang/Object;",
+            ">;"
+        }
+    .end annotation
+
+    invoke-static {p0}, Loe/c$b;->a(Loe/c;)Ljava/util/Map;
+
+    move-result-object v0
+
+    return-object v0
+.end method

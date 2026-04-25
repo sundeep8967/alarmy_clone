@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingTop="16.0dip" android:paddingBottom="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="48.0dip" android:paddingStart="24.0dip" android:paddingEnd="24.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@id/text_holder_purpose_bulk_label" android:focusable="false" android:layout_width="0.0dip" android:layout_height="wrap_content" android:maxLines="2" android:layout_weight="1.0" android:textAllCaps="true" android:importantForAccessibility="no" style="@style/DidomiAction" />
+    <io.didomi.sdk.view.mobile.DidomiToggle android:id="@id/switch_holder_purpose_bulk" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+</LinearLayout>

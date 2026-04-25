@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="24.0dip" android:width="24.0dip" android:viewportWidth="24.0" android:viewportHeight="24.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <path android:fillColor="@drawable/$ic_weather_rainy__0" android:pathData="M9.301,20.5V15C9.301,14.613 9.614,14.3 10.001,14.3C10.388,14.3 10.701,14.613 10.701,15V20.5C10.701,20.887 10.388,21.2 10.001,21.2C9.614,21.2 9.301,20.887 9.301,20.5Z" />
+    <path android:fillColor="@drawable/$ic_weather_rainy__1" android:pathData="M15.801,20V15C15.801,14.613 16.114,14.3 16.501,14.3C16.888,14.3 17.201,14.613 17.201,15V20C17.201,20.387 16.888,20.7 16.501,20.7C16.114,20.7 15.801,20.387 15.801,20Z" />
+    <path android:fillColor="#ffe3e9f4" android:pathData="M18.475,6.581C17.48,3.907 14.928,2 11.928,2C8.33,2 5.369,4.739 4.976,8.26C2.955,8.651 1.428,10.437 1.428,12.588C1.428,15.024 3.387,17 5.803,17H17.178C20.077,17 22.428,14.63 22.428,11.706C22.428,9.234 20.746,7.165 18.475,6.581Z" />
+    <path android:fillColor="@drawable/$ic_weather_rainy__2" android:pathData="M6.301,18.5V14C6.301,13.613 6.614,13.3 7.001,13.3C7.388,13.3 7.701,13.613 7.701,14V18.5C7.701,18.887 7.388,19.2 7.001,19.2C6.614,19.2 6.301,18.887 6.301,18.5Z" />
+    <path android:fillColor="#ff69e7ff" android:pathData="M6.301,21.5V20.5C6.301,20.113 6.614,19.8 7.001,19.8C7.388,19.8 7.701,20.113 7.701,20.5V21.5C7.701,21.887 7.388,22.2 7.001,22.2C6.614,22.2 6.301,21.887 6.301,21.5Z" />
+    <path android:fillColor="@drawable/$ic_weather_rainy__3" android:pathData="M12.586,23V14C12.586,13.613 12.899,13.3 13.286,13.3C13.673,13.3 13.986,13.613 13.986,14V23C13.986,23.387 13.673,23.7 13.286,23.7C12.899,23.7 12.586,23.387 12.586,23Z" />
+</vector>

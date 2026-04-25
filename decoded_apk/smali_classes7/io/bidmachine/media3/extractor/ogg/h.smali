@@ -1,0 +1,317 @@
+.class final Lio/bidmachine/media3/extractor/ogg/h;
+.super Lio/bidmachine/media3/extractor/ogg/i;
+.source "SourceFile"
+
+
+# static fields
+.field private static final o:[B
+
+.field private static final p:[B
+
+
+# instance fields
+.field private n:Z
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 2
+
+    const/16 v0, 0x8
+
+    new-array v1, v0, [B
+
+    fill-array-data v1, :array_0
+
+    sput-object v1, Lio/bidmachine/media3/extractor/ogg/h;->o:[B
+
+    new-array v0, v0, [B
+
+    fill-array-data v0, :array_1
+
+    sput-object v0, Lio/bidmachine/media3/extractor/ogg/h;->p:[B
+
+    return-void
+
+    nop
+
+    :array_0
+    .array-data 1
+        0x4ft
+        0x70t
+        0x75t
+        0x73t
+        0x48t
+        0x65t
+        0x61t
+        0x64t
+    .end array-data
+
+    :array_1
+    .array-data 1
+        0x4ft
+        0x70t
+        0x75t
+        0x73t
+        0x54t
+        0x61t
+        0x67t
+        0x73t
+    .end array-data
+.end method
+
+.method constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Lio/bidmachine/media3/extractor/ogg/i;-><init>()V
+
+    return-void
+.end method
+
+.method private static n(Lio/bidmachine/media3/common/util/d0;[B)Z
+    .locals 4
+
+    invoke-virtual {p0}, Lio/bidmachine/media3/common/util/d0;->a()I
+
+    move-result v0
+
+    array-length v1, p1
+
+    const/4 v2, 0x0
+
+    if-ge v0, v1, :cond_0
+
+    return v2
+
+    :cond_0
+    invoke-virtual {p0}, Lio/bidmachine/media3/common/util/d0;->f()I
+
+    move-result v0
+
+    array-length v1, p1
+
+    new-array v1, v1, [B
+
+    array-length v3, p1
+
+    invoke-virtual {p0, v1, v2, v3}, Lio/bidmachine/media3/common/util/d0;->l([BII)V
+
+    invoke-virtual {p0, v0}, Lio/bidmachine/media3/common/util/d0;->W(I)V
+
+    invoke-static {v1, p1}, Ljava/util/Arrays;->equals([B[B)Z
+
+    move-result p0
+
+    return p0
+.end method
+
+.method public static o(Lio/bidmachine/media3/common/util/d0;)Z
+    .locals 1
+
+    sget-object v0, Lio/bidmachine/media3/extractor/ogg/h;->o:[B
+
+    invoke-static {p0, v0}, Lio/bidmachine/media3/extractor/ogg/h;->n(Lio/bidmachine/media3/common/util/d0;[B)Z
+
+    move-result p0
+
+    return p0
+.end method
+
+
+# virtual methods
+.method protected f(Lio/bidmachine/media3/common/util/d0;)J
+    .locals 2
+
+    invoke-virtual {p1}, Lio/bidmachine/media3/common/util/d0;->e()[B
+
+    move-result-object p1
+
+    invoke-static {p1}, Lio/bidmachine/media3/extractor/h0;->e([B)J
+
+    move-result-wide v0
+
+    invoke-virtual {p0, v0, v1}, Lio/bidmachine/media3/extractor/ogg/i;->c(J)J
+
+    move-result-wide v0
+
+    return-wide v0
+.end method
+
+.method protected h(Lio/bidmachine/media3/common/util/d0;JLio/bidmachine/media3/extractor/ogg/i$b;)Z
+    .locals 2
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Lio/bidmachine/media3/common/ParserException;
+        }
+    .end annotation
+
+    sget-object p2, Lio/bidmachine/media3/extractor/ogg/h;->o:[B
+
+    invoke-static {p1, p2}, Lio/bidmachine/media3/extractor/ogg/h;->n(Lio/bidmachine/media3/common/util/d0;[B)Z
+
+    move-result p2
+
+    const/4 p3, 0x1
+
+    if-eqz p2, :cond_1
+
+    invoke-virtual {p1}, Lio/bidmachine/media3/common/util/d0;->e()[B
+
+    move-result-object p2
+
+    invoke-virtual {p1}, Lio/bidmachine/media3/common/util/d0;->g()I
+
+    move-result p1
+
+    invoke-static {p2, p1}, Ljava/util/Arrays;->copyOf([BI)[B
+
+    move-result-object p1
+
+    invoke-static {p1}, Lio/bidmachine/media3/extractor/h0;->c([B)I
+
+    move-result p2
+
+    invoke-static {p1}, Lio/bidmachine/media3/extractor/h0;->a([B)Ljava/util/List;
+
+    move-result-object p1
+
+    iget-object v0, p4, Lio/bidmachine/media3/extractor/ogg/i$b;->a:Lio/bidmachine/media3/common/p;
+
+    if-eqz v0, :cond_0
+
+    return p3
+
+    :cond_0
+    new-instance v0, Lio/bidmachine/media3/common/p$b;
+
+    invoke-direct {v0}, Lio/bidmachine/media3/common/p$b;-><init>()V
+
+    const-string v1, "audio/ogg"
+
+    invoke-virtual {v0, v1}, Lio/bidmachine/media3/common/p$b;->U(Ljava/lang/String;)Lio/bidmachine/media3/common/p$b;
+
+    move-result-object v0
+
+    const-string v1, "audio/opus"
+
+    invoke-virtual {v0, v1}, Lio/bidmachine/media3/common/p$b;->u0(Ljava/lang/String;)Lio/bidmachine/media3/common/p$b;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p2}, Lio/bidmachine/media3/common/p$b;->R(I)Lio/bidmachine/media3/common/p$b;
+
+    move-result-object p2
+
+    const v0, 0xbb80
+
+    invoke-virtual {p2, v0}, Lio/bidmachine/media3/common/p$b;->v0(I)Lio/bidmachine/media3/common/p$b;
+
+    move-result-object p2
+
+    invoke-virtual {p2, p1}, Lio/bidmachine/media3/common/p$b;->g0(Ljava/util/List;)Lio/bidmachine/media3/common/p$b;
+
+    move-result-object p1
+
+    invoke-virtual {p1}, Lio/bidmachine/media3/common/p$b;->N()Lio/bidmachine/media3/common/p;
+
+    move-result-object p1
+
+    iput-object p1, p4, Lio/bidmachine/media3/extractor/ogg/i$b;->a:Lio/bidmachine/media3/common/p;
+
+    return p3
+
+    :cond_1
+    sget-object p2, Lio/bidmachine/media3/extractor/ogg/h;->p:[B
+
+    invoke-static {p1, p2}, Lio/bidmachine/media3/extractor/ogg/h;->n(Lio/bidmachine/media3/common/util/d0;[B)Z
+
+    move-result v0
+
+    const/4 v1, 0x0
+
+    if-eqz v0, :cond_4
+
+    iget-object v0, p4, Lio/bidmachine/media3/extractor/ogg/i$b;->a:Lio/bidmachine/media3/common/p;
+
+    invoke-static {v0}, Lio/bidmachine/media3/common/util/a;->i(Ljava/lang/Object;)Ljava/lang/Object;
+
+    iget-boolean v0, p0, Lio/bidmachine/media3/extractor/ogg/h;->n:Z
+
+    if-eqz v0, :cond_2
+
+    return p3
+
+    :cond_2
+    iput-boolean p3, p0, Lio/bidmachine/media3/extractor/ogg/h;->n:Z
+
+    array-length p2, p2
+
+    invoke-virtual {p1, p2}, Lio/bidmachine/media3/common/util/d0;->X(I)V
+
+    invoke-static {p1, v1, v1}, Lio/bidmachine/media3/extractor/r0;->k(Lio/bidmachine/media3/common/util/d0;ZZ)Lio/bidmachine/media3/extractor/r0$a;
+
+    move-result-object p1
+
+    iget-object p1, p1, Lio/bidmachine/media3/extractor/r0$a;->b:[Ljava/lang/String;
+
+    invoke-static {p1}, Lcom/google/common/collect/y;->w([Ljava/lang/Object;)Lcom/google/common/collect/y;
+
+    move-result-object p1
+
+    invoke-static {p1}, Lio/bidmachine/media3/extractor/r0;->d(Ljava/util/List;)Lio/bidmachine/media3/common/u;
+
+    move-result-object p1
+
+    if-nez p1, :cond_3
+
+    return p3
+
+    :cond_3
+    iget-object p2, p4, Lio/bidmachine/media3/extractor/ogg/i$b;->a:Lio/bidmachine/media3/common/p;
+
+    invoke-virtual {p2}, Lio/bidmachine/media3/common/p;->b()Lio/bidmachine/media3/common/p$b;
+
+    move-result-object p2
+
+    iget-object v0, p4, Lio/bidmachine/media3/extractor/ogg/i$b;->a:Lio/bidmachine/media3/common/p;
+
+    iget-object v0, v0, Lio/bidmachine/media3/common/p;->l:Lio/bidmachine/media3/common/u;
+
+    invoke-virtual {p1, v0}, Lio/bidmachine/media3/common/u;->b(Lio/bidmachine/media3/common/u;)Lio/bidmachine/media3/common/u;
+
+    move-result-object p1
+
+    invoke-virtual {p2, p1}, Lio/bidmachine/media3/common/p$b;->n0(Lio/bidmachine/media3/common/u;)Lio/bidmachine/media3/common/p$b;
+
+    move-result-object p1
+
+    invoke-virtual {p1}, Lio/bidmachine/media3/common/p$b;->N()Lio/bidmachine/media3/common/p;
+
+    move-result-object p1
+
+    iput-object p1, p4, Lio/bidmachine/media3/extractor/ogg/i$b;->a:Lio/bidmachine/media3/common/p;
+
+    return p3
+
+    :cond_4
+    iget-object p1, p4, Lio/bidmachine/media3/extractor/ogg/i$b;->a:Lio/bidmachine/media3/common/p;
+
+    invoke-static {p1}, Lio/bidmachine/media3/common/util/a;->i(Ljava/lang/Object;)Ljava/lang/Object;
+
+    return v1
+.end method
+
+.method protected l(Z)V
+    .locals 0
+
+    invoke-super {p0, p1}, Lio/bidmachine/media3/extractor/ogg/i;->l(Z)V
+
+    if-eqz p1, :cond_0
+
+    const/4 p1, 0x0
+
+    iput-boolean p1, p0, Lio/bidmachine/media3/extractor/ogg/h;->n:Z
+
+    :cond_0
+    return-void
+.end method

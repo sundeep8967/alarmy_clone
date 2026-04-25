@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:tag="layout/layout_native_line_center_ad_global_0" android:clickable="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingVertical="8.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:layout_gravity="center_vertical" android:id="@id/viewAdTag" android:background="@drawable/background_ad_gray_badge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/img_txt_ad" android:layout_marginEnd="4.0dip" android:paddingHorizontal="8.0dip" android:paddingVertical="2.0dip" app:layout_constraintEnd_toStartOf="@id/viewTitle" app:layout_constraintHorizontal_chainStyle="packed" app:layout_constraintStart_toStartOf="parent" />
+    <TextView android:textColor="?colorSurface_MediumEmphasis" android:ellipsize="end" android:id="@id/viewTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@id/viewAdTag" style="@style/D3.Text.Overline2" />
+</LinearLayout>

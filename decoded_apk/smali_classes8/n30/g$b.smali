@@ -1,0 +1,90 @@
+.class final Ln30/g$b;
+.super Lkotlin/coroutines/jvm/internal/d;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Ln30/g;->a(Ljava/lang/String;Ljava/lang/String;Lpa0/e;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x18
+    name = null
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    k = 0x3
+    mv = {
+        0x2,
+        0x1,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+.annotation runtime Lkotlin/coroutines/jvm/internal/f;
+    c = "droom.sleepIfUCan.integration.sleep.SleepNet"
+    f = "SleepNet.kt"
+    l = {
+        0x44,
+        0x45
+    }
+    m = "downloadSleepSound"
+.end annotation
+
+
+# instance fields
+.field synthetic s:Ljava/lang/Object;
+
+.field final synthetic t:Ln30/g;
+
+.field u:I
+
+
+# direct methods
+.method constructor <init>(Ln30/g;Lpa0/e;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Ln30/g;",
+            "Lpa0/e<",
+            "-",
+            "Ln30/g$b;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Ln30/g$b;->t:Ln30/g;
+
+    invoke-direct {p0, p2}, Lkotlin/coroutines/jvm/internal/d;-><init>(Lpa0/e;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    iput-object p1, p0, Ln30/g$b;->s:Ljava/lang/Object;
+
+    iget p1, p0, Ln30/g$b;->u:I
+
+    const/high16 v0, -0x80000000
+
+    or-int/2addr p1, v0
+
+    iput p1, p0, Ln30/g$b;->u:I
+
+    iget-object p1, p0, Ln30/g$b;->t:Ln30/g;
+
+    const/4 v0, 0x0
+
+    invoke-virtual {p1, v0, v0, p0}, Ln30/g;->a(Ljava/lang/String;Ljava/lang/String;Lpa0/e;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method

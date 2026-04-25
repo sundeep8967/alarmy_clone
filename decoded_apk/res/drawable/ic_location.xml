@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="154.0dip" android:width="154.0dip" android:viewportWidth="154.0" android:viewportHeight="154.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <path android:fillColor="@drawable/$ic_location__0" android:pathData="M14.4,89.97C14.97,87.17 17.43,85.15 20.29,85.15H132.82C135.65,85.15 138.09,87.12 138.69,89.89L149.58,140.33C150.39,144.07 147.54,147.6 143.71,147.6H10.17C6.39,147.6 3.55,144.13 4.29,140.42L14.4,89.97Z" />
+    <path android:fillColor="#00000000" android:pathData="M33.65,139.6L42.21,88.41" android:strokeColor="@drawable/$ic_location__1" android:strokeWidth="2.0" android:strokeLineCap="round" android:strokeAlpha="0.32" />
+    <path android:fillColor="#00000000" android:pathData="M76.96,139.74L76.96,88.41" android:strokeColor="@drawable/$ic_location__2" android:strokeWidth="2.0" android:strokeLineCap="round" android:strokeAlpha="0.172" android:fillAlpha="0.2" />
+    <path android:fillColor="#00000000" android:pathData="M14.26,102.67L139.74,102.67" android:strokeColor="@drawable/$ic_location__3" android:strokeWidth="2.0" android:strokeLineCap="round" android:strokeAlpha="0.48" />
+    <path android:fillColor="#00000000" android:pathData="M14.26,125.48L139.74,125.48" android:strokeColor="@drawable/$ic_location__4" android:strokeWidth="2.0" android:strokeLineCap="round" />
+    <path android:fillColor="#00000000" android:pathData="M125.48,139.6L116.93,88.41" android:strokeColor="@drawable/$ic_location__5" android:strokeWidth="2.0" android:strokeLineCap="round" android:strokeAlpha="0.098" android:fillAlpha="0.2" />
+    <path android:fillColor="@drawable/$ic_location__6" android:pathData="M48.48,116.93a28.52,8.56 0,1 0,57.04 0a28.52,8.56 0,1 0,-57.04 0z" android:fillAlpha="0.64" />
+    <path android:fillColor="#fffa5555" android:pathData="M75.72,17.11C95.35,17.11 111.26,30.84 111.26,53.71C111.26,71.98 88.59,103.01 79.46,114.77C77.54,117.24 73.9,117.24 71.98,114.77C62.85,103.01 40.18,71.98 40.18,53.71C40.18,30.84 56.09,17.11 75.72,17.11ZM75.72,39.86C68.58,39.86 62.8,45.68 62.8,52.85C62.8,60.03 68.58,65.85 75.72,65.85C82.86,65.85 88.65,60.03 88.65,52.85C88.65,45.68 82.86,39.86 75.72,39.86Z" />
+</vector>

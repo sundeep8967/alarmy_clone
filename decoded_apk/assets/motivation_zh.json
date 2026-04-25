@@ -1,0 +1,688 @@
+[
+  {
+    "id": "676f77f3-9527-4d8c-9823-3a83efcbe0c0",
+    "canonicalName": "positivity_1",
+    "text": "你醒来了，这本身就是美好开始。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "315f07ee-afdc-490f-bcf8-ea53a2a3a5ce",
+    "canonicalName": "positivity_2",
+    "text": "无论今天会带来什么，你都能应对。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "7aae14b9-edc2-4d8c-8c6a-9778ffe89a03",
+    "canonicalName": "positivity_3",
+    "text": "你只需要相信自己。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "089d44db-aa14-4da7-aa64-c601298f4cf1",
+    "canonicalName": "positivity_5",
+    "text": "先让自己足够好。世界可以等一等。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "d521f296-3661-4d4c-83ea-218d5f6ac330",
+    "canonicalName": "positivity_7",
+    "text": "每天未必都美好，但每天都有美好的事。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "7a2617cd-ee98-4637-b841-56c5d4397322",
+    "canonicalName": "positivity_12",
+    "text": "做真实的、不完美却充满魔力的自己。",
+    "source": "Mandy Hale",
+    "category": "positivity"
+  },
+  {
+    "id": "30011669-b93e-47e1-87e4-96742141f73d",
+    "canonicalName": "positivity_15",
+    "text": "我已准备好以最好的自己闪耀。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "86bcb951-7b68-4a5a-a365-5c2d37a9057d",
+    "canonicalName": "positivity_16",
+    "text": "我值得被爱与尊重。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "55b82d09-ee80-4944-a7bc-f5b6e8c4b8d6",
+    "canonicalName": "positivity_17",
+    "text": "我为生命中的宁静心怀感激。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "7941908f-59d4-4c6f-a64b-adcafc107c2d",
+    "canonicalName": "positivity_19",
+    "text": "我充满能量，准备迎接一切挑战。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "315dc994-1b78-434e-a7f6-4a69487c2fa4",
+    "canonicalName": "positivity_23",
+    "text": "今天感谢某个人，哪怕是一件小事。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "fbe833b8-3a5a-42bb-9b9e-cab32f12646c",
+    "canonicalName": "positivity_24",
+    "text": "为今天原本的样子心怀感激。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "fc89afc2-33f4-46bd-a266-9cf7afe020f0",
+    "canonicalName": "positivity_25",
+    "text": "感恩会让你爱上已经拥有的生活。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "769d0c3f-4212-4194-a7cf-072681bebcbb",
+    "canonicalName": "positivity_28",
+    "text": "感谢那些让你一天发光的小事。",
+    "source": "",
+    "category": "positivity"
+  },
+  {
+    "id": "1d4e0a3c-787e-4ced-be05-dab9feacfcd6",
+    "canonicalName": "productivity_1",
+    "text": "只要你在学习，就不算失败。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "81bfa2d7-9726-43d8-8ef0-3824a69ef748",
+    "canonicalName": "productivity_2",
+    "text": "每一步向前，哪怕再小，都很重要。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "55100044-aac6-4e24-8437-aabbd91c12d2",
+    "canonicalName": "productivity_9",
+    "text": "设立新目标或做新梦，永远不嫌晚。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "7e93c879-1582-4abf-9093-3fefe168bc79",
+    "canonicalName": "productivity_10",
+    "text": "伟大的事从小而勇敢的一步开始。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "fe07f5b0-896a-4bd5-85e8-19c56e3ec346",
+    "canonicalName": "productivity_11",
+    "text": "你不必是最好的，只要变得更好。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "67ff2ca8-ecc4-48c5-94ad-1537d74ad72a",
+    "canonicalName": "productivity_12",
+    "text": "坚持让你不可阻挡。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "22b9fba3-374d-40aa-9e2b-78f328259780",
+    "canonicalName": "productivity_16",
+    "text": "每个挑战都在塑造你。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "e793a410-a83b-4daa-b08f-a41ae78754ab",
+    "canonicalName": "productivity_17",
+    "text": "好奇心是成长的钥匙。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "64a59b44-5b5e-479f-b778-36f1d927ad68",
+    "canonicalName": "productivity_19",
+    "text": "行动胜于完美。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "edc7d654-0334-4097-9815-25f4a21286a4",
+    "canonicalName": "productivity_20",
+    "text": "现在就去做，之后你会感谢自己。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "cfb0c588-47b6-413d-99a2-d3b6d6221a20",
+    "canonicalName": "productivity_23",
+    "text": "只要在学习，就不算失败。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "4f960343-998f-41d4-bc1e-83535203e76b",
+    "canonicalName": "productivity_24",
+    "text": "要有勇气，哪怕一开始做得不好。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "ae41ff6c-4a9d-477d-aee2-808b9791e35f",
+    "canonicalName": "productivity_26",
+    "text": "你的时刻会到来；继续积累。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "17f85484-9b0e-45dc-8b64-5ba3cb8d3000",
+    "canonicalName": "productivity_27",
+    "text": "继续走属于你的道路。",
+    "source": "",
+    "category": "productivity"
+  },
+  {
+    "id": "8b35d7ea-5150-4c7a-a2c7-5919764ef7c6",
+    "canonicalName": "productivity_29",
+    "text": "成功不是终点；失败并非致命；关键是继续的勇气。",
+    "source": "Winston Churchill",
+    "category": "productivity"
+  },
+  {
+    "id": "60f66df3-d6d9-44f8-9647-6f42aea03606",
+    "canonicalName": "productivity_33",
+    "text": "生活像骑自行车：要保持平衡，就要不断前行。",
+    "source": "Albert Einstein",
+    "category": "productivity"
+  },
+  {
+    "id": "b912f282-0498-4297-9c2d-2ae87b7b2301",
+    "canonicalName": "inner_peace_1",
+    "text": "倦怠之前先深呼吸。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "9e79694c-1b9c-41ca-a774-e2c0e4b6feae",
+    "canonicalName": "inner_peace_2",
+    "text": "可持续的节奏能战胜倦怠。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "cf37d564-2328-44ff-9b53-8a820b0c9f98",
+    "canonicalName": "inner_peace_3",
+    "text": "少做一点，更专注。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "fbe4391d-cf21-47ff-9608-594d6c5ec3b3",
+    "canonicalName": "inner_peace_10",
+    "text": "跌倒七次，站起八次。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "9555434d-43b1-4520-89da-aedf439da0dc",
+    "canonicalName": "inner_peace_11",
+    "text": "每次跌倒都教你如何站起来。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "b581196d-b151-4d62-92d1-9d2a4cec95a4",
+    "canonicalName": "inner_peace_12",
+    "text": "爬坡过后，路会更平坦。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "ffaf7940-a48c-438c-9bb7-891a5decbf89",
+    "canonicalName": "inner_peace_15",
+    "text": "哭一哭没关系，但别忘了之后要微笑。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "e255f70c-1c90-429c-8697-f8ae9bede141",
+    "canonicalName": "inner_peace_16",
+    "text": "为自己，也为他人微笑。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "b84997f0-346f-47b2-9f48-e2052be66d51",
+    "canonicalName": "inner_peace_17",
+    "text": "今天会是美好的一天，醒来微笑吧。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "3b520f27-0aff-49c7-8a35-3e8b4e118780",
+    "canonicalName": "inner_peace_22",
+    "text": "把思绪集中在你能掌控的事情上。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "820d464b-3521-41ec-a16b-b6fc24bacd0c",
+    "canonicalName": "inner_peace_23",
+    "text": "你做得比自己想的要好。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "cb0b7f2b-80ed-4c11-98fd-42e577e20d79",
+    "canonicalName": "inner_peace_29",
+    "text": "花一两分钟整理好自己。有时这就够了。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "4b8287f1-1294-4f73-9684-aa2992173168",
+    "canonicalName": "inner_peace_30",
+    "text": "留点时间去思考、享受、照顾自己。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "ba441b2e-643a-4df9-be75-4f6c762d3b42",
+    "canonicalName": "inner_peace_31",
+    "text": "别紧张。尽力而为，把其余的忘了。",
+    "source": "",
+    "category": "inner_peace"
+  },
+  {
+    "id": "3460630a-cbb6-4edd-8557-23413230d306",
+    "canonicalName": "health_and_fitness_1",
+    "text": "现在就有比你更忙的人在锻炼。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "b7173e7d-b5d1-4f95-b402-395551af9c0c",
+    "canonicalName": "health_and_fitness_2",
+    "text": "坚持是目标与结果之间的桥梁。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "42011b42-8ca3-463b-a0aa-bfec9824f8f5",
+    "canonicalName": "health_and_fitness_3",
+    "text": "每一滴汗都是成长的信号。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "d783f501-e855-4bce-b3be-1ae1fac618c4",
+    "canonicalName": "health_and_fitness_4",
+    "text": "运动是你每天送给自己的礼物。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "254df4ef-8eec-4f41-85d7-fec850c1b94b",
+    "canonicalName": "health_and_fitness_5",
+    "text": "吃得越好，感觉越好。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "dc122628-091d-404a-9a90-7aeff3dcaad5",
+    "canonicalName": "health_and_fitness_6",
+    "text": "每一个健康的选择都在尊重未来的自己。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "76f0937b-81fb-4fc2-aead-399b623fb50b",
+    "canonicalName": "health_and_fitness_7",
+    "text": "健康习惯是韧性的种子。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "a7875a91-8f30-457e-8a9c-caf2b6a27402",
+    "canonicalName": "health_and_fitness_11",
+    "text": "你的进步太棒了。你已经做了很多，还在继续前行。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "6febc95e-4900-4652-ab79-413296ea6910",
+    "canonicalName": "health_and_fitness_12",
+    "text": "记住你想要的，直到达成为止继续前进。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "286e1366-ecaa-471f-afa3-0b18ff92e796",
+    "canonicalName": "health_and_fitness_13",
+    "text": "好好照顾你的身体。那是你唯一能居住的地方。",
+    "source": "Jim Rohn",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "92b40de9-9d1a-4d07-b462-8ace4e5159a8",
+    "canonicalName": "health_and_fitness_14",
+    "text": "痛苦是暂时的，放弃却是永远的。",
+    "source": "Lance Armstrong",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "4aa3da00-9129-4e46-9d00-ccf2049ae4ac",
+    "canonicalName": "health_and_fitness_29",
+    "text": "用感恩取代内疚。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "b67f6659-c035-465b-9646-cc58b917441a",
+    "canonicalName": "health_and_fitness_30",
+    "text": "短短一段散步就能完全扭转心情。",
+    "source": "",
+    "category": "health_and_fitness"
+  },
+  {
+    "id": "47e7d3cd-b50b-4b1f-8f0a-2307588a357c",
+    "canonicalName": "hard_times_1",
+    "text": "困难不会一直持续下去。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "e95fa42e-0162-4214-8943-856d4e2fdc8a",
+    "canonicalName": "hard_times_2",
+    "text": "别被脑中的恐惧牵着走，让心里的梦想来引领你。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "e92aeecf-5088-42e7-b9f3-fdbc3bf18c65",
+    "canonicalName": "hard_times_3",
+    "text": "我比怀疑更强大，比恐惧更勇敢，也比障碍更坚强。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "1a32c89f-c445-4a58-b496-b606c35a71c5",
+    "canonicalName": "hard_times_10",
+    "text": "隧道的尽头有光。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "34b2216e-ceac-4eb6-9f9e-6878ea9c16a7",
+    "canonicalName": "hard_times_11",
+    "text": "每天醒来面对同样的难关，这就是勇气。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "ae98543c-0a6d-4944-bd77-3a9950898a77",
+    "canonicalName": "hard_times_15",
+    "text": "即使没人同行，你也要继续向前。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "2a6e5f5b-39bc-4fb3-84e1-3e1c3159253e",
+    "canonicalName": "hard_times_18",
+    "text": "是\"某一天\"还是\"第一天\"？由你决定。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "5435ce21-41b8-4422-b7c2-11c495b4f115",
+    "canonicalName": "hard_times_19",
+    "text": "一年里能发生的事会让你惊喜。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "e522d408-d711-4f18-8ee1-56b83e949000",
+    "canonicalName": "hard_times_24",
+    "text": "终有一天，好日子会超过其他所有日子。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "166365df-7d2f-401c-8ef6-7eb165e38e03",
+    "canonicalName": "hard_times_25",
+    "text": "一切都会朝着最好的方向发展。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "e4cc3e3a-8e99-436b-a6da-319d14297118",
+    "canonicalName": "hard_times_31",
+    "text": "我从未遇见过拥有轻松过去的强者。",
+    "source": "Tia Louise",
+    "category": "hard_times"
+  },
+  {
+    "id": "29e61b7b-b695-42a5-bd55-990d321cc93d",
+    "canonicalName": "hard_times_32",
+    "text": "无论今天遇到什么，保持冷静、专注、坚强。",
+    "source": "",
+    "category": "hard_times"
+  },
+  {
+    "id": "0b3f17e1-72e1-4640-aa0d-24941544627f",
+    "canonicalName": "relationships_1",
+    "text": "你将永远是我的永远。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "0c0ef7f1-3ced-4c4e-b473-7e8eaf806259",
+    "canonicalName": "relationships_2",
+    "text": "你对我而言就是全世界，我爱你。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "8a82b610-7edb-434e-9e1f-55fa4e161a14",
+    "canonicalName": "relationships_3",
+    "text": "我爱你，不是因为你拥有什么，而是因为你是谁。",
+    "source": "Debasish Mridha",
+    "category": "relationships"
+  },
+  {
+    "id": "6ebd9de9-5a4c-489a-9f89-cc55fe4232e1",
+    "canonicalName": "relationships_8",
+    "text": "也许要花上几年，但真爱总会归来。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "e33ddd92-7cb0-4b2f-800b-6699566485c0",
+    "canonicalName": "relationships_9",
+    "text": "用足够深的爱，让TA忘了孤独是什么感觉。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "5ab44805-1dc4-45b8-ba8b-a4b040fba054",
+    "canonicalName": "relationships_13",
+    "text": "在小事上也要值得信赖。",
+    "source": "Mother Teresa",
+    "category": "relationships"
+  },
+  {
+    "id": "7c5616b6-9397-41fb-ba21-e50c8efbb448",
+    "canonicalName": "relationships_14",
+    "text": "对爱你的人要坦诚，他们值得你的坦诚。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "58f3b3c4-f338-4d73-b210-bdc32e40ae9f",
+    "canonicalName": "relationships_17",
+    "text": "别为了关注而降低自己的价值。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "db71be6e-3c80-4025-898d-dd7fc68fb063",
+    "canonicalName": "relationships_18",
+    "text": "别再回到让你受伤的地方。",
+    "source": "Frank Ocean",
+    "category": "relationships"
+  },
+  {
+    "id": "c40f7f9c-1df8-485d-9121-1f951ffe7fdb",
+    "canonicalName": "relationships_20",
+    "text": "成为你希望收到的那份爱。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "10561fd4-5eb0-4d0a-bd03-aa103460ad5b",
+    "canonicalName": "relationships_21",
+    "text": "与会回馈你爱、尊重与忠诚的人在一起。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "605895b8-648b-4c74-8b8a-b4f3fbc98fd6",
+    "canonicalName": "relationships_23",
+    "text": "成为今天让某人微笑的理由。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "1de88aa3-71e9-4c6f-8309-22e1250f81a6",
+    "canonicalName": "relationships_24",
+    "text": "关怀的举动让世界变得柔和。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "2d5ceb3f-7a7e-4eef-b639-91c10764aae4",
+    "canonicalName": "relationships_26",
+    "text": "原谅无法改变过去，却能拓展未来.",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "482d36b8-1e83-4dda-a50d-209f4254d4a4",
+    "canonicalName": "relationships_27",
+    "text": "放下责备，你的心就能呼吸。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "671436c2-51e5-4a55-b3d0-6a2812644d1f",
+    "canonicalName": "relationships_30",
+    "text": "停一停，先倾听，再用心回应。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "68f579e8-ac92-482f-a39e-b1f456d6df5d",
+    "canonicalName": "relationships_31",
+    "text": "回答前，让对方把话说完。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "9d334f2d-942c-427c-a406-8b070f1d8284",
+    "canonicalName": "relationships_34",
+    "text": "每一件小事，我都心怀感激。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "12a2b3bc-4efa-4df9-82f9-6282096f0ba3",
+    "canonicalName": "relationships_35",
+    "text": "谢谢你成为我旅程的一部分。",
+    "source": "",
+    "category": "relationships"
+  },
+  {
+    "id": "5dbe6f26-0344-47a9-a8ae-11cfe88a261d",
+    "canonicalName": "spirituality_1",
+    "text": "让你的呼吸化作祈祷。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "1c3fcf28-1517-4daa-8f59-829c63f400ab",
+    "canonicalName": "spirituality_2",
+    "text": "恩典在谦卑的心里流淌。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "aac2ba97-a55f-4868-b7e7-987c23d420b3",
+    "canonicalName": "spirituality_6",
+    "text": "即使不明朗，也要相信过程。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "e8834961-133c-48b0-ae22-5fae0c0302c2",
+    "canonicalName": "spirituality_7",
+    "text": "用信心行走，不用恐惧。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "355fbf89-d6f6-490e-b207-359bbd5a1445",
+    "canonicalName": "spirituality_11",
+    "text": "主啊，感谢你赐下新的一天。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "37a0cc83-fd50-4e0e-bcc9-82dfd7679d7f",
+    "canonicalName": "spirituality_12",
+    "text": "亲爱的主啊，感谢你赐给我们全新的这一天。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "6feb6c01-2207-4b36-b01e-7dcc68418f64",
+    "canonicalName": "spirituality_146",
+    "text": "你是由光构成的。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "451d3c57-04e5-483c-9ac0-0d4c2af03fed",
+    "canonicalName": "spirituality_154",
+    "text": "你始终靠近光。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "ca14ec03-6f9c-4650-a1b2-f6cdd21217cb",
+    "canonicalName": "spirituality_157",
+    "text": "灵魂在安静的信任中成长。",
+    "source": "",
+    "category": "spirituality"
+  },
+  {
+    "id": "280756f0-5f1b-4e37-8ff1-bc4599683565",
+    "canonicalName": "spirituality_162",
+    "text": "你的光今天能治愈某个人。",
+    "source": "",
+    "category": "spirituality"
+  }
+]

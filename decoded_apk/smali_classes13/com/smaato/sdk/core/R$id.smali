@@ -1,0 +1,48 @@
+.class public final Lcom/smaato/sdk/core/R$id;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/smaato/sdk/core/R;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "id"
+.end annotation
+
+
+# static fields
+.field public static final btnBackward:I = 0x7f0a010a
+
+.field public static final btnClose:I = 0x7f0a010b
+
+.field public static final btnForward:I = 0x7f0a010c
+
+.field public static final btnLayoutBottom:I = 0x7f0a010d
+
+.field public static final btnLayoutTop:I = 0x7f0a010e
+
+.field public static final btnOpenExternal:I = 0x7f0a010f
+
+.field public static final btnRefresh:I = 0x7f0a0110
+
+.field public static final progressBar:I = 0x7f0a0501
+
+.field public static final smaato_sdk_core_progress_view_id:I = 0x7f0a05b8
+
+.field public static final tvHostname:I = 0x7f0a06c5
+
+.field public static final webView:I = 0x7f0a0770
+
+
+# direct methods
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method

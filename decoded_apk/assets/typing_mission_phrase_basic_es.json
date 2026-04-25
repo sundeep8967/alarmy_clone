@@ -1,0 +1,612 @@
+[
+  {
+    "text": "Exígete mucho a ti mismo y espera poco de los demás, así te ahorrarás disgustos.",
+    "speaker": "Confucio",
+    "id": "34bcbaa9-753d-4977-ac41-29ebdf39f107"
+  },
+  {
+    "text": "El fracaso es solo la oportunidad de comenzar de nuevo de forma más inteligente.",
+    "speaker": "Henry Ford",
+    "id": "3ee383ff-f346-4b6b-946a-0415240aff5b"
+  },
+  {
+    "text": "No es lo que tú tienes, sino como usas lo que tienes lo que marca la diferencia.",
+    "speaker": "Zig Ziglar",
+    "id": "0da95d53-1c80-425b-b668-e8c3e2697a4e"
+  },
+  {
+    "text": "No tiene nada de malo ser pequeño. Puedes hacer grandes cosas con un equipo así.",
+    "speaker": "Jason Fried",
+    "id": "fb9bbd7c-89f0-498f-994d-e4101dd07560"
+  },
+  {
+    "text": "Tienes que saber lo que va a pasar si quieres seguir estando un paso por delante.",
+    "speaker": "Phil Knight",
+    "id": "5aba6ecb-902b-466c-8139-20d832d63bec"
+  },
+  {
+    "text": "Un cobarde es incapaz de mostrar amor. Hacerlo está reservado para los valientes.",
+    "speaker": "Mahatma Gandhi",
+    "id": "5e98991a-bd9f-420a-bf8d-9e102af7113d"
+  },
+  {
+    "text": "El dinero y el éxito no cambian a la gente. Simplemente amplifican lo que ya hay.",
+    "speaker": "Will Smith",
+    "id": "b8ff1b1c-a6da-4fac-b8c4-dd769aa78977"
+  },
+  {
+    "text": "Lo que realmente da forma a nuestra vida es el significado que damos a las cosas.",
+    "speaker": "Tony Robbins",
+    "id": "b22497a5-e6e0-4e40-b80b-857f9e0b8d3f"
+  },
+  {
+    "text": "Casi todo lo que realice será insignificante, pero es muy importante que lo haga.",
+    "speaker": "Mahatma Gandhi",
+    "id": "09f44022-5b53-4175-8ad9-02d03660806c"
+  },
+  {
+    "text": "Nunca vayas por el camino trazado, porque conduce hacia donde otros ya han estado.",
+    "speaker": "Alexander Graham Bell",
+    "id": "d0a13515-1ced-4330-95d2-e0516a3386b9"
+  },
+  {
+    "text": "Si duplicas el número de experimentos que haces por año, vas a duplicar tu ingenio.",
+    "speaker": "Jeff Bezos",
+    "id": "17c68d51-50df-495a-b5ef-288b796f95ca"
+  },
+  {
+    "text": "Cuando todo parezca ir en tu contra, recuerda que el avión despega contra el viento.",
+    "speaker": "Henry Ford",
+    "id": "50ff0187-1577-45b6-9a23-0004567a7b9a"
+  },
+  {
+    "text": "Cualquiera que no esté cometiendo errores es que no está intentándolo lo suficiente.",
+    "speaker": "Wess Roberts",
+    "id": "b6e68ce3-7e90-4d7e-a398-58da96c8fe98"
+  },
+  {
+    "text": "La riqueza no consiste en tener grandes posesiones, sino en tener pocas necesidades.",
+    "speaker": "Epíteto",
+    "id": "4add7bac-a2ae-401f-b487-ffed34dd97d9"
+  },
+  {
+    "text": "El primer paso es establecer que algo es posible. entonces la probabilidad ocurrirá.",
+    "speaker": "Elon Musk",
+    "id": "65943f73-1f3a-4b84-aef3-6d9c484432f3"
+  },
+  {
+    "text": "En los momentos de crisis solo la imaginación es más importante que el conocimiento.",
+    "speaker": "Robert Kiyosaki",
+    "id": "1372b14c-d9dc-49a5-b115-c3a580cfd555"
+  },
+  {
+    "text": "La cosa más importante que debes hacer si estás dentro de un hoyo es dejar de cavar.",
+    "speaker": "Warren Buffett",
+    "id": "a714c418-59e8-4021-8b9c-6edb6ba52610"
+  },
+  {
+    "text": "No duermas para descansar, duerme para soñar. Porque los sueños están para cumplirse.",
+    "speaker": "Walt Disney",
+    "id": "f5165fe6-41b4-477c-becc-8bbb0539317b"
+  },
+  {
+    "text": "Regla número 1. Nunca pierdas dinero. Regla número 2. Nunca olvides la regla número 1.",
+    "speaker": "Warren Buffett",
+    "id": "f9e7e300-aeb5-421b-a300-29cffd037b50"
+  },
+  {
+    "text": "Cuando se innova, tienes que estar preparado para que la gente te diga que estas loco.",
+    "speaker": "Larry Ellison",
+    "id": "0476a821-bb87-4677-9c71-2e7b76f62092"
+  },
+  {
+    "text": "Si tuviéramos que hablar más que escuchar, tendríamos dos bocas y solamente una oreja.",
+    "speaker": "Mark Twain",
+    "id": "0bf40437-0603-4c38-bc13-2c89cb8830d6"
+  },
+  {
+    "text": "Si realmente quieres hacer algo, encontrarás una manera. Si no, encontrarás una excusa.",
+    "speaker": "Jim Rohn",
+    "id": "8bbd6f51-09d9-45a4-84ef-299484955c29"
+  },
+  {
+    "text": "Escoge un trabajo que te guste, y nunca tendrás que trabajar ni un solo día de tu vida.",
+    "speaker": "Confucio",
+    "id": "f0c5efbe-0c5f-40cb-ab63-02f7d2e6f37b"
+  },
+  {
+    "text": "Si no estás dispuesto a arriesgar lo inusual, tendrás que acostumbrarte a lo ordinario.",
+    "speaker": "Jim Rohn",
+    "id": "9567735b-f830-436d-8002-9df49ac41efb"
+  },
+  {
+    "text": "La mayoría de la gente pierde las oportunidades porque se viste normal y parece trabajo.",
+    "speaker": "Thomas Edison",
+    "id": "93e64109-ff9b-4383-b0e3-35cd4725d743"
+  },
+  {
+    "text": "Vale más hacer la cosa más insignificante del mundo, que estar media hora sin hacer nada.",
+    "speaker": "Goethe",
+    "id": "77ab70e0-6416-4eed-8459-632e937f5cbf"
+  },
+  {
+    "text": "Nunca se puede cruzar el océano hasta que se tenga el coraje de perder de vista la costa.",
+    "speaker": "Cristobal Colón",
+    "id": "0dc4a4cc-373e-4cee-915f-18cd3b334399"
+  },
+  {
+    "text": "Ningún hombre debería recibir un dólar al menos que ese dólar haya sido ganado justamente.",
+    "speaker": "Theodore Roosevelt",
+    "id": "e75423a1-e066-451e-a8cb-7f245467e05b"
+  },
+  {
+    "text": "Solo hay una clase en la comunidad que piensa más en el dinero que el rico, y es el pobre.",
+    "speaker": "Oscar Wilde",
+    "id": "f39a8e0e-2712-4a16-87c0-34504b7e8952"
+  },
+  {
+    "text": "El mejor momento para plantar un árbol fue hace 20 años. El segundo mejor momento es ahora.",
+    "speaker": "Proverbio chino",
+    "id": "01567a5b-5053-4e3c-90c1-884d0404c5ca"
+  },
+  {
+    "text": "Solo aquellos que se atreven a tener grandes fracasos terminan consiguiendo grandes éxitos.",
+    "speaker": "Robert F. Kennedy",
+    "id": "369c53b0-e061-4849-8eb2-416b764bfbda"
+  },
+  {
+    "text": "El éxito no es el resultado de una combustión espontánea. Tú tienes que encenderte primero.",
+    "speaker": "Fred Shero",
+    "id": "b567f258-a7a3-4c1c-9845-5702a0a186b7"
+  },
+  {
+    "text": "Nunca abandones un sueño por el tiempo que te puede tomar. De igual forma, el tiempo pasará.",
+    "speaker": "Earl Nightingale",
+    "id": "0be6caac-e287-4f1b-8156-2b3d8997dfee"
+  },
+  {
+    "text": "El valor de la vida puede ser medido por las veces en las que tu alma ha estado muy agitada.",
+    "speaker": "Soichiro Honda",
+    "id": "5469fc3b-a084-4f97-8b7d-f68d8928d6e1"
+  },
+  {
+    "text": "Si estuviésemos motivados por el dinero, hubiésemos vendido Google y estaríamos en la playa.",
+    "speaker": "Larry Page",
+    "id": "4946974a-b7af-4e04-aa8e-e7ab95a4f716"
+  },
+  {
+    "text": "La competición te hace mejor, siempre, siempre te hace mejor, incluso si el competidor gana.",
+    "speaker": "Carlos Slim",
+    "id": "cb4e8be2-a127-4542-934f-9f7927ca3542"
+  },
+  {
+    "text": "Algunas personas sueñan con el éxito, mientras otras se despiertan y trabajan para lograrlo.",
+    "speaker": "Anónimo",
+    "id": "0d9be815-51fc-4b64-8837-fd2a38e430db"
+  },
+  {
+    "text": "El secreto para contratar a los mejores es este. Busca personas que quieran cambiar el mundo.",
+    "speaker": "Marc Benioff",
+    "id": "98a07e21-2aa5-4250-ba6f-4ad08b358760"
+  },
+  {
+    "text": "Mucha gente no cuida su dinero hasta que casi lo gastan y otros hacen lo mismo con su tiempo.",
+    "speaker": "Johann Wolfgang von Goethe",
+    "id": "af1b3c5a-cdc2-4748-9721-345c73be37a1"
+  },
+  {
+    "text": "En las batallas te das cuenta que los planes son inservibles, pero hacer planes indispensable.",
+    "speaker": "Dwight E. Eisenhower",
+    "id": "7739be19-af65-4590-978f-7739e415f43a"
+  },
+  {
+    "text": "No mañana. No la siguiente semana. Sino hoy. El verdadero emprendedor actúa en lugar de soñar.",
+    "speaker": "Nolan Bushnell",
+    "id": "bb4c1b96-6bc8-4837-830f-9e16d3fb2607"
+  },
+  {
+    "text": "Una persona debe fijar sus objetivos cuanto antes y dedicar toda su energía y talento a ellos.",
+    "speaker": "Walt Disney",
+    "id": "bd5a00b2-a259-48a3-bb3c-e470dd0b41da"
+  },
+  {
+    "text": "En las ideas es en donde reside nuestra fuerza y tanto mejor si las sostenemos con obstinación.",
+    "speaker": "Enzo Ferrari",
+    "id": "9adc1c15-3191-49ef-8497-2606a021eff2"
+  },
+  {
+    "text": "El dinero es una herramienta. Te llevará a donde desees, pero no te reemplazará como conductor.",
+    "speaker": "Ayn Rand",
+    "id": "5974fd66-8cf6-4f6b-9169-9e58bb45450b"
+  },
+  {
+    "text": "Está bien celebrar el éxito pero es más importante prestar atención a las lecciones del fracaso.",
+    "speaker": "Bill Gates",
+    "id": "80211fa3-c667-4a53-9d10-ababce0e06e5"
+  },
+  {
+    "text": "Puede que el dinero no compre la felicidad, pero prefiero llorar en un jaguar que en un autobús.",
+    "speaker": "Françoise Sagan",
+    "id": "e47a54d9-f3ee-4039-b246-d283cda89044"
+  },
+  {
+    "text": "La persistencia es muy importante. No debes renunciar al menos que te veas obligado a renunciar.",
+    "speaker": "Elon Musk",
+    "id": "82f8f497-5b9e-4c00-be02-8bc58c3cca3e"
+  },
+  {
+    "text": "A alguna gente no le gusta el cambio, pero necesitas abrazarlo si la alternativa es el desastre.",
+    "speaker": "Elon Musk",
+    "id": "ae8ba046-fdae-41aa-8468-19b0516b0475"
+  },
+  {
+    "text": "La vida es peligrosa, no por los que hacen el mal, sino por los que se sientan a ver lo que pasa.",
+    "speaker": "Albert Einstein",
+    "id": "42169ae6-5593-4e0f-9e7e-cff0b708059b"
+  },
+  {
+    "text": "Casi no fundo Google porque estaba preocupado por el riesgo y por dejar mi programa de Doctorado.",
+    "speaker": "Larry Page",
+    "id": "7b848836-b0a1-4b60-9de3-2e3a8ae4c26d"
+  },
+  {
+    "text": "Mientras que el dinero no puede comprar felicidad, te permite elegir tu propia forma de desgracia.",
+    "speaker": "Groucho Marx",
+    "id": "3b4477fe-b6e7-4f11-a39c-ee7dac848206"
+  },
+  {
+    "text": "El éxito es un pésimo profesor. Seduce a la gente inteligente para que piense que no puede perder.",
+    "speaker": "Bill Gates",
+    "id": "502a2aa0-7359-4d5f-8638-ecb0df715a32"
+  },
+  {
+    "text": "Solo trabajo con los mejores, no se trata de las mejores hojas de vida sino de la actitud correcta.",
+    "speaker": "Donald Trump",
+    "id": "d5a47409-8389-431e-bfdb-5fffe0731a01"
+  },
+  {
+    "text": "El secreto de la felicidad no es hacer siempre lo que se quiere sino querer siempre lo que se hace.",
+    "speaker": "Tolstoi",
+    "id": "100b3a10-5483-4533-8ee7-38fc442e8378"
+  },
+  {
+    "text": "Es fácil tener principios cuando eres rico. Lo más importante es tener principios cuando eres pobre.",
+    "speaker": "Ray Kroc",
+    "id": "71c3ecf1-b950-484a-b725-790e97a8e0fd"
+  },
+  {
+    "text": "Nunca me he tenido por ingeniero o inventor, solamente me considero un promotor y agitador de ideas.",
+    "speaker": "Enzo Ferrari",
+    "id": "a2d7eb8f-3a40-4f2a-add7-a4f9c603e47c"
+  },
+  {
+    "text": "El dinero no puede comprar la felicidad, pero seguro que te conseguirá una mejor clase de recuerdos.",
+    "speaker": "Ronald Reagan",
+    "id": "14ab9dcc-ac3d-4991-9b37-786732868de6"
+  },
+  {
+    "text": "Un optimista ve una oportunidad en toda calamidad, un pesimista ve una calamidad en toda oportunidad.",
+    "speaker": "Winston Churchill",
+    "id": "6932902f-9db6-4c39-acd0-fa91e00884bb"
+  },
+  {
+    "text": "Da tu primer paso con fe, no es necesario que veas toda la escalera completa, sólo da tu primer paso.",
+    "speaker": "Martin Luther King Jr.",
+    "id": "0faf5a69-7b44-468f-a2ed-c9c889d51766"
+  },
+  {
+    "text": "Nuestra mayor debilidad es rendirse, la única manera de tener éxito es intentarlo siempre una vez más.",
+    "speaker": "Thomas Edison",
+    "id": "2bbd96a4-c0eb-4753-8303-2bf8adf6c099"
+  },
+  {
+    "text": "Solo triunfa en el mundo quien se levanta y busca a las circunstancias y las crea si no las encuentra.",
+    "speaker": "George Bernard Shaw",
+    "id": "05d9c93d-11df-497c-81ca-8e37aab6269f"
+  },
+  {
+    "text": "La simplicidad y el sentido común deberían ser la base de la planificación y la dirección estratégica.",
+    "speaker": "Ingvar Kamprad",
+    "id": "7f9e059f-96e1-4c19-bdc0-fc3dd42c9cfb"
+  },
+  {
+    "text": "Mantén siempre tus ojos abiertos, Siempre observando. Porque cualquier cosa que veas puede inspirarte.",
+    "speaker": "Grace Coddington",
+    "id": "e9678e0f-b1d1-4377-859e-ea7b9fb5f994"
+  },
+  {
+    "text": "El camino hacia el éxito y el camino hacia el fracaso son muy parecidos. Solo los diferencia el final.",
+    "speaker": "Colin Davis",
+    "id": "7d3fedc6-8383-45d4-8c2b-fde7c72934a1"
+  },
+  {
+    "text": "No basta con hacer productos buenos. Tienes que hacer que la gente se entere de lo que estás haciendo.",
+    "speaker": "Phil Knight",
+    "id": "f99740d2-5f74-4ed8-9e4b-f381689b136d"
+  },
+  {
+    "text": "Aquellos que dicen que algo no puede hacerse, suelen ser interrumpidos por otros que lo están haciendo.",
+    "speaker": "Joel A. Barker",
+    "id": "b3e0a1dc-223f-4fe5-84db-98b7a3e54b60"
+  },
+  {
+    "text": "Tú sabes que estás en el camino del éxito si estás dispuesto a hacer tu trabajo aun cuando no te paguen.",
+    "speaker": "Oprah Winfrey",
+    "id": "ee881529-fc75-4424-95e5-e7fd66ca6e8e"
+  },
+  {
+    "text": "Un hombre exitoso es aquel capaz de construir fundaciones firmes con los ladrillos que le tiraron otros.",
+    "speaker": "David Brinkley",
+    "id": "215dcdff-420c-4f9e-994f-1d2c30ddf01e"
+  },
+  {
+    "text": "Puedes decirle cualquier cosa a la gente, pero la forma en la que lo dices determinara cómo reaccionarán.",
+    "speaker": "John Rampton",
+    "id": "a240933b-1aa7-496e-a76c-78f509bf22ae"
+  },
+  {
+    "text": "Arriesgarte más de lo que los otros piensan es seguro. Soñar más de lo que los otros piensan es práctico.",
+    "speaker": "Howard Schultz",
+    "id": "5418ecec-6df7-447a-9ba7-27fb34703e00"
+  },
+  {
+    "text": "Todo aquello que puedas o sueñes hacer, comiénzalo. La audacia contiene en si misma genio, poder y magia.",
+    "speaker": "Goethe",
+    "id": "3b74de0e-3535-483e-a1bd-341b2efc32cc"
+  },
+  {
+    "text": "La forma en que los jefes tratan a los empleados es exactamente cómo los empleados tratarán a los clientes.",
+    "speaker": "Sam Walton",
+    "id": "99a7e9fd-f0c9-4af0-84e3-61d3f86caaea"
+  },
+  {
+    "text": "Cuando era joven, pensaba que el dinero era lo más importante en la vida. Ahora que soy mayor, sé que lo es.",
+    "speaker": "Oscar Wilde",
+    "id": "d4a34339-a0a3-4eb3-aace-f1613dd0c827"
+  },
+  {
+    "text": "No te preocupes por el financiamiento si no lo necesitas. Hoy es más económico que nunca iniciar un negocio.",
+    "speaker": "Noah Everett",
+    "id": "b9478335-bd39-4266-93fc-362b1f4ec6a8"
+  },
+  {
+    "text": "No nos atrevemos a muchas cosas porque son difíciles, pero son difíciles porque no nos atrevemos a hacerlas.",
+    "speaker": "Lucio Anneo Séneca",
+    "id": "0e224fa9-3467-4981-a3ad-a8fa54e09787"
+  },
+  {
+    "text": "He sido bendecido de encontrar gente más inteligente que yo. Ellos me ayudan a ejecutar la visión que tengo.",
+    "speaker": "Russell Simmons",
+    "id": "e0031c0a-f616-487e-88ed-24bf1fbba970"
+  },
+  {
+    "text": "Muévete rápido y rompe objetos. Si no estás rompiendo cosas, no te estás moviendo lo suficientemente rápido.",
+    "speaker": "Mark Zuckerberg",
+    "id": "c3d5e494-d6ae-4eec-9282-21a6994b1fa7"
+  },
+  {
+    "text": "El dinero es algo que entiendo vagamente y pienso en él solo cuando no lo tengo para financiar mis proyectos.",
+    "speaker": "Walt Disney",
+    "id": "dd8023f6-9d3f-4c82-a51d-b2493c0091d3"
+  },
+  {
+    "text": "Cuando hay una crisis, es cuando algunos están interesados en salir y nosotros estamos interesados en entrar.",
+    "speaker": "Carlos Slim",
+    "id": "4024a23e-7688-4ea8-bfb6-4a630ab8c763"
+  },
+  {
+    "text": "No hay secretos para el éxito. Este se alcanza preparándose, trabajando arduamente y aprendiendo del fracaso.",
+    "speaker": "Colin Powell",
+    "id": "951f8199-1d56-4888-b932-f7a0016450a6"
+  },
+  {
+    "text": "Puedes tener cualquier cosa de este mundo que quieras, si lo quieres lo suficiente como para pagar su precio.",
+    "speaker": "Mary Kay Ash",
+    "id": "df17501c-72c1-4970-9780-dca3131232ae"
+  },
+  {
+    "text": "El que pierde dinero, pierde mucho. El que pierde un amigo, pierde aún más. El que pierde fe, lo pierde todo.",
+    "speaker": "Eleanor Roosevelt",
+    "id": "237ecd64-b01b-476f-907d-973e78c37c9a"
+  },
+  {
+    "text": "Siempre que te pregunten si puedes hacer un trabajo, contesta que sí y ponte enseguida a aprender cómo se hace.",
+    "speaker": "Franklin D. Roosevelt",
+    "id": "fcef8664-0a1e-4304-8544-bfa19b8e1c85"
+  },
+  {
+    "text": "Debes hacer cosas que realmente sean importantes, pero también debes divertirte, porque si no, no tendrás éxito.",
+    "speaker": "Larry Page",
+    "id": "53b4152c-9536-43af-97bc-27829f934793"
+  },
+  {
+    "text": "En vez de pensar cuando serán tus próximas vacaciones deberías construir una vida de la cual no quieras escapar.",
+    "speaker": "Seth Godin",
+    "id": "68b72d01-3a4c-44c4-a05e-cdc9489f4025"
+  },
+  {
+    "text": "Las personas no son recordadas por el número de veces que fracasan, sino por el número de veces que tienen éxito.",
+    "speaker": "Thomas Edison",
+    "id": "ec9d0daa-72dc-47ad-bc84-ae65194565c8"
+  },
+  {
+    "text": "Hasta que no te valores a ti mismo no valorarás tu tiempo. Y hasta que no valores tu tiempo no harás nada con él.",
+    "speaker": "M.Scott Peck",
+    "id": "f2a7d015-5a94-4701-aa05-eea7d96df36b"
+  },
+  {
+    "text": "Toma 20 años crear una reputación y cinco minutos arruinarla. Si piensas de esa manera, harás las cosas diferente.",
+    "speaker": "Warren Buffet",
+    "id": "ca617a21-4a2e-4ed8-8f47-5f3356e1bbcb"
+  },
+  {
+    "text": "No es cuánto dinero ganas, sino cuánto dinero ahorras, cuánto trabaja para ti y para cuántas generaciones tendrás.",
+    "speaker": "Robert Kiyosaki",
+    "id": "ac7e5677-5899-4c58-827f-6817928e6359"
+  },
+  {
+    "text": "Nuestra mayor debilidad radica en renunciar. La forma más segura de tener éxito es siempre intentarlo una vez más.",
+    "speaker": "Thomas Edison",
+    "id": "dc52957b-0baa-41a3-829c-cac19b0ebc2b"
+  },
+  {
+    "text": "Mis cosas favoritas de la vida no cuestan dinero. Está claro que el recurso más preciado que tenemos es el tiempo.",
+    "speaker": "Steve Jobs",
+    "id": "27a74f85-da73-4526-97cb-b68408c7e880"
+  },
+  {
+    "text": "Definitivamente quería ganar mi libertad. Pero la principal motivación no fue hacer dinero, sino causar un impacto.",
+    "speaker": "Sean Parker",
+    "id": "84bb1ac4-118a-4571-90dd-3c4b4365a8e4"
+  },
+  {
+    "text": "La tragedia en la vida no consiste en no alcanzar tus metas. La tragedia en la vida es no tener metas que alcanzar.",
+    "speaker": "Benjamin E. Mays",
+    "id": "361ce296-2788-427c-80ec-2c217930f977"
+  },
+  {
+    "text": "La felicidad no es la mera posesión de dinero. Reside en la alegría del logro, en la emoción del esfuerzo creativo.",
+    "speaker": "Franklin D. Roosevelt",
+    "id": "cf9a5544-38e5-435a-9447-4e7ecf3c0913"
+  },
+  {
+    "text": "Tenemos que tener una meta, un propósito en nuestras vidas. Si no sabes a dónde estás apuntando, no tienes una meta.",
+    "speaker": "Mary Kay Ash",
+    "id": "6e3224b7-269d-4430-b074-c737cf7d5f66"
+  },
+  {
+    "text": "El tiempo, la perseverancia y diez años de intentos eventualmente te hará ver como un éxito de la noche a la mañana.",
+    "speaker": "Biz Stone",
+    "id": "e84c5037-03d9-4df5-a04c-89d5be8df5dd"
+  },
+  {
+    "text": "Piensa en grande y no escuches a quienes te dicen que no puedes hacerlo. La vida es muy corta para pensar en pequeño.",
+    "speaker": "Tim Ferris",
+    "id": "05e9636b-c60d-4363-a491-69f4e20279f8"
+  },
+  {
+    "text": "Ganar dinero en si mismo no es difícil. Lo difícil es ganarlo haciendo algo a lo que merezca la pena dedicar la vida.",
+    "speaker": "Carlos Ruiz Zafón",
+    "id": "a3f1f306-5230-403b-947a-f059c511c1b3"
+  },
+  {
+    "text": "Solo hay dos formas de vivir tu vida. Una es pensar que nada es un milagro. La otra es pensar que todo es un milagro.",
+    "speaker": "Albert Einstein",
+    "id": "03da7df1-838d-4708-affe-d07ee557185d"
+  },
+  {
+    "text": "Si sólo trabajas en cosas que te gusten y te apasionen, no deberías tener un plan maestro para ver cómo resulta todo.",
+    "speaker": "Mark Zuckerberg",
+    "id": "9aa76b70-9841-4ce8-b1a7-ac3c0496db5e"
+  },
+  {
+    "text": "Las personas que están lo suficientemente locas como para pensar que pueden cambiar el mundo… son quienes lo cambian.",
+    "speaker": "Steve Jobs",
+    "id": "6c5156ff-9968-4413-bbe8-085198732123"
+  },
+  {
+    "text": "Si quieres que algo sea hecho, nombra un responsable. Si quieres que algo se demore eternamente, nombra una comisión.",
+    "speaker": "Napoleón",
+    "id": "721e6512-747a-42c7-a4fa-a544f5269372"
+  },
+  {
+    "text": "No te disculpes por tener altos estándares. Las personas que realmente quieren estar en tu vida alcanzarán este nivel.",
+    "speaker": "Ziad K. Abdelnour",
+    "id": "c36aaee7-abde-4f8e-a224-ce5d644edfae"
+  },
+  {
+    "text": "La voluntad obstinada de perseguir una ambición propia es verdaderamente una fuerza que puede hacer superar obstáculos.",
+    "speaker": "Enzo Ferrari",
+    "id": "2a54fd02-b408-4e49-b090-d9b5fa94c166"
+  },
+  {
+    "text": "No es el empleador el que paga el salario. Los empleadores solo manejan el dinero. Es el cliente el que paga el salario.",
+    "speaker": "Henry Ford",
+    "id": "a8480122-4134-4ada-ad4d-9876d8ea507b"
+  },
+  {
+    "text": "Un negocio absolutamente dedicado al servicio sólo tendrá una preocupación sobre las ganancias: serán demasiado grandes.",
+    "speaker": "Henry Ford",
+    "id": "b5c518b5-cd7b-4364-8964-1d52713590f9"
+  },
+  {
+    "text": "Observa, escucha y aprende. No puedes saberlo todo. Todo el que piensa que lo sabe todo está destinado a la mediocridad.",
+    "speaker": "Donald Trump",
+    "id": "2924b73a-c071-4b23-8ee6-4e1f86aaedd1"
+  },
+  {
+    "text": "El éxito no es la clave de la felicidad. La felicidad es la clave del éxito. Si amas lo que estas haciendo serás exitoso.",
+    "speaker": "Albert Schweitzer",
+    "id": "d478421f-55f3-4170-a1b8-cd5a949d8826"
+  },
+  {
+    "text": "El éxito no se logra sólo con cualidades especiales. Es sobre todo un trabajo de constancia, de método y de organización.",
+    "speaker": "Víctor Hugo",
+    "id": "e1f3d010-e237-4fd3-bef7-c29ab00efe11"
+  },
+  {
+    "text": "Pensar es el trabajo más difícil que existe. Quizá esa sea la razón por la que haya tan pocas personas que lo practiquen.",
+    "speaker": "Henry Ford",
+    "id": "890df8af-ed2f-4031-88f3-cd56edb23b2a"
+  },
+  {
+    "text": "En el mundo moderno de los negocios, es inútil ser un pensador creativo y original a menos que también vendas lo que creas.",
+    "speaker": "David Ogilvy",
+    "id": "a27ce402-8d77-45c8-acb4-3c5d1cd4a3ec"
+  },
+  {
+    "text": "Te convertirás en alguien tan pequeño como el deseo que te controle, y en algo tan grande como sea tu aspiración dominante.",
+    "speaker": "James Allen",
+    "id": "59ef829c-66e1-4109-886f-35c7f18c6ab8"
+  },
+  {
+    "text": "Hay una diferencia entre ser pobre y estar quebrado. Uno puede estar quebrado temporalmente, uno es pobre para toda la vida.",
+    "speaker": "Robert Kiyosaki",
+    "id": "47bfe969-db5d-4122-a3a1-ce57ffe8c032"
+  },
+  {
+    "text": "Sé un punto de referencia de calidad. Algunas personas no están acostumbradas a un ambiente donde la excelencia es aceptada.",
+    "speaker": "Steve Jobs",
+    "id": "2b210708-feed-48e1-ba0f-694f6334c823"
+  },
+  {
+    "text": "Le debo mi éxito a haber escuchado con respeto a los mejores consejos, y luego desaparecer y hacer exactamente lo contrario.",
+    "speaker": "G. K. Chesterton",
+    "id": "1dbbda36-84d5-4348-9367-8f45ad69ec94"
+  },
+  {
+    "text": "Hay un motor poderoso dentro de cada ser humano que, una vez liberado, puede hacer realidad cualquier visión, sueño o deseo.",
+    "speaker": "Anthony Robbins",
+    "id": "2059f67c-41a6-43fc-a90c-e10dadf1772d"
+  },
+  {
+    "text": "Demasiadas personas gastan el dinero que ganaron para comprar cosas que no quieren, para impresionar a gente que no les gusta.",
+    "speaker": "Will Rogers",
+    "id": "de45c964-7f40-4979-8606-dffd3e72697a"
+  },
+  {
+    "text": "Si estas en los negocios, necesitas entender el ambiente. Necesitas tener una visión del futuro y necesitas conocer el pasado.",
+    "speaker": "Carlos Slim",
+    "id": "8d6f1e6d-f5e8-42c7-b666-7df57cc48a40"
+  },
+  {
+    "text": "Realmente soy un soñador práctico. Mis sueños no son bagatelas en el aire. Lo que yo quiero es convertir mis sueños en realidad.",
+    "speaker": "Mahatma Gandhi",
+    "id": "3a07136f-d24c-468a-919a-b7ab81fb29e6"
+  },
+  {
+    "text": "El éxito está conectado con la acción. La gente exitosa se mantiene en movimiento. Cometen errores pero nunca se dan por vencido.",
+    "speaker": "Conrad Hilton",
+    "id": "ef2b19ad-f2d7-49b1-a858-20076b86082f"
+  },
+  {
+    "text": "Hay muchas malas razones para empezar una empresa. Pero solo hay una buena razón y creo que sabes cuál es: para cambiar el mundo.",
+    "speaker": "Phil Libin",
+    "id": "83e82f54-8c86-49f5-9357-64d4fad02035"
+  },
+  {
+    "text": "Cuando tienes dinero, solo tú recuerdas quién eres. Pero cuando no tienes dinero, todo el mundo olvida quien eres. Así es la vida.",
+    "speaker": "Bill Gates",
+    "id": "9a7047f0-4213-4604-a0f0-342aaef880d0"
+  }
+]

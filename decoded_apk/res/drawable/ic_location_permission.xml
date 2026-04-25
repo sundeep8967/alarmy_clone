@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="54.0dip" android:width="54.0dip" android:viewportWidth="54.0" android:viewportHeight="54.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <path android:fillColor="@drawable/$ic_location_permission__0" android:pathData="M4.423,34.679C4.985,31.876 7.447,29.858 10.306,29.858H43.43C46.256,29.858 48.698,31.83 49.295,34.592L51.431,44.488C52.238,48.226 49.39,51.754 45.566,51.754H8.322C4.535,51.754 1.695,48.288 2.439,44.575L4.423,34.679Z" />
+    <path android:fillColor="#00000000" android:pathData="M12.502,48.95L15.502,31" android:strokeColor="@drawable/$ic_location_permission__1" android:strokeWidth="1.0" android:strokeLineCap="round" android:strokeAlpha="0.49" />
+    <path android:fillColor="#00000000" android:pathData="M26.987,49L26.987,31" android:strokeColor="@drawable/$ic_location_permission__2" android:strokeWidth="1.0" android:strokeLineCap="round" android:strokeAlpha="0.49" />
+    <path android:fillColor="#00000000" android:pathData="M5,36L49,36" android:strokeColor="@drawable/$ic_location_permission__3" android:strokeWidth="1.0" android:strokeLineCap="round" android:strokeAlpha="0.48" />
+    <path android:fillColor="#00000000" android:pathData="M5,44L49,44" android:strokeColor="@drawable/$ic_location_permission__4" android:strokeWidth="1.0" android:strokeLineCap="round" />
+    <path android:fillColor="#00000000" android:pathData="M44,48.95L41,31" android:strokeColor="@drawable/$ic_location_permission__5" android:strokeWidth="1.0" android:strokeLineCap="round" android:strokeAlpha="0.49" />
+    <path android:fillColor="@drawable/$ic_location_permission__6" android:pathData="M17,41a10,3 0,1 0,20 0a10,3 0,1 0,-20 0z" android:fillAlpha="0.64" />
+    <path android:fillColor="#fffb5656" android:pathData="M30.031,37.824C33.719,33.24 39.015,25.748 39.015,20.52C39.015,12.501 33.435,6 26.551,6C19.668,6 14.088,12.501 14.088,20.52C14.088,25.748 19.384,33.24 23.071,37.824C24.887,40.081 28.216,40.081 30.031,37.824ZM26.551,23.09C29.054,23.09 31.083,21.05 31.083,18.533C31.083,16.016 29.054,13.976 26.551,13.976C24.048,13.976 22.019,16.016 22.019,18.533C22.019,21.05 24.048,23.09 26.551,23.09Z" android:fillType="evenOdd" />
+</vector>

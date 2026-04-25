@@ -1,0 +1,202 @@
+.class final Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;
+.super Lkotlin/coroutines/jvm/internal/l;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/p;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer;->show(Lcom/unity3d/ads/adplayer/ShowOptions;)V
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x18
+    name = null
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Lkotlin/coroutines/jvm/internal/l;",
+        "Lza0/p<",
+        "Lkotlinx/coroutines/flow/j<",
+        "-",
+        "Lcom/unity3d/ads/adplayer/DisplayMessage;",
+        ">;",
+        "Lpa0/e<",
+        "-",
+        "Lja0/h0;",
+        ">;",
+        "Ljava/lang/Object;",
+        ">;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\u0010\u0003\u001a\u00020\u0002*\u0008\u0012\u0004\u0012\u00020\u00010\u0000H\u008a@\u00a2\u0006\u0004\u0008\u0003\u0010\u0004"
+    }
+    d2 = {
+        "Lkotlinx/coroutines/flow/j;",
+        "Lcom/unity3d/ads/adplayer/DisplayMessage;",
+        "Lja0/h0;",
+        "<anonymous>",
+        "(Lkotlinx/coroutines/flow/j;)V"
+    }
+    k = 0x3
+    mv = {
+        0x1,
+        0x8,
+        0x0
+    }
+.end annotation
+
+.annotation runtime Lkotlin/coroutines/jvm/internal/f;
+    c = "com.unity3d.ads.adplayer.AndroidFullscreenWebViewAdPlayer$show$1"
+    f = "AndroidFullscreenWebViewAdPlayer.kt"
+    l = {}
+    m = "invokeSuspend"
+.end annotation
+
+
+# instance fields
+.field final synthetic $listenerStarted:Lkotlinx/coroutines/x;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lkotlinx/coroutines/x<",
+            "Lja0/h0;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+.field label:I
+
+
+# direct methods
+.method constructor <init>(Lkotlinx/coroutines/x;Lpa0/e;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lkotlinx/coroutines/x<",
+            "Lja0/h0;",
+            ">;",
+            "Lpa0/e<",
+            "-",
+            "Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;->$listenerStarted:Lkotlinx/coroutines/x;
+
+    const/4 p1, 0x2
+
+    invoke-direct {p0, p1, p2}, Lkotlin/coroutines/jvm/internal/l;-><init>(ILpa0/e;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final create(Ljava/lang/Object;Lpa0/e;)Lpa0/e;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Ljava/lang/Object;",
+            "Lpa0/e<",
+            "*>;)",
+            "Lpa0/e<",
+            "Lja0/h0;",
+            ">;"
+        }
+    .end annotation
+
+    new-instance p1, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;
+
+    iget-object v0, p0, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;->$listenerStarted:Lkotlinx/coroutines/x;
+
+    invoke-direct {p1, v0, p2}, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;-><init>(Lkotlinx/coroutines/x;Lpa0/e;)V
+
+    return-object p1
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 0
+
+    .line 1
+    check-cast p1, Lkotlinx/coroutines/flow/j;
+
+    check-cast p2, Lpa0/e;
+
+    invoke-virtual {p0, p1, p2}, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;->invoke(Lkotlinx/coroutines/flow/j;Lpa0/e;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final invoke(Lkotlinx/coroutines/flow/j;Lpa0/e;)Ljava/lang/Object;
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lkotlinx/coroutines/flow/j<",
+            "-",
+            "Lcom/unity3d/ads/adplayer/DisplayMessage;",
+            ">;",
+            "Lpa0/e<",
+            "-",
+            "Lja0/h0;",
+            ">;)",
+            "Ljava/lang/Object;"
+        }
+    .end annotation
+
+    .line 2
+    invoke-virtual {p0, p1, p2}, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;->create(Ljava/lang/Object;Lpa0/e;)Lpa0/e;
+
+    move-result-object p1
+
+    check-cast p1, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;
+
+    sget-object p2, Lja0/h0;->a:Lja0/h0;
+
+    invoke-virtual {p1, p2}, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    invoke-static {}, Lqa0/b;->g()Ljava/lang/Object;
+
+    iget v0, p0, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;->label:I
+
+    if-nez v0, :cond_0
+
+    invoke-static {p1}, Lja0/t;->b(Ljava/lang/Object;)V
+
+    iget-object p1, p0, Lcom/unity3d/ads/adplayer/AndroidFullscreenWebViewAdPlayer$show$1;->$listenerStarted:Lkotlinx/coroutines/x;
+
+    sget-object v0, Lja0/h0;->a:Lja0/h0;
+
+    invoke-interface {p1, v0}, Lkotlinx/coroutines/x;->q(Ljava/lang/Object;)Z
+
+    return-object v0
+
+    :cond_0
+    new-instance p1, Ljava/lang/IllegalStateException;
+
+    const-string v0, "call to \'resume\' before \'invoke\' with coroutine"
+
+    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw p1
+.end method

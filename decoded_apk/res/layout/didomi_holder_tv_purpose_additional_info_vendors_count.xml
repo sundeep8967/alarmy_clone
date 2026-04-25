@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:id="@id/view_ctv_purpose_detail_divider" android:background="@color/didomi_tv_background_c" android:focusable="false" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginTop="20.0dip" android:layout_marginBottom="20.0dip" />
+    <TextView android:id="@id/text_ctv_purpose_additional_info_vendors_count_title" android:focusableInTouchMode="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:alpha="0.8" android:accessibilityHeading="true" style="@style/DidomiTVTextSmall" />
+    <Button android:textSize="13.0sp" android:textColor="@color/didomi_se_default_button" android:gravity="center_vertical" android:id="@id/button_ctv_purpose_additional_info_vendors_count" android:background="@drawable/didomi_tv_bg_button" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="48.0dip" android:textAllCaps="false" android:drawableEnd="@drawable/didomi_ic_tv_arrow_right" android:fontFamily="sans-serif-condensed" android:paddingStart="@dimen/didomi_tv_button_padding" android:paddingEnd="@dimen/didomi_tv_button_padding" style="@style/DidomiTVTextAction" />
+</LinearLayout>

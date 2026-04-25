@@ -1,0 +1,23 @@
+.class final Lbr/c;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# instance fields
+.field protected final a:Lcom/google/firebase/perf/v1/i$b;
+
+.field protected final b:Lcom/google/firebase/perf/v1/d;
+
+
+# direct methods
+.method public constructor <init>(Lcom/google/firebase/perf/v1/i$b;Lcom/google/firebase/perf/v1/d;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lbr/c;->a:Lcom/google/firebase/perf/v1/i$b;
+
+    iput-object p2, p0, Lbr/c;->b:Lcom/google/firebase/perf/v1/d;
+
+    return-void
+.end method

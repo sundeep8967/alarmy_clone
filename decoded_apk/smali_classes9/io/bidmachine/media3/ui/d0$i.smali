@@ -1,0 +1,82 @@
+.class Lio/bidmachine/media3/ui/d0$i;
+.super Landroid/animation/AnimatorListenerAdapter;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lio/bidmachine/media3/ui/d0;-><init>(Lio/bidmachine/media3/ui/PlayerControlView;)V
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x0
+    name = null
+.end annotation
+
+
+# instance fields
+.field final synthetic a:Lio/bidmachine/media3/ui/d0;
+
+
+# direct methods
+.method constructor <init>(Lio/bidmachine/media3/ui/d0;)V
+    .locals 0
+
+    iput-object p1, p0, Lio/bidmachine/media3/ui/d0$i;->a:Lio/bidmachine/media3/ui/d0;
+
+    invoke-direct {p0}, Landroid/animation/AnimatorListenerAdapter;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public onAnimationEnd(Landroid/animation/Animator;)V
+    .locals 1
+
+    iget-object p1, p0, Lio/bidmachine/media3/ui/d0$i;->a:Lio/bidmachine/media3/ui/d0;
+
+    invoke-static {p1}, Lio/bidmachine/media3/ui/d0;->w(Lio/bidmachine/media3/ui/d0;)Landroid/view/ViewGroup;
+
+    move-result-object p1
+
+    if-eqz p1, :cond_0
+
+    iget-object p1, p0, Lio/bidmachine/media3/ui/d0$i;->a:Lio/bidmachine/media3/ui/d0;
+
+    invoke-static {p1}, Lio/bidmachine/media3/ui/d0;->w(Lio/bidmachine/media3/ui/d0;)Landroid/view/ViewGroup;
+
+    move-result-object p1
+
+    const/4 v0, 0x4
+
+    invoke-virtual {p1, v0}, Landroid/view/View;->setVisibility(I)V
+
+    :cond_0
+    return-void
+.end method
+
+.method public onAnimationStart(Landroid/animation/Animator;)V
+    .locals 1
+
+    iget-object p1, p0, Lio/bidmachine/media3/ui/d0$i;->a:Lio/bidmachine/media3/ui/d0;
+
+    invoke-static {p1}, Lio/bidmachine/media3/ui/d0;->x(Lio/bidmachine/media3/ui/d0;)Landroid/view/ViewGroup;
+
+    move-result-object p1
+
+    if-eqz p1, :cond_0
+
+    iget-object p1, p0, Lio/bidmachine/media3/ui/d0$i;->a:Lio/bidmachine/media3/ui/d0;
+
+    invoke-static {p1}, Lio/bidmachine/media3/ui/d0;->x(Lio/bidmachine/media3/ui/d0;)Landroid/view/ViewGroup;
+
+    move-result-object p1
+
+    const/4 v0, 0x0
+
+    invoke-virtual {p1, v0}, Landroid/view/View;->setVisibility(I)V
+
+    :cond_0
+    return-void
+.end method

@@ -1,0 +1,70 @@
+.class public final Lcom/moloco/sdk/internal/ortb/model/B$a;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/moloco/sdk/internal/ortb/model/B;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "a"
+.end annotation
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+.method public synthetic constructor <init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+    .locals 0
+
+    .line 2
+    invoke-direct {p0}, Lcom/moloco/sdk/internal/ortb/model/B$a;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final synthetic a()Lkotlinx/serialization/KSerializer;
+    .locals 1
+
+    invoke-static {}, Lcom/moloco/sdk/internal/ortb/model/B;->i()Lja0/k;
+
+    move-result-object v0
+
+    invoke-interface {v0}, Lja0/k;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lkotlinx/serialization/KSerializer;
+
+    return-object v0
+.end method
+
+.method public final serializer()Lkotlinx/serialization/KSerializer;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Lkotlinx/serialization/KSerializer<",
+            "Lcom/moloco/sdk/internal/ortb/model/B;",
+            ">;"
+        }
+    .end annotation
+
+    invoke-virtual {p0}, Lcom/moloco/sdk/internal/ortb/model/B$a;->a()Lkotlinx/serialization/KSerializer;
+
+    move-result-object v0
+
+    return-object v0
+.end method

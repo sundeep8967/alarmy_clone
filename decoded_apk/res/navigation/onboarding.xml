@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/onboardingGraph" app:startDestination="@id/onboarding"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <action android:id="@id/action_global_alarmListGraph" app:destination="@id/alarmList" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <fragment android:label="OnboardingFragment" android:name="droom.sleepIfUCan.feature.onboarding.OnboardingFragment" android:id="@id/onboarding" />
+</navigation>

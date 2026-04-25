@@ -1,0 +1,96 @@
+.class final Lkotlinx/coroutines/t;
+.super Lkotlinx/coroutines/g2;
+.source "SourceFile"
+
+
+# annotations
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000&\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0003\n\u0002\u0010\u0003\n\u0000\n\u0002\u0018\u0002\n\u0002\u0008\u0004\n\u0002\u0010\u000b\n\u0002\u0008\u0004\u0008\u0002\u0018\u00002\u00020\u0001B\u0013\u0012\n\u0010\u0003\u001a\u0006\u0012\u0002\u0008\u00030\u0002\u00a2\u0006\u0004\u0008\u0004\u0010\u0005J\u0019\u0010\t\u001a\u00020\u00082\u0008\u0010\u0007\u001a\u0004\u0018\u00010\u0006H\u0016\u00a2\u0006\u0004\u0008\t\u0010\nR\u0018\u0010\u0003\u001a\u0006\u0012\u0002\u0008\u00030\u00028\u0006X\u0087\u0004\u00a2\u0006\u0006\n\u0004\u0008\u000b\u0010\u000cR\u0014\u0010\u0010\u001a\u00020\r8VX\u0096\u0004\u00a2\u0006\u0006\u001a\u0004\u0008\u000e\u0010\u000f\u00a8\u0006\u0011"
+    }
+    d2 = {
+        "Lkotlinx/coroutines/t;",
+        "Lkotlinx/coroutines/g2;",
+        "Lkotlinx/coroutines/p;",
+        "child",
+        "<init>",
+        "(Lkotlinx/coroutines/p;)V",
+        "",
+        "cause",
+        "Lja0/h0;",
+        "v",
+        "(Ljava/lang/Throwable;)V",
+        "f",
+        "Lkotlinx/coroutines/p;",
+        "",
+        "u",
+        "()Z",
+        "onCancelling",
+        "kotlinx-coroutines-core"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x1,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# instance fields
+.field public final f:Lkotlinx/coroutines/p;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lkotlinx/coroutines/p<",
+            "*>;"
+        }
+    .end annotation
+.end field
+
+
+# direct methods
+.method public constructor <init>(Lkotlinx/coroutines/p;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lkotlinx/coroutines/p<",
+            "*>;)V"
+        }
+    .end annotation
+
+    invoke-direct {p0}, Lkotlinx/coroutines/g2;-><init>()V
+
+    iput-object p1, p0, Lkotlinx/coroutines/t;->f:Lkotlinx/coroutines/p;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public u()Z
+    .locals 1
+
+    const/4 v0, 0x1
+
+    return v0
+.end method
+
+.method public v(Ljava/lang/Throwable;)V
+    .locals 1
+
+    iget-object p1, p0, Lkotlinx/coroutines/t;->f:Lkotlinx/coroutines/p;
+
+    invoke-virtual {p0}, Lkotlinx/coroutines/g2;->t()Lkotlinx/coroutines/h2;
+
+    move-result-object v0
+
+    invoke-virtual {p1, v0}, Lkotlinx/coroutines/p;->s(Lkotlinx/coroutines/c2;)Ljava/lang/Throwable;
+
+    move-result-object v0
+
+    invoke-virtual {p1, v0}, Lkotlinx/coroutines/p;->P(Ljava/lang/Throwable;)V
+
+    return-void
+.end method

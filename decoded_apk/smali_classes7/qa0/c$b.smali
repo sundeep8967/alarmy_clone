@@ -1,0 +1,120 @@
+.class public final Lqa0/c$b;
+.super Lkotlin/coroutines/jvm/internal/d;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lqa0/c;->a(Lza0/l;Lpa0/e;)Lpa0/e;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u001d\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0008\u0003\n\u0002\u0010\u0008\n\u0002\u0008\u0004*\u0001\u0000\u0008\n\u0018\u00002\u00020\u0001J!\u0010\u0005\u001a\u0004\u0018\u00010\u00032\u000e\u0010\u0004\u001a\n\u0012\u0006\u0012\u0004\u0018\u00010\u00030\u0002H\u0014\u00a2\u0006\u0004\u0008\u0005\u0010\u0006R\u0016\u0010\n\u001a\u00020\u00078\u0002@\u0002X\u0082\u000e\u00a2\u0006\u0006\n\u0004\u0008\u0008\u0010\t\u00a8\u0006\u000b"
+    }
+    d2 = {
+        "qa0/c$b",
+        "Lkotlin/coroutines/jvm/internal/d;",
+        "Lja0/s;",
+        "",
+        "result",
+        "invokeSuspend",
+        "(Ljava/lang/Object;)Ljava/lang/Object;",
+        "",
+        "s",
+        "I",
+        "label",
+        "kotlin-stdlib"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x1,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# instance fields
+.field private s:I
+
+.field final synthetic t:Lza0/l;
+
+
+# direct methods
+.method public constructor <init>(Lpa0/e;Lpa0/i;Lza0/l;)V
+    .locals 0
+
+    iput-object p3, p0, Lqa0/c$b;->t:Lza0/l;
+
+    const-string p3, "null cannot be cast to non-null type kotlin.coroutines.Continuation<kotlin.Any?>"
+
+    invoke-static {p1, p3}, Lkotlin/jvm/internal/x;->h(Ljava/lang/Object;Ljava/lang/String;)V
+
+    invoke-direct {p0, p1, p2}, Lkotlin/coroutines/jvm/internal/d;-><init>(Lpa0/e;Lpa0/i;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method protected invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 2
+
+    iget v0, p0, Lqa0/c$b;->s:I
+
+    const/4 v1, 0x1
+
+    if-eqz v0, :cond_1
+
+    if-ne v0, v1, :cond_0
+
+    const/4 v0, 0x2
+
+    iput v0, p0, Lqa0/c$b;->s:I
+
+    invoke-static {p1}, Lja0/t;->b(Ljava/lang/Object;)V
+
+    goto :goto_0
+
+    :cond_0
+    new-instance p1, Ljava/lang/IllegalStateException;
+
+    const-string v0, "This coroutine had already completed"
+
+    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw p1
+
+    :cond_1
+    iput v1, p0, Lqa0/c$b;->s:I
+
+    invoke-static {p1}, Lja0/t;->b(Ljava/lang/Object;)V
+
+    iget-object p1, p0, Lqa0/c$b;->t:Lza0/l;
+
+    const-string v0, "null cannot be cast to non-null type kotlin.Function1<kotlin.coroutines.Continuation<T of kotlin.coroutines.intrinsics.IntrinsicsKt__IntrinsicsJvmKt.createCoroutineUnintercepted>, kotlin.Any?>"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/x;->h(Ljava/lang/Object;Ljava/lang/String;)V
+
+    iget-object p1, p0, Lqa0/c$b;->t:Lza0/l;
+
+    invoke-static {p1, v1}, Lkotlin/jvm/internal/b1;->f(Ljava/lang/Object;I)Ljava/lang/Object;
+
+    move-result-object p1
+
+    check-cast p1, Lza0/l;
+
+    invoke-interface {p1, p0}, Lza0/l;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    :goto_0
+    return-object p1
+.end method

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ad_content_container" android:tag="layout/layout_native_line_ad_cta_global_0" android:clickable="false" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="4.0dip" android:layout_marginVertical="8.0dip">
+        <ImageView android:layout_gravity="center_vertical" android:id="@id/viewAdTag" android:background="@drawable/background_ad_gray_badge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/img_txt_ad" android:layout_marginEnd="4.0dip" android:paddingHorizontal="8.0dip" android:paddingVertical="2.0dip" />
+        <TextView android:textColor="?colorSurface_MediumEmphasis" android:ellipsize="end" android:gravity="center_horizontal" android:id="@id/viewTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:layout_marginEnd="4.0dip" style="@style/D3.Text.Overline2" />
+    </LinearLayout>
+    <View android:background="@color/black300" android:layout_width="1.0dip" android:layout_height="11.0dip" />
+    <include android:id="@id/viewCtaBtn" android:layout_width="wrap_content" android:layout_height="fill_parent" layout="@layout/view_native_text_cta" />
+</LinearLayout>

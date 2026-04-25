@@ -1,0 +1,19 @@
+.class public interface abstract Lio/bidmachine/media3/exoplayer/source/b0$c;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lio/bidmachine/media3/exoplayer/source/b0;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x609
+    name = "c"
+.end annotation
+
+
+# virtual methods
+.method public abstract a(Lio/bidmachine/media3/exoplayer/source/b0;Lio/bidmachine/media3/common/b0;)V
+.end method

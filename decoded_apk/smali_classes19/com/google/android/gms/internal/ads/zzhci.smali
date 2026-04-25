@@ -1,0 +1,46 @@
+.class final synthetic Lcom/google/android/gms/internal/ads/zzhci;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lcom/google/android/gms/internal/ads/zzheb;
+
+
+# static fields
+.field static final synthetic zza:Lcom/google/android/gms/internal/ads/zzhci;
+
+
+# direct methods
+.method public static synthetic constructor <clinit>()V
+    .locals 1
+
+    new-instance v0, Lcom/google/android/gms/internal/ads/zzhci;
+
+    invoke-direct {v0}, Lcom/google/android/gms/internal/ads/zzhci;-><init>()V
+
+    sput-object v0, Lcom/google/android/gms/internal/ads/zzhci;->zza:Lcom/google/android/gms/internal/ads/zzhci;
+
+    return-void
+.end method
+
+.method private synthetic constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final synthetic zza(Lcom/google/android/gms/internal/ads/zzgvt;Lcom/google/android/gms/internal/ads/zzgwn;)Lcom/google/android/gms/internal/ads/zzhgb;
+    .locals 0
+
+    check-cast p1, Lcom/google/android/gms/internal/ads/zzhaf;
+
+    invoke-static {p1, p2}, Lcom/google/android/gms/internal/ads/zzhcl;->zzd(Lcom/google/android/gms/internal/ads/zzhaf;Lcom/google/android/gms/internal/ads/zzgwn;)Lcom/google/android/gms/internal/ads/zzhfw;
+
+    move-result-object p1
+
+    return-object p1
+.end method

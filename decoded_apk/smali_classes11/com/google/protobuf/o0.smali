@@ -1,0 +1,19 @@
+.class interface abstract Lcom/google/protobuf/o0;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# virtual methods
+.method public abstract createSchema(Ljava/lang/Class;)Lcom/google/protobuf/n0;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "<T:",
+            "Ljava/lang/Object;",
+            ">(",
+            "Ljava/lang/Class<",
+            "TT;>;)",
+            "Lcom/google/protobuf/n0<",
+            "TT;>;"
+        }
+    .end annotation
+.end method

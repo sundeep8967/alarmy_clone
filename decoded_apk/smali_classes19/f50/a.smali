@@ -1,0 +1,28 @@
+.class public interface abstract Lf50/a;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# virtual methods
+.method public abstract a(Ljava/lang/String;)Z
+.end method
+
+.method public abstract b(Lio/bidmachine/iab/mraid/a0;Ljava/lang/String;Ljava/util/Map;)V
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lio/bidmachine/iab/mraid/a0;",
+            "Ljava/lang/String;",
+            "Ljava/util/Map<",
+            "Ljava/lang/String;",
+            "Ljava/lang/String;",
+            ">;)V"
+        }
+    .end annotation
+.end method
+
+.method public abstract c()Lio/bidmachine/iab/mraid/h;
+.end method
+
+.method public abstract getJs()Ljava/lang/String;
+.end method

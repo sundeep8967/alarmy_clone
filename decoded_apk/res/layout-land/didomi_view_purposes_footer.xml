@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:paddingTop="25.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:animateLayoutChanges="true" android:paddingStart="24.0dip" android:paddingEnd="24.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView android:gravity="center" android:id="@id/text_purposes_footer_save_description" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="16.0dip" android:maxLines="4" app:layout_constraintBottom_toBottomOf="parent" style="@style/DidomiTextSmall" />
+    <Button android:id="@id/button_purposes_footer_save" android:paddingTop="0.0dip" android:paddingBottom="0.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:minHeight="40.0dip" style="@style/DidomiActionButton" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton android:id="@id/button_purposes_footer_disagree" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:minHeight="40.0dip" android:layout_weight="1.0" android:layout_marginEnd="8.0dip" style="@style/DidomiActionButton" />
+        <androidx.appcompat.widget.AppCompatButton android:id="@id/button_purposes_footer_agree" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:minHeight="40.0dip" android:layout_weight="1.0" style="@style/DidomiActionButton" />
+    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatImageView android:id="@id/image_purposes_footer_logo" android:layout_width="fill_parent" android:layout_height="13.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="4.0dip" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:srcCompat="@drawable/didomi_privacy_management_logo" />
+</LinearLayout>

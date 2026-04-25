@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/accountGraph" app:startDestination="@id/settingSignIn"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <argument android:name="entryPoint" android:defaultValue="setting" app:argType="string" />
+    <action android:id="@id/action_global_alarmList" app:destination="@id/alarmList" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <action android:id="@id/action_global_setting" app:destination="@id/setting" app:launchSingleTop="true" app:popUpTo="@id/alarmy" />
+    <fragment android:label="SignInFragment" android:name="droom.sleepIfUCan.feature.auth.signin.SignInFragment" android:id="@id/settingSignIn">
+        <argument android:name="entryPoint" app:argType="string" />
+        <action android:id="@id/action_to_settingMyAccount" app:destination="@id/settingMyAccount" app:popUpTo="@id/settingSignIn" app:popUpToInclusive="true">
+            <argument android:name="entryPoint" app:argType="string" />
+        </action>
+    </fragment>
+    <fragment android:label="AccountFragment" android:name="droom.sleepIfUCan.feature.auth.myaccount.AccountFragment" android:id="@id/settingMyAccount">
+        <argument android:name="entryPoint" app:argType="string" />
+        <action android:id="@id/action_to_settingDeleteAccount" app:destination="@id/settingDeleteAccount">
+            <argument android:name="entryPoint" app:argType="string" />
+        </action>
+    </fragment>
+    <fragment android:label="DeleteAccountFragment" android:name="droom.sleepIfUCan.feature.auth.deleteaccount.DeleteAccountFragment" android:id="@id/settingDeleteAccount">
+        <argument android:name="entryPoint" app:argType="string" />
+    </fragment>
+</navigation>

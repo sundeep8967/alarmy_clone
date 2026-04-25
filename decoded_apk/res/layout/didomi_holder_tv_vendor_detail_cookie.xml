@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingEnd="@dimen/didomi_tv_preferences_item_padding_end"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:background="@color/didomi_tv_background_c" android:layout_width="fill_parent" android:layout_height="2.0dip" android:layout_marginTop="32.0dip" android:layout_marginBottom="32.0dip" />
+    <TextView android:id="@id/text_ctv_vendor_detail_cookie" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="16.0dip" android:alpha="0.8" style="@style/DidomiTVTextSmall" />
+</LinearLayout>

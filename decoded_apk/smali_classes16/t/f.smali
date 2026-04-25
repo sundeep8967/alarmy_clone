@@ -1,0 +1,38 @@
+.class public final synthetic Lt/f;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/l;
+
+
+# instance fields
+.field public final synthetic b:Lt/n;
+
+
+# direct methods
+.method public synthetic constructor <init>(Lt/n;)V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lt/f;->b:Lt/n;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invoke(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    iget-object v0, p0, Lt/f;->b:Lt/n;
+
+    check-cast p1, Lcom/google/android/gms/tasks/Task;
+
+    invoke-static {v0, p1}, Lt/n;->m(Lt/n;Lcom/google/android/gms/tasks/Task;)Lja0/h0;
+
+    move-result-object p1
+
+    return-object p1
+.end method

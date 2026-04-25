@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/todayPanelWeatherGraph" app:startDestination="@id/todayPanelWeather"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="TodayPanelWeatherFragment" android:name="droom.sleepIfUCan.feature.today.weather.TodayPanelWeatherFragment" android:id="@id/todayPanelWeather">
+        <deepLink app:uri="@string/deeplink_uri_today_panel_weather" />
+        <action android:id="@id/action_to_todayPanelWeatherSetting" app:destination="@id/todayPanelWeatherSetting" />
+        <action android:id="@id/action_to_locationSetting" app:destination="@id/locationSettingFragment" />
+        <action android:id="@id/action_to_todayPanel" app:destination="@id/todayPanelGraph" app:enterAnim="@anim/slide_in_left" app:exitAnim="@anim/slide_out_right" app:popEnterAnim="@anim/slide_in_right" app:popExitAnim="@anim/slide_out_left">
+            <argument android:name="fromDismiss" android:defaultValue="false" app:argType="boolean" />
+        </action>
+        <action android:id="@id/action_to_quest" app:destination="@id/quest" app:enterAnim="@anim/slide_in_left" app:exitAnim="@anim/slide_out_right" app:popEnterAnim="@anim/slide_in_right" app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment android:label="TodayPanelWeatherSettingFragment" android:name="droom.sleepIfUCan.feature.today.weather.TodayPanelWeatherSettingFragment" android:id="@id/todayPanelWeatherSetting">
+        <action android:id="@id/action_to_locationSetting" app:destination="@id/locationSettingFragment" />
+    </fragment>
+    <fragment android:label="LocationSettingFragment" android:name="droom.sleepIfUCan.feature.today.weather.LocationSettingFragment" android:id="@id/locationSettingFragment" />
+    <include app:graph="@navigation/today_panel" />
+</navigation>

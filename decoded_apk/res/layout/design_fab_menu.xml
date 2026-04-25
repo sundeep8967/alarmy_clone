@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@id/fabButton" android:tag="layout/design_fab_menu_0" android:layout_width="wrap_content" android:layout_height="wrap_content" app:backgroundTint="?colorPrimary" app:fabCustomSize="56.0dip" app:rippleColor="?colorPrimaryVariant" app:tint="?colorOnPrimary"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" />

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="210.0dip" android:width="342.0dip" android:viewportWidth="342.0" android:viewportHeight="210.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <group>
+        <clip-path android:pathData="M20,0L322,0A20,20 0,0 1,342 20L342,190A20,20 0,0 1,322 210L20,210A20,20 0,0 1,0 190L0,20A20,20 0,0 1,20 0z" />
+        <path android:fillColor="@drawable/$img_wakeupcheck_guide_bg__0" android:pathData="M20,0L322,0A20,20 0,0 1,342 20L342,190A20,20 0,0 1,322 210L20,210A20,20 0,0 1,0 190L0,20A20,20 0,0 1,20 0z" />
+        <path android:fillColor="@drawable/$img_wakeupcheck_guide_bg__1" android:pathData="M171,131m-174,0a174,174 0,1 1,348 0a174,174 0,1 1,-348 0" android:fillAlpha="0.13" />
+        <path android:fillColor="@drawable/$img_wakeupcheck_guide_bg__2" android:pathData="M171.5,131.5m-129.5,0a129.5,129.5 0,1 1,259 0a129.5,129.5 0,1 1,-259 0" android:fillAlpha="0.33" />
+    </group>
+</vector>

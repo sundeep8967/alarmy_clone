@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@id/container_toggle" android:layout_width="58.0dip" android:layout_height="wrap_content" android:minHeight="48.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:layout_gravity="center" android:id="@id/image_toggle_background" android:layout_width="38.0dip" android:layout_height="14.0dip" />
+    <ImageView android:id="@id/image_toggle_button" android:background="@drawable/didomi_button_toggle_switch" android:layout_width="22.0dip" android:layout_height="22.0dip" android:scaleType="center" />
+</FrameLayout>

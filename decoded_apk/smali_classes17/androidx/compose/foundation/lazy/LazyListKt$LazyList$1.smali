@@ -1,0 +1,269 @@
+.class final Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;
+.super Lkotlin/jvm/internal/z;
+.source "SourceFile"
+
+# interfaces
+.implements Lza0/p;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Landroidx/compose/foundation/lazy/LazyListKt;->a(Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/LazyListState;Landroidx/compose/foundation/layout/PaddingValues;ZZLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;ILandroidx/compose/ui/Alignment$Horizontal;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/ui/Alignment$Vertical;Landroidx/compose/foundation/layout/Arrangement$Horizontal;Lza0/l;Landroidx/compose/runtime/Composer;III)V
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x18
+    name = null
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Lkotlin/jvm/internal/z;",
+        "Lza0/p<",
+        "Landroidx/compose/runtime/Composer;",
+        "Ljava/lang/Integer;",
+        "Lja0/h0;",
+        ">;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    k = 0x3
+    mv = {
+        0x1,
+        0x9,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# instance fields
+.field final synthetic A:I
+
+.field final synthetic B:I
+
+.field final synthetic l:Landroidx/compose/ui/Modifier;
+
+.field final synthetic m:Landroidx/compose/foundation/lazy/LazyListState;
+
+.field final synthetic n:Landroidx/compose/foundation/layout/PaddingValues;
+
+.field final synthetic o:Z
+
+.field final synthetic p:Z
+
+.field final synthetic q:Landroidx/compose/foundation/gestures/FlingBehavior;
+
+.field final synthetic r:Z
+
+.field final synthetic s:Landroidx/compose/foundation/OverscrollEffect;
+
+.field final synthetic t:I
+
+.field final synthetic u:Landroidx/compose/ui/Alignment$Horizontal;
+
+.field final synthetic v:Landroidx/compose/foundation/layout/Arrangement$Vertical;
+
+.field final synthetic w:Landroidx/compose/ui/Alignment$Vertical;
+
+.field final synthetic x:Landroidx/compose/foundation/layout/Arrangement$Horizontal;
+
+.field final synthetic y:Lza0/l;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lza0/l<",
+            "Landroidx/compose/foundation/lazy/LazyListScope;",
+            "Lja0/h0;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+.field final synthetic z:I
+
+
+# direct methods
+.method constructor <init>(Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/LazyListState;Landroidx/compose/foundation/layout/PaddingValues;ZZLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;ILandroidx/compose/ui/Alignment$Horizontal;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/ui/Alignment$Vertical;Landroidx/compose/foundation/layout/Arrangement$Horizontal;Lza0/l;III)V
+    .locals 2
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Landroidx/compose/ui/Modifier;",
+            "Landroidx/compose/foundation/lazy/LazyListState;",
+            "Landroidx/compose/foundation/layout/PaddingValues;",
+            "ZZ",
+            "Landroidx/compose/foundation/gestures/FlingBehavior;",
+            "Z",
+            "Landroidx/compose/foundation/OverscrollEffect;",
+            "I",
+            "Landroidx/compose/ui/Alignment$Horizontal;",
+            "Landroidx/compose/foundation/layout/Arrangement$Vertical;",
+            "Landroidx/compose/ui/Alignment$Vertical;",
+            "Landroidx/compose/foundation/layout/Arrangement$Horizontal;",
+            "Lza0/l<",
+            "-",
+            "Landroidx/compose/foundation/lazy/LazyListScope;",
+            "Lja0/h0;",
+            ">;III)V"
+        }
+    .end annotation
+
+    move-object v0, p0
+
+    move-object v1, p1
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->l:Landroidx/compose/ui/Modifier;
+
+    move-object v1, p2
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->m:Landroidx/compose/foundation/lazy/LazyListState;
+
+    move-object v1, p3
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->n:Landroidx/compose/foundation/layout/PaddingValues;
+
+    move v1, p4
+
+    iput-boolean v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->o:Z
+
+    move v1, p5
+
+    iput-boolean v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->p:Z
+
+    move-object v1, p6
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->q:Landroidx/compose/foundation/gestures/FlingBehavior;
+
+    move v1, p7
+
+    iput-boolean v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->r:Z
+
+    move-object v1, p8
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->s:Landroidx/compose/foundation/OverscrollEffect;
+
+    move v1, p9
+
+    iput v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->t:I
+
+    move-object v1, p10
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->u:Landroidx/compose/ui/Alignment$Horizontal;
+
+    move-object v1, p11
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->v:Landroidx/compose/foundation/layout/Arrangement$Vertical;
+
+    move-object v1, p12
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->w:Landroidx/compose/ui/Alignment$Vertical;
+
+    move-object v1, p13
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->x:Landroidx/compose/foundation/layout/Arrangement$Horizontal;
+
+    move-object/from16 v1, p14
+
+    iput-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->y:Lza0/l;
+
+    move/from16 v1, p15
+
+    iput v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->z:I
+
+    move/from16 v1, p16
+
+    iput v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->A:I
+
+    move/from16 v1, p17
+
+    iput v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->B:I
+
+    const/4 v1, 0x2
+
+    invoke-direct {p0, v1}, Lkotlin/jvm/internal/z;-><init>(I)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final b(Landroidx/compose/runtime/Composer;I)V
+    .locals 19
+
+    move-object/from16 v0, p0
+
+    move-object/from16 v15, p1
+
+    iget-object v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->l:Landroidx/compose/ui/Modifier;
+
+    iget-object v2, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->m:Landroidx/compose/foundation/lazy/LazyListState;
+
+    iget-object v3, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->n:Landroidx/compose/foundation/layout/PaddingValues;
+
+    iget-boolean v4, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->o:Z
+
+    iget-boolean v5, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->p:Z
+
+    iget-object v6, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->q:Landroidx/compose/foundation/gestures/FlingBehavior;
+
+    iget-boolean v7, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->r:Z
+
+    iget-object v8, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->s:Landroidx/compose/foundation/OverscrollEffect;
+
+    iget v9, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->t:I
+
+    iget-object v10, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->u:Landroidx/compose/ui/Alignment$Horizontal;
+
+    iget-object v11, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->v:Landroidx/compose/foundation/layout/Arrangement$Vertical;
+
+    iget-object v12, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->w:Landroidx/compose/ui/Alignment$Vertical;
+
+    iget-object v13, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->x:Landroidx/compose/foundation/layout/Arrangement$Horizontal;
+
+    iget-object v14, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->y:Lza0/l;
+
+    move-object/from16 p1, v1
+
+    iget v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->z:I
+
+    or-int/lit8 v1, v1, 0x1
+
+    invoke-static {v1}, Landroidx/compose/runtime/RecomposeScopeImplKt;->a(I)I
+
+    move-result v16
+
+    iget v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->A:I
+
+    invoke-static {v1}, Landroidx/compose/runtime/RecomposeScopeImplKt;->a(I)I
+
+    move-result v17
+
+    iget v1, v0, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->B:I
+
+    move/from16 v18, v1
+
+    move-object/from16 v1, p1
+
+    invoke-static/range {v1 .. v18}, Landroidx/compose/foundation/lazy/LazyListKt;->a(Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/LazyListState;Landroidx/compose/foundation/layout/PaddingValues;ZZLandroidx/compose/foundation/gestures/FlingBehavior;ZLandroidx/compose/foundation/OverscrollEffect;ILandroidx/compose/ui/Alignment$Horizontal;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/ui/Alignment$Vertical;Landroidx/compose/foundation/layout/Arrangement$Horizontal;Lza0/l;Landroidx/compose/runtime/Composer;III)V
+
+    return-void
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 0
+
+    check-cast p1, Landroidx/compose/runtime/Composer;
+
+    check-cast p2, Ljava/lang/Number;
+
+    invoke-virtual {p2}, Ljava/lang/Number;->intValue()I
+
+    move-result p2
+
+    invoke-virtual {p0, p1, p2}, Landroidx/compose/foundation/lazy/LazyListKt$LazyList$1;->b(Landroidx/compose/runtime/Composer;I)V
+
+    sget-object p1, Lja0/h0;->a:Lja0/h0;
+
+    return-object p1
+.end method

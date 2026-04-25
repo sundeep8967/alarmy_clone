@@ -1,0 +1,37 @@
+.class public final Lcom/google/android/gms/internal/ads/zzaxd;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# instance fields
+.field private final zza:Lcom/google/common/util/concurrent/m;
+
+
+# direct methods
+.method public constructor <init>(Landroid/content/Context;Ljava/util/concurrent/Executor;)V
+    .locals 1
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    new-instance v0, Lcom/google/android/gms/internal/ads/zzaxc;
+
+    invoke-direct {v0, p0, p1}, Lcom/google/android/gms/internal/ads/zzaxc;-><init>(Lcom/google/android/gms/internal/ads/zzaxd;Landroid/content/Context;)V
+
+    invoke-static {v0, p2}, Lcom/google/android/gms/internal/ads/zzgui;->zzd(Ljava/util/concurrent/Callable;Ljava/util/concurrent/Executor;)Lcom/google/common/util/concurrent/m;
+
+    move-result-object p1
+
+    iput-object p1, p0, Lcom/google/android/gms/internal/ads/zzaxd;->zza:Lcom/google/common/util/concurrent/m;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final zza()Lcom/google/common/util/concurrent/m;
+    .locals 1
+
+    iget-object v0, p0, Lcom/google/android/gms/internal/ads/zzaxd;->zza:Lcom/google/common/util/concurrent/m;
+
+    return-object v0
+.end method
