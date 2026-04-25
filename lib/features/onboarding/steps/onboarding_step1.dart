@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../widgets/onboarding_widgets.dart';
 
 class OnboardingStep1 extends StatelessWidget {
   const OnboardingStep1({super.key});
@@ -20,41 +21,50 @@ class OnboardingStep1 extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        const Spacer(),
-        // Custom Styled Time Picker
-        Container(
-          height: 250,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+        // Custom Styled Time Picker with Spotlight
+        Expanded(
           child: Stack(
             alignment: Alignment.center,
             children: [
-              // Highlighted center bar
-              Container(
-                height: 56,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+              CustomPaint(
+                size: const Size(double.infinity, double.infinity),
+                painter: SpotlightPainter(),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildPickerColumn(24, '07'),
-                  const Text(
-                    ':',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+              Container(
+                height: 250,
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Highlighted center bar
+                    Container(
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                  ),
-                  _buildPickerColumn(60, '00'),
-                ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildPickerColumn(24, '07'),
+                        const Text(
+                          ':',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        _buildPickerColumn(60, '00'),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
-        const Spacer(),
       ],
     );
   }

@@ -257,7 +257,7 @@ class _HabitAlarmScreenState extends State<HabitAlarmScreen> {
                                 hour: selectedHour,
                                 minute: selectedMinute,
                                 isActive: true,
-                                missionType: 'math', // Default for Habit alarm in this mockup
+                                missionTypes: const ['math'], // Default for Habit alarm
                                 activeDays: activeDays,
                               );
                               await DatabaseHelper.instance.create(newAlarm);

@@ -1,5 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
+import '../../core/models/alarm_model.dart';
+import '../../core/database/database_helper.dart';
+import '../../core/services/alarm_service.dart';
+import 'alarm_sound_screen.dart';
+import '../onboarding/providers/sounds_provider.dart';
 
 class QuickAlarmSheet extends StatefulWidget {
   const QuickAlarmSheet({super.key});
@@ -9,9 +15,10 @@ class QuickAlarmSheet extends StatefulWidget {
 }
 
 class _QuickAlarmSheetState extends State<QuickAlarmSheet> {
-  int _addedMinutes = 0;
+  int _addedMinutes = 10; // Default to 10 mins like original app
   bool _isVibrateEnabled = true;
   double _volume = 0.8;
+  String _selectedSoundId = 'orkney';
 
   void _addTime(int minutes) {
     setState(() {
@@ -43,6 +50,30 @@ class _QuickAlarmSheetState extends State<QuickAlarmSheet> {
     final hour = ringTime.hour.toString().padLeft(2, '0');
     final minute = ringTime.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
+  }
+
+  void _saveQuickAlarm() async {
+    if (_addedMinutes == 0) return;
+
+    final now = DateTime.now();
+    final ringTime = now.add(Duration(minutes: _addedMinutes));
+
+    final alarm = AlarmModel(
+      id: const Uuid().v4(),
+      hour: ringTime.hour,
+      minute: ringTime.minute,
+      isActive: true,
+      missionTypes: ['default'],
+      activeDays: [], // One-shot
+      soundId: _selectedSoundId,
+    );
+
+    await DatabaseHelper.instance.create(alarm);
+    await AlarmService.scheduleAlarm(alarm);
+
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -159,24 +190,37 @@ class _QuickAlarmSheetState extends State<QuickAlarmSheet> {
               const SizedBox(height: 48),
 
               // Alarm Sound
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Alarm sound',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        'Orkney',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.5), size: 20),
-                    ],
-                  ),
-                ],
+              InkWell(
+                onTap: () async {
+                  final result = await Navigator.push<String>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AlarmSoundScreen(initialSoundId: _selectedSoundId),
+                    ),
+                  );
+                  if (result != null) {
+                    setState(() => _selectedSoundId = result);
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Alarm sound',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          sounds.firstWhere((s) => s.id == _selectedSoundId, orElse: () => sounds.first).name,
+                          style: const TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.5), size: 20),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 32),
 
@@ -214,7 +258,7 @@ class _QuickAlarmSheetState extends State<QuickAlarmSheet> {
                     scale: 0.9,
                     child: CupertinoSwitch(
                       value: _isVibrateEnabled,
-                      activeTrackColor: const Color(0xFF00D1FF), // Alarmy blue
+                      activeColor: const Color(0xFF00D1FF), // Alarmy blue
                       onChanged: (val) => setState(() => _isVibrateEnabled = val),
                     ),
                   ),
@@ -230,10 +274,7 @@ class _QuickAlarmSheetState extends State<QuickAlarmSheet> {
                     backgroundColor: const Color(0xFFFF3B30),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
-                  onPressed: () {
-                    // TODO: Implement save logic for quick alarm
-                    Navigator.pop(context);
-                  },
+                  onPressed: _saveQuickAlarm,
                   child: const Text(
                     'Save',
                     style: TextStyle(

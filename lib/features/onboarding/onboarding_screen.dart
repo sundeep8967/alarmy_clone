@@ -78,6 +78,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
+  void _skipPreviewAndGoToSound() {
+    // Skip wallpaper preview (page 5) and go directly to sound (page 6)
+    debugPrint('⏭️ [Onboarding] Skipping preview, going to sound selection');
+    _pageController.animateToPage(
+      6, // Page 6 is sound selection (3/4)
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(onboardingProvider);
@@ -118,7 +128,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 const IntroStep2(),
                 const IntroStep3(),
                 const OnboardingStep1(),
-                OnboardingStep2(onNext: _nextPage),
+                OnboardingStep2(onNext: _nextPage, onSkipPreview: _skipPreviewAndGoToSound),
                 OnboardingWallpaperPreview(onNext: _goToNext, goBack: _goBack),
                 OnboardingStep3(onNext: _nextPage),
                 OnboardingStep4List(onNext: _nextPage),

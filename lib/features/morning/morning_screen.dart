@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:animate_do/animate_do.dart';
 
 class MorningScreen extends StatelessWidget {
   const MorningScreen({super.key});
@@ -10,204 +12,58 @@ class MorningScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF101014),
       body: Stack(
         children: [
-          // Background Gradient (Night Sky)
+          // Background Gradient (Dynamic Morning Sky)
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF2B3252), // Top dark blue
-                  Color(0xFF1D243D), // Mid transition
-                  Color(0xFF101014), // Bottom pitch black
+                  Color(0xFF4A90E2), // Bright blue
+                  Color(0xFF87CEEB), // Sky blue
+                  Color(0xFF101014), // Ground
                 ],
-                stops: [0.0, 0.4, 0.8],
+                stops: [0.0, 0.5, 0.9],
               ),
             ),
           ),
           
-          // Optional: Subtle Stars using a CustomPainter (reusing from Onboarding if needed, or simplified)
+          // Sun Glow
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 300,
-            child: CustomPaint(
-              painter: _SimpleStarPainter(),
+            top: -100,
+            right: -100,
+            child: Container(
+              width: 400,
+              height: 400,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.orange.withValues(alpha: 0.3),
+                    Colors.orange.withValues(alpha: 0.0),
+                  ],
+                ),
+              ),
             ),
           ),
 
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
-                  
-                  // Location Header
-                  Row(
-                    children: [
-                      const Text(
-                        'Delhi',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.7), size: 24),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Weather Main Info
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '31°',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 64,
-                          fontWeight: FontWeight.w300,
-                          height: 1.0,
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                'Fog',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              // Custom Fog Icon approximation
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Container(width: 24, height: 2, color: Colors.amber, margin: const EdgeInsets.only(bottom: 4)),
-                                  Container(width: 20, height: 2, color: Colors.amber, margin: const EdgeInsets.only(bottom: 4)),
-                                  Container(width: 24, height: 2, color: Colors.amber),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'high 42° | low 31°',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Hourly Forecast
-                  SizedBox(
-                    height: 90,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 8,
-                      itemBuilder: (context, index) {
-                        final isNight = index < 4;
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 24.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                index.toString(),
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.6),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              if (isNight)
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    const Icon(Icons.nightlight_round, color: Color(0xFF64B5F6), size: 28),
-                                    Positioned(
-                                      top: -2,
-                                      right: -6,
-                                      child: Icon(Icons.star, color: Colors.amber.shade300, size: 10),
-                                    ),
-                                    Positioned(
-                                      bottom: 4,
-                                      right: -8,
-                                      child: Icon(Icons.star, color: Colors.amber.shade300, size: 8),
-                                    ),
-                                  ],
-                                )
-                              else
-                                const Icon(Icons.circle, color: Color(0xFFFFCA28), size: 28), // Sun approximation
-                              Text(
-                                '${31 + (index > 4 ? 2 : index > 1 ? 2 : 1)}°',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  const SizedBox(height: 24),
+                  _buildHeader(),
                   const SizedBox(height: 40),
-
-                  // Action Buttons Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildActionButton(
-                        context,
-                        title: 'My pet',
-                        icon: Icons.child_care, // Egg approximation
-                        iconColor: const Color(0xFFFFCDD2),
-                        bgColor: const Color(0xFFE3F2FD),
-                        badgeText: 'Wake me',
-                      ),
-                      _buildActionButton(
-                        context,
-                        title: 'Morning\nfeeling',
-                        icon: Icons.sentiment_satisfied_alt,
-                        iconColor: const Color(0xFFE65100),
-                        bgColor: const Color(0xFFFFF9C4),
-                      ),
-                      _buildActionButton(
-                        context,
-                        title: 'Horoscope',
-                        icon: Icons.eco, // Clover approximation
-                        iconColor: const Color(0xFF2E7D32),
-                        bgColor: const Color(0xFFC8E6C9),
-                      ),
-                      _buildActionButton(
-                        context,
-                        title: 'Report',
-                        icon: Icons.article,
-                        iconColor: const Color(0xFF1976D2),
-                        bgColor: const Color(0xFFBBDEFB),
-                      ),
-                    ],
-                  ),
+                  _buildMainWeather(),
                   const SizedBox(height: 32),
+                  _buildHourlyForecast(),
+                  const SizedBox(height: 40),
+                  _buildQuickActions(),
+                  const SizedBox(height: 40),
+                  _buildGreeting(),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
@@ -217,93 +73,182 @@ class MorningScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required Color iconColor,
-    required Color bgColor,
-    String? badgeText,
-  }) {
-    return Column(
-      children: [
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(20),
+  Widget _buildHeader() {
+    return FadeInDown(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.location_on, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              const Text(
+                'New York',
+                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              child: Center(
-                child: Icon(icon, color: iconColor, size: 36),
-              ),
-            ),
-            if (badgeText != null)
-              Positioned(
-                top: -8,
-                left: -4,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    badgeText,
-                    style: const TextStyle(
-                      color: Color(0xFF1976D2),
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            height: 1.2,
+              Icon(Icons.keyboard_arrow_down, color: Colors.white.withValues(alpha: 0.5)),
+            ],
           ),
-        ),
-      ],
+          const CircleAvatar(
+            backgroundColor: Colors.white10,
+            child: Icon(Icons.person, color: Colors.white, size: 20),
+          ),
+        ],
+      ),
     );
   }
-}
 
-// Simple star painter for the background
-class _SimpleStarPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final random = math.Random(123); // Fixed seed for consistent star placement
-    final paint = Paint()..color = Colors.white;
-
-    for (int i = 0; i < 30; i++) {
-      final x = random.nextDouble() * size.width;
-      final y = random.nextDouble() * size.height;
-      final opacity = random.nextDouble() * 0.4 + 0.1;
-      final radius = random.nextDouble() * 1.5 + 0.5;
-
-      paint.color = Colors.white.withValues(alpha: opacity);
-      canvas.drawCircle(Offset(x, y), radius, paint);
-    }
+  Widget _buildMainWeather() {
+    return FadeIn(
+      duration: const Duration(seconds: 1),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '24°',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 84,
+                      fontWeight: FontWeight.w200,
+                      letterSpacing: -4,
+                    ),
+                  ),
+                  Text(
+                    'Mostly Sunny',
+                    style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
+              ZoomIn(
+                child: const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 100),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'H:28° L:16°',
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 16),
+          ),
+        ],
+      ),
+    );
   }
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  Widget _buildHourlyForecast() {
+    return FadeInUp(
+      child: GlassContainer(
+        padding: const EdgeInsets.all(20),
+        blur: 20,
+        opacity: 0.1,
+        borderRadius: BorderRadius.circular(24),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Hourly Forecast', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                Text('Next 24h', style: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 12)),
+              ],
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 8,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${8 + index}AM', style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                        Icon(
+                          index == 0 ? Icons.wb_sunny : (index < 3 ? Icons.cloud : Icons.wb_cloudy_outlined),
+                          color: index == 0 ? const Color(0xFFFFD700) : Colors.white70,
+                          size: 24,
+                        ),
+                        Text('${22 + index}°', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickActions() {
+    final actions = [
+      {'icon': Icons.psychology, 'label': 'Insights', 'color': const Color(0xFF00D1FF)},
+      {'icon': Icons.auto_graph, 'label': 'Records', 'color': const Color(0xFF00FF85)},
+      {'icon': Icons.newspaper, 'label': 'News', 'color': const Color(0xFFFF7A00)},
+      {'icon': Icons.more_horiz, 'label': 'More', 'color': Colors.white54},
+    ];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: actions.asMap().entries.map((entry) {
+        final i = entry.key;
+        final action = entry.value;
+        return FadeInUp(
+          delay: Duration(milliseconds: 100 * i),
+          child: Column(
+            children: [
+              GlassContainer(
+                width: 64,
+                height: 64,
+                blur: 10,
+                opacity: 0.1,
+                borderRadius: BorderRadius.circular(20),
+                child: Icon(action['icon'] as IconData, color: action['color'] as Color, size: 28),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                action['label'] as String,
+                style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildGreeting() {
+    return FadeIn(
+      delay: const Duration(milliseconds: 1200),
+      child: Center(
+        child: Column(
+          children: [
+            const Text(
+              'Good Morning!',
+              style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Text(
+                'You conquered your alarm today. 🏆',
+                style: TextStyle(color: Colors.white60, fontSize: 14),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

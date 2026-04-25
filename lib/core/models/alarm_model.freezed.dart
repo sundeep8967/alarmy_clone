@@ -25,8 +25,21 @@ mixin _$AlarmModel {
   int get hour => throw _privateConstructorUsedError;
   int get minute => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
-  String get missionType => throw _privateConstructorUsedError;
-  List<int> get activeDays => throw _privateConstructorUsedError;
+  List<String> get missionTypes => throw _privateConstructorUsedError;
+  Map<String, dynamic> get missionSettings =>
+      throw _privateConstructorUsedError;
+  List<int> get activeDays =>
+      throw _privateConstructorUsedError; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  String? get wallpaperId => throw _privateConstructorUsedError;
+  String? get soundId => throw _privateConstructorUsedError;
+  bool get isVibrateEnabled => throw _privateConstructorUsedError;
+  int get snoozeMinutes => throw _privateConstructorUsedError;
+  int get snoozeCount => throw _privateConstructorUsedError;
+  bool get isWakeUpCheckEnabled => throw _privateConstructorUsedError;
+  int get wakeUpCheckMinutes => throw _privateConstructorUsedError;
+  double get volume => throw _privateConstructorUsedError;
+  bool get isVolumeCrescendo => throw _privateConstructorUsedError;
+  int get crescendoDuration => throw _privateConstructorUsedError;
 
   /// Serializes this AlarmModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,8 +63,19 @@ abstract class $AlarmModelCopyWith<$Res> {
     int hour,
     int minute,
     bool isActive,
-    String missionType,
+    List<String> missionTypes,
+    Map<String, dynamic> missionSettings,
     List<int> activeDays,
+    String? wallpaperId,
+    String? soundId,
+    bool isVibrateEnabled,
+    int snoozeMinutes,
+    int snoozeCount,
+    bool isWakeUpCheckEnabled,
+    int wakeUpCheckMinutes,
+    double volume,
+    bool isVolumeCrescendo,
+    int crescendoDuration,
   });
 }
 
@@ -74,8 +98,19 @@ class _$AlarmModelCopyWithImpl<$Res, $Val extends AlarmModel>
     Object? hour = null,
     Object? minute = null,
     Object? isActive = null,
-    Object? missionType = null,
+    Object? missionTypes = null,
+    Object? missionSettings = null,
     Object? activeDays = null,
+    Object? wallpaperId = freezed,
+    Object? soundId = freezed,
+    Object? isVibrateEnabled = null,
+    Object? snoozeMinutes = null,
+    Object? snoozeCount = null,
+    Object? isWakeUpCheckEnabled = null,
+    Object? wakeUpCheckMinutes = null,
+    Object? volume = null,
+    Object? isVolumeCrescendo = null,
+    Object? crescendoDuration = null,
   }) {
     return _then(
       _value.copyWith(
@@ -95,14 +130,58 @@ class _$AlarmModelCopyWithImpl<$Res, $Val extends AlarmModel>
                 ? _value.isActive
                 : isActive // ignore: cast_nullable_to_non_nullable
                       as bool,
-            missionType: null == missionType
-                ? _value.missionType
-                : missionType // ignore: cast_nullable_to_non_nullable
-                      as String,
+            missionTypes: null == missionTypes
+                ? _value.missionTypes
+                : missionTypes // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
+            missionSettings: null == missionSettings
+                ? _value.missionSettings
+                : missionSettings // ignore: cast_nullable_to_non_nullable
+                      as Map<String, dynamic>,
             activeDays: null == activeDays
                 ? _value.activeDays
                 : activeDays // ignore: cast_nullable_to_non_nullable
                       as List<int>,
+            wallpaperId: freezed == wallpaperId
+                ? _value.wallpaperId
+                : wallpaperId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            soundId: freezed == soundId
+                ? _value.soundId
+                : soundId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            isVibrateEnabled: null == isVibrateEnabled
+                ? _value.isVibrateEnabled
+                : isVibrateEnabled // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            snoozeMinutes: null == snoozeMinutes
+                ? _value.snoozeMinutes
+                : snoozeMinutes // ignore: cast_nullable_to_non_nullable
+                      as int,
+            snoozeCount: null == snoozeCount
+                ? _value.snoozeCount
+                : snoozeCount // ignore: cast_nullable_to_non_nullable
+                      as int,
+            isWakeUpCheckEnabled: null == isWakeUpCheckEnabled
+                ? _value.isWakeUpCheckEnabled
+                : isWakeUpCheckEnabled // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            wakeUpCheckMinutes: null == wakeUpCheckMinutes
+                ? _value.wakeUpCheckMinutes
+                : wakeUpCheckMinutes // ignore: cast_nullable_to_non_nullable
+                      as int,
+            volume: null == volume
+                ? _value.volume
+                : volume // ignore: cast_nullable_to_non_nullable
+                      as double,
+            isVolumeCrescendo: null == isVolumeCrescendo
+                ? _value.isVolumeCrescendo
+                : isVolumeCrescendo // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            crescendoDuration: null == crescendoDuration
+                ? _value.crescendoDuration
+                : crescendoDuration // ignore: cast_nullable_to_non_nullable
+                      as int,
           )
           as $Val,
     );
@@ -123,8 +202,19 @@ abstract class _$$AlarmModelImplCopyWith<$Res>
     int hour,
     int minute,
     bool isActive,
-    String missionType,
+    List<String> missionTypes,
+    Map<String, dynamic> missionSettings,
     List<int> activeDays,
+    String? wallpaperId,
+    String? soundId,
+    bool isVibrateEnabled,
+    int snoozeMinutes,
+    int snoozeCount,
+    bool isWakeUpCheckEnabled,
+    int wakeUpCheckMinutes,
+    double volume,
+    bool isVolumeCrescendo,
+    int crescendoDuration,
   });
 }
 
@@ -146,8 +236,19 @@ class __$$AlarmModelImplCopyWithImpl<$Res>
     Object? hour = null,
     Object? minute = null,
     Object? isActive = null,
-    Object? missionType = null,
+    Object? missionTypes = null,
+    Object? missionSettings = null,
     Object? activeDays = null,
+    Object? wallpaperId = freezed,
+    Object? soundId = freezed,
+    Object? isVibrateEnabled = null,
+    Object? snoozeMinutes = null,
+    Object? snoozeCount = null,
+    Object? isWakeUpCheckEnabled = null,
+    Object? wakeUpCheckMinutes = null,
+    Object? volume = null,
+    Object? isVolumeCrescendo = null,
+    Object? crescendoDuration = null,
   }) {
     return _then(
       _$AlarmModelImpl(
@@ -167,14 +268,58 @@ class __$$AlarmModelImplCopyWithImpl<$Res>
             ? _value.isActive
             : isActive // ignore: cast_nullable_to_non_nullable
                   as bool,
-        missionType: null == missionType
-            ? _value.missionType
-            : missionType // ignore: cast_nullable_to_non_nullable
-                  as String,
+        missionTypes: null == missionTypes
+            ? _value._missionTypes
+            : missionTypes // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+        missionSettings: null == missionSettings
+            ? _value._missionSettings
+            : missionSettings // ignore: cast_nullable_to_non_nullable
+                  as Map<String, dynamic>,
         activeDays: null == activeDays
             ? _value._activeDays
             : activeDays // ignore: cast_nullable_to_non_nullable
                   as List<int>,
+        wallpaperId: freezed == wallpaperId
+            ? _value.wallpaperId
+            : wallpaperId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        soundId: freezed == soundId
+            ? _value.soundId
+            : soundId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        isVibrateEnabled: null == isVibrateEnabled
+            ? _value.isVibrateEnabled
+            : isVibrateEnabled // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        snoozeMinutes: null == snoozeMinutes
+            ? _value.snoozeMinutes
+            : snoozeMinutes // ignore: cast_nullable_to_non_nullable
+                  as int,
+        snoozeCount: null == snoozeCount
+            ? _value.snoozeCount
+            : snoozeCount // ignore: cast_nullable_to_non_nullable
+                  as int,
+        isWakeUpCheckEnabled: null == isWakeUpCheckEnabled
+            ? _value.isWakeUpCheckEnabled
+            : isWakeUpCheckEnabled // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        wakeUpCheckMinutes: null == wakeUpCheckMinutes
+            ? _value.wakeUpCheckMinutes
+            : wakeUpCheckMinutes // ignore: cast_nullable_to_non_nullable
+                  as int,
+        volume: null == volume
+            ? _value.volume
+            : volume // ignore: cast_nullable_to_non_nullable
+                  as double,
+        isVolumeCrescendo: null == isVolumeCrescendo
+            ? _value.isVolumeCrescendo
+            : isVolumeCrescendo // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        crescendoDuration: null == crescendoDuration
+            ? _value.crescendoDuration
+            : crescendoDuration // ignore: cast_nullable_to_non_nullable
+                  as int,
       ),
     );
   }
@@ -188,9 +333,22 @@ class _$AlarmModelImpl implements _AlarmModel {
     required this.hour,
     required this.minute,
     this.isActive = true,
-    this.missionType = 'default',
+    final List<String> missionTypes = const ['default'],
+    final Map<String, dynamic> missionSettings = const {},
     final List<int> activeDays = const [],
-  }) : _activeDays = activeDays;
+    this.wallpaperId,
+    this.soundId,
+    this.isVibrateEnabled = true,
+    this.snoozeMinutes = 5,
+    this.snoozeCount = 3,
+    this.isWakeUpCheckEnabled = false,
+    this.wakeUpCheckMinutes = 5,
+    this.volume = 0.7,
+    this.isVolumeCrescendo = false,
+    this.crescendoDuration = 30,
+  }) : _missionTypes = missionTypes,
+       _missionSettings = missionSettings,
+       _activeDays = activeDays;
 
   factory _$AlarmModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlarmModelImplFromJson(json);
@@ -204,9 +362,24 @@ class _$AlarmModelImpl implements _AlarmModel {
   @override
   @JsonKey()
   final bool isActive;
+  final List<String> _missionTypes;
   @override
   @JsonKey()
-  final String missionType;
+  List<String> get missionTypes {
+    if (_missionTypes is EqualUnmodifiableListView) return _missionTypes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_missionTypes);
+  }
+
+  final Map<String, dynamic> _missionSettings;
+  @override
+  @JsonKey()
+  Map<String, dynamic> get missionSettings {
+    if (_missionSettings is EqualUnmodifiableMapView) return _missionSettings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_missionSettings);
+  }
+
   final List<int> _activeDays;
   @override
   @JsonKey()
@@ -216,9 +389,39 @@ class _$AlarmModelImpl implements _AlarmModel {
     return EqualUnmodifiableListView(_activeDays);
   }
 
+  // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  @override
+  final String? wallpaperId;
+  @override
+  final String? soundId;
+  @override
+  @JsonKey()
+  final bool isVibrateEnabled;
+  @override
+  @JsonKey()
+  final int snoozeMinutes;
+  @override
+  @JsonKey()
+  final int snoozeCount;
+  @override
+  @JsonKey()
+  final bool isWakeUpCheckEnabled;
+  @override
+  @JsonKey()
+  final int wakeUpCheckMinutes;
+  @override
+  @JsonKey()
+  final double volume;
+  @override
+  @JsonKey()
+  final bool isVolumeCrescendo;
+  @override
+  @JsonKey()
+  final int crescendoDuration;
+
   @override
   String toString() {
-    return 'AlarmModel(id: $id, hour: $hour, minute: $minute, isActive: $isActive, missionType: $missionType, activeDays: $activeDays)';
+    return 'AlarmModel(id: $id, hour: $hour, minute: $minute, isActive: $isActive, missionTypes: $missionTypes, missionSettings: $missionSettings, activeDays: $activeDays, wallpaperId: $wallpaperId, soundId: $soundId, isVibrateEnabled: $isVibrateEnabled, snoozeMinutes: $snoozeMinutes, snoozeCount: $snoozeCount, isWakeUpCheckEnabled: $isWakeUpCheckEnabled, wakeUpCheckMinutes: $wakeUpCheckMinutes, volume: $volume, isVolumeCrescendo: $isVolumeCrescendo, crescendoDuration: $crescendoDuration)';
   }
 
   @override
@@ -231,12 +434,36 @@ class _$AlarmModelImpl implements _AlarmModel {
             (identical(other.minute, minute) || other.minute == minute) &&
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
-            (identical(other.missionType, missionType) ||
-                other.missionType == missionType) &&
+            const DeepCollectionEquality().equals(
+              other._missionTypes,
+              _missionTypes,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._missionSettings,
+              _missionSettings,
+            ) &&
             const DeepCollectionEquality().equals(
               other._activeDays,
               _activeDays,
-            ));
+            ) &&
+            (identical(other.wallpaperId, wallpaperId) ||
+                other.wallpaperId == wallpaperId) &&
+            (identical(other.soundId, soundId) || other.soundId == soundId) &&
+            (identical(other.isVibrateEnabled, isVibrateEnabled) ||
+                other.isVibrateEnabled == isVibrateEnabled) &&
+            (identical(other.snoozeMinutes, snoozeMinutes) ||
+                other.snoozeMinutes == snoozeMinutes) &&
+            (identical(other.snoozeCount, snoozeCount) ||
+                other.snoozeCount == snoozeCount) &&
+            (identical(other.isWakeUpCheckEnabled, isWakeUpCheckEnabled) ||
+                other.isWakeUpCheckEnabled == isWakeUpCheckEnabled) &&
+            (identical(other.wakeUpCheckMinutes, wakeUpCheckMinutes) ||
+                other.wakeUpCheckMinutes == wakeUpCheckMinutes) &&
+            (identical(other.volume, volume) || other.volume == volume) &&
+            (identical(other.isVolumeCrescendo, isVolumeCrescendo) ||
+                other.isVolumeCrescendo == isVolumeCrescendo) &&
+            (identical(other.crescendoDuration, crescendoDuration) ||
+                other.crescendoDuration == crescendoDuration));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -247,8 +474,19 @@ class _$AlarmModelImpl implements _AlarmModel {
     hour,
     minute,
     isActive,
-    missionType,
+    const DeepCollectionEquality().hash(_missionTypes),
+    const DeepCollectionEquality().hash(_missionSettings),
     const DeepCollectionEquality().hash(_activeDays),
+    wallpaperId,
+    soundId,
+    isVibrateEnabled,
+    snoozeMinutes,
+    snoozeCount,
+    isWakeUpCheckEnabled,
+    wakeUpCheckMinutes,
+    volume,
+    isVolumeCrescendo,
+    crescendoDuration,
   );
 
   /// Create a copy of AlarmModel
@@ -271,8 +509,19 @@ abstract class _AlarmModel implements AlarmModel {
     required final int hour,
     required final int minute,
     final bool isActive,
-    final String missionType,
+    final List<String> missionTypes,
+    final Map<String, dynamic> missionSettings,
     final List<int> activeDays,
+    final String? wallpaperId,
+    final String? soundId,
+    final bool isVibrateEnabled,
+    final int snoozeMinutes,
+    final int snoozeCount,
+    final bool isWakeUpCheckEnabled,
+    final int wakeUpCheckMinutes,
+    final double volume,
+    final bool isVolumeCrescendo,
+    final int crescendoDuration,
   }) = _$AlarmModelImpl;
 
   factory _AlarmModel.fromJson(Map<String, dynamic> json) =
@@ -287,9 +536,31 @@ abstract class _AlarmModel implements AlarmModel {
   @override
   bool get isActive;
   @override
-  String get missionType;
+  List<String> get missionTypes;
   @override
-  List<int> get activeDays;
+  Map<String, dynamic> get missionSettings;
+  @override
+  List<int> get activeDays; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  @override
+  String? get wallpaperId;
+  @override
+  String? get soundId;
+  @override
+  bool get isVibrateEnabled;
+  @override
+  int get snoozeMinutes;
+  @override
+  int get snoozeCount;
+  @override
+  bool get isWakeUpCheckEnabled;
+  @override
+  int get wakeUpCheckMinutes;
+  @override
+  double get volume;
+  @override
+  bool get isVolumeCrescendo;
+  @override
+  int get crescendoDuration;
 
   /// Create a copy of AlarmModel
   /// with the given fields replaced by the non-null parameter values.

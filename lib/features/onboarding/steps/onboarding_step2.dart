@@ -6,7 +6,8 @@ import '../widgets/onboarding_widgets.dart';
 
 class OnboardingStep2 extends ConsumerWidget {
   final VoidCallback onNext;
-  const OnboardingStep2({super.key, required this.onNext});
+  final VoidCallback onSkipPreview;
+  const OnboardingStep2({super.key, required this.onNext, required this.onSkipPreview});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,6 +72,7 @@ class OnboardingStep2 extends ConsumerWidget {
                     selectedWallpaperId: state.selectedWallpaperId,
                     onSelect: (id) {
                       ref.read(onboardingProvider.notifier).setWallpaper(id);
+                      onNext(); // Navigate to preview screen
                     },
                   );
                 }).toList(),
@@ -80,26 +82,56 @@ class OnboardingStep2 extends ConsumerWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(24.0),
-          child: SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF3B30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+          child: Row(
+            children: [
+              // Preview Button - goes to preview (page 5)
+              Expanded(
+                child: SizedBox(
+                  height: 56,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.white24),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    onPressed: onNext, // Navigate to preview (page 5)
+                    child: const Text(
+                      'Preview',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              onPressed: onNext,
-              child: const Text(
-                'Next',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              const SizedBox(width: 16),
+              // Next Button - skips preview and goes to sound (page 6, which is 3/4)
+              Expanded(
+                child: SizedBox(
+                  height: 56,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF3B30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    onPressed: onSkipPreview, // Skip preview and go directly to sound (3/4)
+                    child: const Text(
+                      'Next',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ],

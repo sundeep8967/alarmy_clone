@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:animate_do/animate_do.dart';
 import '../models/wallpaper.dart';
 
 class WallpaperSectionWidget extends StatelessWidget {
@@ -197,20 +198,31 @@ class SoundTileWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16.0),
         child: Row(
           children: [
             Icon(
               isSelected
                   ? Icons.radio_button_checked
                   : Icons.radio_button_unchecked,
-              color: isSelected ? const Color(0xFF42A5F5) : Colors.white54,
+              color: isSelected ? const Color(0xFFFF3B30) : Colors.white54,
             ),
             const SizedBox(width: 16),
-            Text(
-              title,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.white70,
+                  fontSize: 16,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
             ),
+            if (isSelected)
+              Pulse(
+                infinite: true,
+                child: const Icon(Icons.graphic_eq, color: Color(0xFFFF3B30), size: 18),
+              ),
           ],
         ),
       ),

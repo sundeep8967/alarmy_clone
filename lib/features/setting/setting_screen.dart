@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:animate_do/animate_do.dart';
 import 'alarm_optimization_screen.dart';
 import 'general_setting_screen.dart';
 import 'permission_doa_screen.dart';
@@ -10,182 +12,66 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              // Title
-              const Center(
-                child: Text(
-                  'Settings',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
-
-              // Pro Section Container
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2C2C2E),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Column(
-                    children: [
-                      // Pro Row
-                      InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.circular(24),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF4A2B36), // Dark red tinted background
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Center(
-                                  child: Icon(Icons.brightness_5, color: Color(0xFFFF8A80), size: 28), // Placeholder for lightning burst
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              const Expanded(
-                                child: Text(
-                                  'Pro',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Row(
-                                  children: [
-                                    Text(
-                                      'Upgrade',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(width: 4),
-                                    Icon(Icons.chevron_right, color: Colors.black, size: 16),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Settings List
-              _buildSettingItem(
-                'Alarm optimization',
-                iconData: Icons.rocket_launch,
-                iconColor: const Color(0xFFFF8A65),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AlarmOptimizationScreen()),
-                  );
-                },
-              ),
-              _buildSettingItem('Alarm Setting'),
-              _buildSettingItem(
-                'Dismiss Alarm/Mission',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PermissionDoaScreen()),
-                  );
-                },
-              ),
-              _buildSettingItem(
-                'General',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const GeneralSettingScreen()),
-                  );
-                },
-              ),
-              _buildSettingItem(
-                'Notices', 
-                badge: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFF3B30),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text('N', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
-                ),
-              ),
-              _buildSettingItem('Send Feedback'),
-              _buildSettingItem('About'),
-              
-              const SizedBox(height: 40),
-            ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF1A1A20), Color(0xFF101014)],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSettingItem(String title, {IconData? iconData, Color? iconColor, Widget? badge, VoidCallback? onTap}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E1E20), // Matches screenshot dark grey card color
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: InkWell(
-          onTap: onTap ?? () {},
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            child: Row(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (badge != null) ...[
-                  badge,
-                  const SizedBox(width: 16),
-                ] else if (iconData != null) ...[
-                  Icon(iconData, color: iconColor, size: 24),
-                  const SizedBox(width: 16),
-                ],
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                _buildHeader(),
+                const SizedBox(height: 12),
+                FadeInUp(duration: const Duration(milliseconds: 600), child: _buildPremiumCard()),
+                const SizedBox(height: 24),
+                _buildSectionHeader('SYSTEM'),
+                FadeInUp(
+                  duration: const Duration(milliseconds: 700),
+                  child: _buildSettingsGroup([
+                    _SettingModel(
+                      'Alarm optimization',
+                      Icons.auto_fix_high,
+                      const Color(0xFF00D1FF),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AlarmOptimizationScreen())),
                     ),
-                  ),
+                    _SettingModel(
+                      'Permission & Security',
+                      Icons.security,
+                      const Color(0xFFFF3B30),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PermissionDoaScreen())),
+                    ),
+                  ]),
                 ),
-                const Icon(Icons.chevron_right, color: Colors.white54, size: 24),
+                const SizedBox(height: 24),
+                _buildSectionHeader('PREFERENCES'),
+                FadeInUp(
+                  duration: const Duration(milliseconds: 800),
+                  child: _buildSettingsGroup([
+                    _SettingModel('Alarm Settings', Icons.alarm, const Color(0xFFFF9500)),
+                    _SettingModel(
+                      'General',
+                      Icons.settings,
+                      const Color(0xFF8E8E93),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GeneralSettingScreen())),
+                    ),
+                  ]),
+                ),
+                const SizedBox(height: 24),
+                _buildSectionHeader('SUPPORT'),
+                FadeInUp(
+                  duration: const Duration(milliseconds: 900),
+                  child: _buildSettingsGroup([
+                    _SettingModel('Notices', Icons.notifications, const Color(0xFF5856D6), hasNotice: true),
+                    _SettingModel('Send Feedback', Icons.mail, const Color(0xFF007AFF)),
+                    _SettingModel('About Alarmy', Icons.info, const Color(0xFF34C759)),
+                  ]),
+                ),
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -193,4 +79,144 @@ class SettingScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildHeader() {
+    return const Padding(
+      padding: EdgeInsets.all(24.0),
+      child: Text(
+        'Settings',
+        style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, bottom: 8),
+      child: Text(
+        title,
+        style: const TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+      ),
+    );
+  }
+
+  Widget _buildPremiumCard() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: GlassContainer(
+        blur: 20,
+        opacity: 0.1,
+        borderRadius: BorderRadius.circular(32),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32),
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFF6A11CB).withValues(alpha: 0.2),
+                const Color(0xFF2575FC).withValues(alpha: 0.2),
+              ],
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFFD700),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.star_rounded, color: Colors.black, size: 28),
+              ),
+              const SizedBox(width: 16),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Upgrade to Pro',
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Remove ads and unlock all missions',
+                      style: TextStyle(color: Colors.white60, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: Colors.white38),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingsGroup(List<_SettingModel> items) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        children: items.asMap().entries.map((entry) {
+          final index = entry.key;
+          final item = entry.value;
+          final isLast = index == items.length - 1;
+
+          return InkWell(
+            onTap: item.onTap,
+            borderRadius: BorderRadius.circular(24),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: item.iconColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(item.icon, color: item.iconColor, size: 20),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          item.title,
+                          style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      if (item.hasNotice)
+                        Container(
+                          width: 8,
+                          height: 8,
+                          margin: const EdgeInsets.only(right: 12),
+                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                        ),
+                      const Icon(Icons.chevron_right, color: Colors.white12, size: 20),
+                    ],
+                  ),
+                ),
+                if (!isLast)
+                  Divider(height: 1, color: Colors.white.withValues(alpha: 0.05), indent: 64),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class _SettingModel {
+  final String title;
+  final IconData icon;
+  final Color iconColor;
+  final bool hasNotice;
+  final VoidCallback? onTap;
+
+  _SettingModel(this.title, this.icon, this.iconColor, {this.hasNotice = false, this.onTap});
 }

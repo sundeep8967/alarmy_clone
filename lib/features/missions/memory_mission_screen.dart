@@ -1,19 +1,22 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:animate_do/animate_do.dart';
 
 class MemoryMissionScreen extends StatefulWidget {
   final VoidCallback onMissionComplete;
+  final Map<String, dynamic>? settings;
 
-  MemoryMissionScreen({required this.onMissionComplete});
+  const MemoryMissionScreen({super.key, required this.onMissionComplete, this.settings});
 
   @override
-  _MemoryMissionScreenState createState() => _MemoryMissionScreenState();
+  State<MemoryMissionScreen> createState() => _MemoryMissionScreenState();
 }
 
 class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
   int _currentRound = 1;
-  final int _totalRounds = 3;
+  late final int _totalRounds;
   
   List<int> _sequence = [];
   List<int> _userSequence = [];
@@ -24,6 +27,7 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
   @override
   void initState() {
     super.initState();
+    _totalRounds = widget.settings?['tiles_count'] ?? 3;
     _startRound();
   }
 
@@ -31,41 +35,30 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
     _sequence.clear();
     _userSequence.clear();
     final random = Random();
-    
-    // Sequence length increases with round
     int sequenceLength = 3 + _currentRound; 
     
     for (int i = 0; i < sequenceLength; i++) {
-      _sequence.add(random.nextInt(9)); // 3x3 grid (0-8)
+      _sequence.add(random.nextInt(9)); 
     }
     
     _playSequence();
   }
 
   void _playSequence() async {
-    setState(() {
-      _isPlayingSequence = true;
-    });
-
-    await Future.delayed(Duration(seconds: 1));
+    if (!mounted) return;
+    setState(() => _isPlayingSequence = true);
+    await Future.delayed(const Duration(milliseconds: 800));
 
     for (int i = 0; i < _sequence.length; i++) {
-      setState(() {
-        _activeTile = _sequence[i];
-      });
-      
-      await Future.delayed(Duration(milliseconds: 600)); // Tile highlight duration
-      
-      setState(() {
-        _activeTile = -1;
-      });
-      
-      await Future.delayed(Duration(milliseconds: 200)); // Gap between tiles
+      if (!mounted) return;
+      setState(() => _activeTile = _sequence[i]);
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
+      setState(() => _activeTile = -1);
+      await Future.delayed(const Duration(milliseconds: 150));
     }
 
-    setState(() {
-      _isPlayingSequence = false;
-    });
+    if (mounted) setState(() => _isPlayingSequence = false);
   }
 
   void _onTileTapped(int index) {
@@ -73,92 +66,188 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
 
     setState(() {
       _userSequence.add(index);
-      
-      // Check if the tap is correct so far
       int currentIndex = _userSequence.length - 1;
+      
       if (_userSequence[currentIndex] != _sequence[currentIndex]) {
-        // Incorrect tap
         _handleFailure();
-        return;
-      }
-
-      // Check if sequence is complete
-      if (_userSequence.length == _sequence.length) {
+      } else if (_userSequence.length == _sequence.length) {
         _handleSuccess();
       }
     });
   }
 
   void _handleFailure() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Wrong pattern! Try again.'), backgroundColor: Colors.red, duration: Duration(seconds: 1)),
-    );
-    _startRound(); // Restart current round
+    setState(() {
+      _userSequence.clear();
+    });
+    // Restart round after a brief delay
+    Future.delayed(const Duration(milliseconds: 500), _playSequence);
   }
 
   void _handleSuccess() {
-    if (_currentRound == _totalRounds) {
+    if (_currentRound >= _totalRounds) {
       widget.onMissionComplete();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Good job! Get ready...'), backgroundColor: Colors.green, duration: Duration(seconds: 1)),
-      );
       setState(() {
         _currentRound++;
       });
-      _startRound();
+      Future.delayed(const Duration(milliseconds: 800), _startRound);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121212),
-      appBar: AppBar(
-        title: Text('Memory Mission (\$_currentRound/\$_totalRounds)'),
-        backgroundColor: Color(0xFF121212),
-        elevation: 0,
-        automaticallyImplyLeading: false,
+      backgroundColor: const Color(0xFF101014),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Color(0xFF1A1A20), Color(0xFF101014)],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildHeader(),
+              const Spacer(),
+              _buildStatusIndicator(),
+              const SizedBox(height: 48),
+              _buildGrid(),
+              const Spacer(),
+            ],
+          ),
+        ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _isPlayingSequence ? 'Watch the pattern...' : 'Repeat the pattern!',
-              style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget _buildHeader() {
+    final progress = _currentRound / _totalRounds;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Memory Mission',
+                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Round $_currentRound/$_totalRounds',
+                style: const TextStyle(color: Color(0xFF00FF85), fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 6,
+              backgroundColor: Colors.white.withValues(alpha: 0.05),
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00FF85)),
             ),
-            SizedBox(height: 48),
-            Container(
-              width: 300,
-              height: 300,
-              child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusIndicator() {
+    return FadeInDown(
+      child: Column(
+        children: [
+          Text(
+            _isPlayingSequence ? 'Watch Carefully' : 'Repeat the Pattern',
+            style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w300),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            decoration: BoxDecoration(
+              color: (_isPlayingSequence ? const Color(0xFFFFD700) : const Color(0xFF00FF85)).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _isPlayingSequence ? Icons.visibility : Icons.touch_app,
+                  size: 14,
+                  color: _isPlayingSequence ? const Color(0xFFFFD700) : const Color(0xFF00FF85),
                 ),
-                itemCount: 9,
-                itemBuilder: (context, index) {
-                  bool isActive = _activeTile == index;
-                  bool isTappedByUser = !_isPlayingSequence && _userSequence.contains(index) && index == _userSequence.last;
-                  
-                  return GestureDetector(
-                    onTap: () => _onTileTapped(index),
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 200),
-                      decoration: BoxDecoration(
-                        color: isActive || isTappedByUser ? Colors.deepOrangeAccent : Color(0xFF2C2C2C),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                const SizedBox(width: 8),
+                Text(
+                  _isPlayingSequence ? 'EYES ON TILES' : 'YOUR TURN',
+                  style: TextStyle(
+                    color: _isPlayingSequence ? const Color(0xFFFFD700) : const Color(0xFF00FF85),
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGrid() {
+    return Container(
+      width: 320,
+      height: 320,
+      padding: const EdgeInsets.all(16),
+      child: GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+        ),
+        itemCount: 9,
+        itemBuilder: (context, index) {
+          bool isActive = _activeTile == index;
+          bool isTapped = !_isPlayingSequence && _userSequence.contains(index);
+          
+          return FadeIn(
+            duration: Duration(milliseconds: 300 + (index * 50)),
+            child: GestureDetector(
+              onTap: () => _onTileTapped(index),
+              child: GlassContainer(
+                blur: 10,
+                opacity: 0.1,
+                borderRadius: BorderRadius.circular(20),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isActive ? const Color(0xFF00FF85) : Colors.white.withValues(alpha: 0.05),
+                      width: isActive ? 3 : 1,
                     ),
-                  );
-                },
+                    color: isActive 
+                        ? const Color(0xFF00FF85).withValues(alpha: 0.3) 
+                        : (isTapped ? const Color(0xFF00FF85).withValues(alpha: 0.1) : Colors.transparent),
+                    boxShadow: isActive ? [
+                      BoxShadow(
+                        color: const Color(0xFF00FF85).withValues(alpha: 0.2),
+                        blurRadius: 15,
+                        spreadRadius: 2,
+                      )
+                    ] : [],
+                  ),
+                ),
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

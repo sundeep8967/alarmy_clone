@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:animate_do/animate_do.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
 import '../../core/services/alarm_service.dart';
+import '../../core/services/today_data_service.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
 import '../alarm_editor/habit_alarm_screen.dart';
 import '../alarm_editor/quick_alarm_sheet.dart';
+import 'alarm_settings_screen.dart';
 import 'rating_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,12 +21,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<AlarmModel>> alarms;
+  late Future<TodayData> todayData;
   final GlobalKey _fabKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
     refreshAlarms();
+    refreshTodayData();
+  }
+
+  void refreshTodayData() {
+    setState(() {
+      todayData = TodayDataService.fetchAll();
+    });
   }
 
   void refreshAlarms() {
@@ -43,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       barrierColor: Colors.black.withValues(alpha: 0.8),
       barrierDismissible: true,
       barrierLabel: 'FAB Menu',
-      transitionDuration: const Duration(milliseconds: 200),
+      transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (context, animation, secondaryAnimation) {
         return Scaffold(
           backgroundColor: Colors.transparent,
@@ -51,75 +63,51 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               if (fabPosition != null)
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height - fabPosition.dy + 16,
-                  right: MediaQuery.of(context).size.width - (fabPosition.dx + 56),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 240,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2C2C2E),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _buildMenuItem(Icons.calendar_month, 'Habit alarm', const Color(0xFF6B7BFF), () async {
-                              Navigator.pop(context);
-                              await Navigator.push(
-                                this.context,
-                                MaterialPageRoute(builder: (context) => const HabitAlarmScreen()),
-                              );
-                              refreshAlarms();
-                            }),
-                            _buildMenuItem(Icons.flash_on, 'Quick alarm', const Color(0xFF6B7BFF), () {
-                              Navigator.pop(context);
-                              showModalBottomSheet(
-                                context: this.context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) => const QuickAlarmSheet(),
-                              );
-                            }),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Container(
-                        width: 240,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2C2C2E),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: _buildMenuItem(Icons.alarm, 'Alarm', const Color(0xFFFF3B30), () async {
+                  bottom: MediaQuery.of(context).size.height - fabPosition.dy + 24,
+                  right: 24,
+                  child: FadeInUp(
+                    duration: const Duration(milliseconds: 300),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildFabMenuItem('Habit alarm', Icons.calendar_month, const Color(0xFF6B7BFF), () async {
                           Navigator.pop(context);
-                          await Navigator.push(
-                            this.context,
-                            MaterialPageRoute(builder: (context) => const AlarmEditorScreen()),
-                          );
+                          await Navigator.push(this.context, MaterialPageRoute(builder: (_) => const HabitAlarmScreen()));
                           refreshAlarms();
-                          Future.delayed(const Duration(milliseconds: 500), () {
-                            if (mounted) {
-                              showRatingDialog(this.context);
-                            }
-                          });
                         }),
-                      ),
-                    ],
+                        const SizedBox(height: 12),
+                        _buildFabMenuItem('Quick alarm', Icons.bolt, const Color(0xFF00D1FF), () {
+                          Navigator.pop(context);
+                          showModalBottomSheet(
+                            context: this.context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => const QuickAlarmSheet(),
+                          );
+                        }),
+                        const SizedBox(height: 12),
+                        _buildFabMenuItem('New Alarm', Icons.alarm_add, const Color(0xFFFF3B30), () async {
+                          Navigator.pop(context);
+                          await Navigator.push(this.context, MaterialPageRoute(builder: (_) => const AlarmEditorScreen()));
+                          refreshAlarms();
+                        }),
+                      ],
+                    ),
                   ),
                 ),
               if (fabPosition != null)
                 Positioned(
                   left: fabPosition.dx,
                   top: fabPosition.dy,
-                  child: FloatingActionButton(
-                    backgroundColor: const Color(0xFFFF3B30),
-                    shape: const CircleBorder(),
-                    elevation: 0,
-                    onPressed: () => Navigator.pop(context),
-                    child: const Icon(Icons.close, size: 36, color: Colors.white),
+                  child: ZoomIn(
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      elevation: 0,
+                      onPressed: () => Navigator.pop(context),
+                      child: const Icon(Icons.close, size: 28, color: Colors.black),
+                    ),
                   ),
                 ),
             ],
@@ -129,51 +117,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String text, Color iconColor, VoidCallback onTap) {
-    return InkWell(
+  Widget _buildFabMenuItem(String label, IconData icon, Color color, VoidCallback onTap) {
+    return GestureDetector(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Row(
-          children: [
-            Icon(icon, color: iconColor, size: 28),
-            const SizedBox(width: 16),
-            Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showMoreMenu(BuildContext context) {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Uninstall blocker', style: TextStyle(color: Colors.white)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GlassContainer(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            blur: 10,
+            opacity: 0.1,
+            borderRadius: BorderRadius.circular(12),
+            child: Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Sort by', style: TextStyle(color: Colors.white)),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Alarm settings', style: TextStyle(color: Colors.white)),
+          const SizedBox(width: 12),
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            child: Icon(icon, color: Colors.white, size: 24),
           ),
         ],
-        cancelButton: CupertinoActionSheetAction(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel', style: TextStyle(color: Color(0xFFFF3B30))),
-        ),
       ),
     );
   }
@@ -182,143 +146,125 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF101014),
-        elevation: 0,
-        titleSpacing: 20,
-        title: const Text(
-          'Alarm',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF1A1A20), Color(0xFF101014)],
           ),
         ),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xFFFF3B30), width: 1.5),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.flash_on, color: Color(0xFFFF3B30), size: 14),
-                SizedBox(width: 4),
-                Text(
-                  'PRO',
-                  style: TextStyle(
-                    color: Color(0xFFFF3B30),
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+        child: SafeArea(
+          child: FutureBuilder(
+            future: Future.wait([alarms, todayData]),
+            builder: (context, snapshot) {
+              final alarmList = snapshot.hasData ? (snapshot.data![0] as List<AlarmModel>) : <AlarmModel>[];
+              final todayInfo = snapshot.hasData ? (snapshot.data![1] as TodayData) : TodayData();
+
+              return CustomScrollView(
+                slivers: [
+                  _buildSliverAppBar(),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTodayPanel(todayInfo),
+                          const SizedBox(height: 32),
+                          _buildUpcomingHeader(alarmList.where((a) => a.isActive).toList()),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.history, color: Colors.white),
-            onPressed: () => debugPrint('🎯 [Home] History tapped'),
-          ),
-          IconButton(
-            icon: const Icon(Icons.more_horiz, color: Colors.white),
-            onPressed: () => _showMoreMenu(context),
-          ),
-        ],
-      ),
-      body: FutureBuilder<List<AlarmModel>>(
-        future: alarms,
-        builder: (context, snapshot) {
-          final alarmList = snapshot.data ?? [];
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            children: [
-              // Today Panel
-              _buildTodayPanel(),
-              const SizedBox(height: 24),
-              
-              // Upcoming Alarm Info
-              _buildUpcomingAlarmHeader(),
-              const SizedBox(height: 16),
-              
-              // Alarm List
-              if (snapshot.connectionState == ConnectionState.waiting)
-                const Center(child: CircularProgressIndicator(color: Color(0xFFFF3B30)))
-              else if (alarmList.isEmpty)
-                const Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 60),
-                    child: Text('No alarms set', style: TextStyle(color: Colors.white70, fontSize: 16)),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          if (alarmList.isEmpty) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 40),
+                                child: Text('No alarms set yet', style: TextStyle(color: Colors.white24)),
+                              ),
+                            );
+                          }
+                          final alarm = alarmList[index];
+                          return FadeInUp(
+                            delay: Duration(milliseconds: 100 * index),
+                            child: _buildAlarmCard(alarm),
+                          );
+                        },
+                        childCount: alarmList.isEmpty ? 1 : alarmList.length,
+                      ),
+                    ),
                   ),
-                )
-              else
-                ...alarmList.map((alarm) => _buildAlarmCard(alarm)).toList(),
-              const SizedBox(height: 100),
-            ],
-          );
-        },
+                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
+                ],
+              );
+            },
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         key: _fabKey,
         backgroundColor: const Color(0xFFFF3B30),
         shape: const CircleBorder(),
-        elevation: 8,
-        onPressed: () {
-          _showFabMenu();
-        },
-        child: const Icon(Icons.add, size: 40, color: Colors.white),
+        elevation: 10,
+        onPressed: _showFabMenu,
+        child: const Icon(Icons.add, size: 32, color: Colors.white),
       ),
     );
   }
 
-  Widget _buildTodayPanel() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1C1D24),
-        borderRadius: BorderRadius.circular(24),
-      ),
+  Widget _buildSliverAppBar() {
+    return SliverAppBar(
+      backgroundColor: Colors.transparent,
+      floating: true,
+      expandedHeight: 80,
+      title: const Text('Alarm', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+      actions: [
+        IconButton(icon: const Icon(Icons.history, color: Colors.white70), onPressed: () {}),
+        IconButton(icon: const Icon(Icons.more_horiz, color: Colors.white70), onPressed: () {}),
+        const SizedBox(width: 8),
+      ],
+    );
+  }
+
+  Widget _buildTodayPanel(TodayData data) {
+    final now = DateTime.now();
+    final hour = now.hour;
+    final greeting = hour < 12 ? 'Good Morning' : (hour < 17 ? 'Good Afternoon' : 'Good Evening');
+    
+    return GlassContainer(
+      padding: const EdgeInsets.all(24),
+      blur: 20,
+      opacity: 0.1,
+      borderRadius: BorderRadius.circular(32),
       child: Column(
         children: [
           Row(
-            children: [
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'April 24, Friday',
-                      style: TextStyle(color: Colors.white70, fontSize: 14),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Good Morning!',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.wb_sunny, color: Colors.amber, size: 28),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _TodayInfoItem(icon: Icons.cloud, label: 'Cloudy', value: '24°C'),
-              _TodayInfoItem(icon: Icons.auto_graph, label: 'Horoscope', value: 'Lucky'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(greeting, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  const Text('April 25, Saturday', style: TextStyle(color: Colors.white38, fontSize: 14)),
+                ],
+              ),
+              const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 32),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _TodayInfoItem(icon: Icons.cloud, label: 'Weather', value: data.weatherValue),
+              _TodayInfoItem(icon: Icons.auto_graph, label: 'Success', value: '94%'),
               _TodayInfoItem(icon: Icons.newspaper, label: 'News', value: 'Top 5'),
             ],
           ),
@@ -327,165 +273,102 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildUpcomingAlarmHeader() {
-    return GestureDetector(
-      onTap: () => debugPrint('🎯 [Home] Upcoming alarm info tapped'),
-      child: Row(
-        children: [
-          const Text(
-            'Ring in 6 hr. 57 min',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(width: 4),
-          Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.3), size: 20),
-        ],
-      ),
+  Widget _buildUpcomingHeader(List<AlarmModel> activeAlarms) {
+    return Row(
+      children: [
+        const Icon(Icons.access_time_filled, color: Color(0xFFFF3B30), size: 18),
+        const SizedBox(width: 8),
+        const Text(
+          'Next alarm in 6h 30m',
+          style: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+      ],
     );
   }
 
   Widget _buildAlarmCard(AlarmModel alarm) {
-    const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    final activeSet = alarm.activeDays.isEmpty ? {1, 2, 3, 4, 5} : alarm.activeDays.toSet();
-    
     final hour = alarm.hour > 12 ? alarm.hour - 12 : (alarm.hour == 0 ? 12 : alarm.hour);
     final amPm = alarm.hour >= 12 ? 'PM' : 'AM';
+    final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    final activeSet = alarm.activeDays.isEmpty ? {1, 2, 3, 4, 5} : alarm.activeDays.toSet();
 
     return GestureDetector(
       onTap: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AlarmEditorScreen(alarm: alarm)),
-        );
+        await Navigator.push(context, MaterialPageRoute(builder: (_) => AlarmEditorScreen(alarm: alarm)));
         refreshAlarms();
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1C1D24),
-          borderRadius: BorderRadius.circular(28),
-          border: alarm.isActive ? null : Border.all(color: Colors.white.withValues(alpha: 0.05)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: List.generate(7, (index) {
-                    final isActiveDay = activeSet.contains(index);
-                    return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: Text(
-                        days[index],
-                        style: TextStyle(
-                          color: isActiveDay
-                              ? (index == 0 ? const Color(0xFFFF3B30) : (index == 6 ? Colors.blue : Colors.white))
-                              : Colors.white.withValues(alpha: 0.2),
-                          fontSize: 13,
-                          fontWeight: isActiveDay ? FontWeight.bold : FontWeight.normal,
+        child: GlassContainer(
+          padding: const EdgeInsets.all(24),
+          blur: 15,
+          opacity: alarm.isActive ? 0.1 : 0.05,
+          borderRadius: BorderRadius.circular(32),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: List.generate(7, (i) {
+                      final active = activeSet.contains(i);
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: Text(
+                          days[i],
+                          style: TextStyle(
+                            color: active ? Colors.white : Colors.white10,
+                            fontWeight: active ? FontWeight.bold : FontWeight.normal,
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-                ),
-                const Icon(Icons.more_vert, color: Colors.white38, size: 22),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: [
-                    Text(
-                      '$hour:${alarm.minute.toString().padLeft(2, '0')}',
-                      style: TextStyle(
-                        fontSize: 52,
-                        fontWeight: FontWeight.w300,
-                        color: alarm.isActive ? Colors.white : Colors.white30,
-                        letterSpacing: -1,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      amPm,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: alarm.isActive ? Colors.white70 : Colors.white24,
-                      ),
-                    ),
-                  ],
-                ),
-                Transform.scale(
-                  scale: 1.2,
-                  child: CupertinoSwitch(
-                    value: alarm.isActive,
-                    activeTrackColor: const Color(0xFF00D1FF),
-                    onChanged: (value) async {
-                      final updatedAlarm = alarm.copyWith(isActive: value);
-                      await DatabaseHelper.instance.update(updatedAlarm);
-                      await AlarmService.scheduleAlarm(updatedAlarm);
-                      refreshAlarms();
-                    },
+                      );
+                    }),
                   ),
-                ),
-              ],
-            ),
-            if (alarm.isActive) ...[
+                  const Icon(Icons.more_vert, color: Colors.white12),
+                ],
+              ),
               const SizedBox(height: 12),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    _getMissionIcon(alarm.missionType),
-                    color: const Color(0xFF00D1FF),
-                    size: 16,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        '$hour:${alarm.minute.toString().padLeft(2, '0')}',
+                        style: TextStyle(
+                          color: alarm.isActive ? Colors.white : Colors.white12,
+                          fontSize: 56,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: -2,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(amPm, style: TextStyle(color: alarm.isActive ? Colors.white38 : Colors.white10, fontSize: 18)),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    _getMissionName(alarm.missionType),
-                    style: const TextStyle(
-                      color: Color(0xFF00D1FF),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                  Transform.scale(
+                    scale: 0.9,
+                    child: CupertinoSwitch(
+                      value: alarm.isActive,
+                      activeTrackColor: const Color(0xFFFF3B30),
+                      onChanged: (v) async {
+                        final updated = alarm.copyWith(isActive: v);
+                        await DatabaseHelper.instance.update(updated);
+                        if (v) await AlarmService.scheduleAlarm(updated);
+                        refreshAlarms();
+                      },
                     ),
                   ),
                 ],
               ),
             ],
-          ],
+          ),
         ),
       ),
     );
-  }
-
-  IconData _getMissionIcon(String type) {
-    if (type.toLowerCase().contains('math')) return Icons.calculate;
-    if (type.toLowerCase().contains('memory') || type.toLowerCase().contains('tiles')) return Icons.grid_view;
-    if (type.toLowerCase().contains('typing')) return Icons.keyboard;
-    if (type.toLowerCase().contains('shake')) return Icons.vibration;
-    if (type.toLowerCase().contains('qr')) return Icons.qr_code_scanner;
-    if (type.toLowerCase().contains('photo')) return Icons.camera_alt;
-    return Icons.touch_app;
-  }
-
-  String _getMissionName(String type) {
-    if (type.toLowerCase().contains('math')) return 'Math';
-    if (type.toLowerCase().contains('memory') || type.toLowerCase().contains('tiles')) return 'Tiles';
-    if (type.toLowerCase().contains('typing')) return 'Typing';
-    if (type.toLowerCase().contains('shake')) return 'Shake';
-    if (type.toLowerCase().contains('qr')) return 'Barcode';
-    if (type.toLowerCase().contains('photo')) return 'Photo';
-    return 'Default';
   }
 }
 
@@ -493,24 +376,17 @@ class _TodayInfoItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
-
-  const _TodayInfoItem({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
+  const _TodayInfoItem({required this.icon, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: Colors.white54, size: 24),
+        Icon(icon, color: Colors.white24, size: 24),
         const SizedBox(height: 8),
-        Text(label, style: const TextStyle(color: Colors.white38, fontSize: 12)),
-        const SizedBox(height: 2),
-        Text(value, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+        Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+        Text(label, style: const TextStyle(color: Colors.white24, fontSize: 11)),
       ],
     );
   }
 }
-

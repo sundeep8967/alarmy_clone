@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'providers/sounds_provider.dart';
 
-class VolumeOverlay extends StatelessWidget {
+class VolumeOverlay extends ConsumerWidget {
   final VoidCallback onNext;
 
   const VolumeOverlay({super.key, required this.onNext});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -128,7 +130,17 @@ class VolumeOverlay extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    // Play preview of currently selected sound or first sound
+                    final selectedSoundId = ref.read(selectedSoundProvider);
+                    final soundsNotifier = ref.read(selectedSoundProvider.notifier);
+                    if (selectedSoundId != null) {
+                      soundsNotifier.select(selectedSoundId);
+                    } else {
+                      // Select and play the first sound if none selected
+                      soundsNotifier.select('1'); // Default to first sound
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
