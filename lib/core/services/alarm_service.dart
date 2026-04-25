@@ -1,6 +1,7 @@
 import 'dart:isolate';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/alarm_model.dart';
@@ -10,6 +11,23 @@ class AlarmService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   static const String isolateName = 'alarm_isolate';
   static final ReceivePort port = ReceivePort();
+  static const platform = MethodChannel('com.example.alarmy_clone/wakelock');
+
+  static Future<void> acquireWakeLock() async {
+    try {
+      await platform.invokeMethod('acquire');
+    } catch (e) {
+      debugPrint('Failed to acquire wake lock: $e');
+    }
+  }
+
+  static Future<void> releaseWakeLock() async {
+    try {
+      await platform.invokeMethod('release');
+    } catch (e) {
+      debugPrint('Failed to release wake lock: $e');
+    }
+  }
 
   static Future<void> init() async {
     await AndroidAlarmManager.initialize();

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TodayData {
   final String weatherLabel;
@@ -9,6 +10,9 @@ class TodayData {
   final String horoscopeValue;
   final String newsLabel;
   final String newsValue;
+  final DateTime? lastFetchedAt;
+  final String? errorMessage;
+  final int? httpStatusCode;
 
   TodayData({
     this.weatherLabel = 'Weather',
@@ -17,6 +21,9 @@ class TodayData {
     this.horoscopeValue = 'N/A',
     this.newsLabel = 'News',
     this.newsValue = 'N/A',
+    this.lastFetchedAt,
+    this.errorMessage,
+    this.httpStatusCode,
   });
 
   TodayData copyWith({
@@ -26,6 +33,9 @@ class TodayData {
     String? horoscopeValue,
     String? newsLabel,
     String? newsValue,
+    DateTime? lastFetchedAt,
+    String? errorMessage,
+    int? httpStatusCode,
   }) {
     return TodayData(
       weatherLabel: weatherLabel ?? this.weatherLabel,
@@ -34,7 +44,57 @@ class TodayData {
       horoscopeValue: horoscopeValue ?? this.horoscopeValue,
       newsLabel: newsLabel ?? this.newsLabel,
       newsValue: newsValue ?? this.newsValue,
+      lastFetchedAt: lastFetchedAt ?? this.lastFetchedAt,
+      errorMessage: errorMessage ?? this.errorMessage,
+      httpStatusCode: httpStatusCode ?? this.httpStatusCode,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'weatherLabel': weatherLabel,
+      'weatherValue': weatherValue,
+      'horoscopeLabel': horoscopeLabel,
+      'horoscopeValue': horoscopeValue,
+      'newsLabel': newsLabel,
+      'newsValue': newsValue,
+      'lastFetchedAt': lastFetchedAt?.toIso8601String(),
+    };
+  }
+
+  factory TodayData.fromJson(Map<String, dynamic> json) {
+    return TodayData(
+      weatherLabel: json['weatherLabel'] ?? 'Weather',
+      weatherValue: json['weatherValue'] ?? 'N/A',
+      horoscopeLabel: json['horoscopeLabel'] ?? 'Horoscope',
+      horoscopeValue: json['horoscopeValue'] ?? 'N/A',
+      newsLabel: json['newsLabel'] ?? 'News',
+      newsValue: json['newsValue'] ?? 'N/A',
+      lastFetchedAt: json['lastFetchedAt'] != null ? DateTime.parse(json['lastFetchedAt']) : null,
+    );
+  }
+}
+
+class TodayCacheService {
+  static const String _cacheKey = 'today_data_cache';
+
+  static Future<void> save(TodayData data) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = json.encode(data.toJson());
+    await prefs.setString(_cacheKey, jsonStr);
+  }
+
+  static Future<TodayData?> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = prefs.getString(_cacheKey);
+    if (jsonStr != null) {
+      try {
+        return TodayData.fromJson(json.decode(jsonStr));
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   }
 }
 
@@ -72,122 +132,113 @@ class TodayDataService {
 
   // Get weather from Open-Meteo (free, no API key)
   static Future<TodayData> fetchWeather(TodayData current) async {
-    try {
-      // Check location permission
-      LocationPermission permission = await Geolocator.checkPermission();
-      print('�️ ⛅ [WEATHER] Permission status: $permission');
-      
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        print('�️ ⛅ [WEATHER] After request: $permission');
-        if (permission == LocationPermission.denied) {
-          return current.copyWith(weatherValue: 'Denied');
+        throw Exception('Location permission denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception('Location permission denied forever');
+    }
+
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.low,
+    );
+
+    final url =
+        'https://api.open-meteo.com/v1/forecast?latitude=${position.latitude}&longitude=${position.longitude}&current_weather=true';
+    
+    final response = await http.get(Uri.parse(url)).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => throw Exception('Timeout'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final temp = data['current_weather']['temperature'];
+      final code = data['current_weather']['weathercode'];
+      final description = _getWeatherDescription(code);
+
+      return current.copyWith(
+        weatherLabel: description,
+        weatherValue: '${temp.round()}°C',
+        httpStatusCode: response.statusCode,
+      );
+    } else {
+      throw Exception('HTTP Error ${response.statusCode}');
+    }
+  }
+
+  // Get horoscope
+  static Future<TodayData> fetchHoroscope(TodayData current) async {
+    final now = DateTime.now();
+    final sign = _getZodiacSign(now.month, now.day);
+    final signDisplay = sign.substring(0, 1).toUpperCase() + sign.substring(1);
+
+    final url =
+        'https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=$sign&day=TODAY';
+    
+    final response = await http.get(Uri.parse(url)).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => throw Exception('Timeout'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['data'] != null && data['data']['horoscope_data'] != null) {
+        final horoscope = data['data']['horoscope_data'];
+        final keywords = ['love', 'success', 'career', 'health', 'lucky', 'happy', 'challenging', 'good', 'great', 'positive'];
+        String keyword = 'Daily';
+        for (final k in keywords) {
+          if (horoscope.toLowerCase().contains(k)) {
+            keyword = k.substring(0, 1).toUpperCase() + k.substring(1);
+            break;
+          }
         }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        return current.copyWith(weatherValue: 'Enable in settings');
-      }
-
-      // Get current position
-      print('�️ ⛅ [WEATHER] Getting GPS position...');
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
-      );
-      print('�️ ⛅ [WEATHER] 📍 GPS: ${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}');
-
-      // Fetch weather from Open-Meteo with timeout
-      final url =
-          'https://api.open-meteo.com/v1/forecast?latitude=${position.latitude}&longitude=${position.longitude}&current_weather=true';
-      print('�️ ⛅ [WEATHER] 🌐 Fetching from API...');
-      
-      final response = await http.get(Uri.parse(url)).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          print('�️ ⛅ [WEATHER] ⏱️ TIMEOUT!');
-          throw Exception('Timeout');
-        },
-      );
-
-      print('�️ ⛅ [WEATHER] 📡 Response code: ${response.statusCode}');
-      
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        print('�️ ⛅ [WEATHER] ✅ Data received: ${data['current_weather']}');
-        final temp = data['current_weather']['temperature'];
-        final code = data['current_weather']['weathercode'];
-        final description = _getWeatherDescription(code);
 
         return current.copyWith(
-          weatherLabel: description,
-          weatherValue: '${temp.round()}°C',
+          horoscopeLabel: signDisplay,
+          horoscopeValue: keyword,
+          httpStatusCode: response.statusCode,
         );
-      } else {
-        print('�️ ⛅ [WEATHER] ❌ Bad status: ${response.statusCode}');
-        return current.copyWith(weatherValue: 'Error ${response.statusCode}');
       }
-    } on Exception catch (e) {
-      print('�️ ⛅ [WEATHER] 💥 ERROR: $e');
-      return current.copyWith(weatherValue: 'Unavailable');
     }
+    throw Exception('HTTP Error ${response.statusCode} or Invalid Data');
   }
 
-  // Get horoscope (free, no API key)
-  // Using a default sign based on current date
-  static Future<TodayData> fetchHoroscope(TodayData current) async {
-    try {
-      // Determine zodiac sign based on current date
-      final now = DateTime.now();
-      final sign = _getZodiacSign(now.month, now.day);
-      final signDisplay = sign.substring(0, 1).toUpperCase() + sign.substring(1);
+  // Get news
+  static Future<TodayData> fetchNews(TodayData current) async {
+    final url = 'https://saurav.tech/NewsAPI/top-headlines/category/general/us.json';
+    
+    final response = await http.get(Uri.parse(url)).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () => throw Exception('Timeout'),
+    );
 
-      final url =
-          'https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=$sign&day=TODAY';
-      print('♈ ♉ [HOROSCOPE] Fetching for $signDisplay...');
-      
-      final response = await http.get(Uri.parse(url)).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          print('♈ ♉ [HOROSCOPE] ⏱️ TIMEOUT!');
-          throw Exception('Timeout');
-        },
-      );
-
-      print('♈ ♉ [HOROSCOPE] 📡 Response code: ${response.statusCode}');
-      
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        print('♈ ♉ [HOROSCOPE] ✅ Data received: ${data['data']}');
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['articles'] != null && (data['articles'] as List).isNotEmpty) {
+        final article = data['articles'][0];
+        String title = article['title'] ?? 'No title';
         
-        if (data['data'] != null && data['data']['horoscope_data'] != null) {
-          final horoscope = data['data']['horoscope_data'];
-          // Extract a keyword from the horoscope
-          final keywords = ['love', 'success', 'career', 'health', 'lucky', 'happy', 'challenging', 'good', 'great', 'positive'];
-          String keyword = 'Daily';
-          for (final k in keywords) {
-            if (horoscope.toLowerCase().contains(k)) {
-              keyword = k.substring(0, 1).toUpperCase() + k.substring(1);
-              break;
-            }
-          }
-
-          return current.copyWith(
-            horoscopeLabel: signDisplay,
-            horoscopeValue: keyword,
-          );
+        if (title.length > 25) {
+          title = '${title.substring(0, 25)}...';
         }
+
+        return current.copyWith(
+          newsLabel: 'Top News',
+          newsValue: title,
+          httpStatusCode: response.statusCode,
+        );
       }
-      print('♈ ♉ [HOROSCOPE] ⚠️ Bad response or no data');
-      return current.copyWith(
-        horoscopeLabel: signDisplay,
-        horoscopeValue: 'Check later',
-      );
-    } on Exception catch (e) {
-      print('♈ ♉ [HOROSCOPE] 💥 ERROR: $e');
-      return current.copyWith(horoscopeValue: 'Unavailable');
     }
+    throw Exception('HTTP Error ${response.statusCode}');
   }
 
+  // Helper method to get zodiac sign
   static String _getZodiacSign(int month, int day) {
     if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return 'aries';
     if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return 'taurus';
@@ -201,72 +252,5 @@ class TodayDataService {
     if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return 'capricorn';
     if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'aquarius';
     return 'pisces';
-  }
-
-  // Get news headline (free RSS via rss2json)
-  static Future<TodayData> fetchNews(TodayData current) async {
-    try {
-      // Using BBC News RSS feed via rss2json
-      const rssUrl = 'https://feeds.bbci.co.uk/news/rss.xml';
-      final url =
-          'https://api.rss2json.com/v1/api.json?rss_url=${Uri.encodeComponent(rssUrl)}';
-      print('📰 📢 [NEWS] Fetching headlines...');
-      
-      final response = await http.get(Uri.parse(url)).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          print('📰 📢 [NEWS] ⏱️ TIMEOUT!');
-          throw Exception('Timeout');
-        },
-      );
-
-      print('📰 📢 [NEWS] 📡 Response code: ${response.statusCode}');
-      
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        print('📰 📢 [NEWS] ✅ Data status: ${data['status']}');
-        
-        if (data['items'] != null && data['items'].isNotEmpty) {
-          final firstNews = data['items'][0]['title'];
-          print('📰 📢 [NEWS] 📰 Headline: $firstNews');
-          // Extract first few words
-          final words = firstNews.split(' ').take(4).join(' ');
-          return current.copyWith(
-            newsLabel: 'Headlines',
-            newsValue: words.length > 20 ? words.substring(0, 20) + '...' : words,
-          );
-        } else {
-          print('📰 📢 [NEWS] ⚠️ No items found');
-          return current.copyWith(newsValue: 'No updates');
-        }
-      } else {
-        print('📰 📢 [NEWS] ❌ Bad status: ${response.statusCode}');
-        return current.copyWith(newsValue: 'Error ${response.statusCode}');
-      }
-    } on Exception catch (e) {
-      print('📰 📢 [NEWS] 💥 ERROR: $e');
-      return current.copyWith(newsValue: 'Unavailable');
-    }
-  }
-
-  // Fetch all data
-  static Future<TodayData> fetchAll() async {
-    print('\n╔══════════════════════════════════════╗');
-    print('║  🚀 FETCHING TODAY DATA STARTED      ║');
-    print('╚══════════════════════════════════════╝\n');
-    
-    TodayData data = TodayData();
-    data = await fetchWeather(data);
-    data = await fetchHoroscope(data);
-    data = await fetchNews(data);
-    
-    print('\n╔══════════════════════════════════════╗');
-    print('║  ✅ TODAY DATA FETCH COMPLETE        ║');
-    print('║  🌦️ Weather: ${data.weatherLabel} - ${data.weatherValue}');
-    print('║  ♈ Horoscope: ${data.horoscopeLabel} - ${data.horoscopeValue}');
-    print('║  📰 News: ${data.newsLabel} - ${data.newsValue}');
-    print('╚══════════════════════════════════════╝\n');
-    
-    return data;
   }
 }

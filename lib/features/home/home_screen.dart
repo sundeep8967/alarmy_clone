@@ -7,6 +7,7 @@ import '../../core/models/alarm_model.dart';
 import '../../core/repositories/alarm_repository.dart';
 import '../../core/services/alarm_service.dart';
 import '../../core/services/today_data_service.dart';
+import '../../core/providers/today_provider.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
 import '../alarm_editor/habit_alarm_screen.dart';
 import '../alarm_editor/quick_alarm_sheet.dart';
@@ -21,19 +22,11 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late Future<TodayData> todayData;
   final GlobalKey _fabKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    refreshTodayData();
-  }
-
-  void refreshTodayData() {
-    setState(() {
-      todayData = TodayDataService.fetchAll();
-    });
   }
 
   void _showFabMenu() {
@@ -138,6 +131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final alarmsAsync = ref.watch(alarmsProvider);
+    final todayAsync = ref.watch(todayProvider);
     
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
@@ -154,12 +148,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.white))),
             data: (alarmList) {
-              return FutureBuilder<TodayData>(
-                future: todayData,
-                builder: (context, snapshot) {
-                  final todayInfo = snapshot.data ?? TodayData();
+              final todayInfo = todayAsync.value ?? TodayData();
 
-                  return CustomScrollView(
+              return CustomScrollView(
                     slivers: [
                       _buildSliverAppBar(),
                       SliverToBoxAdapter(
@@ -202,8 +193,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       const SliverToBoxAdapter(child: SizedBox(height: 100)),
                     ],
                   );
-                },
-              );
             },
           ),
         ),
@@ -239,40 +228,65 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final hour = now.hour;
     final greeting = hour < 12 ? 'Good Morning' : (hour < 17 ? 'Good Afternoon' : 'Good Evening');
     
-    return GlassContainer(
-      blur: 20,
-      opacity: 0.1,
-      borderRadius: BorderRadius.circular(32),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (data.errorMessage != null)
+          Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: Colors.red.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.red.withValues(alpha: 0.5)),
+            ),
+            child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                const Icon(Icons.error_outline, color: Colors.red, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Debug: ${data.errorMessage} (HTTP ${data.httpStatusCode ?? "N/A"})',
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        GlassCard(
+          borderRadius: BorderRadius.circular(32),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(greeting, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 4),
-                    const Text('April 25, Saturday', style: TextStyle(color: Colors.white38, fontSize: 14)),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(greeting, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 4),
+                        const Text('April 25, Saturday', style: TextStyle(color: Colors.white38, fontSize: 14)),
+                      ],
+                    ),
+                    const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 32),
                   ],
                 ),
-                const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 32),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: _TodayInfoItem(icon: Icons.cloud, label: 'Weather', value: data.weatherValue)),
+                    Expanded(child: _TodayInfoItem(icon: Icons.auto_awesome, label: data.horoscopeLabel, value: data.horoscopeValue)),
+                    Expanded(child: _TodayInfoItem(icon: Icons.newspaper, label: 'News', value: data.newsValue)),
+                  ],
+                ),
               ],
             ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _TodayInfoItem(icon: Icons.cloud, label: 'Weather', value: data.weatherValue),
-                _TodayInfoItem(icon: Icons.auto_graph, label: 'Success', value: '94%'),
-                _TodayInfoItem(icon: Icons.newspaper, label: 'News', value: 'Top 5'),
-              ],
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 

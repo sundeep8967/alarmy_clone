@@ -39,6 +39,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
   @override
   void initState() {
     super.initState();
+    AlarmService.acquireWakeLock();
     _startTime = DateTime.now();
     _updateTime();
     _startRinging();
@@ -92,6 +93,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
 
   @override
   void dispose() {
+    AlarmService.releaseWakeLock();
     _crescendoTimer?.cancel();
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();

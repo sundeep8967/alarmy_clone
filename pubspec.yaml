@@ -56,6 +56,9 @@ dependencies:
   mobile_scanner: ^7.2.0
   image_picker: ^1.1.2
   vibration: ^3.1.8
+  tflite_flutter: ^0.12.1
+  record: ^6.2.0
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +89,7 @@ flutter:
     - assets/videos/
     - assets/sounds/
     - assets/images/
+    - assets/ml/
     - assets/phrases/
     - assets/alarmy_wallpaper_images.json
   # An image asset can refer to one or more resolution-specific "variants", see
