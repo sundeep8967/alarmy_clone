@@ -8,6 +8,7 @@ import 'package:vibration/vibration.dart';
 import '../../core/services/alarm_service.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/repositories/alarm_repository.dart';
+import '../../core/providers/settings_provider.dart';
 import '../missions/math_mission_screen.dart';
 import '../missions/shake_mission_screen.dart';
 import '../missions/memory_mission_screen.dart';
@@ -71,8 +72,14 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
   }
 
   void _setupAutoTimers() {
-    _autoSnoozeTimer = Timer(const Duration(minutes: 1), () => _snoozeAlarm(isAuto: true));
-    _autoDismissTimer = Timer(const Duration(minutes: 10), () => _dismissAlarm(isAuto: true));
+    final globalSnooze = ref.read(settingsProvider).snoozeDuration;
+    final effectiveSnooze = widget.alarm.snoozeMinutes > 0
+        ? widget.alarm.snoozeMinutes
+        : globalSnooze;
+    _autoSnoozeTimer = Timer(Duration(minutes: effectiveSnooze), () => _snoozeAlarm(isAuto: true));
+
+    final globalDuration = ref.read(settingsProvider).alarmDuration;
+    _autoDismissTimer = Timer(Duration(minutes: globalDuration), () => _dismissAlarm(isAuto: true));
   }
 
   Future<void> _startRinging() async {

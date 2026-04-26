@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../features/home/alarm_settings_screen.dart';
+import '../providers/settings_provider.dart';
 
 class SettingsService {
   static const String _vibrationKey = 'vibration_enabled';

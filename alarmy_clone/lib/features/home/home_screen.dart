@@ -60,9 +60,92 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey _fabKey = GlobalKey();
 
+  /// 'time' = default, 'active' = active alarms first
+  String _sortMode = 'time';
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void _showSortSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1C1C1E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Sort alarms', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            _buildSortOption('Default (by time)', 'time'),
+            const Divider(color: Colors.white10),
+            _buildSortOption('Active first', 'active'),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSortOption(String label, String mode) {
+    final isSelected = _sortMode == mode;
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text(label, style: TextStyle(color: isSelected ? const Color(0xFFFF3B30) : Colors.white)),
+      trailing: isSelected ? const Icon(Icons.check, color: Color(0xFFFF3B30)) : null,
+      onTap: () {
+        setState(() => _sortMode = mode);
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  void _confirmDeleteInactive() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1C1C1E),
+        title: const Text('Delete inactive alarms', style: TextStyle(color: Colors.white)),
+        content: const Text(
+          'All alarms that are currently toggled OFF will be permanently deleted.',
+          style: TextStyle(color: Colors.white54),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel', style: TextStyle(color: Colors.white38)),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              await _deleteInactiveAlarms();
+            },
+            child: const Text('Delete', style: TextStyle(color: Color(0xFFFF3B30), fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteInactiveAlarms() async {
+    final alarms = await ref.read(alarmsProvider.future);
+    final inactive = alarms.where((a) => !a.isActive).toList();
+    for (final alarm in inactive) {
+      await ref.read(alarmsProvider.notifier).deleteAlarm(alarm.id);
+    }
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${inactive.length} inactive alarm${inactive.length == 1 ? '' : 's'} deleted.'),
+        backgroundColor: const Color(0xFF1C1C1E),
+        behavior: SnackBarBehavior.floating,
+      ));
+    }
   }
 
   void _showFabMenu() {
@@ -179,6 +262,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.white))),
             data: (alarmList) {
+              // Apply sorting
+              final sortedAlarms = [...alarmList];
+              if (_sortMode == 'active') {
+                sortedAlarms.sort((a, b) {
+                  if (a.isActive == b.isActive) {
+                    // Secondary sort: by time
+                    final ta = a.hour * 60 + a.minute;
+                    final tb = b.hour * 60 + b.minute;
+                    return ta.compareTo(tb);
+                  }
+                  return a.isActive ? -1 : 1; // active alarms first
+                });
+              } else {
+                // Default: sort by time
+                sortedAlarms.sort((a, b) {
+                  final ta = a.hour * 60 + a.minute;
+                  final tb = b.hour * 60 + b.minute;
+                  return ta.compareTo(tb);
+                });
+              }
+
               return CustomScrollView(
                     slivers: [
                       _buildSliverAppBar(),
@@ -201,7 +305,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
-                              if (alarmList.isEmpty) {
+                              if (sortedAlarms.isEmpty) {
                                 return const Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 40),
@@ -209,13 +313,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   ),
                                 );
                               }
-                              final alarm = alarmList[index];
+                              final alarm = sortedAlarms[index];
                               return FadeInUp(
                                 delay: Duration(milliseconds: 100 * index),
                                 child: _buildAlarmCard(alarm),
                               );
                             },
-                            childCount: alarmList.isEmpty ? 1 : alarmList.length,
+                            childCount: sortedAlarms.isEmpty ? 1 : sortedAlarms.length,
                           ),
                         ),
                       ),
@@ -270,6 +374,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           onSelected: (value) {
             if (value == 'settings') {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const AlarmSettingsScreen()));
+            } else if (value == 'sort') {
+              _showSortSheet();
+            } else if (value == 'delete_inactive') {
+              _confirmDeleteInactive();
             }
           },
           itemBuilder: (BuildContext context) {
@@ -281,6 +389,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const PopupMenuItem<String>(
                 value: 'edit',
                 child: Text('Edit Alarms', style: TextStyle(color: Colors.white)),
+              ),
+              const PopupMenuItem<String>(
+                value: 'sort',
+                child: Text('Sort', style: TextStyle(color: Colors.white)),
+              ),
+              const PopupMenuItem<String>(
+                value: 'delete_inactive',
+                child: Text('Delete inactive alarms', style: TextStyle(color: Colors.white)),
               ),
             ];
           },

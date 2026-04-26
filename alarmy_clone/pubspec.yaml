@@ -69,6 +69,7 @@ dependencies:
   easy_localization: ^3.0.3
   adhan: ^2.0.0+1
   flutter_tts: ^4.2.5
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -15,6 +16,103 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
   bool _volumeSnooze = true;
   bool _autoDismiss = false;
   String _selectedLanguage = 'English';
+  String _timeFormat = '24 Hour';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _uninstallBlocker = prefs.getBool('pref_uninstall_blocker') ?? false;
+      _volumeSnooze = prefs.getBool('pref_volume_snooze') ?? true;
+      _autoDismiss = prefs.getBool('pref_auto_dismiss') ?? false;
+      _timeFormat = prefs.getString('pref_time_format') ?? '24 Hour';
+    });
+  }
+
+  Future<void> _saveToggle(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, value);
+  }
+
+  Future<void> _saveTimeFormat(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('pref_time_format', value);
+  }
+
+  void _showTimeFormatPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1C1D24),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Time Format',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 24),
+            _buildTimeFormatOption('12 Hour'),
+            const SizedBox(height: 12),
+            _buildTimeFormatOption('24 Hour'),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimeFormatOption(String format) {
+    final isSelected = _timeFormat == format;
+    return InkWell(
+      onTap: () {
+        setState(() => _timeFormat = format);
+        _saveTimeFormat(format);
+        Navigator.pop(context);
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFFF3B30).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(16),
+          border: isSelected
+              ? Border.all(color: const Color(0xFFFF3B30), width: 1)
+              : null,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                format,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.white70,
+                  fontSize: 16,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(Icons.check, color: Color(0xFFFF3B30)),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,49 +134,58 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               children: [
                 _buildAppBar(context),
                 const SizedBox(height: 24),
-                _buildSection('APPEARANCE', [
-                  _SettingItem('Theme', Icons.palette, Colors.purple, trailing: const Text('Dark Mode', style: TextStyle(color: Colors.white38))),
-                  _SettingItem('Language', Icons.language, Colors.blue, trailing: Text(_selectedLanguage, style: const TextStyle(color: Colors.white38))),
-                ]),
-                const SizedBox(height: 24),
                 _buildSection('BEHAVIOR', [
                   _SettingItem(
-                    'Uninstall Blocker', 
-                    Icons.lock_person, 
-                    Colors.red, 
+                    'Uninstall Blocker',
+                    Icons.lock_person,
+                    Colors.red,
                     trailing: CupertinoSwitch(
-                      value: _uninstallBlocker, 
+                      value: _uninstallBlocker,
                       activeColor: const Color(0xFFFF3B30),
-                      onChanged: (v) => setState(() => _uninstallBlocker = v),
+                      onChanged: (v) {
+                        setState(() => _uninstallBlocker = v);
+                        _saveToggle('pref_uninstall_blocker', v);
+                      },
                     ),
                   ),
                   _SettingItem(
-                    'Volume Button', 
-                    Icons.volume_up, 
-                    Colors.orange, 
+                    'Volume Button',
+                    Icons.volume_up,
+                    Colors.orange,
                     trailing: CupertinoSwitch(
-                      value: _volumeSnooze, 
+                      value: _volumeSnooze,
                       activeColor: const Color(0xFFFF3B30),
-                      onChanged: (v) => setState(() => _volumeSnooze = v),
+                      onChanged: (v) {
+                        setState(() => _volumeSnooze = v);
+                        _saveToggle('pref_volume_snooze', v);
+                      },
                     ),
                     subtitle: 'Snooze using volume keys',
                   ),
                   _SettingItem(
-                    'Auto-dismiss', 
-                    Icons.timer_off, 
-                    Colors.green, 
+                    'Auto-dismiss',
+                    Icons.timer_off,
+                    Colors.green,
                     trailing: CupertinoSwitch(
-                      value: _autoDismiss, 
+                      value: _autoDismiss,
                       activeColor: const Color(0xFFFF3B30),
-                      onChanged: (v) => setState(() => _autoDismiss = v),
+                      onChanged: (v) {
+                        setState(() => _autoDismiss = v);
+                        _saveToggle('pref_auto_dismiss', v);
+                      },
                     ),
                     subtitle: 'Close alarm after 10 mins',
                   ),
                 ]),
                 const SizedBox(height: 24),
                 _buildSection('SYSTEM', [
-                  _SettingItem('Time Format', Icons.schedule, Colors.cyan, trailing: const Text('24 Hour', style: TextStyle(color: Colors.white38))),
-                  _SettingItem('Backup & Restore', Icons.cloud_upload, Colors.indigo),
+                  _SettingItem(
+                    'Time Format',
+                    Icons.schedule,
+                    Colors.cyan,
+                    trailing: Text(_timeFormat, style: const TextStyle(color: Colors.white38)),
+                    onTap: _showTimeFormatPicker,
+                  ),
                 ]),
                 const SizedBox(height: 40),
               ],
@@ -127,7 +234,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               return Column(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: item.onTap,
                     borderRadius: BorderRadius.circular(24),
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -175,6 +282,7 @@ class _SettingItem {
   final IconData icon;
   final Color color;
   final Widget? trailing;
+  final VoidCallback? onTap;
 
-  _SettingItem(this.title, this.icon, this.color, {this.subtitle, this.trailing});
+  _SettingItem(this.title, this.icon, this.color, {this.subtitle, this.trailing, this.onTap});
 }

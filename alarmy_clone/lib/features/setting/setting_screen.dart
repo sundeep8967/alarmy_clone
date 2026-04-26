@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -8,6 +9,7 @@ import 'battery_optimization_screen.dart';
 import 'general_setting_screen.dart';
 import 'permission_doa_screen.dart';
 import 'language_screen.dart';
+import 'premium_screen.dart';
 import '../quest/ramadan_screen.dart';
 import '../home/alarm_settings_screen.dart';
 import '../../core/providers/theme_provider.dart';
@@ -36,7 +38,7 @@ class SettingScreen extends ConsumerWidget {
               children: [
                 _buildHeader(),
                 const SizedBox(height: 12),
-                FadeInUp(duration: const Duration(milliseconds: 600), child: _buildPremiumCard()),
+                FadeInUp(duration: const Duration(milliseconds: 600), child: _buildPremiumCard(context)),
                 const SizedBox(height: 24),
                 _buildSectionHeader('SYSTEM'),
                 FadeInUp(
@@ -98,8 +100,8 @@ class SettingScreen extends ConsumerWidget {
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RamadanScreen())),
                     ),
                     _SettingModel(
-                      'General',
-                      Icons.settings,
+                      'Behaviour & System',
+                      Icons.tune,
                       const Color(0xFF8E8E93),
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GeneralSettingScreen())),
                     ),
@@ -110,8 +112,68 @@ class SettingScreen extends ConsumerWidget {
                 FadeInUp(
                   duration: const Duration(milliseconds: 900),
                   child: _buildSettingsGroup([
-                    _SettingModel('Notices', Icons.notifications, const Color(0xFF5856D6), hasNotice: true),
-                    _SettingModel('Send Feedback', Icons.mail, const Color(0xFF007AFF)),
+                    _SettingModel(
+                      'Notices',
+                      Icons.notifications,
+                      const Color(0xFF5856D6),
+                      hasNotice: true,
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          backgroundColor: const Color(0xFF1C1D24),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                          ),
+                          builder: (context) => Container(
+                            padding: const EdgeInsets.all(32),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF34C759),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.check, color: Colors.white, size: 32),
+                                ),
+                                const SizedBox(height: 24),
+                                const Text(
+                                  'No new notices',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  "You're up to date!",
+                                  style: TextStyle(
+                                    color: Colors.white54,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    _SettingModel(
+                      'Send Feedback',
+                      Icons.mail,
+                      const Color(0xFF007AFF),
+                      onTap: () async {
+                        final uri = Uri(
+                          scheme: 'mailto',
+                          path: 'feedback@alarmy-clone.app',
+                          query: 'subject=Alarmy Clone Feedback',
+                        );
+                        if (await canLaunchUrl(uri)) await launchUrl(uri);
+                      },
+                    ),
                     _SettingModel(
                       'About Alarmy',
                       Icons.info,
@@ -182,52 +244,55 @@ class SettingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPremiumCard() {
+  Widget _buildPremiumCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: GlassContainer(
-        blur: 20,
-        opacity: 0.1,
-        borderRadius: BorderRadius.circular(32),
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(32),
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFF6A11CB).withValues(alpha: 0.2),
-                const Color(0xFF2575FC).withValues(alpha: 0.2),
+      child: GestureDetector(
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen())),
+        child: GlassContainer(
+          blur: 20,
+          opacity: 0.1,
+          borderRadius: BorderRadius.circular(32),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(32),
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFF6A11CB).withValues(alpha: 0.2),
+                  const Color(0xFF2575FC).withValues(alpha: 0.2),
+                ],
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFFD700),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.star_rounded, color: Colors.black, size: 28),
+                ),
+                const SizedBox(width: 16),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Upgrade to Pro',
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Pro features for free',
+                        style: TextStyle(color: Colors.white60, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right, color: Colors.white38),
               ],
             ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFFD700),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.star_rounded, color: Colors.black, size: 28),
-              ),
-              const SizedBox(width: 16),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Upgrade to Pro',
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Pro features for free',
-                      style: TextStyle(color: Colors.white60, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_right, color: Colors.white38),
-            ],
           ),
         ),
       ),
