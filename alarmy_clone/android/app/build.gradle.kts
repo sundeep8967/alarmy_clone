@@ -47,3 +47,15 @@ flutter {
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
+
+// Fix for duplicate class conflicts between AndroidX and legacy support libraries
+configurations.all {
+    resolutionStrategy {
+        force("androidx.core:core:1.13.1")
+        exclude(group = "com.android.support", module = "support-compat")
+        exclude(group = "com.android.support", module = "support-core-utils")
+        exclude(group = "com.android.support", module = "support-core-ui")
+        exclude(group = "com.android.support", module = "support-media-compat")
+        exclude(group = "com.android.support", module = "support-fragment")
+    }
+}

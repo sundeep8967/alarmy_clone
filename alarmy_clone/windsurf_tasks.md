@@ -1,4 +1,4 @@
-# Windsurf Cascade Tasks - Phase 4 (ML & Advanced Features)
+# Windsurf Cascade Tasks - Phase 5 (Core Utilities)
 
 Welcome to the Alarmy Clone project. You are an expert Flutter Developer acting under the guidance of the Tech Lead. 
 Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead. Do not combine tasks.
@@ -12,71 +12,46 @@ Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead
 
 ---
 
-## Part A: Open-Source ML Mission Integration
+## Part A: Battery Optimization (Doze Whitelist)
 
-### [x] Step 1: Add ML Dependencies
-- Add to pubspec.yaml:
-    `tflite_flutter: ^0.10.4`
-    `google_mlkit_object_detection: ^0.12.0`
+### [x] Step 1: Add Permissions & Dependencies
+- Add `disable_battery_optimization: ^1.1.2` to `pubspec.yaml`.
 - Run `flutter pub get`.
-- **Docs for Windsurf:** 
-  - [Google ML Kit Object Detection](https://pub.dev/packages/google_mlkit_object_detection)
-  - [TFLite Flutter](https://pub.dev/packages/tflite_flutter)
+- Add `<uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />` to `android/app/src/main/AndroidManifest.xml`.
 
-### [x] Step 2: Setup Open-Source Models
-- Download MediaPipe Pose Landmarker (lite variant) from:
-  `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task`
-- Place in `assets/ml/pose_landmarker.task`
-- For Walk mission: NO model needed — use Android `TYPE_STEP_COUNTER` sensor directly (pedometer).
-- For Picture mission: ML Kit Object Detection runs on-device, no model file needed.
-- Declare `assets/ml/pose_landmarker.task` in `pubspec.yaml` under `assets:`.
-
-### [x] Step 3: Create MissionMLService
-- Create `lib/core/services/mission_ml_service.dart`.
-- Squat: Use pose landmarks — calculate knee angle between hip/knee/ankle points. Flag squat complete when angle < 90°, then returns > 160°.
-- Walk: Increment step counter via Sensors package `TYPE_STEP_COUNTER` delta.
-- Picture: Use ML Kit `ObjectDetector` in `STREAM_MODE`, match detected label against target object string stored on the mission.
-- Expose unified interface: `Future<bool> evaluate(MissionType type, dynamic input)`
-- **Docs for Windsurf:** [MediaPipe Pose Landmarker Logic](https://developers.google.com/mediapipe/solutions/vision/pose_landmarker)
-
-### [x] Step 4: Wire to Providers
-- Update `squat_provider.dart`, `step_provider.dart`, and `picture_provider.dart` to call `MissionMLService.evaluate()` instead of hardcoded thresholds.
+### [x] Step 2: Build Optimization Helper UI
+- Create `lib/features/setting/battery_optimization_screen.dart`.
+- Build a simple UI explaining why Alarmy needs to bypass battery restrictions to fire alarms reliably.
+- Wire up a button to call `DisableBatteryOptimization.showDisableBatteryOptimizationSettings()`.
+- **CRITICAL OEM FIX:** After the standard whitelist intent, additionally deep-link to OEM-specific settings using a MethodChannel to detect manufacturer.
+  - Xiaomi  → `com.miui.powerkeeper.ui.HiddenAppsConfigActivity`
+  - Samsung → `com.samsung.android.sm.ui.battery.BatteryActivity`
+  - Realme/OnePlus → `com.coloros.powermanager.fuelgaue.PowerConsumptionActivity`
+  - Huawei → `com.huawei.systemmanager.optimize.process.ProtectActivity`
+  - Vivo → `com.vivo.applicationbehaviorengine.ui.ExcessivePowerManagerActivity`
+  - Use a `when(Build.MANUFACTURER.lowercase())` block in native Kotlin. Fail silently if intent resolves to nothing — don't crash.
+- Add a navigation tile to this screen in the main Settings menu.
 
 ---
 
-## Part B: Report Charts
+## Part B: Home Screen Widget
 
-### [x] Step 4: Add Chart Dependency
-- Open `pubspec.yaml` and add `fl_chart: ^0.68.0`.
+### [x] Step 3: Widget Setup
+- Add `home_widget: ^0.6.0` to `pubspec.yaml`.
 - Run `flutter pub get`.
+- In `android/app/src/main/res/layout/`, created `widget_layout.xml` with minimal layout: TextView for alarm time and ImageView for mission icon.
+- Created `widget_background.xml` drawable with dark theme styling.
+- In `AndroidManifest.xml`, declared `es.antonborri.home_widget.HomeWidgetProvider` receiver.
+- Created `res/xml/home_widget_info.xml` with widget configuration (180x60dp, update period 24h).
 
-### [x] Step 5: Build Report Timeline UI
-- Open `lib/features/records/report_screen.dart` (or create it).
-- Use `BarChart` from `fl_chart` to display a 7-day history of alarms (e.g., successful wakeups vs snoozed alarms).
-- Use the app's dark theme colors (e.g., `Color(0xFF00FF85)` for success).
-- Data source: query `AlarmDatabase` for last 7 days of `AlarmEvent` records grouped by date, count successful_dismiss vs snoozed per day.
-- Do NOT use mock/hardcoded chart data.
-
----
-
-## Part C: Smart Wake Up (Wakeup Check)
-
-### [x] Step 6: Update Database & Alarm Model
-- Add `wakeupcheck_enabled` (bool) and `wakeupcheck_offset_minutes` (int) to the SQLite database schema in the core data provider.
-- Update the `AlarmModel` to include these fields. Ensure the UI allows configuring the offset (5, 10, 15, or 30 mins).
-
-### [x] Step 7: Build Gentle Pre-Alarm UI
-- Create `lib/features/alarm_ring/wakeup_check_screen.dart`.
-- Build a quiet, unintrusive full-screen UI that says "Time to wake up gently" with a simple dismiss button. This UI requires NO mission.
-
-### [x] Step 8: Pre-Alarm Scheduling Logic
-- Update `lib/core/services/alarm_service.dart`.
-- When setting an alarm, schedule a secondary alarm `wakeupcheck_offset_minutes` before the main alarm time.
-- Ensure the secondary alarm fires silently (vibration only, no sound).
-- Secondary alarm ID = main alarm ID + 10000 (convention to avoid collision).
-- On secondary dismiss: call `AlarmService.cancel(mainAlarmId)` AND `AlarmService.cancel(secondaryAlarmId)`.
-- On secondary ignore: do nothing — main alarm fires via its own scheduled intent.
-- Store `isPendingWakeupCheck: bool` in `AlarmModel` to track state between the two.
+### [x] Step 4: Widget Data Sync Logic
+- Created `lib/features/widget/home_widget_service.dart` with:
+  - `initialize()` method to set app group ID
+  - `updateWidget()` method to calculate next alarm and save widget data
+  - `_getNextActiveAlarm()` to query database and find next scheduled alarm
+  - `_getMissionTypeString()` helper for mission icon mapping
+- **Update Trigger:** Added `HomeWidgetService.updateWidget()` calls in `AlarmRepository` after createAlarm(), updateAlarm(), and deleteAlarm() - ensuring updates happen from main app context only.
+- **Initialization:** Added `HomeWidgetService.initialize()` call in `main.dart`.
 
 ---
 
@@ -84,47 +59,53 @@ Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead
 
 ### Changes done
 
-**Part A: Open-Source ML Mission Integration**
-- **Step 1**: Added `google_mlkit_object_detection: ^0.12.0` to `pubspec.yaml` (tflite_flutter already present at ^0.12.1). Ran `flutter pub get`.
-- **Step 2**: Downloaded MediaPipe Pose Landmarker (5.8MB) from Google Storage to `assets/ml/pose_landmarker.task`. The `assets/ml/` folder was already declared in pubspec.yaml.
-- **Step 3**: Created `lib/core/services/mission_ml_service.dart` with:
-  - `MissionType` enum (squat, walk, picture)
-  - `initialize()` method for ML Kit ObjectDetector and TFLite Interpreter
-  - `evaluate(MissionType, dynamic)` unified interface
-  - Squat detection: calculates knee angle from pose landmarks (hip-knee-ankle), detects deep squat (<90°) then standing (>160°)
-  - Walk detection: tracks step counter delta with `resetWalk()` for initialization
-  - Picture detection: `detectObjects()` and `checkObjectMatch()` for ML Kit Object Detection streaming
-  - State tracking with public getters `lastKneeAngle` and `wasInDeepSquat`
-- **Step 4**: Updated providers to integrate with MissionMLService:
-  - `squat_provider.dart`: Added `currentKneeAngle` and `isInDeepSquat` to SquatState, added `evaluatePoseLandmarks()` method that calls MissionMLService.evaluate()
-  - `step_provider.dart`: Added import for MissionMLService, added `resetWalk()` call in build(), added `evaluateStep()` method
-  - `picture_provider.dart`: Added ML Kit imports, `setTargetObject()`, `startObjectDetection()` with camera stream, `stopObjectDetection()`, updated `verifyPicture()` to attempt ML detection before fallback
+**Part A: Battery Optimization (Doze Whitelist)**
+- **Step 1**: 
+  - Added `disable_battery_optimization: ^1.1.2` to `pubspec.yaml`
+  - Added `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` permission to `AndroidManifest.xml`
+  - Ran `flutter pub get`
 
-**Part B: Report Charts**
-- **Step 4**: Added `fl_chart: ^0.68.0` to `pubspec.yaml`, ran `flutter pub get`.
-- **Step 5**: Created `lib/features/records/report_screen.dart` with:
-  - `reportDataProvider` FutureProvider that queries `DatabaseHelper.get7DayStats()`
-  - `GlassContainer` with `BarChart` showing 7-day alarm history
-  - Dual bar groups: successful wakeups (Color 0xFF00FF85) vs snoozed alarms (Color 0xFFFF3B30)
-  - Real data from `records` table grouped by date, no mock data
-  - Added `get7DayStats()` method to `DatabaseHelper` that queries last 7 days, aggregates success/snooze counts per day
+- **Step 2**:
+  - Created `lib/features/setting/battery_optimization_screen.dart` with:
+    - UI explaining battery optimization needs for reliable alarms
+    - Status card showing current optimization state
+    - OEM-specific info card listing device manufacturers
+    - "Disable Battery Optimization" button using `DisableBatteryOptimization.showDisableBatteryOptimizationSettings()`
+  - Added MethodChannel `com.example.alarmy_clone/battery` for OEM-specific settings
+  - Updated `android/app/src/main/kotlin/com/example/alarmy_clone/MainActivity.kt` with:
+    - `openOemBatterySettings()` method with manufacturer detection
+    - Support for Xiaomi (MIUI), Samsung, Realme/OnePlus/OPPO, Huawei, Vivo
+    - Silent failure handling (try-catch blocks) as per requirements
+  - Added Battery Optimization navigation tile in Settings screen (`SYSTEM` section)
 
-**Part C: Smart Wake Up (Wakeup Check)**
-- **Step 6**: Updated database schema and AlarmModel:
-  - `lib/core/models/alarm_model.dart`: Added `isPendingWakeupCheck` field with default false, updated copyWith, toJson, fromJson
-  - `lib/core/database/database_helper.dart`: 
-    - Updated database version from 9 to 10
-    - Added `isPendingWakeupCheck` column to CREATE TABLE statement
-    - Added migration for version 10: `ALTER TABLE alarms ADD COLUMN isPendingWakeupCheck`
-    - Updated create(), readAllAlarms(), and update() methods to serialize/deserialize the new field
-- **Step 7**: Created `lib/features/alarm_ring/wakeup_check_screen.dart`:
-  - Full-screen UI with dark gradient background
-  - "Time to wake up gently" message with sun icon
-  - Gentle vibration using Vibration plugin (500ms pulses every 2 seconds)
-  - "I'm Awake" button that cancels both pre-alarm and main alarm
-  - Time display showing alarm time
-- **Step 8**: Updated `lib/core/services/alarm_service.dart`:
-  - Added `cancelAlarmById()` method for direct alarm cancellation
-  - Added `preAlarmCallback()` for gentle wake up (vibration only, no sound, playSound: false)
-  - Updated `scheduleAlarm()` to schedule pre-alarm (ID = main ID + 10000) when `isWakeUpCheckEnabled` is true, scheduled `wakeUpCheckMinutes` before main alarm
-  - Updated `cancelAlarm()` to also cancel pre-alarm (ID + 10000) when canceling main alarm
+**Part B: Home Screen Widget**
+- **Step 3**:
+  - Added `home_widget: ^0.6.0` to `pubspec.yaml`
+  - Created `android/app/src/main/res/layout/widget_layout.xml`:
+    - Minimal layout with ImageView (mission icon) and TextView (alarm time)
+    - Dark theme background using `widget_background.xml` drawable
+  - Created `android/app/src/main/res/drawable/widget_background.xml`:
+    - Dark background (#FF1A1A20) with rounded corners and subtle border
+  - Created `android/app/src/main/res/xml/home_widget_info.xml`:
+    - Widget size: 180x60dp minimum
+    - Update period: 24 hours (86400000ms)
+    - Horizontal resize mode only
+  - Updated `AndroidManifest.xml`:
+    - Added `HomeWidgetPlugin` receiver with `APPWIDGET_UPDATE` intent filter
+    - Referenced `home_widget_info` metadata
+
+- **Step 4**:
+  - Created `lib/features/widget/home_widget_service.dart`:
+    - `initialize()` - sets app group ID for widget communication
+    - `updateWidget()` - calculates next alarm, saves data, triggers widget update
+    - `_getNextActiveAlarm()` - queries database, finds earliest scheduled alarm
+    - `_getMissionTypeString()` - maps mission types to readable strings
+    - Configured for `com.example.alarmy_clone` app group ID
+  - Updated `lib/core/repositories/alarm_repository.dart`:
+    - Added import for `HomeWidgetService`
+    - Added `HomeWidgetService.updateWidget()` call after `createAlarm()`
+    - Added `HomeWidgetService.updateWidget()` call after `updateAlarm()`
+    - Added `HomeWidgetService.updateWidget()` call after `deleteAlarm()`
+    - Widget updates only from main app context (not background isolates)
+  - Updated `lib/main.dart`:
+    - Added `HomeWidgetService.initialize()` call after `AlarmService.init()`

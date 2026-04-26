@@ -4,6 +4,7 @@ import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'alarm_optimization_screen.dart';
+import 'battery_optimization_screen.dart';
 import 'general_setting_screen.dart';
 import 'permission_doa_screen.dart';
 import '../quest/ramadan_screen.dart';
@@ -51,6 +52,12 @@ class SettingScreen extends ConsumerWidget {
                       Icons.security,
                       const Color(0xFFFF3B30),
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PermissionDoaScreen())),
+                    ),
+                    _SettingModel(
+                      'Battery Optimization',
+                      Icons.battery_charging_full,
+                      const Color(0xFFFF9500),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BatteryOptimizationScreen())),
                     ),
                   ]),
                 ),

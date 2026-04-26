@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../database/database_helper.dart';
 import '../models/alarm_model.dart';
 import '../services/alarm_service.dart';
+import '../../features/widget/home_widget_service.dart';
 
 part 'alarm_repository.g.dart';
 
@@ -18,6 +19,8 @@ class AlarmRepository {
   Future<void> createAlarm(AlarmModel alarm) async {
     await _db.create(alarm);
     await AlarmService.scheduleAlarm(alarm);
+    // Update home widget from main app context
+    await HomeWidgetService.updateWidget();
   }
 
   Future<void> updateAlarm(AlarmModel alarm) async {
@@ -27,11 +30,15 @@ class AlarmRepository {
     } else {
       await AlarmService.cancelAlarm(alarm.id);
     }
+    // Update home widget from main app context
+    await HomeWidgetService.updateWidget();
   }
 
   Future<void> deleteAlarm(String id) async {
     await _db.delete(id);
     await AlarmService.cancelAlarm(id);
+    // Update home widget from main app context
+    await HomeWidgetService.updateWidget();
   }
 
   Future<void> toggleAlarm(AlarmModel alarm) async {

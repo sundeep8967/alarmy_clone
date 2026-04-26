@@ -11,6 +11,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.example.alarmy_clone/wakelock"
+    private val BATTERY_CHANNEL = "com.example.alarmy_clone/battery"
     private var wakeLock: PowerManager.WakeLock? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,8 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        
+        // WakeLock channel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "acquire" -> {
@@ -46,6 +49,67 @@ class MainActivity : FlutterActivity() {
                     result.notImplemented()
                 }
             }
+        }
+        
+        // Battery optimization channel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, BATTERY_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "openOemBatterySettings" -> {
+                    openOemBatterySettings()
+                    result.success(null)
+                }
+                else -> {
+                    result.notImplemented()
+                }
+            }
+        }
+    }
+    
+    private fun openOemBatterySettings() {
+        val manufacturer = Build.MANUFACTURER.lowercase()
+        val intent = android.content.Intent()
+        
+        when (manufacturer) {
+            "xiaomi", "redmi" -> {
+                intent.component = android.content.ComponentName(
+                    "com.miui.powerkeeper",
+                    "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"
+                )
+            }
+            "samsung" -> {
+                intent.component = android.content.ComponentName(
+                    "com.samsung.android.lool",
+                    "com.samsung.android.sm.ui.battery.BatteryActivity"
+                )
+            }
+            "realme", "oppo", "oneplus" -> {
+                intent.component = android.content.ComponentName(
+                    "com.coloros.oppoguardelf",
+                    "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity"
+                )
+            }
+            "huawei" -> {
+                intent.component = android.content.ComponentName(
+                    "com.huawei.systemmanager",
+                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
+                )
+            }
+            "vivo" -> {
+                intent.component = android.content.ComponentName(
+                    "com.vivo.abe",
+                    "com.vivo.applicationbehaviorengine.ui.ExcessivePowerManagerActivity"
+                )
+            }
+            else -> {
+                // For unknown manufacturers, do nothing - fail silently
+                return
+            }
+        }
+        
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            // Intent not available or failed - fail silently as per requirements
         }
     }
 

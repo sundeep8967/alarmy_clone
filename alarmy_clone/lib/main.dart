@@ -7,6 +7,7 @@ import 'features/onboarding/onboarding_screen.dart';
 import 'core/services/alarm_service.dart';
 import 'features/alarm_ring/alarm_ring_screen.dart';
 import 'core/models/alarm_model.dart';
+import 'features/widget/home_widget_service.dart';
 
 // Route constants
 class AppRoutes {
@@ -19,6 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   await AlarmService.init();
+  await HomeWidgetService.initialize();
 
   final prefs = await SharedPreferences.getInstance();
   final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;
