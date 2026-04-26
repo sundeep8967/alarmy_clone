@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 9,
+      version: 10,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -44,6 +44,7 @@ CREATE TABLE alarms (
   snoozeCount INTEGER NOT NULL DEFAULT 3,
   isWakeUpCheckEnabled INTEGER NOT NULL DEFAULT 0,
   wakeUpCheckMinutes INTEGER NOT NULL DEFAULT 5,
+  isPendingWakeupCheck INTEGER NOT NULL DEFAULT 0,
   volume REAL NOT NULL DEFAULT 0.7,
   isVolumeCrescendo INTEGER NOT NULL DEFAULT 0,
   crescendoDuration INTEGER NOT NULL DEFAULT 30
@@ -100,6 +101,9 @@ CREATE TABLE records (
 )
 ''');
     }
+    if (oldVersion < 10) {
+      await db.execute('ALTER TABLE alarms ADD COLUMN isPendingWakeupCheck INTEGER NOT NULL DEFAULT 0');
+    }
   }
 
   Future<AlarmModel> create(AlarmModel alarm) async {
@@ -108,6 +112,7 @@ CREATE TABLE records (
     map['isActive'] = (map['isActive'] as bool) ? 1 : 0;
     map['isVibrateEnabled'] = (map['isVibrateEnabled'] as bool) ? 1 : 0;
     map['isWakeUpCheckEnabled'] = (map['isWakeUpCheckEnabled'] as bool) ? 1 : 0;
+    map['isPendingWakeupCheck'] = (map['isPendingWakeupCheck'] as bool) ? 1 : 0;
     map['isVolumeCrescendo'] = (map['isVolumeCrescendo'] as bool) ? 1 : 0;
     map['activeDays'] = jsonEncode(map['activeDays']);
     map['missionTypes'] = jsonEncode(map['missionTypes']);
@@ -125,6 +130,7 @@ CREATE TABLE records (
       map['isActive'] = map['isActive'] == 1;
       map['isVibrateEnabled'] = map['isVibrateEnabled'] == 1;
       map['isWakeUpCheckEnabled'] = map['isWakeUpCheckEnabled'] == 1;
+      map['isPendingWakeupCheck'] = map['isPendingWakeupCheck'] == 1;
       map['isVolumeCrescendo'] = map['isVolumeCrescendo'] == 1;
       map['activeDays'] = jsonDecode(map['activeDays'] as String);
       map['missionTypes'] = jsonDecode(map['missionTypes'] as String);
@@ -139,6 +145,7 @@ CREATE TABLE records (
     map['isActive'] = (map['isActive'] as bool) ? 1 : 0;
     map['isVibrateEnabled'] = (map['isVibrateEnabled'] as bool) ? 1 : 0;
     map['isWakeUpCheckEnabled'] = (map['isWakeUpCheckEnabled'] as bool) ? 1 : 0;
+    map['isPendingWakeupCheck'] = (map['isPendingWakeupCheck'] as bool) ? 1 : 0;
     map['isVolumeCrescendo'] = (map['isVolumeCrescendo'] as bool) ? 1 : 0;
     map['activeDays'] = jsonEncode(map['activeDays']);
     map['missionTypes'] = jsonEncode(map['missionTypes']);
@@ -174,5 +181,43 @@ CREATE TABLE records (
     if (all.isEmpty) return 0.0;
     final success = all.where((r) => r['isSuccess'] == 1).length;
     return success / all.length;
+  }
+
+  Future<Map<String, Map<String, int>>> get7DayStats() async {
+    final db = await instance.database;
+    final endDate = DateTime.now();
+    final startDate = endDate.subtract(const Duration(days: 6));
+    
+    final records = await db.query(
+      'records',
+      where: 'timestamp >= ?',
+      whereArgs: [startDate.toIso8601String()],
+      orderBy: 'timestamp DESC',
+    );
+
+    // Initialize all 7 days with 0
+    final Map<String, Map<String, int>> stats = {};
+    for (int i = 0; i < 7; i++) {
+      final date = endDate.subtract(Duration(days: i));
+      final dateKey = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      stats[dateKey] = {'success': 0, 'snoozed': 0};
+    }
+
+    // Aggregate records
+    for (final record in records) {
+      final timestamp = DateTime.parse(record['timestamp'] as String);
+      final dateKey = '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
+      
+      if (stats.containsKey(dateKey)) {
+        final isSuccess = record['isSuccess'] == 1;
+        if (isSuccess) {
+          stats[dateKey]!['success'] = (stats[dateKey]!['success'] ?? 0) + 1;
+        } else {
+          stats[dateKey]!['snoozed'] = (stats[dateKey]!['snoozed'] ?? 0) + 1;
+        }
+      }
+    }
+
+    return stats;
   }
 }

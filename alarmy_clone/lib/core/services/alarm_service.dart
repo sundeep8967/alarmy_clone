@@ -122,10 +122,65 @@ class AlarmService {
         scheduleTime = scheduleTime.add(const Duration(days: 1));
       }
     }
+    
+    // Schedule pre-alarm (gentle wake up check) if enabled
+    if (alarm.isWakeUpCheckEnabled && alarm.wakeUpCheckMinutes > 0) {
+      final preAlarmId = alarmId + 10000; // Convention to avoid collision
+      final preAlarmTime = scheduleTime.subtract(Duration(minutes: alarm.wakeUpCheckMinutes));
+      
+      // Only schedule if pre-alarm time is in the future
+      if (preAlarmTime.isAfter(now)) {
+        await AndroidAlarmManager.oneShotAt(
+          preAlarmTime, 
+          preAlarmId, 
+          preAlarmCallback, 
+          exact: true, 
+          wakeup: true, 
+          rescheduleOnReboot: true, 
+          params: alarm.toJson(),
+        );
+      }
+    }
+    
     await AndroidAlarmManager.oneShotAt(scheduleTime, alarmId, alarmCallback, exact: true, wakeup: true, rescheduleOnReboot: true, params: alarm.toJson());
   }
 
   static Future<void> cancelAlarm(String alarmId) async {
+    final alarmIdHash = alarmId.hashCode;
+    // Cancel main alarm
+    await AndroidAlarmManager.cancel(alarmIdHash);
+    // Cancel pre-alarm (secondary alarm)
+    await AndroidAlarmManager.cancel(alarmIdHash + 10000);
+    await flutterLocalNotificationsPlugin.cancel(id: alarmIdHash + 10000);
+  }
+
+  static Future<void> cancelAlarmById(String alarmId) async {
     await AndroidAlarmManager.cancel(alarmId.hashCode);
+    await flutterLocalNotificationsPlugin.cancel(id: alarmId.hashCode);
+  }
+
+  // Pre-alarm callback - gentle wake up check
+  @pragma('vm:entry-point')
+  static void preAlarmCallback(int id, Map<String, dynamic> params) async {
+    final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
+    send?.send({'type': 'wakeup_check', 'alarm': params});
+
+    // Silent notification - vibration only, no sound
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      'pre_alarm_channel', 'Gentle Wake Up',
+      importance: Importance.high, 
+      priority: Priority.high, 
+      fullScreenIntent: true, 
+      playSound: false, // No sound - vibration only
+      enableVibration: true,
+    );
+    
+    await flutterLocalNotificationsPlugin.show(
+      id: id,
+      title: 'Gentle Wake Up',
+      body: 'Time to wake up gently...',
+      notificationDetails: const NotificationDetails(android: androidDetails),
+      payload: 'wakeup_check_${params['id']}',
+    );
   }
 }

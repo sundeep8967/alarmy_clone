@@ -15,6 +15,7 @@ class AlarmModel {
   final int snoozeCount;
   final bool isWakeUpCheckEnabled;
   final int wakeUpCheckMinutes;
+  final bool isPendingWakeupCheck;
   final double volume;
   final bool isVolumeCrescendo;
   final int crescendoDuration;
@@ -34,6 +35,7 @@ class AlarmModel {
     this.snoozeCount = 3,
     this.isWakeUpCheckEnabled = false,
     this.wakeUpCheckMinutes = 5,
+    this.isPendingWakeupCheck = false,
     this.volume = 0.7,
     this.isVolumeCrescendo = false,
     this.crescendoDuration = 30,
@@ -54,6 +56,7 @@ class AlarmModel {
     int? snoozeCount,
     bool? isWakeUpCheckEnabled,
     int? wakeUpCheckMinutes,
+    bool? isPendingWakeupCheck,
     double? volume,
     bool? isVolumeCrescendo,
     int? crescendoDuration,
@@ -73,6 +76,7 @@ class AlarmModel {
       snoozeCount: snoozeCount ?? this.snoozeCount,
       isWakeUpCheckEnabled: isWakeUpCheckEnabled ?? this.isWakeUpCheckEnabled,
       wakeUpCheckMinutes: wakeUpCheckMinutes ?? this.wakeUpCheckMinutes,
+      isPendingWakeupCheck: isPendingWakeupCheck ?? this.isPendingWakeupCheck,
       volume: volume ?? this.volume,
       isVolumeCrescendo: isVolumeCrescendo ?? this.isVolumeCrescendo,
       crescendoDuration: crescendoDuration ?? this.crescendoDuration,
@@ -94,6 +98,7 @@ class AlarmModel {
         'snoozeCount': snoozeCount,
         'isWakeUpCheckEnabled': isWakeUpCheckEnabled,
         'wakeUpCheckMinutes': wakeUpCheckMinutes,
+        'isPendingWakeupCheck': isPendingWakeupCheck,
         'volume': volume,
         'isVolumeCrescendo': isVolumeCrescendo,
         'crescendoDuration': crescendoDuration,
@@ -141,6 +146,9 @@ class AlarmModel {
           ? json['isWakeUpCheckEnabled'] as bool
           : (json['isWakeUpCheckEnabled'] as int?) == 1,
       wakeUpCheckMinutes: (json['wakeUpCheckMinutes'] as int?) ?? 5,
+      isPendingWakeupCheck: json['isPendingWakeupCheck'] is bool
+          ? json['isPendingWakeupCheck'] as bool
+          : (json['isPendingWakeupCheck'] as int?) == 1,
       volume: (json['volume'] as num?)?.toDouble() ?? 0.7,
       isVolumeCrescendo: json['isVolumeCrescendo'] is bool
           ? json['isVolumeCrescendo'] as bool
