@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:vibration/vibration.dart';
@@ -31,9 +32,11 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
   late String _currentDate;
   late DateTime _startTime;
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final FlutterTts _tts = FlutterTts();
   Timer? _crescendoTimer;
   Timer? _autoSnoozeTimer;
   Timer? _autoDismissTimer;
+  Timer? _timePressureTimer;
   double _currentVolume = 0.0;
 
   @override
@@ -44,6 +47,27 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
     _updateTime();
     _startRinging();
     _setupAutoTimers();
+    _initTts();
+  }
+
+  Future<void> _initTts() async {
+    await _tts.setLanguage('en-US');
+    await _tts.setSpeechRate(0.5);
+    await _tts.setVolume(1.0);
+    await _tts.setPitch(1.0);
+    // Announce time immediately, then every 30 seconds
+    if (widget.alarm.timePressure) {
+      _announceTime();
+      _timePressureTimer = Timer.periodic(const Duration(seconds: 30), (_) => _announceTime());
+    }
+  }
+
+  void _announceTime() {
+    final now = DateTime.now();
+    final hour = now.hour > 12 ? now.hour - 12 : (now.hour == 0 ? 12 : now.hour);
+    final minute = now.minute.toString().padLeft(2, '0');
+    final amPm = now.hour >= 12 ? 'PM' : 'AM';
+    _tts.speak('It is $hour $minute $amPm');
   }
 
   void _setupAutoTimers() {
@@ -97,7 +121,9 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
     _crescendoTimer?.cancel();
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();
+    _timePressureTimer?.cancel();
     _audioPlayer.dispose();
+    _tts.stop();
     Vibration.cancel();
     super.dispose();
   }

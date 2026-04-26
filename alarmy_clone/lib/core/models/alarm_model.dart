@@ -20,6 +20,7 @@ class AlarmModel {
   final bool isVolumeCrescendo;
   final int crescendoDuration;
   final int smartAlarmWindow; // 0 = disabled, max 30 mins
+  final bool timePressure;   // TTS announces time every 30s
 
   const AlarmModel({
     required this.id,
@@ -41,6 +42,7 @@ class AlarmModel {
     this.isVolumeCrescendo = false,
     this.crescendoDuration = 30,
     this.smartAlarmWindow = 0,
+    this.timePressure = false,
   });
 
   AlarmModel copyWith({
@@ -63,6 +65,7 @@ class AlarmModel {
     bool? isVolumeCrescendo,
     int? crescendoDuration,
     int? smartAlarmWindow,
+    bool? timePressure,
   }) {
     return AlarmModel(
       id: id ?? this.id,
@@ -84,6 +87,7 @@ class AlarmModel {
       isVolumeCrescendo: isVolumeCrescendo ?? this.isVolumeCrescendo,
       crescendoDuration: crescendoDuration ?? this.crescendoDuration,
       smartAlarmWindow: smartAlarmWindow ?? this.smartAlarmWindow,
+      timePressure: timePressure ?? this.timePressure,
     );
   }
 
@@ -107,6 +111,7 @@ class AlarmModel {
         'isVolumeCrescendo': isVolumeCrescendo,
         'crescendoDuration': crescendoDuration,
         'smartAlarmWindow': smartAlarmWindow,
+        'timePressure': timePressure,
       };
 
   factory AlarmModel.fromJson(Map<String, dynamic> json) {
@@ -160,6 +165,9 @@ class AlarmModel {
           : (json['isVolumeCrescendo'] as int?) == 1,
       crescendoDuration: (json['crescendoDuration'] as int?) ?? 30,
       smartAlarmWindow: (json['smartAlarmWindow'] as int?) ?? 0,
+      timePressure: json['timePressure'] is bool
+          ? json['timePressure'] as bool
+          : (json['timePressure'] as int?) == 1,
     );
   }
 

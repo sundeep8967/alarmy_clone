@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 11,
+      version: 12,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -48,7 +48,8 @@ CREATE TABLE alarms (
   volume REAL NOT NULL DEFAULT 0.7,
   isVolumeCrescendo INTEGER NOT NULL DEFAULT 0,
   crescendoDuration INTEGER NOT NULL DEFAULT 30,
-  smartAlarmWindow INTEGER NOT NULL DEFAULT 0
+  smartAlarmWindow INTEGER NOT NULL DEFAULT 0,
+  timePressure INTEGER NOT NULL DEFAULT 0
 )
 ''');
     await db.execute('''
@@ -127,6 +128,9 @@ CREATE TABLE habit_stats (
 ''');
       await db.insert('habit_stats', {'id': 1, 'current_streak': 0, 'longest_streak': 0});
     }
+    if (oldVersion < 12) {
+      await db.execute('ALTER TABLE alarms ADD COLUMN timePressure INTEGER NOT NULL DEFAULT 0');
+    }
   }
 
   Future<AlarmModel> create(AlarmModel alarm) async {
@@ -137,6 +141,7 @@ CREATE TABLE habit_stats (
     map['isWakeUpCheckEnabled'] = (map['isWakeUpCheckEnabled'] as bool) ? 1 : 0;
     map['isPendingWakeupCheck'] = (map['isPendingWakeupCheck'] as bool) ? 1 : 0;
     map['isVolumeCrescendo'] = (map['isVolumeCrescendo'] as bool) ? 1 : 0;
+    map['timePressure'] = (map['timePressure'] as bool) ? 1 : 0;
     map['activeDays'] = jsonEncode(map['activeDays']);
     map['missionTypes'] = jsonEncode(map['missionTypes']);
     map['missionSettings'] = jsonEncode(map['missionSettings']);
@@ -155,6 +160,7 @@ CREATE TABLE habit_stats (
       map['isWakeUpCheckEnabled'] = map['isWakeUpCheckEnabled'] == 1;
       map['isPendingWakeupCheck'] = map['isPendingWakeupCheck'] == 1;
       map['isVolumeCrescendo'] = map['isVolumeCrescendo'] == 1;
+      map['timePressure'] = map['timePressure'] == 1;
       map['activeDays'] = jsonDecode(map['activeDays'] as String);
       map['missionTypes'] = jsonDecode(map['missionTypes'] as String);
       map['missionSettings'] = jsonDecode(map['missionSettings'] as String? ?? '{}');
@@ -170,6 +176,7 @@ CREATE TABLE habit_stats (
     map['isWakeUpCheckEnabled'] = (map['isWakeUpCheckEnabled'] as bool) ? 1 : 0;
     map['isPendingWakeupCheck'] = (map['isPendingWakeupCheck'] as bool) ? 1 : 0;
     map['isVolumeCrescendo'] = (map['isVolumeCrescendo'] as bool) ? 1 : 0;
+    map['timePressure'] = (map['timePressure'] as bool) ? 1 : 0;
     map['activeDays'] = jsonEncode(map['activeDays']);
     map['missionTypes'] = jsonEncode(map['missionTypes']);
     map['missionSettings'] = jsonEncode(map['missionSettings']);

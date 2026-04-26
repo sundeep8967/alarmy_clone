@@ -57,6 +57,8 @@ class PremiumScreen extends StatelessWidget {
                     _buildFeatureItem(Icons.extension, 'Multiple Missions', 'Combine Math, Squat, and Steps for a guaranteed wake up.'),
                     const SizedBox(height: 16),
                     _buildFeatureItem(Icons.bed, 'Smart Alarm', 'Detects light sleep and wakes you up during the optimal window.'),
+                    const SizedBox(height: 16),
+                    _buildFeatureItem(Icons.record_voice_over, 'Time Pressure', 'Your device announces the current time out loud every 30 seconds so you can\'t ignore it.'),
                   ],
                 ),
               ),

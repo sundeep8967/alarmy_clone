@@ -36,6 +36,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
   late bool isVolumeCrescendo;
   late int crescendoDuration;
   late Map<String, dynamic> missionSettings;
+  late bool timePressure;
 
   final List<Map<String, dynamic>> missions = [
     {'id': 'default', 'icon': Icons.notifications_active, 'name': 'Default'},
@@ -66,6 +67,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     isVolumeCrescendo = widget.alarm?.isVolumeCrescendo ?? false;
     crescendoDuration = widget.alarm?.crescendoDuration ?? 30;
     missionSettings = Map.from(widget.alarm?.missionSettings ?? {});
+    timePressure = widget.alarm?.timePressure ?? false;
   }
 
   void _saveAlarm() async {
@@ -89,6 +91,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         crescendoDuration: crescendoDuration,
         isWakeUpCheckEnabled: isWakeUpCheckEnabled,
         wakeUpCheckMinutes: wakeUpCheckMinutes,
+        timePressure: timePressure,
       );
       await ref.read(alarmsProvider.notifier).createAlarm(alarmToSchedule);
     } else {
@@ -108,6 +111,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         crescendoDuration: crescendoDuration,
         isWakeUpCheckEnabled: isWakeUpCheckEnabled,
         wakeUpCheckMinutes: wakeUpCheckMinutes,
+        timePressure: timePressure,
       );
       await ref.read(alarmsProvider.notifier).updateAlarm(alarmToSchedule);
     }
@@ -302,6 +306,8 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         _buildRow('Wake Up Check', Switch(value: isWakeUpCheckEnabled, activeColor: const Color(0xFFFF3B30), onChanged: (v) => setState(() => isWakeUpCheckEnabled = v))),
         const Divider(color: Colors.white10, height: 32),
         _buildRow('Fade-in Sound', Switch(value: isVolumeCrescendo, activeColor: const Color(0xFFFF3B30), onChanged: (v) => setState(() => isVolumeCrescendo = v))),
+        const Divider(color: Colors.white10, height: 32),
+        _buildRow('Time Pressure', Switch(value: timePressure, activeColor: const Color(0xFFFF3B30), onChanged: (v) => setState(() => timePressure = v))),
       ],
     ));
   }
