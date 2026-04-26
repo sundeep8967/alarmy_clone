@@ -66,6 +66,8 @@ dependencies:
   fl_chart: ^0.68.0
   disable_battery_optimization: ^1.1.2
   home_widget: ^0.6.0
+  easy_localization: ^3.0.3
+  adhan: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:
@@ -98,6 +100,7 @@ flutter:
     - assets/images/
     - assets/ml/
     - assets/phrases/
+    - assets/translations/
     - assets/alarmy_wallpaper_images.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

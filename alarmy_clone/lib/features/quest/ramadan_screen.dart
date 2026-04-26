@@ -1,18 +1,114 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:adhan/adhan.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:uuid/uuid.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/repositories/alarm_repository.dart';
-import '../../core/services/quest_service.dart';
+import '../ramadan/ramadan_service.dart';
 
-class RamadanScreen extends ConsumerWidget {
+final ramadanEnabledProvider = NotifierProvider<RamadanEnabledNotifier, bool>(() {
+  return RamadanEnabledNotifier();
+});
+
+class RamadanEnabledNotifier extends Notifier<bool> {
+  @override
+  bool build() {
+    _loadState();
+    return false;
+  }
+
+  Future<void> _loadState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final enabled = prefs.getBool('ramadan_enabled') ?? false;
+    state = enabled;
+  }
+
+  Future<void> setEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('ramadan_enabled', enabled);
+    state = enabled;
+    if (enabled) {
+      await RamadanService.instance.scheduleRamadanAlarms();
+    } else {
+      await RamadanService.instance.cancelRamadanAlarms();
+    }
+  }
+}
+
+final suhoorOffsetProvider = NotifierProvider<SuhoorOffsetNotifier, int>(() {
+  return SuhoorOffsetNotifier();
+});
+
+class SuhoorOffsetNotifier extends Notifier<int> {
+  @override
+  int build() {
+    _loadState();
+    return 30;
+  }
+
+  Future<void> _loadState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final offset = prefs.getInt('suhoor_offset') ?? 30;
+    state = offset;
+  }
+
+  Future<void> setOffset(int minutes) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('suhoor_offset', minutes);
+    state = minutes;
+  }
+}
+
+class RamadanScreen extends ConsumerStatefulWidget {
   const RamadanScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final schedules = QuestService.getRamadanSchedules();
+  ConsumerState<RamadanScreen> createState() => _RamadanScreenState();
+}
+
+class _RamadanScreenState extends ConsumerState<RamadanScreen> {
+  PrayerTimes? _prayerTimes;
+  bool _isLoadingLocation = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrayerTimes();
+  }
+
+  Future<void> _loadPrayerTimes() async {
+    try {
+      final position = await Geolocator.getCurrentPosition();
+      final coordinates = Coordinates(position.latitude, position.longitude);
+      final params = CalculationMethod.muslim_world_league.getParameters();
+      params.madhab = Madhab.shafi;
+
+      setState(() {
+        _prayerTimes = PrayerTimes.today(coordinates, params);
+        _isLoadingLocation = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingLocation = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isEnabled = ref.watch(ramadanEnabledProvider);
+    final suhoorOffset = ref.watch(suhoorOffsetProvider);
+    final ramadanNotifier = ref.read(ramadanEnabledProvider.notifier);
+    final offsetNotifier = ref.read(suhoorOffsetProvider.notifier);
+
+    final fajrTime = _prayerTimes?.fajr;
+    final maghribTime = _prayerTimes?.maghrib;
+
+    // Calculate Suhoor time (offset minutes before Fajr)
+    final suhoorTime = fajrTime?.subtract(Duration(minutes: suhoorOffset));
 
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
@@ -35,6 +131,12 @@ class RamadanScreen extends ConsumerWidget {
                     children: [
                       _buildHeader(context),
                       const SizedBox(height: 24),
+                      _buildToggleCard(isEnabled),
+                      const SizedBox(height: 16),
+                      if (isEnabled) ...[
+                        _buildSuhoorOffsetCard(suhoorOffset),
+                        const SizedBox(height: 16),
+                      ],
                       _buildInfoCard(),
                       const SizedBox(height: 32),
                       const Text(
@@ -51,32 +153,20 @@ class RamadanScreen extends ConsumerWidget {
                         style: TextStyle(color: Colors.white38, fontSize: 14),
                       ),
                       const SizedBox(height: 16),
-                      ...schedules.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final schedule = entry.value;
-                        return FadeInUp(
-                          delay: Duration(milliseconds: 100 * index),
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: _buildScheduleCard(schedule, context, ref),
-                          ),
-                        );
-                      }).toList(),
-                      const SizedBox(height: 32),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          onPressed: () => _addAllRamadanAlarms(context, ref),
-                          icon: const Icon(Icons.add_circle_outline),
-                          label: const Text('Add All Ramadan Alarms'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00D1FF),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          ),
-                        ),
-                      ),
+                      if (_isLoadingLocation)
+                        const Center(
+                          child: CircularProgressIndicator(color: Color(0xFF00D1FF)),
+                        )
+                      else if (_prayerTimes == null)
+                        _buildLocationError()
+                      else ...[
+                        if (suhoorTime != null)
+                          _buildPrayerTimeCard('Suhoor', suhoorTime, '🥣', const Color(0xFFFFD700), 'Pre-dawn meal alarm', isEnabled, () => _addPrayerAlarm(suhoorTime, 'Suhoor')),
+                        if (fajrTime != null)
+                          _buildPrayerTimeCard('Fajr', fajrTime, '🌅', const Color(0xFF87CEEB), 'Dawn prayer', isEnabled, () => _addPrayerAlarm(fajrTime, 'Fajr')),
+                        if (maghribTime != null)
+                          _buildPrayerTimeCard('Iftar', maghribTime, '🍽️', const Color(0xFFFF6B6B), 'Sunset - Break fast', isEnabled, () => _addPrayerAlarm(maghribTime, 'Iftar')),
+                      ],
                     ],
                   ),
                 ),
@@ -122,6 +212,273 @@ class RamadanScreen extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildToggleCard(bool isEnabled) {
+    final notifier = ref.read(ramadanEnabledProvider.notifier);
+    return GlassContainer(
+      blur: 20,
+      opacity: 0.1,
+      borderRadius: BorderRadius.circular(24),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isEnabled ? const Color(0xFF00D1FF).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                isEnabled ? Icons.notifications_active : Icons.notifications_off,
+                color: isEnabled ? const Color(0xFF00D1FF) : Colors.white54,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Ramadan Mode',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    isEnabled ? 'Auto-scheduling enabled' : 'Tap to enable automatic alarms',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.6),
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Switch(
+              value: isEnabled,
+              onChanged: (v) => notifier.setEnabled(v),
+              activeColor: const Color(0xFF00D1FF),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSuhoorOffsetCard(int currentOffset) {
+    final notifier = ref.read(suhoorOffsetProvider.notifier);
+    return GlassContainer(
+      blur: 20,
+      opacity: 0.1,
+      borderRadius: BorderRadius.circular(24),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Icon(Icons.access_time, color: Color(0xFFFFD700), size: 20),
+                SizedBox(width: 8),
+                Text(
+                  'Suhoor Offset',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Minutes before Fajr to trigger Suhoor alarm:',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 13,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                _buildOffsetButton(15, currentOffset, notifier),
+                const SizedBox(width: 8),
+                _buildOffsetButton(30, currentOffset, notifier),
+                const SizedBox(width: 8),
+                _buildOffsetButton(45, currentOffset, notifier),
+                const SizedBox(width: 8),
+                _buildOffsetButton(60, currentOffset, notifier),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOffsetButton(int minutes, int currentOffset, SuhoorOffsetNotifier notifier) {
+    final isSelected = currentOffset == minutes;
+    return Expanded(
+      child: InkWell(
+        onTap: () => notifier.setOffset(minutes),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isSelected ? const Color(0xFFFFD700) : Colors.white.withValues(alpha: 0.1),
+            ),
+          ),
+          child: Text(
+            '$minutes min',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: isSelected ? const Color(0xFFFFD700) : Colors.white70,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              fontSize: 13,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPrayerTimeCard(String name, DateTime time, String emoji, Color color, String label, bool isEnabled, VoidCallback onTap) {
+    final hour = time.hour;
+    final minute = time.minute;
+    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+    final amPm = hour >= 12 ? 'PM' : 'AM';
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GlassContainer(
+        blur: 15,
+        opacity: 0.1,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
+          onTap: isEnabled ? onTap : null,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        color.withValues(alpha: 0.3),
+                        color.withValues(alpha: 0.2),
+                      ],
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      emoji,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          color: color,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        label,
+                        style: const TextStyle(color: Colors.white38, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${displayHour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      amPm,
+                      style: TextStyle(
+                        color: color,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLocationError() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.red.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          const Icon(Icons.location_off, color: Colors.red, size: 48),
+          const SizedBox(height: 16),
+          Text(
+            'Location access needed',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.8),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Prayer times require your location to calculate accurately.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.5),
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: _loadPrayerTimes,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.withValues(alpha: 0.2),
+              foregroundColor: Colors.red,
+            ),
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -187,93 +544,11 @@ class RamadanScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildScheduleCard(Map<String, dynamic> schedule, BuildContext context, WidgetRef ref) {
-    final hour = schedule['hour'] as int;
-    final minute = schedule['minute'] as int;
-    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
-    final amPm = hour >= 12 ? 'PM' : 'AM';
-
-    return GestureDetector(
-      onTap: () => _addSingleAlarm(schedule, context, ref),
-      child: GlassContainer(
-        blur: 15,
-        opacity: 0.1,
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFF00D1FF).withOpacity(0.3),
-                      const Color(0xFF6B7BFF).withOpacity(0.3),
-                    ],
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    '${displayHour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      schedule['name'] as String,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      schedule['label'] as String,
-                      style: const TextStyle(color: Colors.white38, fontSize: 13),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF00D1FF).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  amPm,
-                  style: const TextStyle(
-                    color: Color(0xFF00D1FF),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _addSingleAlarm(Map<String, dynamic> schedule, BuildContext context, WidgetRef ref) async {
+  Future<void> _addPrayerAlarm(DateTime time, String name) async {
     final alarm = AlarmModel(
-      id: const Uuid().v4(),
-      hour: schedule['hour'] as int,
-      minute: schedule['minute'] as int,
+      id: 'ramadan_${name.toLowerCase()}_${DateTime.now().millisecondsSinceEpoch}',
+      hour: time.hour,
+      minute: time.minute,
       isActive: true,
       missionTypes: const ['default'],
       activeDays: [1, 2, 3, 4, 5, 6, 0], // All days
@@ -284,36 +559,9 @@ class RamadanScreen extends ConsumerWidget {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${schedule['name']} alarm added!'),
+          content: Text('$name alarm added for ${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}!'),
           backgroundColor: const Color(0xFF00D1FF),
           duration: const Duration(seconds: 2),
-        ),
-      );
-    }
-  }
-
-  Future<void> _addAllRamadanAlarms(BuildContext context, WidgetRef ref) async {
-    final schedules = QuestService.getRamadanSchedules();
-
-    for (final schedule in schedules) {
-      final alarm = AlarmModel(
-        id: const Uuid().v4(),
-        hour: schedule['hour'] as int,
-        minute: schedule['minute'] as int,
-        isActive: true,
-        missionTypes: const ['default'],
-        activeDays: [1, 2, 3, 4, 5, 6, 0],
-      );
-
-      await ref.read(alarmRepositoryProvider).createAlarm(alarm);
-    }
-
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('All Ramadan alarms added! 🌙'),
-          backgroundColor: Color(0xFF00D1FF),
-          duration: Duration(seconds: 3),
         ),
       );
     }

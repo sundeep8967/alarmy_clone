@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'main_scaffold.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'core/services/alarm_service.dart';
 import 'features/alarm_ring/alarm_ring_screen.dart';
 import 'core/models/alarm_model.dart';
 import 'features/widget/home_widget_service.dart';
+import 'features/ramadan/ramadan_service.dart';
 
 // Route constants
 class AppRoutes {
@@ -21,13 +23,23 @@ void main() async {
   
   await AlarmService.init();
   await HomeWidgetService.initialize();
+  
+  await EasyLocalization.ensureInitialized();
+
+  // Evaluate Ramadan mode on app launch
+  await RamadanService.instance.evaluateOnAppLaunch();
 
   final prefs = await SharedPreferences.getInstance();
   final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;
 
   runApp(
-    ProviderScope(
-      child: MyApp(hasSeenOnboarding: hasSeenOnboarding),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('es'), Locale('fr'), Locale('de')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: ProviderScope(
+        child: MyApp(hasSeenOnboarding: hasSeenOnboarding),
+      ),
     ),
   );
 }
@@ -83,6 +95,9 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       title: 'Alarmy Clone',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

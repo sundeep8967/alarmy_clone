@@ -3,9 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../core/database/database_helper.dart';
 import '../../core/widgets/glass_card.dart';
+import '../../features/alarmhabit/habit_streak_service.dart';
+import 'dismiss_logs_screen.dart';
 
 final reportDataProvider = FutureProvider<Map<String, Map<String, int>>>((ref) async {
   return await DatabaseHelper.instance.get7DayStats();
+});
+
+final habitStatsProvider = FutureProvider<HabitStats>((ref) async {
+  return await HabitStreakService.instance.getStats();
 });
 
 class ReportScreen extends ConsumerWidget {
@@ -14,6 +20,7 @@ class ReportScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reportData = ref.watch(reportDataProvider);
+    final habitStats = ref.watch(habitStatsProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
@@ -29,7 +36,9 @@ class ReportScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(),
+              _buildHeader(context),
+              const SizedBox(height: 16),
+              _buildStreakCard(habitStats),
               const SizedBox(height: 24),
               Expanded(
                 child: reportData.when(
@@ -49,22 +58,45 @@ class ReportScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return const Padding(
-      padding: EdgeInsets.all(24.0),
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Wake Up Report',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Wake Up Report',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const DismissLogsScreen()),
+                  );
+                },
+                icon: const Icon(Icons.history, size: 18),
+                label: const Text('View Logs'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF5856D6),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             'Last 7 Days',
             style: TextStyle(
               color: Colors.white60,
@@ -73,6 +105,85 @@ class ReportScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStreakCard(AsyncValue<HabitStats> habitStats) {
+    return habitStats.when(
+      data: (stats) => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFFFF6B35).withValues(alpha: 0.3),
+              const Color(0xFFFF3B30).withValues(alpha: 0.2),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.1),
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFF6B35).withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(
+                Icons.local_fire_department,
+                color: Color(0xFFFF6B35),
+                size: 32,
+              ),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${stats.currentStreak} Day${stats.currentStreak == 1 ? '' : 's'}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Current Wake Up Streak',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.6),
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Longest: ${stats.longestStreak} day${stats.longestStreak == 1 ? '' : 's'}',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.4),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      loading: () => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.all(20),
+        child: const Center(
+          child: CircularProgressIndicator(color: Color(0xFFFF6B35)),
+        ),
+      ),
+      error: (_, __) => const SizedBox.shrink(),
     );
   }
 

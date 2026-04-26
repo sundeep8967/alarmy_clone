@@ -291,13 +291,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildUpcomingHeader(List<AlarmModel> activeAlarms) {
+    if (activeAlarms.isEmpty) return const SizedBox.shrink();
+    
+    final now = DateTime.now();
+    DateTime? nextAlarmTime;
+    
+    for (final alarm in activeAlarms) {
+      DateTime scheduleTime = DateTime(now.year, now.month, now.day, alarm.hour, alarm.minute);
+      if (alarm.activeDays.isEmpty) {
+        if (scheduleTime.isBefore(now)) scheduleTime = scheduleTime.add(const Duration(days: 1));
+      } else {
+        while (!alarm.activeDays.contains(scheduleTime.weekday % 7) || scheduleTime.isBefore(now)) {
+          scheduleTime = scheduleTime.add(const Duration(days: 1));
+        }
+      }
+      if (nextAlarmTime == null || scheduleTime.isBefore(nextAlarmTime)) {
+        nextAlarmTime = scheduleTime;
+      }
+    }
+
+    String diffText = '';
+    if (nextAlarmTime != null) {
+      final diff = nextAlarmTime.difference(now);
+      final hours = diff.inHours;
+      final mins = diff.inMinutes % 60;
+      if (hours > 0) {
+        diffText = 'Next alarm in ${hours}h ${mins}m';
+      } else {
+        diffText = 'Next alarm in ${mins}m';
+      }
+    }
+
     return Row(
       children: [
         const Icon(Icons.access_time_filled, color: Color(0xFFFF3B30), size: 18),
         const SizedBox(width: 8),
-        const Text(
-          'Next alarm in 6h 30m',
-          style: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w500),
+        Text(
+          diffText,
+          style: const TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ],
     );
@@ -402,7 +433,14 @@ class _TodayInfoItem extends StatelessWidget {
       children: [
         Icon(icon, color: Colors.white24, size: 24),
         const SizedBox(height: 8),
-        Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+        Text(
+          value,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
         Text(label, style: const TextStyle(color: Colors.white24, fontSize: 11)),
       ],
     );

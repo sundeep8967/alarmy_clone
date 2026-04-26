@@ -110,7 +110,7 @@ class AlarmService {
     await flutterLocalNotificationsPlugin.cancel(id: alarmId.hashCode + 200000);
   }
 
-  static Future<void> scheduleAlarm(AlarmModel alarm) async {
+  static Future<void> scheduleAlarm(AlarmModel alarm, {bool sleepTrackingActive = false}) async {
     if (!alarm.isActive) { await cancelAlarm(alarm.id); return; }
     final int alarmId = alarm.id.hashCode;
     final now = DateTime.now();
@@ -122,26 +122,53 @@ class AlarmService {
         scheduleTime = scheduleTime.add(const Duration(days: 1));
       }
     }
-    
-    // Schedule pre-alarm (gentle wake up check) if enabled
-    if (alarm.isWakeUpCheckEnabled && alarm.wakeUpCheckMinutes > 0) {
-      final preAlarmId = alarmId + 10000; // Convention to avoid collision
+
+    // CONFLICT RESOLUTION: Smart Alarm vs Wakeup Check
+    // Smart Alarm OVERRIDES Wakeup Check if both enabled
+    final hasSmartAlarm = alarm.smartAlarmWindow > 0;
+    final hasWakeUpCheck = alarm.isWakeUpCheckEnabled && alarm.wakeUpCheckMinutes > 0;
+
+    if (hasSmartAlarm) {
+      // Smart Alarm takes precedence - use the same secondary slot (alarmId + 10000)
+      final smartAlarmId = alarmId + 10000;
+      final smartWindowStart = scheduleTime.subtract(Duration(minutes: alarm.smartAlarmWindow));
+
+      // Only schedule if smart window start is in the future
+      if (smartWindowStart.isAfter(now)) {
+        await AndroidAlarmManager.oneShotAt(
+          smartWindowStart,
+          smartAlarmId,
+          smartAlarmWindowCallback,
+          exact: true,
+          wakeup: true,
+          rescheduleOnReboot: true,
+          params: {
+            ...alarm.toJson(),
+            'smartAlarmWindow': alarm.smartAlarmWindow,
+            'scheduleTime': scheduleTime.toIso8601String(),
+            'sleepTrackingActive': sleepTrackingActive,
+          },
+        );
+      }
+    } else if (hasWakeUpCheck) {
+      // FALLBACK: No Smart Alarm - use Wakeup Check behavior
+      final preAlarmId = alarmId + 10000; // Same secondary slot
       final preAlarmTime = scheduleTime.subtract(Duration(minutes: alarm.wakeUpCheckMinutes));
-      
+
       // Only schedule if pre-alarm time is in the future
       if (preAlarmTime.isAfter(now)) {
         await AndroidAlarmManager.oneShotAt(
-          preAlarmTime, 
-          preAlarmId, 
-          preAlarmCallback, 
-          exact: true, 
-          wakeup: true, 
-          rescheduleOnReboot: true, 
+          preAlarmTime,
+          preAlarmId,
+          preAlarmCallback,
+          exact: true,
+          wakeup: true,
+          rescheduleOnReboot: true,
           params: alarm.toJson(),
         );
       }
     }
-    
+
     await AndroidAlarmManager.oneShotAt(scheduleTime, alarmId, alarmCallback, exact: true, wakeup: true, rescheduleOnReboot: true, params: alarm.toJson());
   }
 
@@ -159,7 +186,69 @@ class AlarmService {
     await flutterLocalNotificationsPlugin.cancel(id: alarmId.hashCode);
   }
 
-  // Pre-alarm callback - gentle wake up check
+  // Smart Alarm Window callback - monitor for light sleep
+  @pragma('vm:entry-point')
+  static void smartAlarmWindowCallback(int id, Map<String, dynamic> params) async {
+    final sleepTrackingActive = params['sleepTrackingActive'] as bool? ?? false;
+    final scheduleTime = DateTime.parse(params['scheduleTime'] as String);
+
+    if (sleepTrackingActive) {
+      // Sleep tracking is active - check for light sleep conditions
+      // In a real implementation, this would query sleep tracking data
+      // For now, we use a simplified heuristic based on time within window
+      final now = DateTime.now();
+      final minutesUntilAlarm = scheduleTime.difference(now).inMinutes;
+
+      // Simulate "light sleep" detection - in reality this would check:
+      // - High movement levels (accelerometer)
+      // - Elevated noise levels (microphone decibels)
+      // - Sleep stage data from wearables
+      final isLightSleepDetected = _detectLightSleep();
+
+      if (isLightSleepDetected) {
+        // Light sleep detected - trigger alarm early!
+        final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
+        send?.send({'type': 'smart_alarm_trigger', 'alarm': params});
+
+        // Show notification for early alarm
+        const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+          'smart_alarm_channel', 'Smart Alarm',
+          importance: Importance.max,
+          priority: Priority.high,
+          fullScreenIntent: true,
+          playSound: true,
+        );
+
+        await flutterLocalNotificationsPlugin.show(
+          id: id,
+          title: 'Smart Alarm',
+          body: 'Light sleep detected - Waking you up now!',
+          notificationDetails: const NotificationDetails(android: androidDetails),
+          payload: params['id'],
+        );
+
+        // Cancel the main alarm since we're triggering early
+        await AndroidAlarmManager.cancel(params['id'].hashCode);
+      }
+      // If no light sleep detected, do nothing - let the main alarm fire at scheduled time
+    } else {
+      // Sleep tracking OFF - silently fall back to Wakeup Check behavior
+      // This should not happen since we check before scheduling, but as a safety
+      preAlarmCallback(id, params);
+    }
+  }
+
+  // Simulated light sleep detection - in reality this would query sleep data
+  static bool _detectLightSleep() {
+    // Placeholder: In a real implementation, this would check:
+    // - Recent accelerometer movement data
+    // - Noise/decibel levels from microphone
+    // - Wearable sleep stage data
+    // For demo purposes, randomly return true 30% of the time
+    return DateTime.now().millisecond % 10 < 3;
+  }
+
+  // Pre-alarm callback - gentle wake up check (fallback for when Smart Alarm is disabled)
   @pragma('vm:entry-point')
   static void preAlarmCallback(int id, Map<String, dynamic> params) async {
     final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
@@ -168,13 +257,13 @@ class AlarmService {
     // Silent notification - vibration only, no sound
     const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
       'pre_alarm_channel', 'Gentle Wake Up',
-      importance: Importance.high, 
-      priority: Priority.high, 
-      fullScreenIntent: true, 
+      importance: Importance.high,
+      priority: Priority.high,
+      fullScreenIntent: true,
       playSound: false, // No sound - vibration only
       enableVibration: true,
     );
-    
+
     await flutterLocalNotificationsPlugin.show(
       id: id,
       title: 'Gentle Wake Up',

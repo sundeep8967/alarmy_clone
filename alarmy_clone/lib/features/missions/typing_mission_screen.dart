@@ -1,40 +1,56 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
+import '../../core/providers/phrases_provider.dart';
 
-class TypingMissionScreen extends StatefulWidget {
+class TypingMissionScreen extends ConsumerStatefulWidget {
   final VoidCallback onMissionComplete;
   final Map<String, dynamic>? settings;
 
   const TypingMissionScreen({super.key, required this.onMissionComplete, this.settings});
 
   @override
-  State<TypingMissionScreen> createState() => _TypingMissionScreenState();
+  ConsumerState<TypingMissionScreen> createState() => _TypingMissionScreenState();
 }
 
-class _TypingMissionScreenState extends State<TypingMissionScreen> {
-  final List<String> _quotes = [
-    "I will wake up and attack the day.",
-    "Discipline equals freedom.",
-    "Wake up with determination. Go to bed with satisfaction.",
-    "Today is another chance to get it right.",
-  ];
-
+class _TypingMissionScreenState extends ConsumerState<TypingMissionScreen> {
   late String _targetQuote;
   final TextEditingController _controller = TextEditingController();
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    final customText = widget.settings?['typing_text'] as String?;
-    if (customText != null && customText.isNotEmpty) {
-      _targetQuote = customText;
-    } else {
-      final random = Random();
-      _targetQuote = _quotes[random.nextInt(_quotes.length)];
-    }
     _controller.addListener(_checkTyping);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      final customText = widget.settings?['typing_text'] as String?;
+      if (customText != null && customText.isNotEmpty) {
+        _targetQuote = customText;
+        _isInitialized = true;
+      } else {
+        // Load phrases for current locale
+        final phrasesNotifier = ref.read(phrasesProvider.notifier);
+        phrasesNotifier.loadPhrases(context.locale).then((_) {
+          if (mounted) {
+            final phrasesState = ref.read(phrasesProvider);
+            setState(() {
+              _targetQuote = phrasesState.phrases.isNotEmpty
+                  ? phrasesNotifier.getRandomPhrase()
+                  : "Wake up and attack the day!";
+              _isInitialized = true;
+            });
+          }
+        });
+      }
+    }
   }
 
   void _checkTyping() {
@@ -51,6 +67,27 @@ class _TypingMissionScreenState extends State<TypingMissionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final phrasesState = ref.watch(phrasesProvider);
+
+    // Show loading until we have a target quote
+    if (!_isInitialized || phrasesState.isLoading) {
+      return Scaffold(
+        backgroundColor: const Color(0xFF101014),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF1A1A20), Color(0xFF101014)],
+            ),
+          ),
+          child: const Center(
+            child: CircularProgressIndicator(color: Color(0xFF00FF85)),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
       body: Container(

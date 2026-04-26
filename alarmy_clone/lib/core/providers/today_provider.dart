@@ -49,21 +49,21 @@ class Today extends _$Today {
     try {
       result = await TodayDataService.fetchWeather(result);
     } catch (e) {
-      result = result.copyWith(weatherValue: 'Error', errorMessage: e.toString());
+      result = result.copyWith(weatherValue: 'N/A');
     }
 
     // Fetch Horoscope
     try {
       result = await TodayDataService.fetchHoroscope(result);
     } catch (e) {
-      result = result.copyWith(horoscopeValue: 'Error', errorMessage: e.toString());
+      result = result.copyWith(horoscopeValue: 'N/A');
     }
 
     // Fetch News
     try {
       result = await TodayDataService.fetchNews(result);
     } catch (e) {
-      result = result.copyWith(newsValue: 'Error', errorMessage: e.toString());
+      result = result.copyWith(newsValue: 'N/A');
     }
 
     result = result.copyWith(lastFetchedAt: DateTime.now());

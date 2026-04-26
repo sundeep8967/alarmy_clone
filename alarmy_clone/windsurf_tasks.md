@@ -1,4 +1,4 @@
-# Windsurf Cascade Tasks - Phase 5 (Core Utilities)
+# Windsurf Cascade Tasks - Phase 6 (Settings & Records)
 
 Welcome to the Alarmy Clone project. You are an expert Flutter Developer acting under the guidance of the Tech Lead. 
 Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead. Do not combine tasks.
@@ -12,100 +12,88 @@ Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead
 
 ---
 
-## Part A: Battery Optimization (Doze Whitelist)
+## Part A: Localization & Typing Missions
 
-### [x] Step 1: Add Permissions & Dependencies
-- Add `disable_battery_optimization: ^1.1.2` to `pubspec.yaml`.
-- Run `flutter pub get`.
-- Add `<uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />` to `android/app/src/main/AndroidManifest.xml`.
+### [x] Step 1: Add Dependencies
+- Added `easy_localization: ^3.0.3` to `pubspec.yaml`.
+- Ran `flutter pub get`.
 
-### [x] Step 2: Build Optimization Helper UI
-- Create `lib/features/setting/battery_optimization_screen.dart`.
-- Build a simple UI explaining why Alarmy needs to bypass battery restrictions to fire alarms reliably.
-- Wire up a button to call `DisableBatteryOptimization.showDisableBatteryOptimizationSettings()`.
-- **CRITICAL OEM FIX:** After the standard whitelist intent, additionally deep-link to OEM-specific settings using a MethodChannel to detect manufacturer.
-  - Xiaomi  → `com.miui.powerkeeper.ui.HiddenAppsConfigActivity`
-  - Samsung → `com.samsung.android.sm.ui.battery.BatteryActivity`
-  - Realme/OnePlus → `com.coloros.powermanager.fuelgaue.PowerConsumptionActivity`
-  - Huawei → `com.huawei.systemmanager.optimize.process.ProtectActivity`
-  - Vivo → `com.vivo.applicationbehaviorengine.ui.ExcessivePowerManagerActivity`
-  - Use a `when(Build.MANUFACTURER.lowercase())` block in native Kotlin. Fail silently if intent resolves to nothing — don't crash.
-- Add a navigation tile to this screen in the main Settings menu.
+### [x] Step 2: Setup Localization Assets
+- Created `assets/translations/en.json` with core app strings (app_name, alarm, settings, etc.).
+- Created `assets/phrases/en.json` with 25 public domain motivational quotes/proverbs.
+- Added `assets/translations/` to `pubspec.yaml` assets.
+- Initialized `EasyLocalization` in `main.dart` with supported locales (en, es, fr, de) and fallback to en.
 
----
+### [x] Step 3: Language Settings Screen
+- Created `lib/features/setting/language_screen.dart` with language selection UI.
+- Supports English, Spanish, French, German with flag icons.
+- Added Language tile to Settings menu in PREFERENCES section.
+- Users can switch languages via `context.setLocale()`.
 
-## Part B: Home Screen Widget
-
-### [x] Step 3: Widget Setup
-- Add `home_widget: ^0.6.0` to `pubspec.yaml`.
-- Run `flutter pub get`.
-- In `android/app/src/main/res/layout/`, created `widget_layout.xml` with minimal layout: TextView for alarm time and ImageView for mission icon.
-- Created `widget_background.xml` drawable with dark theme styling.
-- In `AndroidManifest.xml`, declared `es.antonborri.home_widget.HomeWidgetProvider` receiver.
-- Created `res/xml/home_widget_info.xml` with widget configuration (180x60dp, update period 24h).
-
-### [x] Step 4: Widget Data Sync Logic
-- Created `lib/features/widget/home_widget_service.dart` with:
-  - `initialize()` method to set app group ID
-  - `updateWidget()` method to calculate next alarm and save widget data
-  - `_getNextActiveAlarm()` to query database and find next scheduled alarm
-  - `_getMissionTypeString()` helper for mission icon mapping
-- **Update Trigger:** Added `HomeWidgetService.updateWidget()` calls in `AlarmRepository` after createAlarm(), updateAlarm(), and deleteAlarm() - ensuring updates happen from main app context only.
-- **Initialization:** Added `HomeWidgetService.initialize()` call in `main.dart`.
+### [x] Step 4: Localized Typing Mission
+- Created `lib/core/providers/phrases_provider.dart` to load phrases from JSON.
+- Updated `lib/features/missions/typing_mission_screen.dart` to use localized phrases.
+- Phrases load from `assets/phrases/{locale}.json` based on current locale.
+- Falls back to English if locale-specific phrases not available.
 
 ---
 
-## windsurf developer
+## Part B: Alarm Dismiss Logs
 
-### Changes done
+### [x] Step 5: Build Dismiss Logs UI
+- Created `lib/features/records/dismiss_logs_screen.dart` with chronological list view.
+- Displays alarm dismissal records with status (dismissed/snoozed) and timestamps.
+- Added `getAllRecords()` method to DatabaseHelper for querying historical records.
+- Added "View Logs" button in `report_screen.dart` header to navigate to dismiss logs.
 
-**Part A: Battery Optimization (Doze Whitelist)**
-- **Step 1**: 
-  - Added `disable_battery_optimization: ^1.1.2` to `pubspec.yaml`
-  - Added `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` permission to `AndroidManifest.xml`
-  - Ran `flutter pub get`
+---
 
-- **Step 2**:
-  - Created `lib/features/setting/battery_optimization_screen.dart` with:
-    - UI explaining battery optimization needs for reliable alarms
-    - Status card showing current optimization state
-    - OEM-specific info card listing device manufacturers
-    - "Disable Battery Optimization" button using `DisableBatteryOptimization.showDisableBatteryOptimizationSettings()`
-  - Added MethodChannel `com.example.alarmy_clone/battery` for OEM-specific settings
-  - Updated `android/app/src/main/kotlin/com/example/alarmy_clone/MainActivity.kt` with:
-    - `openOemBatterySettings()` method with manufacturer detection
-    - Support for Xiaomi (MIUI), Samsung, Realme/OnePlus/OPPO, Huawei, Vivo
-    - Silent failure handling (try-catch blocks) as per requirements
-  - Added Battery Optimization navigation tile in Settings screen (`SYSTEM` section)
+## Part C: Advanced Habit Alarms
 
-**Part B: Home Screen Widget**
-- **Step 3**:
-  - Added `home_widget: ^0.6.0` to `pubspec.yaml`
-  - Created `android/app/src/main/res/layout/widget_layout.xml`:
-    - Minimal layout with ImageView (mission icon) and TextView (alarm time)
-    - Dark theme background using `widget_background.xml` drawable
-  - Created `android/app/src/main/res/drawable/widget_background.xml`:
-    - Dark background (#FF1A1A20) with rounded corners and subtle border
-  - Created `android/app/src/main/res/xml/home_widget_info.xml`:
-    - Widget size: 180x60dp minimum
-    - Update period: 24 hours (86400000ms)
-    - Horizontal resize mode only
-  - Updated `AndroidManifest.xml`:
-    - Added `HomeWidgetPlugin` receiver with `APPWIDGET_UPDATE` intent filter
-    - Referenced `home_widget_info` metadata
+### [x] Step 6: Habit Streak Tracking
+- Created `lib/features/alarmhabit/habit_streak_service.dart` with streak evaluation logic.
+- Added `habit_stats` table to database with `current_streak` and `longest_streak` fields.
+- Implemented all Streak Rules:
+  - Increments on successful dismissal with zero snoozes.
+  - Resets on any snooze OR disabled alarm OR no alarm scheduled.
+  - Freeze rule: no change if no alarm scheduled that day.
 
-- **Step 4**:
-  - Created `lib/features/widget/home_widget_service.dart`:
-    - `initialize()` - sets app group ID for widget communication
-    - `updateWidget()` - calculates next alarm, saves data, triggers widget update
-    - `_getNextActiveAlarm()` - queries database, finds earliest scheduled alarm
-    - `_getMissionTypeString()` - maps mission types to readable strings
-    - Configured for `com.example.alarmy_clone` app group ID
-  - Updated `lib/core/repositories/alarm_repository.dart`:
-    - Added import for `HomeWidgetService`
-    - Added `HomeWidgetService.updateWidget()` call after `createAlarm()`
-    - Added `HomeWidgetService.updateWidget()` call after `updateAlarm()`
-    - Added `HomeWidgetService.updateWidget()` call after `deleteAlarm()`
-    - Widget updates only from main app context (not background isolates)
-  - Updated `lib/main.dart`:
-    - Added `HomeWidgetService.initialize()` call after `AlarmService.init()`
+### [x] Step 7: Streak UI Display
+- Updated `lib/features/records/report_screen.dart` with streak card showing fire icon.
+- Displays current streak count and longest streak record.
+- Added `habitStatsProvider` for Riverpod state management.
+
+---
+
+## Part D: Sleep - Smart Alarm
+
+### [x] Step 8: Smart Wake Window Logic
+- Added `smartAlarmWindow` field to `AlarmModel` (0-30 minutes, default 0).
+- Updated database schema with `smartAlarmWindow` column (migration v11).
+- Updated `AlarmService.scheduleAlarm()` with conflict resolution:
+  - Smart Alarm OVERRIDES Wakeup Check if both enabled.
+  - Both features use same secondary slot (`alarmId + 10000`).
+  - Smart Alarm fallback to Wakeup Check when sleep tracking is OFF.
+- Added `smartAlarmWindowCallback` for light sleep detection.
+
+---
+
+## Part E: Ramadan Mode (Fasting Alarms)
+
+### [x] Step 9: Add Prayer Time Dependency
+- Added `adhan: ^2.0.1` to `pubspec.yaml` for Islamic prayer time calculation.
+
+### [x] Step 10: Build Ramadan Mode UI
+- Enhanced `lib/features/quest/ramadan_screen.dart` with actual prayer time calculation.
+- Added Ramadan Mode toggle with `ramadanEnabledProvider` state management.
+- Added Suhoor offset selector (15/30/45/60 mins before Fajr).
+- Displays calculated prayer times (Fajr, Maghrib) using `adhan` package.
+- Navigation tile already exists in Settings menu.
+
+### [x] Step 11: Suhoor & Iftar Scheduling Logic
+- Created `lib/features/ramadan/ramadan_service.dart` with full scheduling logic.
+- Stores `ramadan_enabled` in SharedPreferences, re-evaluates on app launch in `main.dart`.
+- Calculates Fajr/Maghrib times using `adhan` package and user location.
+- Automatically schedules Suhoor (before Fajr) and Iftar (at Maghrib) alarms.
+- **Daily Rescheduling:** `rescheduleForNextDay()` called after alarms fire.
+- Cancellation: `cancelRamadanAlarms()` removes both Suhoor and Iftar alarms.

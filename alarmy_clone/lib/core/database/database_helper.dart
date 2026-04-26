@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 10,
+      version: 11,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -47,7 +47,8 @@ CREATE TABLE alarms (
   isPendingWakeupCheck INTEGER NOT NULL DEFAULT 0,
   volume REAL NOT NULL DEFAULT 0.7,
   isVolumeCrescendo INTEGER NOT NULL DEFAULT 0,
-  crescendoDuration INTEGER NOT NULL DEFAULT 30
+  crescendoDuration INTEGER NOT NULL DEFAULT 30,
+  smartAlarmWindow INTEGER NOT NULL DEFAULT 0
 )
 ''');
     await db.execute('''
@@ -59,6 +60,16 @@ CREATE TABLE records (
   solvingTimeSeconds INTEGER
 )
 ''');
+    await db.execute('''
+CREATE TABLE habit_stats (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  current_streak INTEGER NOT NULL DEFAULT 0,
+  longest_streak INTEGER NOT NULL DEFAULT 0,
+  last_evaluated_date TEXT
+)
+''');
+    // Initialize habit stats row
+    await db.insert('habit_stats', {'id': 1, 'current_streak': 0, 'longest_streak': 0});
   }
 
   Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
@@ -103,6 +114,18 @@ CREATE TABLE records (
     }
     if (oldVersion < 10) {
       await db.execute('ALTER TABLE alarms ADD COLUMN isPendingWakeupCheck INTEGER NOT NULL DEFAULT 0');
+    }
+    if (oldVersion < 11) {
+      await db.execute('ALTER TABLE alarms ADD COLUMN smartAlarmWindow INTEGER NOT NULL DEFAULT 0');
+      await db.execute('''
+CREATE TABLE habit_stats (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  current_streak INTEGER NOT NULL DEFAULT 0,
+  longest_streak INTEGER NOT NULL DEFAULT 0,
+  last_evaluated_date TEXT
+)
+''');
+      await db.insert('habit_stats', {'id': 1, 'current_streak': 0, 'longest_streak': 0});
     }
   }
 
@@ -219,5 +242,32 @@ CREATE TABLE records (
     }
 
     return stats;
+  }
+
+  Future<List<Map<String, dynamic>>> getAllRecords() async {
+    final db = await instance.database;
+    return await db.query('records', orderBy: 'timestamp DESC');
+  }
+
+  // --- Habit Stats Methods ---
+
+  Future<Map<String, dynamic>?> getHabitStats() async {
+    final db = await instance.database;
+    final result = await db.query('habit_stats', where: 'id = ?', whereArgs: [1]);
+    return result.isNotEmpty ? result.first : null;
+  }
+
+  Future<void> updateHabitStats({required int currentStreak, required int longestStreak, String? lastEvaluatedDate}) async {
+    final db = await instance.database;
+    await db.update(
+      'habit_stats',
+      {
+        'current_streak': currentStreak,
+        'longest_streak': longestStreak,
+        if (lastEvaluatedDate != null) 'last_evaluated_date': lastEvaluatedDate,
+      },
+      where: 'id = ?',
+      whereArgs: [1],
+    );
   }
 }

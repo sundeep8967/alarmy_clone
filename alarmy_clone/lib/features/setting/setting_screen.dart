@@ -7,6 +7,7 @@ import 'alarm_optimization_screen.dart';
 import 'battery_optimization_screen.dart';
 import 'general_setting_screen.dart';
 import 'permission_doa_screen.dart';
+import 'language_screen.dart';
 import '../quest/ramadan_screen.dart';
 import '../home/alarm_settings_screen.dart';
 import '../../core/providers/theme_provider.dart';
@@ -77,6 +78,12 @@ class SettingScreen extends ConsumerWidget {
                         },
                         activeColor: const Color(0xFF34C759),
                       ),
+                    ),
+                    _SettingModel(
+                      'Language',
+                      Icons.language,
+                      const Color(0xFF5856D6),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageScreen())),
                     ),
                     _SettingModel(
                       'Alarm Settings',

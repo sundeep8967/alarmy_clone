@@ -247,8 +247,8 @@ class TodayDataService {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      if (data['data'] != null && data['data']['horoscope_data'] != null) {
-        final horoscope = data['data']['horoscope_data'];
+      if (data['data'] != null && data['data']['horoscope'] != null) {
+        final horoscope = data['data']['horoscope'];
         final keywords = ['love', 'success', 'career', 'health', 'lucky', 'happy', 'challenging', 'good', 'great', 'positive'];
         String keyword = 'Daily';
         for (final k in keywords) {
@@ -282,10 +282,6 @@ class TodayDataService {
       if (data['articles'] != null && (data['articles'] as List).isNotEmpty) {
         final article = data['articles'][0];
         String title = article['title'] ?? 'No title';
-        
-        if (title.length > 25) {
-          title = '${title.substring(0, 25)}...';
-        }
 
         return current.copyWith(
           newsLabel: 'Top News',

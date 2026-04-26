@@ -19,6 +19,7 @@ class AlarmModel {
   final double volume;
   final bool isVolumeCrescendo;
   final int crescendoDuration;
+  final int smartAlarmWindow; // 0 = disabled, max 30 mins
 
   const AlarmModel({
     required this.id,
@@ -39,6 +40,7 @@ class AlarmModel {
     this.volume = 0.7,
     this.isVolumeCrescendo = false,
     this.crescendoDuration = 30,
+    this.smartAlarmWindow = 0,
   });
 
   AlarmModel copyWith({
@@ -60,6 +62,7 @@ class AlarmModel {
     double? volume,
     bool? isVolumeCrescendo,
     int? crescendoDuration,
+    int? smartAlarmWindow,
   }) {
     return AlarmModel(
       id: id ?? this.id,
@@ -80,6 +83,7 @@ class AlarmModel {
       volume: volume ?? this.volume,
       isVolumeCrescendo: isVolumeCrescendo ?? this.isVolumeCrescendo,
       crescendoDuration: crescendoDuration ?? this.crescendoDuration,
+      smartAlarmWindow: smartAlarmWindow ?? this.smartAlarmWindow,
     );
   }
 
@@ -102,6 +106,7 @@ class AlarmModel {
         'volume': volume,
         'isVolumeCrescendo': isVolumeCrescendo,
         'crescendoDuration': crescendoDuration,
+        'smartAlarmWindow': smartAlarmWindow,
       };
 
   factory AlarmModel.fromJson(Map<String, dynamic> json) {
@@ -154,6 +159,7 @@ class AlarmModel {
           ? json['isVolumeCrescendo'] as bool
           : (json['isVolumeCrescendo'] as int?) == 1,
       crescendoDuration: (json['crescendoDuration'] as int?) ?? 30,
+      smartAlarmWindow: (json['smartAlarmWindow'] as int?) ?? 0,
     );
   }
 
