@@ -220,7 +220,7 @@ class SettingScreen extends ConsumerWidget {
                       style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Remove ads and unlock all missions',
+                      'Pro features for free',
                       style: TextStyle(color: Colors.white60, fontSize: 12),
                     ),
                   ],
