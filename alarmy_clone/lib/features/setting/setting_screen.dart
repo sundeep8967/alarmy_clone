@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'alarm_optimization_screen.dart';
 import 'general_setting_screen.dart';
 import 'permission_doa_screen.dart';
 import '../quest/ramadan_screen.dart';
 import '../home/alarm_settings_screen.dart';
+import '../../core/providers/theme_provider.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends ConsumerWidget {
   const SettingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+    final isDarkMode = themeMode == ThemeMode.dark;
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
       body: Container(
@@ -54,6 +59,7 @@ class SettingScreen extends StatelessWidget {
                 FadeInUp(
                   duration: const Duration(milliseconds: 800),
                   child: _buildSettingsGroup([
+                    _buildDarkModeTile(context, ref, isDarkMode),
                     _SettingModel(
                       'Alarm Settings',
                       Icons.alarm,
@@ -81,7 +87,12 @@ class SettingScreen extends StatelessWidget {
                   child: _buildSettingsGroup([
                     _SettingModel('Notices', Icons.notifications, const Color(0xFF5856D6), hasNotice: true),
                     _SettingModel('Send Feedback', Icons.mail, const Color(0xFF007AFF)),
-                    _SettingModel('About Alarmy', Icons.info, const Color(0xFF34C759)),
+                    _SettingModel(
+                      'About Alarmy',
+                      Icons.info,
+                      const Color(0xFF34C759),
+                      onTap: () => _showAboutDialog(context),
+                    ),
                   ]),
                 ),
                 const SizedBox(height: 40),
@@ -101,6 +112,71 @@ class SettingScreen extends StatelessWidget {
         style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  Widget _buildDarkModeTile(BuildContext context, WidgetRef ref, bool isDarkMode) {
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF5856D6).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.dark_mode, color: Color(0xFF5856D6), size: 20),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Text(
+              'Dark Mode',
+              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ),
+          Switch(
+            value: isDarkMode,
+            onChanged: (value) {
+              ref.read(themeProvider.notifier).setDarkMode(value);
+            },
+            activeColor: const Color(0xFF34C759),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showAboutDialog(BuildContext context) async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (context) => AboutDialog(
+          applicationName: 'Alarmy Clone',
+          applicationVersion: packageInfo.version,
+          applicationIcon: Container(
+            width: 64,
+            height: 64,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFF3B30),
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+            child: const Icon(Icons.alarm, color: Colors.white, size: 40),
+          ),
+          children: [
+            const Text(
+              'A clone of the popular Alarmy app built with Flutter.',
+              style: TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Build: ${packageInfo.buildNumber}',
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildSectionHeader(String title) {

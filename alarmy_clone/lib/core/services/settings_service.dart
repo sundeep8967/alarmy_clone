@@ -7,6 +7,7 @@ class SettingsService {
   static const String _snoozeDurationKey = 'snooze_duration';
   static const String _alarmDurationKey = 'alarm_duration';
   static const String _alarmVolumeKey = 'alarm_volume';
+  static const String _isDarkModeKey = 'is_dark_mode';
 
   static Future<AppSettings> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
@@ -43,5 +44,15 @@ class SettingsService {
   static Future<void> saveAlarmVolume(String volume) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_alarmVolumeKey, volume);
+  }
+
+  static Future<bool> getTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isDarkModeKey) ?? true;
+  }
+
+  static Future<void> setTheme(bool isDarkMode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_isDarkModeKey, isDarkMode);
   }
 }
