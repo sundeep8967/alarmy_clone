@@ -131,25 +131,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final alarmsAsync = ref.watch(alarmsProvider);
-    final todayAsync = ref.watch(todayProvider);
     
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF1A1A20), Color(0xFF101014)],
-          ),
+          color: Color(0xFF101014),
         ),
         child: SafeArea(
           child: alarmsAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.white))),
             data: (alarmList) {
-              final todayInfo = todayAsync.value ?? TodayData();
-
               return CustomScrollView(
                     slivers: [
                       _buildSliverAppBar(),
@@ -159,7 +152,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildTodayPanel(todayInfo),
+                              _buildPromoBanner(),
                               const SizedBox(height: 32),
                               _buildUpcomingHeader(alarmList.where((a) => a.isActive).toList()),
                               const SizedBox(height: 16),
@@ -214,79 +207,59 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       backgroundColor: Colors.transparent,
       floating: true,
       expandedHeight: 80,
-      title: const Text('Alarm', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+      title: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xFFFF3B30)),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.bolt, color: Color(0xFFFF3B30), size: 16),
+            const SizedBox(width: 4),
+            const Text('PRO Free Trial', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
       actions: [
-        IconButton(icon: const Icon(Icons.history, color: Colors.white70), onPressed: () {}),
-        IconButton(icon: const Icon(Icons.more_horiz, color: Colors.white70), onPressed: () {}),
+        IconButton(icon: const Icon(Icons.more_horiz, color: Colors.white), onPressed: () {}),
         const SizedBox(width: 8),
       ],
     );
   }
 
-  Widget _buildTodayPanel(TodayData data) {
-    final now = DateTime.now();
-    final hour = now.hour;
-    final greeting = hour < 12 ? 'Good Morning' : (hour < 17 ? 'Good Afternoon' : 'Good Evening');
-    
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (data.errorMessage != null)
+  Widget _buildPromoBanner() {
+    return Container(
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1C1C1E),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
           Container(
             padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.only(bottom: 12),
-            decoration: BoxDecoration(
-              color: Colors.red.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.red.withValues(alpha: 0.5)),
+            decoration: const BoxDecoration(
+              color: Color(0xFFFF3B30),
+              shape: BoxShape.circle,
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.error_outline, color: Colors.red, size: 16),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Debug: ${data.errorMessage} (HTTP ${data.httpStatusCode ?? "N/A"})',
-                    style: const TextStyle(color: Colors.red, fontSize: 12),
-                  ),
-                ),
-              ],
-            ),
+            child: const Text('NEW', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
           ),
-        GlassCard(
-          borderRadius: BorderRadius.circular(32),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+          const SizedBox(width: 16),
+          const Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(greeting, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 4),
-                        const Text('April 25, Saturday', style: TextStyle(color: Colors.white38, fontSize: 14)),
-                      ],
-                    ),
-                    const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 32),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: _TodayInfoItem(icon: Icons.cloud, label: 'Weather', value: data.weatherValue)),
-                    Expanded(child: _TodayInfoItem(icon: Icons.auto_awesome, label: data.horoscopeLabel, value: data.horoscopeValue)),
-                    Expanded(child: _TodayInfoItem(icon: Icons.newspaper, label: 'News', value: data.newsValue)),
-                  ],
-                ),
+                Text('Overslept AGAIN?', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500)),
+                Text('Try our new mission', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
-        ),
-      ],
+          const Icon(Icons.chevron_right, color: Colors.white),
+        ],
+      ),
     );
   }
 
@@ -316,133 +289,99 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       final hours = diff.inHours;
       final mins = diff.inMinutes % 60;
       if (hours > 0) {
-        diffText = 'Next alarm in ${hours}h ${mins}m';
+        diffText = 'Ring in $hours hr. $mins min >';
       } else {
-        diffText = 'Next alarm in ${mins}m';
+        diffText = 'Ring in $mins min >';
       }
     }
 
-    return Row(
-      children: [
-        const Icon(Icons.access_time_filled, color: Color(0xFFFF3B30), size: 18),
-        const SizedBox(width: 8),
-        Text(
-          diffText,
-          style: const TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w500),
-        ),
-      ],
+    return Text(
+      diffText,
+      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
     );
   }
 
   Widget _buildAlarmCard(AlarmModel alarm) {
-    final hour = alarm.hour > 12 ? alarm.hour - 12 : (alarm.hour == 0 ? 12 : alarm.hour);
-    final amPm = alarm.hour >= 12 ? 'PM' : 'AM';
+    final hourStr = alarm.hour.toString();
     final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     final activeSet = alarm.activeDays.isEmpty ? {1, 2, 3, 4, 5} : alarm.activeDays.toSet();
 
     return GestureDetector(
       onTap: () async {
         await Navigator.push(context, MaterialPageRoute(builder: (_) => AlarmEditorScreen(alarm: alarm)));
-        // Refresh alarms when coming back
         ref.invalidate(alarmsProvider);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
-        child: GlassContainer(
-          blur: 15,
-          opacity: alarm.isActive ? 0.1 : 0.05,
-          borderRadius: BorderRadius.circular(32),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1C1C1E),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: List.generate(7, (i) {
-                        final active = activeSet.contains(i);
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: Text(
-                            days[i],
-                            style: TextStyle(
-                              color: active ? Colors.white : Colors.white10,
-                              fontWeight: active ? FontWeight.bold : FontWeight.normal,
-                              fontSize: 13,
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                    const Icon(Icons.more_vert, color: Colors.white12),
-                  ],
+                  children: List.generate(7, (i) {
+                    final active = activeSet.contains(i);
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Text(
+                        days[i],
+                        style: TextStyle(
+                          color: active ? Colors.white : Colors.white38,
+                          fontWeight: active ? FontWeight.bold : FontWeight.normal,
+                          fontSize: 12,
+                        ),
+                      ),
+                    );
+                  }),
                 ),
                 const SizedBox(height: 12),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          '$hour:${alarm.minute.toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            color: alarm.isActive ? Colors.white : Colors.white12,
-                            fontSize: 56,
-                            fontWeight: FontWeight.w300,
-                            letterSpacing: -2,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(amPm, style: TextStyle(color: alarm.isActive ? Colors.white38 : Colors.white10, fontSize: 18)),
-                      ],
-                    ),
-                    Transform.scale(
-                      scale: 0.9,
-                      child: CupertinoSwitch(
-                        value: alarm.isActive,
-                        activeTrackColor: const Color(0xFFFF3B30),
-                        onChanged: (v) async {
-                          final updated = alarm.copyWith(isActive: v);
-                          await ref.read(alarmsProvider.notifier).updateAlarm(updated);
-                        },
+                    Text(
+                      '$hourStr:${alarm.minute.toString().padLeft(2, '0')}',
+                      style: TextStyle(
+                        color: alarm.isActive ? Colors.white : Colors.white38,
+                        fontSize: 48,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: -1,
                       ),
                     ),
+                    const SizedBox(width: 12),
+                    Icon(Icons.qr_code_2, color: alarm.isActive ? Colors.white54 : Colors.white24, size: 20),
                   ],
                 ),
               ],
             ),
-          ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Transform.scale(
+                  scale: 1.1,
+                  child: CupertinoSwitch(
+                    value: alarm.isActive,
+                    activeTrackColor: const Color(0xFF00E5FF),
+                    onChanged: (v) async {
+                      final updated = alarm.copyWith(isActive: v);
+                      await ref.read(alarmsProvider.notifier).updateAlarm(updated);
+                    },
+                  ),
+                ),
+                const SizedBox(height: 32),
+                const Icon(Icons.more_vert, color: Colors.white54, size: 20),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _TodayInfoItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
-  const _TodayInfoItem({required this.icon, required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(icon, color: Colors.white24, size: 24),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.white24, fontSize: 11)),
-      ],
-    );
-  }
-}
