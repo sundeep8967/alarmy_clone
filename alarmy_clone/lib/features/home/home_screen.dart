@@ -12,6 +12,7 @@ import '../alarm_editor/alarm_editor_screen.dart';
 import '../alarm_editor/habit_alarm_screen.dart';
 import '../alarm_editor/quick_alarm_sheet.dart';
 import 'alarm_settings_screen.dart';
+import '../setting/premium_screen.dart';
 import 'rating_dialog.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -207,30 +208,59 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       backgroundColor: Colors.transparent,
       floating: true,
       expandedHeight: 80,
-      title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFFFF3B30)),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.bolt, color: Color(0xFFFF3B30), size: 16),
-            const SizedBox(width: 4),
-            const Text('PRO Free Trial', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
-          ],
+      title: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen()));
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFFF3B30)),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.bolt, color: Color(0xFFFF3B30), size: 16),
+              const SizedBox(width: 4),
+              const Text('PRO Free Trial', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+            ],
+          ),
         ),
       ),
       actions: [
-        IconButton(icon: const Icon(Icons.more_horiz, color: Colors.white), onPressed: () {}),
+        PopupMenuButton<String>(
+          icon: const Icon(Icons.more_horiz, color: Colors.white),
+          color: const Color(0xFF1C1C1E),
+          onSelected: (value) {
+            if (value == 'settings') {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const AlarmSettingsScreen()));
+            }
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              const PopupMenuItem<String>(
+                value: 'settings',
+                child: Text('Settings', style: TextStyle(color: Colors.white)),
+              ),
+              const PopupMenuItem<String>(
+                value: 'edit',
+                child: Text('Edit Alarms', style: TextStyle(color: Colors.white)),
+              ),
+            ];
+          },
+        ),
         const SizedBox(width: 8),
       ],
     );
   }
 
   Widget _buildPromoBanner() {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen()));
+      },
+      child: Container(
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -260,8 +290,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           const Icon(Icons.chevron_right, color: Colors.white),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildUpcomingHeader(List<AlarmModel> activeAlarms) {
     if (activeAlarms.isEmpty) return const SizedBox.shrink();
