@@ -59,7 +59,18 @@ class SettingScreen extends ConsumerWidget {
                 FadeInUp(
                   duration: const Duration(milliseconds: 800),
                   child: _buildSettingsGroup([
-                    _buildDarkModeTile(context, ref, isDarkMode),
+                    _SettingModel(
+                      'Dark Mode',
+                      Icons.dark_mode,
+                      const Color(0xFF5856D6),
+                      trailing: Switch(
+                        value: isDarkMode,
+                        onChanged: (value) {
+                          ref.read(themeProvider.notifier).setDarkMode(value);
+                        },
+                        activeColor: const Color(0xFF34C759),
+                      ),
+                    ),
                     _SettingModel(
                       'Alarm Settings',
                       Icons.alarm,
@@ -110,38 +121,6 @@ class SettingScreen extends ConsumerWidget {
       child: Text(
         'Settings',
         style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildDarkModeTile(BuildContext context, WidgetRef ref, bool isDarkMode) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: const Color(0xFF5856D6).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.dark_mode, color: Color(0xFF5856D6), size: 20),
-          ),
-          const SizedBox(width: 16),
-          const Expanded(
-            child: Text(
-              'Dark Mode',
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ),
-          Switch(
-            value: isDarkMode,
-            onChanged: (value) {
-              ref.read(themeProvider.notifier).setDarkMode(value);
-            },
-            activeColor: const Color(0xFF34C759),
-          ),
-        ],
       ),
     );
   }
@@ -285,7 +264,10 @@ class SettingScreen extends ConsumerWidget {
                           margin: const EdgeInsets.only(right: 12),
                           decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                         ),
-                      const Icon(Icons.chevron_right, color: Colors.white12, size: 20),
+                      if (item.trailing != null)
+                        item.trailing!
+                      else
+                        const Icon(Icons.chevron_right, color: Colors.white12, size: 20),
                     ],
                   ),
                 ),
@@ -306,6 +288,7 @@ class _SettingModel {
   final Color iconColor;
   final bool hasNotice;
   final VoidCallback? onTap;
+  final Widget? trailing;
 
-  _SettingModel(this.title, this.icon, this.iconColor, {this.hasNotice = false, this.onTap});
+  _SettingModel(this.title, this.icon, this.iconColor, {this.hasNotice = false, this.onTap, this.trailing});
 }

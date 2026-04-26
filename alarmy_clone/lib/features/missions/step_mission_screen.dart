@@ -1,11 +1,11 @@
-import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
+import '../../core/providers/step_provider.dart' as step_provider;
 
-class StepMissionScreen extends StatefulWidget {
+class StepMissionScreen extends ConsumerWidget {
   final VoidCallback onMissionComplete;
   final Map<String, dynamic>? settings;
 
@@ -16,65 +16,22 @@ class StepMissionScreen extends StatefulWidget {
   });
 
   @override
-  State<StepMissionScreen> createState() => _StepMissionScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final requiredSteps = (settings?['step_count'] as int?) ?? 10;
+    final stepState = ref.watch(step_provider.stepProvider);
+    final currentSteps = stepState.stepsTakenDuringMission;
+    final remainingSteps = max(0, requiredSteps - currentSteps);
+    final progress = currentSteps / requiredSteps;
+    final isPulse = currentSteps > 0;
 
-class _StepMissionScreenState extends State<StepMissionScreen> {
-  int _currentSteps = 0;
-  late final int requiredSteps;
-  StreamSubscription<UserAccelerometerEvent>? _subscription;
-  
-  static const double _stepThreshold = 1.2;
-  bool _isAboveThreshold = false;
-  bool _isPulse = false;
-
-  @override
-  void initState() {
-    super.initState();
-    requiredSteps = widget.settings?['step_count'] ?? 10;
-    _startListening();
-  }
-
-  void _startListening() {
-    _subscription = userAccelerometerEvents.listen((UserAccelerometerEvent event) {
-      if (!mounted) return;
-
-      double magnitude = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
-      
-      if (!_isAboveThreshold && magnitude > _stepThreshold) {
-        _isAboveThreshold = true;
-        _onStepDetected();
-      } else if (_isAboveThreshold && magnitude < _stepThreshold * 0.8) {
-        _isAboveThreshold = false;
+    // Listen for mission completion
+    ref.listen<step_provider.StepState>(step_provider.stepProvider, (previous, next) {
+      final wasDone = (previous?.stepsTakenDuringMission ?? 0) >= requiredSteps;
+      final isDone = next.stepsTakenDuringMission >= requiredSteps;
+      if (!wasDone && isDone) {
+        Future.delayed(const Duration(milliseconds: 800), onMissionComplete);
       }
     });
-  }
-
-  void _onStepDetected() {
-    setState(() {
-      _currentSteps++;
-      _isPulse = true;
-    });
-    
-    Future.delayed(const Duration(milliseconds: 200), () {
-      if (mounted) setState(() => _isPulse = false);
-    });
-
-    if (_currentSteps >= requiredSteps) {
-      _subscription?.cancel();
-      Future.delayed(const Duration(milliseconds: 800), widget.onMissionComplete);
-    }
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final progress = _currentSteps / requiredSteps;
 
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
@@ -91,7 +48,12 @@ class _StepMissionScreenState extends State<StepMissionScreen> {
             children: [
               _buildHeader(),
               const Spacer(),
-              _buildStepCounter(progress),
+              _buildStepCounter(
+                progress: progress,
+                currentSteps: currentSteps,
+                remainingSteps: remainingSteps,
+                isPulse: isPulse,
+              ),
               const Spacer(),
               _buildBottomInfo(),
               const SizedBox(height: 48),
@@ -117,7 +79,7 @@ class _StepMissionScreenState extends State<StepMissionScreen> {
               ),
               Text(
                 'Walk to dismiss the alarm',
-                style: const TextStyle(color: Colors.white54, fontSize: 14),
+                style: TextStyle(color: Colors.white54, fontSize: 14),
               ),
             ],
           ),
@@ -135,22 +97,27 @@ class _StepMissionScreenState extends State<StepMissionScreen> {
     );
   }
 
-  Widget _buildStepCounter(double progress) {
+  Widget _buildStepCounter({
+    required double progress,
+    required int currentSteps,
+    required int remainingSteps,
+    required bool isPulse,
+  }) {
     return Stack(
       alignment: Alignment.center,
       children: [
         // Pulsing background glow
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: _isPulse ? 260 : 230,
-          height: _isPulse ? 260 : 230,
+          width: isPulse ? 260 : 230,
+          height: isPulse ? 260 : 230,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF00FF85).withValues(alpha: _isPulse ? 0.3 : 0.05),
-                blurRadius: _isPulse ? 60 : 20,
-                spreadRadius: _isPulse ? 20 : 0,
+                color: const Color(0xFF00FF85).withValues(alpha: isPulse ? 0.3 : 0.05),
+                blurRadius: isPulse ? 60 : 20,
+                spreadRadius: isPulse ? 20 : 0,
               ),
             ],
           ),
@@ -178,14 +145,14 @@ class _StepMissionScreenState extends State<StepMissionScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElasticIn(
-                key: ValueKey(_currentSteps),
+                key: ValueKey(currentSteps),
                 child: Text(
-                  '$_currentSteps',
+                  '$currentSteps',
                   style: const TextStyle(color: Colors.white, fontSize: 72, fontWeight: FontWeight.bold),
                 ),
               ),
               Text(
-                'Steps left: ${max(0, requiredSteps - _currentSteps)}',
+                'Steps left: $remainingSteps',
                 style: const TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.w500),
               ),
             ],

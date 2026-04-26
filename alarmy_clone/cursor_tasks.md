@@ -52,28 +52,13 @@ Your objective is to complete the features step-by-step.
 - Listen to `Pedometer.stepCountStream`.
 - Keep track of the initial steps when the screen opens, and subtract that from the current steps to get "Steps taken during mission".
 
-### [ ] Step 7: Update Step Mission UI
-- Open `lib/features/missions/step_mission_screen.dart`.
-- Convert it to a `ConsumerWidget`.
-- Watch the `stepProvider` and show the remaining steps required to dismiss the alarm.
+### [~] Step 7: Update Step Mission UI
+*(Transferred to Windsurf Phase 3)*
 
 ---
 
 ## Part C: Morning Motivation Screen
-
-### [ ] Step 8: Create Motivation Model
-- Create `lib/core/models/motivation_model.dart`.
-- Add fields: `String quote` and `String author`.
-- Create a simple JSON list of 5 hardcoded quotes in `lib/core/services/motivation_service.dart`.
-
-### [ ] Step 9: Create Motivation Provider
-- Create `lib/core/providers/motivation_provider.dart`.
-- It should expose a random `MotivationModel` from the service.
-
-### [ ] Step 10: Build Motivation UI
-- Open `lib/features/morning/morning_screen.dart` (or create it if it doesn't exist).
-- Use `GlassCard` to display the random quote.
-- Ensure the background matches the `Color(0xFF101014)` dark theme.
+*(Transferred to Windsurf Phase 3)*
 
 ---
 

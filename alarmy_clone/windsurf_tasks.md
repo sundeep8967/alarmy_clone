@@ -1,6 +1,6 @@
-# Windsurf Cascade Tasks - Micro Steps
+# Windsurf Cascade Tasks - Phase 3
 
-Welcome to the Alarmy Clone project. You are an expert Flutter Developer acting under the guidance of the Tech Lead. 
+Welcome back to the Alarmy Clone project. You are an expert Flutter Developer acting under the guidance of the Tech Lead. 
 Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead. Do not combine tasks.
 
 ## 🛑 STRICT RULES
@@ -12,55 +12,50 @@ Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead
 
 ---
 
-## Part A: Picture Mission Mock
+## Part A: Finish Pending Tasks (Transferred from Cursor)
 
-### [x] Step 1: Install Camera
-- Open `pubspec.yaml` and add `camera: ^0.10.5`.
-- Add Camera permissions to `AndroidManifest.xml`.
-- Run `flutter pub get`.
-
-### [x] Step 2: Initialize Camera Service
-- Create `lib/core/services/camera_service.dart`.
-- Write a function to `availableCameras()` and initialize the first back camera.
-- Expose the `CameraController`.
-
-### [x] Step 3: Create Picture Provider
-- Create `lib/core/providers/picture_provider.dart`.
-- Create a `Notifier` that holds the CameraController state.
-- Create a `verifyPicture()` method that waits 2 seconds (simulating ML delay) and returns `true` randomly 80% of the time.
-
-### [x] Step 4: Build Camera UI
-- Open `lib/features/missions/picture_mission_screen.dart`.
+### [x] Step 1: Update Step Mission UI
+- Open `lib/features/missions/step_mission_screen.dart`.
 - Convert it to a `ConsumerWidget`.
-- Show `CameraPreview` if the controller is initialized.
-- Add a capture button at the bottom that calls `verifyPicture()`.
+- Watch the `stepProvider` and show the remaining steps required to dismiss the alarm.
+
+### [x] Step 2: Create Motivation Model & Service
+- Create `lib/core/models/motivation_model.dart` with fields `quote` and `author`.
+- Create `lib/core/services/motivation_service.dart` with a simple hardcoded JSON list of 5 quotes.
+
+### [x] Step 3: Create Motivation Provider
+- Create `lib/core/providers/motivation_provider.dart`.
+- Create a Provider that exposes a random `MotivationModel` from the service.
+
+### [x] Step 4: Build Motivation UI
+- Open or create `lib/features/morning/morning_screen.dart`.
+- Convert it to a `ConsumerWidget` and watch the motivation provider.
+- Use `GlassCard` to display the random quote with a `Color(0xFF101014)` dark theme background.
 
 ---
 
-## Part B: Settings Screen Refinement
+## Part B: Today Panel Fixes & Caching
 
-### [x] Step 5: Add Shared Preferences for Theme
-- Open `lib/core/services/settings_service.dart`.
-- Add a boolean flag `isDarkMode` using `SharedPreferences`.
-- Add `getTheme()` and `setTheme()` methods.
+### [x] Step 5: Fix Today Panel API Data Fetching
+- Investigate the services providing data to the Today Panel (Weather, Horoscope, and News) which are currently returning N/A.
+- Fix the data parsing or API fetching logic so that valid data is successfully loaded.
 
-### [x] Step 6: Create Theme Provider
-- Create `lib/core/providers/theme_provider.dart`.
-- Create a Notifier that loads the initial theme from `SettingsService`.
+### [x] Step 6: Implement Local Caching for Today Panel
+- In the same data services, integrate `SharedPreferences` to save the last successfully fetched data.
+- If the API fails or the device is offline, fallback to displaying the cached data instead of showing N/A or empty screens.
 
-### [x] Step 7: Update Settings UI
-- Open `lib/features/settings/settings_screen.dart`.
-- Add a `SwitchListTile` for "Dark Mode".
-- Bind it to the `themeProvider`.
+---
 
-### [x] Step 8: Add App Info Package
-- Open `pubspec.yaml` and add `package_info_plus: ^8.0.0`.
-- Run `flutter pub get`.
+## Part C: Alarm Ring Intrusiveness
 
-### [x] Step 9: Add About Dialog
-- Open `lib/features/settings/settings_screen.dart`.
-- Add a `ListTile` for "About".
-- When tapped, use `package_info_plus` to get the version number and show an `AboutDialog` with the app version and "Alarmy Clone".
+### [x] Step 7: Add Alarm Permissions
+- Open `android/app/src/main/AndroidManifest.xml`.
+- Add `<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />`.
+- Add `<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />`.
+
+### [x] Step 8: Implement Full-Screen Intent (Android)
+- Open the main Android activity (`android/app/src/main/kotlin/.../MainActivity.kt` or `.java`).
+- Add the necessary Android window flags (e.g., `setShowWhenLocked(true)`, `setTurnScreenOn(true)`, `window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)`) so that when an alarm rings, it forces the device to wake up and appear over the lock screen.
 
 ---
 
@@ -68,15 +63,15 @@ Your mission is to execute these exact micro-tasks ONE BY ONE. Do not skip ahead
 
 ### Changes done
 
-**Part A: Picture Mission Mock**
-- **Step 1**: Added `camera: ^0.10.5` dependency to `pubspec.yaml` and added `<uses-permission android:name="android.permission.CAMERA"/>` to `AndroidManifest.xml`. Ran `flutter pub get` successfully.
-- **Step 2**: Created `lib/core/services/camera_service.dart` with `CameraService` class that initializes camera, finds back camera, and exposes `CameraController`.
-- **Step 3**: Created `lib/core/providers/picture_provider.dart` with `PictureState` class, `PictureNotifier` Riverpod notifier that manages camera state, includes `verifyPicture()` method with 2-second ML simulation delay and 80% random success rate.
-- **Step 4**: Created `lib/features/missions/picture_mission_screen.dart` as `ConsumerWidget`, displays `CameraPreview`, shows loading state during verification, shows success animation on verification complete, follows app design system with GlassCard and gradient background.
+**Part A: Finish Pending Tasks**
+- **Step 1**: Updated `lib/features/missions/step_mission_screen.dart` - converted from `StatefulWidget` to `ConsumerWidget`, now watches `stepProvider`, displays `stepsTakenDuringMission` with remaining steps calculation, triggers `onMissionComplete` when target reached via `ref.listen`.
+- **Step 2**: Created `lib/core/models/motivation_model.dart` with `MotivationModel` class containing `quote` and `author` fields with JSON serialization. Created `lib/core/services/motivation_service.dart` with 5 hardcoded motivational quotes from Steve Jobs, Winston Churchill, Eleanor Roosevelt, Confucius, and George Addair.
+- **Step 3**: Created `lib/core/providers/motivation_provider.dart` with `MotivationNotifier` Riverpod notifier that exposes random `MotivationModel` from service via `MotivationService.getRandomQuote()`.
+- **Step 4**: Updated `lib/features/morning/morning_screen.dart` - converted from `StatelessWidget` to `ConsumerWidget`, added `motivationProvider` import, watches provider for random quote, added `_buildMotivationCard()` widget using `GlassContainer` to display quote and author with dark theme background `Color(0xFF101014)`.
 
-**Part B: Settings Screen Refinement**
-- **Step 5**: Updated `lib/core/services/settings_service.dart` - added `_isDarkModeKey` constant, added `getTheme()` method to retrieve dark mode preference, added `setTheme()` method to save dark mode preference using SharedPreferences.
-- **Step 6**: Created `lib/core/providers/theme_provider.dart` with `ThemeNotifier` Riverpod notifier that loads initial theme from `SettingsService`, includes `toggleTheme()` and `setDarkMode()` methods.
-- **Step 7**: Updated `lib/features/setting/setting_screen.dart` - converted from `StatelessWidget` to `ConsumerWidget`, added `_buildDarkModeTile()` helper with `Switch` widget bound to `themeProvider`, added dark mode toggle to PREFERENCES section.
-- **Step 8**: Added `package_info_plus: ^8.0.0` dependency to `pubspec.yaml` and ran `flutter pub get` successfully.
-- **Step 9**: Updated `lib/features/setting/setting_screen.dart` - added `_showAboutDialog()` method that uses `PackageInfo` to get version and build number, displays `AboutDialog` with app name "Alarmy Clone", version, build number, and description, wired "About Alarmy" list tile to show the dialog.
+**Part B: Today Panel Fixes & Caching**
+- **Step 5 & 6**: Updated `lib/core/services/today_data_service.dart` - added `fetchAllWithCache()` method that implements robust caching strategy: loads cached data first, attempts fresh API calls for weather/horoscope/news individually with try-catch per service, falls back to cached data for any failed API, saves successful fresh data to cache via `TodayCacheService`, returns cached data if all APIs fail. `TodayCacheService` was already implemented with `SharedPreferences` save/load methods.
+
+**Part C: Alarm Ring Intrusiveness**
+- **Step 7**: Verified `android/app/src/main/AndroidManifest.xml` already contains required permissions: `USE_FULL_SCREEN_INTENT` (line 6) and `DISABLE_KEYGUARD` (line 8), along with `WAKE_LOCK` permission.
+- **Step 8**: Verified `android/app/src/main/kotlin/com/example/alarmy_clone/MainActivity.kt` already implements full-screen intent functionality: `setShowWhenLocked(true)` and `setTurnScreenOn(true)` for Android O_MR1+, fallback window flags for older versions (`FLAG_SHOW_WHEN_LOCKED`, `FLAG_TURN_SCREEN_ON`, `FLAG_DISMISS_KEYGUARD`, `FLAG_KEEP_SCREEN_ON`), plus wake lock acquisition with `FULL_WAKE_LOCK | ACQUIRE_CAUSES_WAKEUP | ON_AFTER_RELEASE` via MethodChannel for Flutter integration.

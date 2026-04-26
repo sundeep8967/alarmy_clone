@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
+import '../../core/providers/motivation_provider.dart';
 
-class MorningScreen extends StatelessWidget {
+class MorningScreen extends ConsumerWidget {
   const MorningScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final motivation = ref.watch(motivationProvider);
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
       body: Stack(
@@ -63,12 +65,71 @@ class MorningScreen extends StatelessWidget {
                   _buildQuickActions(),
                   const SizedBox(height: 40),
                   _buildGreeting(),
+                  const SizedBox(height: 24),
+                  _buildMotivationCard(motivation),
                   const SizedBox(height: 40),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMotivationCard(motivation) {
+    return FadeInUp(
+      delay: const Duration(milliseconds: 1400),
+      child: GlassContainer(
+        blur: 20,
+        opacity: 0.1,
+        borderRadius: BorderRadius.circular(24),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.format_quote,
+                    color: Color(0xFFFFD700),
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Daily Motivation',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.6),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                motivation.quote,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                '— ${motivation.author}',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

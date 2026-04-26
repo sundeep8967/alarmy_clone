@@ -99,6 +99,65 @@ class TodayCacheService {
 }
 
 class TodayDataService {
+  // Fetch all data with caching fallback
+  static Future<TodayData> fetchAllWithCache() async {
+    // Try to load cached data first
+    final cachedData = await TodayCacheService.load();
+    
+    try {
+      // Try to fetch fresh data
+      var data = TodayData();
+      
+      try {
+        data = await fetchWeather(data);
+      } catch (e) {
+        // Use cached weather if available
+        if (cachedData != null) {
+          data = data.copyWith(
+            weatherLabel: cachedData.weatherLabel,
+            weatherValue: cachedData.weatherValue,
+          );
+        }
+      }
+      
+      try {
+        data = await fetchHoroscope(data);
+      } catch (e) {
+        // Use cached horoscope if available
+        if (cachedData != null) {
+          data = data.copyWith(
+            horoscopeLabel: cachedData.horoscopeLabel,
+            horoscopeValue: cachedData.horoscopeValue,
+          );
+        }
+      }
+      
+      try {
+        data = await fetchNews(data);
+      } catch (e) {
+        // Use cached news if available
+        if (cachedData != null) {
+          data = data.copyWith(
+            newsLabel: cachedData.newsLabel,
+            newsValue: cachedData.newsValue,
+          );
+        }
+      }
+      
+      // Save successful data to cache
+      data = data.copyWith(lastFetchedAt: DateTime.now());
+      await TodayCacheService.save(data);
+      
+      return data;
+    } catch (e) {
+      // If everything fails, return cached data or default
+      if (cachedData != null) {
+        return cachedData;
+      }
+      return TodayData(errorMessage: e.toString());
+    }
+  }
+
   // Weather code to description mapping
   static String _getWeatherDescription(int code) {
     final codes = {
