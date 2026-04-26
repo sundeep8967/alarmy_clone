@@ -13,24 +13,24 @@ Your objective is to complete the features step-by-step.
 
 ## Part A: Squat Mission Implementation
 
-### [ ] Step 1: Add Dependencies
+### [x] Step 1: Add Dependencies
 - Open `pubspec.yaml`.
 - Add `sensors_plus: ^5.0.0` to dependencies.
 - Run `flutter pub get`.
 
-### [ ] Step 2: Create Squat State Provider
+### [x] Step 2: Create Squat State Provider
 - Create a new file `lib/core/providers/squat_provider.dart`.
 - Create a simple `SquatState` class with `int count` and `bool isTargetReached`.
 - Create a `SquatNotifier` (Riverpod `Notifier`) that initializes count to 0.
 - Create a method `incrementSquat()` that adds 1 to the count.
 
-### [ ] Step 3: Implement Accelerometer Logic
+### [x] Step 3: Implement Accelerometer Logic
 - Open `lib/core/providers/squat_provider.dart`.
 - Import `sensors_plus`.
 - In the `SquatNotifier`, listen to `userAccelerometerEventStream()`.
 - If the Y-axis acceleration goes below -3.0 and then above +3.0 (or similar logic), call `incrementSquat()`.
 
-### [ ] Step 4: Update Squat Mission UI
+### [x] Step 4: Update Squat Mission UI
 - Open `lib/features/missions/squat_mission_screen.dart`.
 - Convert it to a `ConsumerWidget`.
 - Watch the `squatProvider`.
@@ -40,13 +40,13 @@ Your objective is to complete the features step-by-step.
 
 ## Part B: Step Mission Implementation
 
-### [ ] Step 5: Add Pedometer Dependency
+### [x] Step 5: Add Pedometer Dependency
 - Open `pubspec.yaml`.
 - Add `pedometer: ^4.0.1` to dependencies.
 - Add activity recognition permissions to `AndroidManifest.xml` (`<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>`).
 - Run `flutter pub get`.
 
-### [ ] Step 6: Create Step State Provider
+### [x] Step 6: Create Step State Provider
 - Create `lib/core/providers/step_provider.dart`.
 - Create a `StepNotifier` using Riverpod.
 - Listen to `Pedometer.stepCountStream`.
@@ -74,3 +74,22 @@ Your objective is to complete the features step-by-step.
 - Open `lib/features/morning/morning_screen.dart` (or create it if it doesn't exist).
 - Use `GlassCard` to display the random quote.
 - Ensure the background matches the `Color(0xFF101014)` dark theme.
+
+---
+
+## cursor deverloper
+
+### Changes done (analysis + verification work)
+- Compared onboarding wallpaper chooser text against decompiled strings and confirmed mismatch in exact title rendering (`Choose your alarm wallpaper` vs line-broken UI text in app code).
+- Checked additional onboarding wallpaper parity and identified differences in labels/flow (emoji category labels, missing my-photo option, hardcoded strings, custom preview behavior/layout differences).
+- Extracted and listed all declared permissions from decompiled `AndroidManifest.xml`, including foreground service, notification, exact alarm, overlay, battery optimization, location, audio, billing, ads, and custom signature permission entries.
+- Verified repository/decompiled assets for ML and snore files:
+  - Found snore sample JSON assets: `decoded_apk/assets/snore_sample.json`, `decoded_apk/assets/analysis_snore_samples.json`.
+  - Confirmed `.tflite` assets exist in decoded APK listing: `binary_squat_accgyr_lstm.tflite`, `model_final_all.tflite`, `picturemission.tflite`, `stage.tflite`, `walk_accgyr_lstm_2s.tflite`.
+- Investigated snore implementation signals in decompiled smali and concluded current evidence points to snore severity presentation based on decibel/amplitude categories (`low`, `moderate`, `loud`, `veryLoud`) with related fields (`snoreDecibelType`, `snoreAudioAmplitude`, `snoreSeverity`, `snoreProbability`), while also confirming a separate TFLite model loader exists for sleep-analyzer flow (`model_final_all.tflite`).
+- Implemented Step 2 code changes: added `lib/core/providers/squat_provider.dart` with `SquatState` (`count`, `isTargetReached`), `SquatNotifier` initialized at zero, and `incrementSquat()` to update count/target state.
+- Implemented Step 3 code changes in `lib/core/providers/squat_provider.dart`: imported `sensors_plus`, subscribed to `userAccelerometerEventStream()`, and added squat detection logic that increments count when Y-axis crosses down threshold (`<= -3.0`) and then up threshold (`>= 3.0`).
+- Implemented Step 4 UI changes in `lib/features/missions/squat_mission_screen.dart`: converted to `ConsumerWidget`, watched `squatProvider`, replaced local hardcoded counter state with provider count, and wired mission completion when provider count reaches configured squat target.
+- Completed Step 1 dependency task: verified `sensors_plus` is present in `pubspec.yaml` and ran `flutter pub get` successfully.
+- Completed Step 5 setup: added `pedometer` dependency, added `android.permission.ACTIVITY_RECOGNITION` to `android/app/src/main/AndroidManifest.xml`, and ran `flutter pub get` successfully.
+- Implemented Step 6 code changes: created `lib/core/providers/step_provider.dart` with `StepState` and `StepNotifier`, subscribed to `Pedometer.stepCountStream`, captured initial steps at mission start, and computed mission-only steps using `(current - initial)`.

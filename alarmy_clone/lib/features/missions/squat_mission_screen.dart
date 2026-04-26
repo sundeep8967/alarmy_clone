@@ -1,10 +1,11 @@
-import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
+import '../../core/providers/squat_provider.dart';
 
-class SquatMissionScreen extends StatefulWidget {
+class SquatMissionScreen extends ConsumerWidget {
   final VoidCallback onMissionComplete;
   final Map<String, dynamic>? settings;
 
@@ -15,65 +16,20 @@ class SquatMissionScreen extends StatefulWidget {
   });
 
   @override
-  State<SquatMissionScreen> createState() => _SquatMissionScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final int requiredSquats = (settings?['squat_count'] as int?) ?? 5;
+    final squatState = ref.watch(squatProvider);
+    final int currentSquats = math.min(squatState.count, requiredSquats);
+    final progress = requiredSquats == 0 ? 0.0 : currentSquats.toDouble() / requiredSquats;
+    final isPulse = squatState.count > 0;
 
-class _SquatMissionScreenState extends State<SquatMissionScreen> {
-  int _currentSquats = 0;
-  late final int requiredSquats;
-  StreamSubscription<UserAccelerometerEvent>? _subscription;
-  
-  bool _isGoingDown = false;
-  static const double _threshold = 2.5; 
-  bool _isPulse = false;
-
-  @override
-  void initState() {
-    super.initState();
-    requiredSquats = widget.settings?['squat_count'] ?? 5;
-    _startListening();
-  }
-
-  void _startListening() {
-    _subscription = userAccelerometerEvents.listen((UserAccelerometerEvent event) {
-      if (!mounted) return;
-
-      double z = event.z;
-      
-      if (!_isGoingDown && z > _threshold) {
-        _isGoingDown = true;
-      } else if (_isGoingDown && z < -_threshold) {
-        _isGoingDown = false;
-        _onSquatDetected();
+    ref.listen<SquatState>(squatProvider, (previous, next) {
+      final wasDone = (previous?.count ?? 0) >= requiredSquats;
+      final isDone = next.count >= requiredSquats;
+      if (!wasDone && isDone) {
+        Future.delayed(const Duration(milliseconds: 800), onMissionComplete);
       }
     });
-  }
-
-  void _onSquatDetected() {
-    setState(() {
-      _currentSquats++;
-      _isPulse = true;
-    });
-    
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) setState(() => _isPulse = false);
-    });
-
-    if (_currentSquats >= requiredSquats) {
-      _subscription?.cancel();
-      Future.delayed(const Duration(milliseconds: 800), widget.onMissionComplete);
-    }
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final progress = _currentSquats / requiredSquats;
 
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
@@ -90,9 +46,16 @@ class _SquatMissionScreenState extends State<SquatMissionScreen> {
             children: [
               _buildHeader(),
               const Spacer(),
-              _buildSquatIndicator(progress),
+              _buildSquatIndicator(
+                progress: progress,
+                currentSquats: currentSquats,
+                requiredSquats: requiredSquats,
+                isPulse: isPulse,
+              ),
               const Spacer(),
-              _buildBottomIllustration(),
+              _buildBottomIllustration(
+                isTargetReached: squatState.isTargetReached,
+              ),
               const SizedBox(height: 48),
             ],
           ),
@@ -134,22 +97,27 @@ class _SquatMissionScreenState extends State<SquatMissionScreen> {
     );
   }
 
-  Widget _buildSquatIndicator(double progress) {
+  Widget _buildSquatIndicator({
+    required double progress,
+    required int currentSquats,
+    required int requiredSquats,
+    required bool isPulse,
+  }) {
     return Stack(
       alignment: Alignment.center,
       children: [
         // Pulsing background glow
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: _isPulse ? 280 : 250,
-          height: _isPulse ? 280 : 250,
+          width: isPulse ? 280 : 250,
+          height: isPulse ? 280 : 250,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFFF7A00).withValues(alpha: _isPulse ? 0.4 : 0.05),
-                blurRadius: _isPulse ? 80 : 20,
-                spreadRadius: _isPulse ? 25 : 0,
+                color: const Color(0xFFFF7A00).withValues(alpha: isPulse ? 0.4 : 0.05),
+                blurRadius: isPulse ? 80 : 20,
+                spreadRadius: isPulse ? 25 : 0,
               ),
             ],
           ),
@@ -177,9 +145,9 @@ class _SquatMissionScreenState extends State<SquatMissionScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ZoomIn(
-                key: ValueKey(_currentSquats),
+                key: ValueKey(currentSquats),
                 child: Text(
-                  '$_currentSquats',
+                  '$currentSquats',
                   style: const TextStyle(color: Colors.white, fontSize: 84, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -194,7 +162,9 @@ class _SquatMissionScreenState extends State<SquatMissionScreen> {
     );
   }
 
-  Widget _buildBottomIllustration() {
+  Widget _buildBottomIllustration({
+    required bool isTargetReached,
+  }) {
     return FadeInUp(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -208,12 +178,13 @@ class _SquatMissionScreenState extends State<SquatMissionScreen> {
               children: [
                 Row(
                   children: [
-                    Icon(_isGoingDown ? Icons.arrow_downward : Icons.arrow_upward, 
+                    Icon(
+                         isTargetReached ? Icons.check_circle : Icons.accessibility_new,
                          color: const Color(0xFFFF7A00), size: 32),
                     const SizedBox(width: 20),
                     Expanded(
                       child: Text(
-                        _isGoingDown ? 'Keep going down...' : 'Stand back up to count!',
+                        isTargetReached ? 'Great job! Target reached.' : 'Do full squats to increase count.',
                         style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                     ),
