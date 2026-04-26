@@ -19,9 +19,11 @@ class HomeWidgetService {
       if (nextAlarm != null) {
         final timeString = '${nextAlarm.hour.toString().padLeft(2, '0')}:${nextAlarm.minute.toString().padLeft(2, '0')}';
         final missionType = _getMissionTypeString(nextAlarm.missionTypes);
-        
+        final missionLabel = _getMissionLabel(nextAlarm.missionTypes);
+
         await HomeWidget.saveWidgetData('alarm_time', timeString);
         await HomeWidget.saveWidgetData('mission_type', missionType);
+        await HomeWidget.saveWidgetData('mission_label', missionLabel);
         await HomeWidget.saveWidgetData('has_alarm', true);
       } else {
         await HomeWidget.saveWidgetData('alarm_time', '');
@@ -109,5 +111,24 @@ class HomeWidgetService {
       default:
         return 'default';
     }
+  }
+
+  /// Human-readable label shown on the home screen widget
+  static String _getMissionLabel(List<String> missionTypes) {
+    if (missionTypes.isEmpty || missionTypes.first == 'default') return 'No mission';
+    final labels = missionTypes.map((t) {
+      switch (t.toLowerCase()) {
+        case 'math': return 'Math';
+        case 'shake': return 'Shake';
+        case 'memory': case 'tiles': return 'Memory';
+        case 'typing': return 'Typing';
+        case 'squat': return 'Squat';
+        case 'step': return 'Walk';
+        case 'qr': return 'Barcode';
+        case 'photo': return 'Photo';
+        default: return t;
+      }
+    });
+    return labels.join(' + ') + ' Mission';
   }
 }
