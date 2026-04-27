@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -178,7 +179,14 @@ class PermissionDoaScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               elevation: 0,
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () async {
+              try {
+                await const MethodChannel('com.example.alarmy_clone/system')
+                    .invokeMethod('openSettings', {'action': 'android.settings.action.MANAGE_OVERLAY_PERMISSION'});
+              } catch (_) {
+                Navigator.pop(context);
+              }
+            },
             child: const Text('Go to Setting', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
           ),
         ),

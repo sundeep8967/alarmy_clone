@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/widgets/glass_card.dart';
+import '../../core/services/uninstall_blocker_service.dart';
 import 'package:animate_do/animate_do.dart';
 
 class GeneralSettingScreen extends StatefulWidget {
@@ -26,8 +27,9 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
 
   Future<void> _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
+    final uninstallBlockerActive = await UninstallBlockerService.isActive();
     setState(() {
-      _uninstallBlocker = prefs.getBool('pref_uninstall_blocker') ?? false;
+      _uninstallBlocker = uninstallBlockerActive;
       _volumeSnooze = prefs.getBool('pref_volume_snooze') ?? true;
       _autoDismiss = prefs.getBool('pref_auto_dismiss') ?? false;
       _timeFormat = prefs.getString('pref_time_format') ?? '24 Hour';
@@ -142,9 +144,15 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                     trailing: CupertinoSwitch(
                       value: _uninstallBlocker,
                       activeColor: const Color(0xFFFF3B30),
-                      onChanged: (v) {
-                        setState(() => _uninstallBlocker = v);
-                        _saveToggle('pref_uninstall_blocker', v);
+                      onChanged: (v) async {
+                        if (v) {
+                          await UninstallBlockerService.enable();
+                          // Status will be confirmed when user returns from Device Admin screen
+                        } else {
+                          await UninstallBlockerService.disable();
+                        }
+                        final active = await UninstallBlockerService.isActive();
+                        setState(() => _uninstallBlocker = active);
                       },
                     ),
                   ),

@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
+import 'battery_optimization_screen.dart';
 
 class AlarmOptimizationScreen extends StatelessWidget {
   const AlarmOptimizationScreen({super.key});
+
+  static const _platform = MethodChannel('com.example.alarmy_clone/system');
+
+  Future<void> _openSettings(String action) async {
+    try {
+      await _platform.invokeMethod('openSettings', {'action': action});
+    } catch (_) {
+      // Fail silently
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,46 +53,42 @@ class AlarmOptimizationScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 
-                _buildGuidelineSection('MUST DO', [
+                _buildGuidelineSection(context, 'MUST DO', [
                   _GuidelineItem(
                     'Essential Permission',
                     'Allow notifications and "Draw over other apps"',
                     Icons.security,
                     const Color(0xFFFF3B30),
+                    onTap: (_) => _openSettings('android.settings.action.MANAGE_OVERLAY_PERMISSION'),
                   ),
                   _GuidelineItem(
                     'Battery Optimization',
                     'Exclude Alarmy from power saving modes',
                     Icons.battery_alert,
                     const Color(0xFFFF9500),
+                    onTap: (ctx) => Navigator.push(ctx, MaterialPageRoute(builder: (_) => const BatteryOptimizationScreen())),
                   ),
                 ]),
                 
                 const SizedBox(height: 32),
                 
-                _buildGuidelineSection('RECOMMENDED', [
+                _buildGuidelineSection(context, 'RECOMMENDED', [
                   _GuidelineItem(
                     'DND Override',
                     'Allow alarms even in Do Not Disturb mode',
                     Icons.do_not_disturb_on,
                     const Color(0xFF5856D6),
+                    onTap: (_) => _openSettings('android.settings.NOTIFICATION_POLICY_ACCESS_SETTINGS'),
                   ),
                   _GuidelineItem(
                     'Auto-start',
                     'Allow the app to launch after restart',
                     Icons.bolt,
                     const Color(0xFF00D1FF),
+                    onTap: (_) => _openSettings('android.settings.APPLICATION_DETAILS_SETTINGS'),
                   ),
                 ]),
                 
-                const SizedBox(height: 48),
-                Center(
-                  child: TextButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.support_agent, color: Color(0xFF00D1FF)),
-                    label: const Text('Contact Support', style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.bold)),
-                  ),
-                ),
                 const SizedBox(height: 40),
               ],
             ),
@@ -108,7 +116,7 @@ class AlarmOptimizationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGuidelineSection(String title, List<_GuidelineItem> items) {
+  Widget _buildGuidelineSection(BuildContext context, String title, List<_GuidelineItem> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -124,35 +132,42 @@ class AlarmOptimizationScreen extends StatelessWidget {
               delay: Duration(milliseconds: 100 * i),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: GlassContainer(
-                  blur: 20,
-                  opacity: 0.1,
-                  borderRadius: BorderRadius.circular(24),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: item.color.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(16),
+                child: GestureDetector(
+                  onTap: () {
+                    if (item.onTap != null) {
+                      item.onTap!(context);
+                    }
+                  },
+                  child: GlassContainer(
+                    blur: 20,
+                    opacity: 0.1,
+                    borderRadius: BorderRadius.circular(24),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: item.color.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Icon(item.icon, color: item.color, size: 24),
                           ),
-                          child: Icon(item.icon, color: item.color, size: 24),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 4),
-                              Text(item.subtitle, style: const TextStyle(color: Colors.white38, fontSize: 13)),
-                            ],
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 4),
+                                Text(item.subtitle, style: const TextStyle(color: Colors.white38, fontSize: 13)),
+                              ],
+                            ),
                           ),
-                        ),
-                        const Icon(Icons.chevron_right, color: Colors.white12),
-                      ],
+                          const Icon(Icons.chevron_right, color: Colors.white12),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -170,6 +185,7 @@ class _GuidelineItem {
   final String subtitle;
   final IconData icon;
   final Color color;
+  final void Function(BuildContext)? onTap;
 
-  _GuidelineItem(this.title, this.subtitle, this.icon, this.color);
+  _GuidelineItem(this.title, this.subtitle, this.icon, this.color, {this.onTap});
 }

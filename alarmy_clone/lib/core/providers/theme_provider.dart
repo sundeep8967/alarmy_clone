@@ -6,24 +6,30 @@ class ThemeNotifier extends Notifier<ThemeMode> {
   @override
   ThemeMode build() {
     _loadTheme();
-    return ThemeMode.dark; // Default theme
+    return ThemeMode.system; // Follow device setting by default
   }
 
   Future<void> _loadTheme() async {
-    final isDarkMode = await SettingsService.getTheme();
-    state = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    // null = not explicitly set → follow system
+    final saved = await SettingsService.getThemeSetting();
+    state = saved; // ThemeMode.system / dark / light
   }
 
   Future<void> toggleTheme() async {
-    final isDarkMode = state == ThemeMode.dark;
-    final newTheme = isDarkMode ? ThemeMode.light : ThemeMode.dark;
-    await SettingsService.setTheme(!isDarkMode);
-    state = newTheme;
+    final next = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    await SettingsService.saveThemeSetting(next);
+    state = next;
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    await SettingsService.saveThemeSetting(mode);
+    state = mode;
   }
 
   Future<void> setDarkMode(bool isDarkMode) async {
-    await SettingsService.setTheme(isDarkMode);
-    state = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    final mode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    await SettingsService.saveThemeSetting(mode);
+    state = mode;
   }
 }
 

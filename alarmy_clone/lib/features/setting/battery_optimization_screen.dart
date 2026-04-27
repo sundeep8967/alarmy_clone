@@ -11,7 +11,8 @@ class BatteryOptimizationScreen extends StatefulWidget {
   State<BatteryOptimizationScreen> createState() => _BatteryOptimizationScreenState();
 }
 
-class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen> {
+class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
+    with WidgetsBindingObserver {
   static const platform = MethodChannel('com.example.alarmy_clone/battery');
   bool _isLoading = false;
   bool _isBatteryOptimizationDisabled = false;
@@ -19,7 +20,21 @@ class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _checkBatteryOptimizationStatus();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkBatteryOptimizationStatus(); // Re-check when user returns from Settings
+    }
   }
 
   Future<void> _checkBatteryOptimizationStatus() async {

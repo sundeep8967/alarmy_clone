@@ -1,6 +1,9 @@
 package com.example.alarmy_clone
 
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -12,6 +15,8 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.example.alarmy_clone/wakelock"
     private val BATTERY_CHANNEL = "com.example.alarmy_clone/battery"
+    private val SYSTEM_CHANNEL = "com.example.alarmy_clone/system"
+    private val DEVICE_ADMIN_CHANNEL = "com.example.alarmy_clone/device_admin"
     private var wakeLock: PowerManager.WakeLock? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +65,81 @@ class MainActivity : FlutterActivity() {
                 }
                 else -> {
                     result.notImplemented()
+                }
+            }
+        }
+
+        // System settings channel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, SYSTEM_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "openSettings" -> {
+                    val action = call.argument<String>("action")
+                    if (action != null) {
+                        openSystemSettings(action)
+                        result.success(null)
+                    } else {
+                        result.error("INVALID_ARGUMENT", "Action is required", null)
+                    }
+                }
+                else -> {
+                    result.notImplemented()
+                }
+            }
+        }
+
+        // Device admin channel for Uninstall Blocker
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, DEVICE_ADMIN_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "enableDeviceAdmin" -> {
+                    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                    val componentName = ComponentName(this, AlarmyDeviceAdminReceiver::class.java)
+                    if (!dpm.isAdminActive(componentName)) {
+                        val intent = android.content.Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
+                            putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
+                            putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                                "Prevents uninstalling Alarmy while you have active alarms set.")
+                        }
+                        startActivity(intent)
+                        result.success(false) // not yet enabled
+                    } else {
+                        result.success(true) // already enabled
+                    }
+                }
+                "disableDeviceAdmin" -> {
+                    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                    val componentName = ComponentName(this, AlarmyDeviceAdminReceiver::class.java)
+                    dpm.removeActiveAdmin(componentName)
+                    result.success(true)
+                }
+                "isDeviceAdminActive" -> {
+                    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                    val componentName = ComponentName(this, AlarmyDeviceAdminReceiver::class.java)
+                    result.success(dpm.isAdminActive(componentName))
+                }
+                else -> {
+                    result.notImplemented()
+                }
+            }
+        }
+    }
+
+    private fun openSystemSettings(action: String) {
+        val intent = android.content.Intent(action)
+        if (action == android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS) {
+            intent.data = Uri.parse("package:$packageName")
+        }
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            // Fallback: try with package URI for overlay permission
+            if (action == "android.settings.action.MANAGE_OVERLAY_PERMISSION") {
+                try {
+                    val fallbackIntent = android.content.Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION).apply {
+                        data = Uri.parse("package:$packageName")
+                    }
+                    startActivity(fallbackIntent)
+                } catch (_: Exception) {
+                    // Fail silently
                 }
             }
         }

@@ -10,6 +10,7 @@ import 'features/alarm_ring/alarm_ring_screen.dart';
 import 'core/models/alarm_model.dart';
 import 'features/widget/home_widget_service.dart';
 import 'features/ramadan/ramadan_service.dart';
+import 'core/providers/theme_provider.dart';
 
 // Route constants
 class AppRoutes {
@@ -92,19 +93,33 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeProvider);
     return MaterialApp.router(
       title: 'Alarmy Clone',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      theme: ThemeData(
+      themeMode: themeMode,
+      // Dark theme — primary app experience
+      darkTheme: ThemeData(
         useMaterial3: true,
+        brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepOrange,
+          seedColor: const Color(0xFFFF3B30),
           brightness: Brightness.dark,
         ),
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor: const Color(0xFF101014),
+      ),
+      // Light theme — used when device is in light mode
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFFF3B30),
+          brightness: Brightness.light,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF2F2F7),
       ),
       routerConfig: _router,
     );
