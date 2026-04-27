@@ -23,4 +23,20 @@ class UninstallBlockerService {
       await _channel.invokeMethod('disableDeviceAdmin');
     } catch (_) {}
   }
+
+  static Future<bool> isAccessibilityEnabled() async {
+    try {
+      const ch = MethodChannel('com.example.alarmy_clone/accessibility');
+      return await ch.invokeMethod<bool>('isEnabled') ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Future<void> openAccessibilitySettings() async {
+    try {
+      const ch = MethodChannel('com.example.alarmy_clone/accessibility');
+      await ch.invokeMethod('openSettings');
+    } catch (_) {}
+  }
 }

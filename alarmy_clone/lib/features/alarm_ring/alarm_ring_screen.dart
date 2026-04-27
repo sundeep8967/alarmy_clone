@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:vibration/vibration.dart';
 import '../../core/services/alarm_service.dart';
+import '../../core/services/alarm_lock_service.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/repositories/alarm_repository.dart';
 import '../../core/providers/settings_provider.dart';
@@ -28,7 +30,8 @@ class AlarmRingScreen extends ConsumerStatefulWidget {
   ConsumerState<AlarmRingScreen> createState() => _AlarmRingScreenState();
 }
 
-class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
+class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
+    with WidgetsBindingObserver {
   late String _currentTime;
   late String _currentDate;
   late DateTime _startTime;
@@ -39,14 +42,17 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
   Timer? _autoDismissTimer;
   Timer? _timePressureTimer;
   double _currentVolume = 0.0;
+  bool _isAlarmActive = true;
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
     AlarmService.acquireWakeLock();
     _startTime = DateTime.now();
     _updateTime();
     _startRinging();
+    AlarmLockService.startLock();
     _setupAutoTimers();
     _initTts();
   }
@@ -124,6 +130,8 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    AlarmLockService.stopLock();
     AlarmService.releaseWakeLock();
     _crescendoTimer?.cancel();
     _autoSnoozeTimer?.cancel();
@@ -133,6 +141,20 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
     _tts.stop();
     Vibration.cancel();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState lifecycleState) {
+    if (!_isAlarmActive) return; // Already dismissed/snoozed — do nothing
+    if (lifecycleState == AppLifecycleState.paused ||
+        lifecycleState == AppLifecycleState.inactive) {
+      // User pressed Home or Recent Apps while alarm is ringing
+      Future.delayed(const Duration(milliseconds: 400), () {
+        if (mounted && _isAlarmActive) {
+          AlarmLockService.bringToFront();
+        }
+      });
+    }
   }
 
   void _updateTime() {
@@ -147,6 +169,8 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
   }
 
   void _snoozeAlarm({bool isAuto = false}) async {
+    _isAlarmActive = false;
+    await AlarmLockService.stopLock();
     Vibration.cancel();
     _audioPlayer.stop();
     _crescendoTimer?.cancel();
@@ -158,6 +182,8 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen> {
   }
 
   void _dismissAlarm({bool isAuto = false, bool isManual = false}) async {
+    _isAlarmActive = false;
+    await AlarmLockService.stopLock();
     Vibration.cancel();
     _audioPlayer.stop();
     _crescendoTimer?.cancel();

@@ -3,6 +3,7 @@ package com.example.alarmy_clone
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -119,6 +120,66 @@ class MainActivity : FlutterActivity() {
                 else -> {
                     result.notImplemented()
                 }
+            }
+        }
+
+        // Foreground lock service channel
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "com.example.alarmy_clone/foreground"
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "startLock" -> {
+                    val i = Intent(this, AlarmForegroundService::class.java).apply {
+                        action = AlarmForegroundService.ACTION_START
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(i)
+                    } else {
+                        startService(i)
+                    }
+                    result.success(null)
+                }
+                "stopLock" -> {
+                    val i = Intent(this, AlarmForegroundService::class.java).apply {
+                        action = AlarmForegroundService.ACTION_STOP
+                    }
+                    startService(i)
+                    result.success(null)
+                }
+                "bringToFront" -> {
+                    val i = Intent(this, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                                Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    startActivity(i)
+                    result.success(null)
+                }
+                else -> result.notImplemented()
+            }
+        }
+
+        // Accessibility service channel for checking if service is enabled
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "com.example.alarmy_clone/accessibility"
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "isEnabled" -> {
+                    val enabledStr = android.provider.Settings.Secure.getString(
+                        contentResolver,
+                        android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+                    ) ?: ""
+                    result.success(enabledStr.contains(packageName))
+                }
+                "openSettings" -> {
+                    startActivity(
+                        Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                    )
+                    result.success(null)
+                }
+                else -> result.notImplemented()
             }
         }
     }

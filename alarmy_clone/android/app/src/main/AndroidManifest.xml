@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -90,6 +91,26 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
+        <!-- Foreground Service for Alarm Lock -->
+        <service
+            android:name=".AlarmForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="phoneCall" />
+
+        <!-- Accessibility Service for Uninstall Guard -->
+        <service
+            android:name=".UninstallGuardService"
+            android:exported="true"
+            android:label="Alarmy Uninstall Guard"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/uninstall_guard_config" />
+        </service>
 
     </application>
     <queries>

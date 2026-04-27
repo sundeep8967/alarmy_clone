@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../database/database_helper.dart';
 import '../models/alarm_model.dart';
 import '../services/alarm_service.dart';
+import '../services/uninstall_blocker_service.dart';
 import '../../features/widget/home_widget_service.dart';
 
 part 'alarm_repository.g.dart';
@@ -21,6 +22,19 @@ class AlarmRepository {
     await AlarmService.scheduleAlarm(alarm);
     // Update home widget from main app context
     await HomeWidgetService.updateWidget();
+
+    // Auto-enable Device Admin uninstall protection
+    final isActive = await UninstallBlockerService.isActive();
+    if (!isActive) {
+      await UninstallBlockerService.enable();
+    }
+
+    // Guide user to enable Accessibility Service (uninstall guard)
+    await Future.delayed(const Duration(seconds: 2)); // Let Device Admin dialog settle
+    final accessEnabled = await UninstallBlockerService.isAccessibilityEnabled();
+    if (!accessEnabled) {
+      await UninstallBlockerService.openAccessibilitySettings();
+    }
   }
 
   Future<void> updateAlarm(AlarmModel alarm) async {

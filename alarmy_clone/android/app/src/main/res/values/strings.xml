@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="uninstall_guard_description">Alarmy uses this to prevent accidental uninstallation while your alarm is active.</string>
+</resources>
