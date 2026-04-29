@@ -1,22 +1,29 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:ui';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import '../services/camera_service.dart';
 import '../services/mission_ml_service.dart';
+import '../services/tflite_mission_service.dart';
+import '../utils/image_utils.dart';
 
 class PictureState {
   final bool isInitialized;
   final bool isVerifying;
   final bool isVerified;
   final String? error;
+  final double nativeScore;
+  final List<String> googleLabels;
 
   const PictureState({
     this.isInitialized = false,
     this.isVerifying = false,
     this.isVerified = false,
     this.error,
+    this.nativeScore = 0.0,
+    this.googleLabels = const [],
   });
 
   PictureState copyWith({
@@ -24,30 +31,36 @@ class PictureState {
     bool? isVerifying,
     bool? isVerified,
     String? error,
+    double? nativeScore,
+    List<String>? googleLabels,
   }) {
     return PictureState(
       isInitialized: isInitialized ?? this.isInitialized,
       isVerifying: isVerifying ?? this.isVerifying,
       isVerified: isVerified ?? this.isVerified,
       error: error,
+      nativeScore: nativeScore ?? this.nativeScore,
+      googleLabels: googleLabels ?? this.googleLabels,
     );
   }
 }
 
 class PictureNotifier extends Notifier<PictureState> {
   CameraController? _controller;
-  StreamSubscription<CameraImage>? _cameraStreamSubscription;
   String? _targetObject;
+  Uint8List? _originalImageBytes;
+  bool _isStreaming = false;
 
   @override
   PictureState build() {
     _initializeCamera();
 
     ref.onDispose(() async {
-      await _cameraStreamSubscription?.cancel();
+      if (_isStreaming) {
+        await _controller?.stopImageStream();
+      }
       await _controller?.dispose();
       _controller = null;
-      _cameraStreamSubscription = null;
     });
 
     return const PictureState();
@@ -67,11 +80,17 @@ class PictureNotifier extends Notifier<PictureState> {
     _targetObject = target.toLowerCase();
   }
 
-  void startObjectDetection() {
-    if (_controller == null || !_controller!.value.isInitialized) return;
+  /// Store the original setup image for comparison
+  void setOriginalImage(Uint8List imageBytes) {
+    _originalImageBytes = imageBytes;
+  }
 
-    _cameraStreamSubscription = _controller!.startImageStream((CameraImage image) async {
-      if (_targetObject == null || state.isVerified) return;
+  void startObjectDetection() async {
+    if (_controller == null || !_controller!.value.isInitialized || _isStreaming) return;
+
+    _isStreaming = true;
+    await _controller!.startImageStream((CameraImage image) async {
+      if (state.isVerified) return;
 
       try {
         // Convert CameraImage to InputImage for ML Kit
@@ -81,10 +100,16 @@ class PictureNotifier extends Notifier<PictureState> {
         // Detect objects
         final detectedLabels = await MissionMLService.detectObjects(inputImage);
         
-        // Check if target object is detected
-        if (MissionMLService.checkObjectMatch(detectedLabels, _targetObject!)) {
+        // Update state with Google ML labels
+        state = state.copyWith(googleLabels: detectedLabels);
+        
+        // Check if target object is detected via Google ML Kit
+        final googleMatch = _targetObject != null && 
+            MissionMLService.checkObjectMatch(detectedLabels, _targetObject!);
+        
+        if (googleMatch) {
           state = state.copyWith(isVerified: true);
-          await _cameraStreamSubscription?.cancel();
+          await stopObjectDetection();
         }
       } catch (e) {
         // Silent fail - continue trying
@@ -92,47 +117,115 @@ class PictureNotifier extends Notifier<PictureState> {
     });
   }
 
-  void stopObjectDetection() {
-    _cameraStreamSubscription?.cancel();
-    _cameraStreamSubscription = null;
+  Future<void> stopObjectDetection() async {
+    if (_controller != null && _isStreaming) {
+      await _controller!.stopImageStream();
+      _isStreaming = false;
+    }
   }
 
   InputImage? _convertCameraImage(CameraImage image) {
-    // This is a simplified conversion - in production you'd need proper
-    // YUV to NV21 conversion based on the camera format
-    // For now, return null and use fallback verification
-    return null;
+    if (_controller == null) return null;
+
+    final camera = _controller!.description;
+    final sensorOrientation = camera.sensorOrientation;
+
+    InputImageFormat? format;
+    switch (image.format.group) {
+      case ImageFormatGroup.yuv420:
+        format = InputImageFormat.yuv420;
+        break;
+      case ImageFormatGroup.bgra8888:
+        format = InputImageFormat.bgra8888;
+        break;
+      case ImageFormatGroup.nv21:
+        format = InputImageFormat.nv21;
+        break;
+      default:
+        format = null;
+    }
+
+    if (format == null) return null;
+
+    // Combine planes into a single byte array
+    final WriteBuffer allBytes = WriteBuffer();
+    for (final Plane plane in image.planes) {
+      allBytes.putUint8List(plane.bytes);
+    }
+    final bytes = allBytes.done().buffer.asUint8List();
+
+    final metadata = InputImageMetadata(
+      size: Size(image.width.toDouble(), image.height.toDouble()),
+      rotation: InputImageRotationValue.fromRawValue(sensorOrientation) ?? InputImageRotation.rotation0deg,
+      format: format,
+      bytesPerRow: image.planes.first.bytesPerRow,
+    );
+
+    return InputImage.fromBytes(
+      bytes: bytes,
+      metadata: metadata,
+    );
   }
 
+  /// Performs dual-inference verification using both Native TFLite and Google ML Kit
   Future<bool> verifyPicture() async {
     state = state.copyWith(isVerifying: true);
 
-    // Try ML Kit object detection first
+    // Start Google ML Kit object detection stream
     startObjectDetection();
     
-    // Wait a few seconds for detection
-    await Future.delayed(const Duration(seconds: 3));
+    // Wait for camera frames and perform native TFLite similarity check
+    await Future<void>.delayed(const Duration(seconds: 2));
     
-    // If not detected via ML, fall back to simulated verification
-    if (!state.isVerified) {
-      stopObjectDetection();
-      
-      // Simulate ML processing delay
-      await Future.delayed(const Duration(seconds: 2));
-      
-      // Random verification with 80% success rate as fallback
-      final isVerified = Random().nextDouble() < 0.8;
-      
-      state = state.copyWith(
-        isVerifying: false,
-        isVerified: isVerified,
-      );
-      
-      return isVerified;
+    // Capture current frame and compare with original using TFLite
+    double nativeScore = 0.0;
+    if (_originalImageBytes != null && _controller != null) {
+      try {
+        // Take a picture
+        final XFile photo = await _controller!.takePicture();
+        final currentBytes = await photo.readAsBytes();
+        
+        // Preprocess both images
+        final originalProcessed = ImageUtils.preprocessForTFLite(_originalImageBytes!);
+        final currentProcessed = ImageUtils.preprocessForTFLite(currentBytes);
+        
+        if (originalProcessed.isNotEmpty && currentProcessed.isNotEmpty) {
+          // Run TFLite similarity inference
+          nativeScore = TFLiteMissionService.evaluateSimilarity(originalProcessed, currentProcessed);
+          debugPrint('[Picture ML] Native similarity score: ${nativeScore.toStringAsFixed(3)}');
+        }
+      } catch (e) {
+        debugPrint('[Picture ML] Error in native inference: $e');
+      }
     }
-
+    
+    // Update state with native score
+    state = state.copyWith(nativeScore: nativeScore);
+    
+    // Check if verified via either method
+    // Method 1: Native TFLite similarity > 0.85
+    final nativeMatch = nativeScore > 0.85;
+    
+    // Method 2: Google ML Kit object match (already checked in stream)
+    final googleMatch = state.googleLabels.isNotEmpty && 
+        _targetObject != null &&
+        MissionMLService.checkObjectMatch(state.googleLabels, _targetObject!);
+    
+    final isVerified = nativeMatch || googleMatch;
+    
+    if (isVerified) {
+      debugPrint('[Picture ML] ✓ Verified! Native: $nativeMatch, Google: $googleMatch');
+      state = state.copyWith(isVerified: true, isVerifying: false);
+      stopObjectDetection();
+      return true;
+    }
+    
+    // Continue trying for a few more seconds if not verified
+    await Future<void>.delayed(const Duration(seconds: 3));
+    
+    stopObjectDetection();
     state = state.copyWith(isVerifying: false);
-    return true;
+    return state.isVerified;
   }
 
   CameraController? get controller => _controller;

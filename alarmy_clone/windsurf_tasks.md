@@ -620,3 +620,134 @@ Then manual test the full uninstall attempt:
 5. Expected: UninstallGuardService detects packageinstaller and calls GLOBAL_ACTION_HOME
 
 The uninstall is blocked at Layer 1 (Device Admin) before even reaching Layer 2 (Accessibility).
+
+---
+
+# ══════════════════════════════════════════
+# DUAL-ML PICTURE MISSION — NEW TASKS
+# Objective: Run both Native TFLite Similarity and Google ML Kit side-by-side.
+# ══════════════════════════════════════════
+
+---
+
+## TASK 17 — Assets & Dependencies for Picture Mission
+
+READ rules.md first.
+
+1. **Copy Model**: Copy `picturemission.tflite` from `decoded_apk/assets/` to `alarmy_clone/assets/ml/`.
+2. **Update pubspec.yaml**: Add `image: ^4.2.0` under dependencies.
+3. **Run Commands**:
+   ```bash
+   flutter pub get
+   ```
+
+✅ Test: `assets/ml/picturemission.tflite` exists in the project. `pubspec.yaml` has the `image` package.
+
+---
+
+## TASK 18 — Implement Multi-Input Inference in TFLiteMissionService
+
+READ rules.md first.
+File: lib/core/services/tflite_mission_service.dart
+
+1. **Load Picture Model**: In `initialize()`, load `picturemission.tflite` into a new static `_pictureInterpreter`.
+2. **Add evaluateSimilarity**:
+   ```dart
+   static double evaluateSimilarity(List<double> original, List<double> current) {
+     if (_pictureInterpreter == null) return 0.0;
+     
+     // Inputs: Two tensors of shape [1, 224, 224, 3]
+     // Output: One tensor of shape [1, 1]
+     var inputs = [
+       [original].reshape([1, 224, 224, 3]),
+       [current].reshape([1, 224, 224, 3])
+     ];
+     var outputs = {0: List.filled(1, 0.0).reshape([1, 1])};
+     
+     try {
+       _pictureInterpreter!.runForMultipleInputs(inputs, outputs);
+       return (outputs[0] as List<List<double>>)[0][0];
+     } catch (e) {
+       debugPrint('Error in picture inference: $e');
+       return 0.0;
+     }
+   }
+   ```
+
+✅ Test: `flutter analyze` clean. Code compiles.
+
+---
+
+## TASK 19 — Create Image Preprocessing Utility
+
+READ rules.md first.
+File to CREATE: lib/core/utils/image_utils.dart
+
+Implement a utility using the `image` package to:
+1. **Decode** bytes.
+2. **Center Crop** to a square.
+3. **Resize** to 224x224.
+4. **Normalize** to `[0.0, 1.0]` (pixel / 255.0).
+5. Return a `List<double>` (Float32 format).
+
+```dart
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
+
+class ImageUtils {
+  static List<double> preprocessForTFLite(Uint8List bytes) {
+    final image = img.decodeImage(bytes);
+    if (image == null) return [];
+
+    // 1. Center Crop to Square
+    int size = image.width < image.height ? image.width : image.height;
+    int x = (image.width - size) ~/ 2;
+    int y = (image.height - size) ~/ 2;
+    final cropped = img.copyCrop(image, x: x, y: y, width: size, height: size);
+
+    // 2. Resize to 224x224
+    final resized = img.copyResize(cropped, width: 224, height: 224);
+
+    // 3. Normalize to [0.0, 1.0]
+    final floatList = <double>[];
+    for (var pixel in resized) {
+      floatList.add(pixel.r / 255.0);
+      floatList.add(pixel.g / 255.0);
+      floatList.add(pixel.b / 255.0);
+    }
+    return floatList;
+  }
+}
+```
+
+✅ Test: `flutter analyze` clean.
+
+---
+
+## TASK 20 — Update PictureNotifier for Dual-Inference
+
+READ rules.md first.
+File: lib/core/providers/picture_provider.dart
+
+1. **Update PictureState**: Add `double nativeScore` and `List<String> googleLabels`.
+2. **Update verifyPicture()**:
+   - Capture current frame.
+   - Run `TFLiteMissionService.evaluateSimilarity` using `ImageUtils`.
+   - Run `MissionMLService.detectObjects` for Google labels.
+   - Update state with both.
+   - Return `true` if `nativeScore > 0.85` OR Google ML detects the `_targetObject`.
+
+✅ Test: `flutter analyze` clean.
+
+---
+
+## TASK 21 — Dual-Report UI in PictureMissionScreen
+
+READ rules.md first.
+File: lib/features/missions/picture_mission_screen.dart
+
+1. **Display Native Report**: Show a row with "Native Similarity: (state.nativeScore * 100).toStringAsFixed(1)%".
+2. **Display Google Report**: Show a row with "Google ML Labels: state.googleLabels.join(', ')".
+3. **Success Animation**: Only trigger success if the verification passes.
+
+✅ Test: Final verification on device. Both ML reports are visible and updating.

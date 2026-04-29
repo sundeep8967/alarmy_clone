@@ -154,8 +154,11 @@ class PictureMissionScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             Text(
               'Using ML to verify image',
-              style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 14),
+              style: TextStyle(color: Colors.white.withValues(alpha: 0.5), fontSize: 14),
             ),
+            const SizedBox(height: 24),
+            // Dual-ML Reports
+            _buildMLReports(pictureState),
           ],
         ),
       );
@@ -209,6 +212,96 @@ class PictureMissionScreen extends ConsumerWidget {
     );
   }
 
+  Widget _buildMLReports(PictureState pictureState) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        children: [
+          // Native TFLite Similarity Score
+          GlassContainer(
+            blur: 10,
+            opacity: 0.1,
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                children: [
+                  const Icon(Icons.memory, color: Color(0xFF00FF85), size: 20),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Native Similarity',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          '${(pictureState.nativeScore * 100).toStringAsFixed(1)}%',
+                          style: TextStyle(
+                            color: pictureState.nativeScore > 0.85 
+                                ? const Color(0xFF00FF85) 
+                                : Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Google ML Kit Labels
+          GlassContainer(
+            blur: 10,
+            opacity: 0.1,
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                children: [
+                  const Icon(Icons.cloud, color: Color(0xFF3B8CFF), size: 20),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Google ML Labels',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          pictureState.googleLabels.isEmpty 
+                              ? 'Scanning...'
+                              : pictureState.googleLabels.take(3).join(', '),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildBottomControls({
     required PictureState pictureState,
     required VoidCallback onCapture,
@@ -230,11 +323,11 @@ class PictureMissionScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                Row(
+                const Row(
                   children: [
-                    const Icon(Icons.camera_alt, color: Color(0xFFFF3B30), size: 32),
-                    const SizedBox(width: 20),
-                    const Expanded(
+                    Icon(Icons.camera_alt, color: Color(0xFFFF3B30), size: 32),
+                    SizedBox(width: 20),
+                    Expanded(
                       child: Text(
                         'Take a photo of any object',
                         style: TextStyle(
