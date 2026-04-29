@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import '../../core/providers/motivation_provider.dart';
+import '../../core/models/motivation_model.dart';
 
 class MorningScreen extends ConsumerWidget {
   const MorningScreen({super.key});
@@ -77,60 +78,67 @@ class MorningScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildMotivationCard(motivation) {
-    return FadeInUp(
-      delay: const Duration(milliseconds: 1400),
-      child: GlassContainer(
-        blur: 20,
-        opacity: 0.1,
-        borderRadius: BorderRadius.circular(24),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.format_quote,
-                    color: Color(0xFFFFD700),
-                    size: 24,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Daily Motivation',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.6),
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
+  Widget _buildMotivationCard(AsyncValue<MotivationModel> motivationAsync) {
+    return motivationAsync.when(
+      data: (motivation) => FadeInUp(
+        delay: const Duration(milliseconds: 1400),
+        child: GlassContainer(
+          blur: 20,
+          opacity: 0.1,
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.format_quote,
+                      color: Color(0xFFFFD700),
+                      size: 24,
                     ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Daily Motivation',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.6),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  motivation.quote,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
                   ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                motivation.quote,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  height: 1.4,
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                '— ${motivation.author}',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
-                  fontSize: 14,
-                  fontStyle: FontStyle.italic,
+                const SizedBox(height: 12),
+                Text(
+                  '— ${motivation.author}',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.5),
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
+      loading: () => const SizedBox(
+        height: 150,
+        child: Center(child: CircularProgressIndicator(color: Color(0xFFFFD700))),
+      ),
+      error: (_, __) => const SizedBox.shrink(),
     );
   }
 

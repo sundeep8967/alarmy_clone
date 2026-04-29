@@ -2,22 +2,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/motivation_model.dart';
 import '../services/motivation_service.dart';
 
-class MotivationNotifier extends Notifier<MotivationModel> {
+class MotivationNotifier extends AsyncNotifier<MotivationModel> {
   @override
-  MotivationModel build() {
-    // Return a random quote on initialization
-    return MotivationService.getRandomQuote();
+  Future<MotivationModel> build() async {
+    return MotivationService.getRandomQuoteAsync();
   }
 
-  void refreshQuote() {
-    state = MotivationService.getRandomQuote();
-  }
-
-  void setQuote(MotivationModel quote) {
-    state = quote;
+  Future<void> refreshQuote() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() => MotivationService.getRandomQuoteAsync());
   }
 }
 
-final motivationProvider = NotifierProvider<MotivationNotifier, MotivationModel>(
+final motivationProvider = AsyncNotifierProvider<MotivationNotifier, MotivationModel>(
   MotivationNotifier.new,
 );

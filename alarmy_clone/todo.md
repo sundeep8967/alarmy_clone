@@ -11,7 +11,7 @@
 | Missions | Done | Math, shake, tiles, typing, QR, photo, and ML-based Squat, Step, and Picture |
 | Habit Alarm | Done | Habit streaks calculated, 12-week calendar UI added |
 | Sleep Tab | Done | Real-time PCM audio stream, decibel meter, YAMNet snore detection |
-| Morning Tab | Partial | UI exists, but needs localized motivation quotes |
+| Morning Tab | Done | Loads real motivation quotes from localization JSONs |
 | Report Tab | Done | Bar charts, timeline, detailed analytics built via fl_chart |
 | Alarm Ring | Done | Wake locks, full-screen intent, draw over lock screen |
 
@@ -23,20 +23,19 @@
 
 | # | Feature | APK Evidence | Priority |
 |---|---------|-----------|----------|
-| 1 | **Morning Motivation** | `today/motivation` + `motivation_*.json` (8 languages) | 🟡 Medium |
-| 2 | **Home Screen Widget** | `feature/widget` (1 dir) | 🟡 Medium |
-| 3 | **Settings — About** | App version, credits, open source licenses | 🟡 Medium |
-| 4 | **Settings — Feedback** | Contact support, report bug, rate app | 🟡 Medium |
-| 5 | **Settings — Language** | Multi-language support (20+ languages) | 🟡 Medium |
-| 6 | **Settings — Theme** | Dark/light mode, accent color | 🟡 Medium |
+| 1 | **Home Screen Widget** | `feature/widget` (1 dir) | 🟡 Medium |
+| 2 | **Settings — About** | App version, credits, open source licenses | 🟡 Medium |
+| 3 | **Settings — Feedback** | Contact support, report bug, rate app | 🟡 Medium |
+| 4 | **Settings — Language** | Multi-language support (20+ languages) | 🟡 Medium |
+| 5 | **Settings — Theme** | Dark/light mode, accent color | 🟡 Medium |
 
 ### 🔵 FUTURE — Cloud & Auth
 
 | # | Feature | APK Evidence | Priority |
 |---|---------|-----------|----------|
-| 7 | **User Auth** | `feature/auth` (15 dirs) — login/signup | 🔵 Future |
-| 8 | **Cloud Backup** | Firebase/Google account sync implied | 🔵 Future |
-| 9 | **Cross-Device Sync** | Alarms sync across devices | 🔵 Future |
+| 6 | **User Auth** | `feature/auth` (15 dirs) — login/signup | 🔵 Future |
+| 7 | **Cloud Backup** | Firebase/Google account sync implied | 🔵 Future |
+| 8 | **Cross-Device Sync** | Alarms sync across devices | 🔵 Future |
 
 ---
 
@@ -57,7 +56,7 @@
 | # | Asset | Languages | Status |
 |---|-------|-----------|--------|
 | 1 | **Typing Mission Phrases** | 20+ JSON files (en, ko, ja, zh, es, etc.) | ❌ Missing |
-| 2 | **Motivation Quotes** | 8 language packs | ❌ Missing |
+| 2 | **Motivation Quotes** | `typing_mission_phrase_motivational_en.json` | ✅ Integrated |
 | 3 | **GDPR Consent** | 40+ language Didomi configs | ❌ Missing |
 | 4 | **Default Country Location** | `default_country_location.json` | ❌ Missing |
 
@@ -81,7 +80,7 @@
 | Category | Implemented | Partial | Missing |
 |----------|-------------|---------|---------|
 | Core Alarm | 8 | 0 | 0 |
-| Sleep/Morning | 1 | 1 | 0 |
+| Sleep/Morning | 2 | 0 | 0 |
 | ML/AI | 3 | 0 | 2 |
 | Premium/Monetization | 0 | 0 | 4 (Skipped) |
 | Cloud/Auth | 0 | 0 | 3 |
@@ -91,7 +90,6 @@
 
 ## 🔧 RECOMMENDED BUILD ORDER (Remaining)
 
-1. **Morning motivation** — fetch daily quotes/affirmations JSONs
-2. **Settings Expansion** — About, Feedback, Language toggles
-3. **Home widget** — display next alarm on launcher
-4. **Auth/backup** — cloud sync for alarms
+1. **Settings Expansion** — About, Feedback, Language toggles
+2. **Home widget** — display next alarm on launcher
+3. **Auth/backup** — cloud sync for alarms
