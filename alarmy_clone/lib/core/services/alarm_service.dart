@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/alarm_model.dart';
 import '../database/database_helper.dart';
 
@@ -203,7 +204,7 @@ class AlarmService {
       // - High movement levels (accelerometer)
       // - Elevated noise levels (microphone decibels)
       // - Sleep stage data from wearables
-      final isLightSleepDetected = _detectLightSleep();
+      final isLightSleepDetected = await _detectLightSleep();
 
       if (isLightSleepDetected) {
         // Light sleep detected - trigger alarm early!
@@ -238,14 +239,15 @@ class AlarmService {
     }
   }
 
-  // Simulated light sleep detection - in reality this would query sleep data
-  static bool _detectLightSleep() {
-    // Placeholder: In a real implementation, this would check:
-    // - Recent accelerometer movement data
-    // - Noise/decibel levels from microphone
-    // - Wearable sleep stage data
-    // For demo purposes, randomly return true 30% of the time
-    return DateTime.now().millisecond % 10 < 3;
+  // Checks light sleep state derived from YAMNet data in SleepTrackingService
+  static Future<bool> _detectLightSleep() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // Default to true (light sleep) if not set, to ensure smart alarm eventually fires
+      return prefs.getBool('is_light_sleep') ?? true;
+    } catch (e) {
+      return true; 
+    }
   }
 
   // Pre-alarm callback - gentle wake up check (fallback for when Smart Alarm is disabled)

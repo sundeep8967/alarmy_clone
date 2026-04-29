@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 12,
+      version: 14,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -71,6 +71,16 @@ CREATE TABLE habit_stats (
 ''');
     // Initialize habit stats row
     await db.insert('habit_stats', {'id': 1, 'current_streak': 0, 'longest_streak': 0});
+    await db.execute('''
+CREATE TABLE sleep_sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  startTime TEXT NOT NULL,
+  endTime TEXT,
+  durationMinutes INTEGER NOT NULL,
+  snoreCount INTEGER NOT NULL DEFAULT 0,
+  avgDecibels REAL
+)
+''');
   }
 
   Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
@@ -130,6 +140,33 @@ CREATE TABLE habit_stats (
     }
     if (oldVersion < 12) {
       await db.execute('ALTER TABLE alarms ADD COLUMN timePressure INTEGER NOT NULL DEFAULT 0');
+    }
+    if (oldVersion < 13) {
+      await db.execute('''
+CREATE TABLE sleep_sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  startTime TEXT NOT NULL,
+  endTime TEXT,
+  durationMinutes INTEGER NOT NULL,
+  snoreCount INTEGER NOT NULL DEFAULT 0,
+  avgDecibels REAL
+)
+''');
+    }
+    if (oldVersion < 14) {
+      // Recreate sleep_sessions with correct schema (endTime nullable, avgDecibels added).
+      // Any existing session data is discarded — the table was just added in v13.
+      await db.execute('DROP TABLE IF EXISTS sleep_sessions');
+      await db.execute('''
+CREATE TABLE sleep_sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  startTime TEXT NOT NULL,
+  endTime TEXT,
+  durationMinutes INTEGER NOT NULL,
+  snoreCount INTEGER NOT NULL DEFAULT 0,
+  avgDecibels REAL
+)
+''');
     }
   }
 
@@ -254,6 +291,86 @@ CREATE TABLE habit_stats (
   Future<List<Map<String, dynamic>>> getAllRecords() async {
     final db = await instance.database;
     return await db.query('records', orderBy: 'timestamp DESC');
+  }
+
+  /// Returns a map of dateKey → {'success': int, 'snoozed': int} for the last [days] days.
+  /// Used by the streak calendar UI.
+  Future<Map<String, Map<String, int>>> getCalendarRecords({int days = 84}) async {
+    final db = await instance.database;
+    final endDate = DateTime.now();
+    final startDate = endDate.subtract(Duration(days: days - 1));
+
+    final records = await db.query(
+      'records',
+      where: 'timestamp >= ?',
+      whereArgs: [DateTime(startDate.year, startDate.month, startDate.day).toIso8601String()],
+      orderBy: 'timestamp ASC',
+    );
+
+    final Map<String, Map<String, int>> result = {};
+    for (int i = 0; i < days; i++) {
+      final date = endDate.subtract(Duration(days: i));
+      final key = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      result[key] = {'success': 0, 'snoozed': 0};
+    }
+
+    for (final record in records) {
+      final ts = DateTime.parse(record['timestamp'] as String);
+      final key = '${ts.year}-${ts.month.toString().padLeft(2, '0')}-${ts.day.toString().padLeft(2, '0')}';
+      if (result.containsKey(key)) {
+        if (record['isSuccess'] == 1) {
+          result[key]!['success'] = (result[key]!['success'] ?? 0) + 1;
+        } else {
+          result[key]!['snoozed'] = (result[key]!['snoozed'] ?? 0) + 1;
+        }
+      }
+    }
+    return result;
+  }
+
+  // --- Sleep Sessions Logic ---
+
+  Future<void> insertSleepSession(Map<String, dynamic> session) async {
+    final db = await instance.database;
+    await db.insert('sleep_sessions', session);
+  }
+
+  Future<Map<String, Map<String, dynamic>>> get7DaySleepStats() async {
+    final db = await instance.database;
+    final endDate = DateTime.now();
+    final startDate = endDate.subtract(const Duration(days: 6));
+    
+    final sessions = await db.query(
+      'sleep_sessions',
+      where: 'startTime >= ?',
+      whereArgs: [startDate.toIso8601String()],
+      orderBy: 'startTime DESC',
+    );
+
+    // Initialize all 7 days with 0 duration, 0 snores, and 0 avgDecibels
+    final Map<String, Map<String, dynamic>> stats = {};
+    for (int i = 0; i < 7; i++) {
+      final date = endDate.subtract(Duration(days: i));
+      final dateKey = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      stats[dateKey] = {'durationMinutes': 0, 'snoreCount': 0, 'avgDecibels': 0.0};
+    }
+
+    // Aggregate sessions
+    for (final session in sessions) {
+      final timestamp = DateTime.parse(session['startTime'] as String);
+      final dateKey = '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
+      
+      if (stats.containsKey(dateKey)) {
+        stats[dateKey]!['durationMinutes'] = (stats[dateKey]!['durationMinutes'] as int) + (session['durationMinutes'] as int);
+        stats[dateKey]!['snoreCount'] = (stats[dateKey]!['snoreCount'] as int) + ((session['snoreCount'] as int?) ?? 0);
+        // Average the avgDecibels across sessions for the same day
+        final existingDb = stats[dateKey]!['avgDecibels'] as double;
+        final newDb = (session['avgDecibels'] as num?)?.toDouble() ?? 0.0;
+        stats[dateKey]!['avgDecibels'] = existingDb == 0.0 ? newDb : (existingDb + newDb) / 2;
+      }
+    }
+
+    return stats;
   }
 
   // --- Habit Stats Methods ---

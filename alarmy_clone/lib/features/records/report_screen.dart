@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../core/database/database_helper.dart';
 import '../../core/widgets/glass_card.dart';
 import '../../features/alarmhabit/habit_streak_service.dart';
+import '../../features/alarmhabit/streak_calendar_screen.dart';
 import 'dismiss_logs_screen.dart';
 
 final reportDataProvider = FutureProvider<Map<String, Map<String, int>>>((ref) async {
@@ -12,6 +13,10 @@ final reportDataProvider = FutureProvider<Map<String, Map<String, int>>>((ref) a
 
 final habitStatsProvider = FutureProvider<HabitStats>((ref) async {
   return await HabitStreakService.instance.getStats();
+});
+
+final sleepStatsProvider = FutureProvider<Map<String, Map<String, dynamic>>>((ref) async {
+  return await DatabaseHelper.instance.get7DaySleepStats();
 });
 
 class ReportScreen extends ConsumerWidget {
@@ -33,25 +38,42 @@ class ReportScreen extends ConsumerWidget {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context),
-              const SizedBox(height: 16),
-              _buildStreakCard(habitStats),
-              const SizedBox(height: 24),
-              Expanded(
-                child: reportData.when(
-                  data: (stats) => _buildChart(stats),
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (err, stack) => Center(
-                    child: Text('Error: $err', style: const TextStyle(color: Colors.white)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context),
+                const SizedBox(height: 16),
+                _buildStreakCard(context, habitStats),
+                const SizedBox(height: 24),
+                // Alarm History Chart
+                SizedBox(
+                  height: 300,
+                  child: reportData.when(
+                    data: (stats) => _buildChart(stats),
+                    loading: () => const Center(child: CircularProgressIndicator()),
+                    error: (err, stack) => Center(
+                      child: Text('Error: $err', style: const TextStyle(color: Colors.white)),
+                    ),
                   ),
                 ),
-              ),
-              _buildLegend(),
-              const SizedBox(height: 32),
-            ],
+                _buildLegend(),
+                const SizedBox(height: 24),
+                // Sleep Health Chart
+                SizedBox(
+                  height: 300,
+                  child: ref.watch(sleepStatsProvider).when(
+                    data: (stats) => _buildSleepHealthChart(stats),
+                    loading: () => const Center(child: CircularProgressIndicator()),
+                    error: (err, stack) => Center(
+                      child: Text('Error: $err', style: const TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ),
+                _buildSleepLegend(),
+                const SizedBox(height: 32),
+              ],
+            ),
           ),
         ),
       ),
@@ -79,7 +101,7 @@ class ReportScreen extends ConsumerWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const DismissLogsScreen()),
+                    MaterialPageRoute<void>(builder: (_) => const DismissLogsScreen()),
                   );
                 },
                 icon: const Icon(Icons.history, size: 18),
@@ -108,7 +130,7 @@ class ReportScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStreakCard(AsyncValue<HabitStats> habitStats) {
+  Widget _buildStreakCard(BuildContext context, AsyncValue<HabitStats> habitStats) {
     return habitStats.when(
       data: (stats) => Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -141,7 +163,7 @@ class ReportScreen extends ConsumerWidget {
                 size: 32,
               ),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +184,7 @@ class ReportScreen extends ConsumerWidget {
                       fontSize: 14,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
                     'Longest: ${stats.longestStreak} day${stats.longestStreak == 1 ? '' : 's'}',
                     style: TextStyle(
@@ -171,6 +193,28 @@ class ReportScreen extends ConsumerWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            // Calendar shortcut button
+            GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute<void>(builder: (_) => const StreakCalendarScreen()),
+              ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                ),
+                child: const Column(
+                  children: [
+                    Icon(Icons.calendar_month_rounded, color: Colors.white, size: 22),
+                    SizedBox(height: 4),
+                    Text('Calendar', style: TextStyle(color: Colors.white70, fontSize: 10)),
+                  ],
+                ),
               ),
             ),
           ],
@@ -187,6 +231,7 @@ class ReportScreen extends ConsumerWidget {
     );
   }
 
+
   Widget _buildChart(Map<String, Map<String, int>> stats) {
     // Sort dates and prepare data
     final sortedDates = stats.keys.toList()..sort();
@@ -200,108 +245,273 @@ class ReportScreen extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: GlassContainer(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const Text(
-              'Alarm History',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const Text(
+                'Alarm History',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: BarChart(
-                BarChartData(
-                  alignment: BarChartAlignment.spaceAround,
-                  maxY: yLimit,
-                  barTouchData: BarTouchData(
-                    touchTooltipData: BarTouchTooltipData(
-                      tooltipBgColor: const Color(0xFF2A2A30),
-                      getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                        final isSuccess = rodIndex == 0;
-                        final value = rod.toY.toInt();
-                        return BarTooltipItem(
-                          '${isSuccess ? 'Success' : 'Snoozed'}: $value',
-                          const TextStyle(color: Colors.white, fontSize: 12),
-                        );
-                      },
+              const SizedBox(height: 20),
+              Expanded(
+                child: BarChart(
+                  BarChartData(
+                    alignment: BarChartAlignment.spaceAround,
+                    maxY: yLimit.toDouble(),
+                    barTouchData: BarTouchData(
+                      touchTooltipData: BarTouchTooltipData(
+                        getTooltipColor: (_) => const Color(0xFF2A2A30),
+                        getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                          final isSuccess = rodIndex == 0;
+                          final value = rod.toY.toInt();
+                          return BarTooltipItem(
+                            '${isSuccess ? 'Success' : 'Snoozed'}: $value',
+                            const TextStyle(color: Colors.white, fontSize: 12),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  titlesData: FlTitlesData(
-                    show: true,
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          final index = value.toInt();
-                          if (index < 0 || index >= sortedDates.length) return const SizedBox.shrink();
-                          final dateParts = sortedDates[index].split('-');
-                          final day = int.parse(dateParts[2]);
-                          final month = int.parse(dateParts[1]);
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              '$day/${month.toString().padLeft(2, '0')}',
+                    titlesData: FlTitlesData(
+                      show: true,
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            final index = value.toInt();
+                            if (index < 0 || index >= sortedDates.length) return const SizedBox.shrink();
+                            final dateParts = sortedDates[index].split('-');
+                            final day = int.parse(dateParts[2]);
+                            final month = int.parse(dateParts[1]);
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                '$day/${month.toString().padLeft(2, '0')}',
+                                style: const TextStyle(
+                                  color: Colors.white60,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            );
+                          },
+                          reservedSize: 30,
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            if (value == 0) return const SizedBox.shrink();
+                            return Text(
+                              value.toInt().toString(),
                               style: const TextStyle(
                                 color: Colors.white60,
                                 fontSize: 10,
                               ),
-                            ),
-                          );
-                        },
-                        reservedSize: 30,
+                            );
+                          },
+                          reservedSize: 30,
+                        ),
                       ),
+                      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          if (value == 0) return const SizedBox.shrink();
-                          return Text(
-                            value.toInt().toString(),
-                            style: const TextStyle(
-                              color: Colors.white60,
-                              fontSize: 10,
-                            ),
-                          );
-                        },
-                        reservedSize: 30,
-                      ),
-                    ),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    barGroups: List.generate(sortedDates.length, (index) {
+                      return BarChartGroupData(
+                        x: index,
+                        barRods: [
+                          // Success bar
+                          BarChartRodData(
+                            toY: successData[index],
+                            color: const Color(0xFF00FF85),
+                            width: 12,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          ),
+                          // Snoozed bar
+                          BarChartRodData(
+                            toY: snoozedData[index],
+                            color: const Color(0xFFFF3B30),
+                            width: 12,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          ),
+                        ],
+                      );
+                    }),
                   ),
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  barGroups: List.generate(sortedDates.length, (index) {
-                    return BarChartGroupData(
-                      x: index,
-                      barRods: [
-                        // Success bar
-                        BarChartRodData(
-                          toY: successData[index],
-                          color: const Color(0xFF00FF85),
-                          width: 12,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                        ),
-                        // Snoozed bar
-                        BarChartRodData(
-                          toY: snoozedData[index],
-                          color: const Color(0xFFFF3B30),
-                          width: 12,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                        ),
-                      ],
-                    );
-                  }),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSleepHealthChart(Map<String, Map<String, dynamic>> stats) {
+    final sortedDates = stats.keys.toList()..sort();
+    final durationData = sortedDates.map((d) => (stats[d]!['durationMinutes'] as int) / 60.0).toList();
+    final snoreData = sortedDates.map((d) => (stats[d]!['snoreCount'] as int).toDouble()).toList();
+
+    final maxDuration = durationData.fold<double>(0, (max, v) => v > max ? v : max);
+    final maxSnores = snoreData.fold<double>(0, (max, v) => v > max ? v : max);
+
+    // Show empty state when no sleep data has been recorded
+    if (maxDuration == 0 && maxSnores == 0) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: GlassContainer(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.bedtime_outlined, color: Colors.white24, size: 48),
+                const SizedBox(height: 16),
+                const Text(
+                  'No sleep data yet',
+                  style: TextStyle(color: Colors.white54, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Start a sleep tracking session to see your stats here.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white24, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Scale snores to fit in the same chart area if they are very large
+    // We'll show the real value in tooltips
+    final snoreScale = maxSnores > 0 ? (maxDuration > 0 ? maxDuration / maxSnores : 1.0) : 1.0;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: GlassContainer(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const Text(
+                'Sleep Health Metrics',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: BarChart(
+                  BarChartData(
+                    alignment: BarChartAlignment.spaceAround,
+                    maxY: (maxDuration < 5 ? 5.0 : maxDuration * 1.2),
+                    barTouchData: BarTouchData(
+                      touchTooltipData: BarTouchTooltipData(
+                        getTooltipColor: (_) => const Color(0xFF2A2A30),
+                        getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                          final date = sortedDates[groupIndex];
+                          final hours = (stats[date]!['durationMinutes'] as int) / 60.0;
+                          final snores = stats[date]!['snoreCount'] as int;
+
+                          final h = hours.floor();
+                          final m = ((hours - h) * 60).round();
+
+                          return BarTooltipItem(
+                            'Sleep: ${h}h ${m}m\nSnores: $snores',
+                            const TextStyle(color: Colors.white, fontSize: 12),
+                          );
+                        },
+                      ),
+                    ),
+                    titlesData: FlTitlesData(
+                      show: true,
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            final index = value.toInt();
+                            if (index < 0 || index >= sortedDates.length) return const SizedBox.shrink();
+                            final dateParts = sortedDates[index].split('-');
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                '${dateParts[2]}/${dateParts[1]}',
+                                style: const TextStyle(color: Colors.white60, fontSize: 10),
+                              ),
+                            );
+                          },
+                          reservedSize: 30,
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            if (value == 0) return const SizedBox.shrink();
+                            return Text(
+                              '${value.toInt()}h',
+                              style: const TextStyle(color: Colors.white60, fontSize: 10),
+                            );
+                          },
+                          reservedSize: 30,
+                        ),
+                      ),
+                      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    ),
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    barGroups: List.generate(sortedDates.length, (index) {
+                      return BarChartGroupData(
+                        x: index,
+                        barRods: [
+                          // Duration Rod
+                          BarChartRodData(
+                            toY: durationData[index],
+                            color: const Color(0xFF3B8CFF),
+                            width: 10,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          ),
+                          // Snore Rod (Scaled for visualization)
+                          BarChartRodData(
+                            toY: snoreData[index] * snoreScale,
+                            color: const Color(0xFFFFCC00),
+                            width: 10,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSleepLegend() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildLegendItem(const Color(0xFF3B8CFF), 'Hours Slept'),
+          const SizedBox(width: 32),
+          _buildLegendItem(const Color(0xFFFFCC00), 'Snore Count'),
+        ],
       ),
     );
   }

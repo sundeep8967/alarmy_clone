@@ -751,3 +751,75 @@ File: lib/features/missions/picture_mission_screen.dart
 3. **Success Animation**: Only trigger success if the verification passes.
 
 ✅ Test: Final verification on device. Both ML reports are visible and updating.
+
+---
+
+# ══════════════════════════════════════════
+# ADVANCED REPORTING UI & SMART ALARM
+# Objective: Implement sleep duration charts, timeline records, and real YAMNet smart alarm.
+# ══════════════════════════════════════════
+
+---
+
+## TASK 22 — Database Schema for Sleep Sessions
+
+READ rules.md first.
+File: `lib/core/database/database_helper.dart`
+
+1. **Create Table**: Update `_createDB` to add `sleep_sessions` table:
+   `id INTEGER PRIMARY KEY AUTOINCREMENT, startTime TEXT, endTime TEXT, durationMinutes INTEGER, snoreCount INTEGER`
+2. **Upgrade DB**: Update `_upgradeDB` to create this table for version 13. Update version to 13 in `_initDB`.
+3. **Methods**: Add `insertSleepSession(Map<String, dynamic> session)` and `get7DaySleepStats()`.
+
+✅ Test: `flutter analyze` clean.
+
+---
+
+## TASK 23 — Save Sessions in SleepTrackingService
+
+READ rules.md first.
+File: `lib/core/services/sleep_tracking_service.dart`
+
+1. **Stop Tracking**: In `stopTracking()`, calculate `durationMinutes` from `sessionStartTime`.
+2. **Count Snores**: Count events where `severity` is not background or `yamnetClass` is snore.
+3. **Save**: Call `DatabaseHelper.instance.insertSleepSession(...)`.
+
+✅ Test: `flutter analyze` clean.
+
+---
+
+## TASK 24 — Advanced Reporting UI (report_screen.dart)
+
+READ rules.md first.
+File: `lib/features/records/report_screen.dart`
+
+1. **New Provider**: Add `sleepStatsProvider` that calls `get7DaySleepStats()`.
+2. **Sleep Chart**: Create `_buildSleepDurationChart(stats)` using `fl_chart`. ADD this below the existing "Alarm History" chart. Do not delete the old chart.
+3. **Y-Axis**: Represent hours slept. **X-Axis**: Represent days.
+
+✅ Test: `flutter analyze` clean.
+
+---
+
+## TASK 25 — Timeline View (records_screen.dart)
+
+READ rules.md first.
+File: `lib/features/records/records_screen.dart`
+
+1. **Fetch Data**: Update `_loadStats` to fetch the full list of recent records.
+2. **Timeline UI**: Replace the mock M/T/W/T/F/S/S bars with a `ListView.builder` timeline.
+3. **List Items**: Each item shows the alarm time, whether it was success/snooze, and `solvingTimeSeconds`.
+
+✅ Test: `flutter analyze` clean.
+
+---
+
+## TASK 26 — Real YAMNet Smart Alarm
+
+READ rules.md first.
+File: `lib/core/services/alarm_service.dart`
+
+1. **Link YAMNet**: In `_detectLightSleep()`, check a global or shared state from `SleepTrackingService` to see if the user is currently in light sleep (low decibels, no snores in the last X minutes) instead of the random 30% simulation.
+2. **Trigger**: Ensure the Smart Alarm fires correctly if light sleep is detected.
+
+✅ Test: `flutter analyze` clean.

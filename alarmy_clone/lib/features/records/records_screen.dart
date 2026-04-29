@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import '../../core/repositories/alarm_repository.dart';
-import '../alarm_editor/alarm_editor_screen.dart';
 
 class RecordsScreen extends ConsumerStatefulWidget {
   const RecordsScreen({super.key});
@@ -38,6 +37,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
       'successRate': successRate,
       'avgSolvingTime': avgSolvingTime,
       'count': recentRecords.length,
+      'records': recentRecords,
     };
   }
 
@@ -58,7 +58,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
             future: _statsFuture,
             builder: (context, snapshot) {
               final stats = snapshot.data ?? {'successRate': 0.0, 'avgSolvingTime': 0.0, 'count': 0};
-              final successPercent = (stats['successRate'] * 100).toInt();
+              final successPercent = ((stats['successRate'] as num) * 100).toInt();
               final avgTime = stats['avgSolvingTime'] as double;
               final timeStr = avgTime > 60 
                   ? '${(avgTime / 60).floor()}m ${(avgTime % 60).toInt()}s'
@@ -76,9 +76,11 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
                     const SizedBox(height: 24),
                     _buildTabPills(),
                     const SizedBox(height: 40),
-                    _buildSuccessRateCard(successPercent),
+                    _buildStatsRow(timeStr, successPercent),
                     const SizedBox(height: 32),
-                    _buildStatsRow(timeStr),
+                    const Text('Recent Records', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 16),
+                    _buildTimeline(stats['records'] as List<Map<String, dynamic>>? ?? []),
                     const SizedBox(height: 40),
                     if (stats['count'] == 0) _buildEmptyState(context),
                     const SizedBox(height: 40),
@@ -132,62 +134,72 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
     );
   }
 
-  Widget _buildSuccessRateCard(int percent) {
-    return FadeInUp(
-      child: GlassContainer(
-        blur: 20,
-        opacity: 0.1,
-        borderRadius: BorderRadius.circular(32),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Success Rate', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                  Text('$percent%', style: const TextStyle(color: Color(0xFF00FF85), fontSize: 24, fontWeight: FontWeight.bold)),
-                ],
+  Widget _buildTimeline(List<Map<String, dynamic>> records) {
+    if (records.isEmpty) return const SizedBox.shrink();
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: records.length,
+      itemBuilder: (context, index) {
+        final record = records[index];
+        final isSuccess = record['isSuccess'] == 1;
+        final timestamp = DateTime.parse(record['timestamp'] as String);
+        final solvingTime = record['solvingTimeSeconds'] as int?;
+
+        String timeText = '';
+        if (solvingTime != null) {
+          timeText = solvingTime > 60 
+            ? 'Dismissed in ${(solvingTime / 60).floor()}m ${(solvingTime % 60).toInt()}s'
+            : 'Dismissed in ${solvingTime}s';
+        } else {
+          timeText = isSuccess ? 'Success' : 'Snoozed/Skipped';
+        }
+
+        final timeOfDay = TimeOfDay.fromDateTime(timestamp).format(context);
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: GlassContainer(
+            blur: 15,
+            opacity: 0.05,
+            borderRadius: BorderRadius.circular(16),
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: isSuccess ? const Color(0xFF00FF85).withValues(alpha: 0.2) : const Color(0xFFFF3B30).withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  isSuccess ? Icons.check : Icons.close,
+                  color: isSuccess ? const Color(0xFF00FF85) : const Color(0xFFFF3B30),
+                  size: 20,
+                ),
               ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: List.generate(7, (i) {
-                  final height = [40, 60, 30, 50, 45, 70, percent > 0 ? percent * 0.8 : 10.0][i];
-                  final isToday = i == 6;
-                  return Column(
-                    children: [
-                      Container(
-                        width: 32,
-                        height: height.toDouble(),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: isToday ? [const Color(0xFFFF3B30), const Color(0xFFFF7A00)] : [Colors.white12, Colors.white10],
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(['M', 'T', 'W', 'T', 'F', 'S', 'S'][i], style: TextStyle(color: isToday ? Colors.white : Colors.white24, fontSize: 12)),
-                    ],
-                  );
-                }),
+              title: Text(
+                timeOfDay,
+                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ],
+              subtitle: Text(
+                timeText,
+                style: const TextStyle(color: Colors.white54, fontSize: 14),
+              ),
+              trailing: Text(
+                '${timestamp.day}/${timestamp.month}',
+                style: const TextStyle(color: Colors.white38, fontSize: 12),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildStatsRow(String timeStr) {
+  Widget _buildStatsRow(String timeStr, int successPercent) {
     return Row(
       children: [
-        _buildStatItem('---', 'Avg. wake-up', const Color(0xFF00D1FF)),
+        _buildStatItem('$successPercent%', 'Success Rate', const Color(0xFF00D1FF)),
         const SizedBox(width: 16),
         _buildStatItem(timeStr, 'Avg. to solve', const Color(0xFF00FF85)),
       ],

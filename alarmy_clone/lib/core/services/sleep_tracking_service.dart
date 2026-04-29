@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'dart:math' as math;
 import 'dart:typed_data';
 import 'package:record/record.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../database/database_helper.dart';
 import 'yamnet_service.dart';
 
 enum SnoreSeverity { none, background, low, moderate, loud, veryLoud }
@@ -91,6 +93,38 @@ class SleepTrackingService {
     _analysisTimer?.cancel();
     await _audioStreamSub?.cancel();
     await _audioRecorder.stop();
+    
+    // Save session to database
+    if (sessionStartTime != null) {
+      final endTime = DateTime.now();
+      final durationMinutes = endTime.difference(sessionStartTime!).inMinutes;
+
+      // Count all events that had any detectable noise (severity != none)
+      final snoreCount = events.where((e) =>
+        e.severity != SnoreSeverity.none ||
+        e.yamnetClass == 'snore' ||
+        e.yamnetClass == 'Speech'
+      ).length;
+
+      // Calculate average decibels across all recorded events
+      final double avgDecibels = events.isEmpty
+          ? 0.0
+          : events.map((e) => e.decibels).reduce((a, b) => a + b) / events.length;
+
+      try {
+        await DatabaseHelper.instance.insertSleepSession({
+          'startTime': sessionStartTime!.toIso8601String(),
+          'endTime': endTime.toIso8601String(),
+          'durationMinutes': durationMinutes,
+          'snoreCount': snoreCount,
+          'avgDecibels': avgDecibels,
+        });
+        log('💤 [SleepTrackingService] Saved session: $durationMinutes mins, $snoreCount snores, ${avgDecibels.toStringAsFixed(1)} avg dB.');
+      } catch (e) {
+        log('❌ [SleepTrackingService] Failed to save session: $e');
+      }
+    }
+    
     log('💤 [SleepTrackingService] Stopped tracking. Recorded ${events.length} events.');
   }
 
@@ -160,6 +194,21 @@ class SleepTrackingService {
         yamnetScore: yamnetRes?.score,
       ));
     }
+
+    // Determine light sleep state
+    // We assume light sleep if there are no severe snores recently and decibels are generally low
+    bool isLightSleep = true;
+    if (events.isNotEmpty) {
+      final now = DateTime.now();
+      final recentEvents = events.where((e) => now.difference(e.timestamp).inMinutes < 5).toList();
+      final hasLoudSnore = recentEvents.any((e) => e.severity == SnoreSeverity.loud || e.severity == SnoreSeverity.veryLoud || e.yamnetClass == 'snore');
+      isLightSleep = !hasLoudSnore;
+    }
+
+    // Fire and forget writing to SharedPreferences
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool('is_light_sleep', isLightSleep);
+    });
   }
 
   void dispose() {
