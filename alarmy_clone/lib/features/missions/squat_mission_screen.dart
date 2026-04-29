@@ -79,7 +79,7 @@ class SquatMissionScreen extends ConsumerWidget {
               ),
               Text(
                 'Perform full squats to dismiss',
-                style: const TextStyle(color: Colors.white54, fontSize: 14),
+                style: TextStyle(color: Colors.white54, fontSize: 14),
               ),
             ],
           ),

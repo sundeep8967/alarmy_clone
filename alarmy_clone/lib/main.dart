@@ -6,6 +6,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'main_scaffold.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'core/services/alarm_service.dart';
+import 'core/services/tflite_mission_service.dart';
+import 'core/services/mission_ml_service.dart';
 import 'features/alarm_ring/alarm_ring_screen.dart';
 import 'core/models/alarm_model.dart';
 import 'features/widget/home_widget_service.dart';
@@ -24,6 +26,8 @@ void main() async {
   
   await AlarmService.init();
   await HomeWidgetService.initialize();
+  await MissionMLService.initialize();
+  await TFLiteMissionService.initialize();
   
   await EasyLocalization.ensureInitialized();
 
@@ -106,20 +110,21 @@ class _MyAppState extends ConsumerState<MyApp> {
         useMaterial3: true,
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF3B30),
+          seedColor: const Color(0xFFFC314C), // Native primary_red
           brightness: Brightness.dark,
+          surface: const Color(0xFF212121), // Native blackThemeColorPrimary
         ),
-        scaffoldBackgroundColor: const Color(0xFF101014),
+        scaffoldBackgroundColor: const Color(0xFF121315), // Native alarm_background_dim
       ),
       // Light theme — used when device is in light mode
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF3B30),
+          seedColor: const Color(0xFFFC314C), // Native primary_red
           brightness: Brightness.light,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF2F2F7),
+        scaffoldBackgroundColor: const Color(0xFFF2F2F7), // Keeping standard light bg
       ),
       routerConfig: _router,
     );

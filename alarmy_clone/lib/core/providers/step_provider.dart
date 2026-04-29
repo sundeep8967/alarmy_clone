@@ -1,7 +1,7 @@
-import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pedometer/pedometer.dart';
-import '../services/mission_ml_service.dart';
+import 'sensor_buffer_provider.dart';
+import '../services/tflite_mission_service.dart';
 
 class StepState {
   const StepState({
@@ -34,37 +34,22 @@ class StepState {
 }
 
 class StepNotifier extends Notifier<StepState> {
-  StreamSubscription<StepCount>? _stepSubscription;
+  static const double _mlThreshold = 0.8; // 80% confidence required
+
+  SensorBufferProvider? _sensorBuffer;
 
   @override
   StepState build() {
-    _stepSubscription ??= Pedometer.stepCountStream.listen(
-      (stepCount) {
-        final latest = stepCount.steps;
-        final initial = state.initialSteps ?? latest;
-        final missionSteps = (latest - initial).clamp(0, 1 << 30);
-
-        state = state.copyWith(
-          initialSteps: initial,
-          currentSteps: latest,
-          stepsTakenDuringMission: missionSteps,
-          clearErrorMessage: true,
-        );
-      },
-      onError: (Object error) {
-        state = state.copyWith(
-          errorMessage: error.toString(),
-        );
-      },
+    _sensorBuffer ??= SensorBufferProvider(
+      windowSize: 20,
+      onWindowReady: _evaluateWindow,
     );
+    _sensorBuffer?.start();
 
-    ref.onDispose(() async {
-      await _stepSubscription?.cancel();
-      _stepSubscription = null;
+    ref.onDispose(() {
+      _sensorBuffer?.stop();
+      _sensorBuffer = null;
     });
-
-    // Reset walk tracking when provider initializes
-    MissionMLService.resetWalk();
 
     return const StepState(
       initialSteps: null,
@@ -74,9 +59,26 @@ class StepNotifier extends Notifier<StepState> {
     );
   }
 
-  // ML-based step evaluation
-  Future<bool> evaluateStep(int stepCount) async {
-    return await MissionMLService.evaluate(MissionType.walk, stepCount);
+  void _evaluateWindow(List<List<double>> window) {
+    final score = TFLiteMissionService.evaluateStep(window);
+    
+    // Debug: Print ML confidence score
+    debugPrint('[Step ML] Confidence score: ${score.toStringAsFixed(3)}');
+    
+    if (score >= _mlThreshold) {
+      debugPrint('[Step ML] ✓ Step detected! Score: ${score.toStringAsFixed(3)}');
+      incrementStep();
+      // Pause buffer for 0.8 seconds to prevent double-counting the same step
+      _sensorBuffer?.pauseForCooldown(const Duration(milliseconds: 800));
+    }
+  }
+
+  void incrementStep() {
+    final newCount = state.stepsTakenDuringMission + 1;
+    state = state.copyWith(
+      stepsTakenDuringMission: newCount,
+      clearErrorMessage: true,
+    );
   }
 }
 

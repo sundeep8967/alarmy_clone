@@ -1,13 +1,13 @@
-import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sensors_plus/sensors_plus.dart';
-import '../services/mission_ml_service.dart';
+import 'sensor_buffer_provider.dart';
+import '../services/tflite_mission_service.dart';
 
 class SquatState {
   const SquatState({
     required this.count,
     required this.isTargetReached,
-    required this.currentKneeAngle,
+    required this.currentKneeAngle, // kept for backward compatibility if UI needs it
     required this.isInDeepSquat,
   });
 
@@ -33,31 +33,21 @@ class SquatState {
 
 class SquatNotifier extends Notifier<SquatState> {
   static const int _targetSquats = 10;
-  static const double _downThreshold = -3.0;
-  static const double _upThreshold = 3.0;
+  static const double _mlThreshold = 0.8; // 80% confidence required
 
-  StreamSubscription<UserAccelerometerEvent>? _accelerometerSubscription;
-  bool _isDownDetected = false;
+  SensorBufferProvider? _sensorBuffer;
 
   @override
   SquatState build() {
-    _accelerometerSubscription ??= userAccelerometerEventStream().listen((event) {
-      final y = event.y;
+    _sensorBuffer ??= SensorBufferProvider(
+      windowSize: 20,
+      onWindowReady: _evaluateWindow,
+    );
+    _sensorBuffer?.start();
 
-      if (!_isDownDetected && y <= _downThreshold) {
-        _isDownDetected = true;
-        return;
-      }
-
-      if (_isDownDetected && y >= _upThreshold) {
-        _isDownDetected = false;
-        incrementSquat();
-      }
-    });
-
-    ref.onDispose(() async {
-      await _accelerometerSubscription?.cancel();
-      _accelerometerSubscription = null;
+    ref.onDispose(() {
+      _sensorBuffer?.stop();
+      _sensorBuffer = null;
     });
 
     return const SquatState(
@@ -68,26 +58,33 @@ class SquatNotifier extends Notifier<SquatState> {
     );
   }
 
+  void _evaluateWindow(List<List<double>> window) {
+    final score = TFLiteMissionService.evaluateSquat(window);
+    
+    // Debug: Print ML confidence score
+    debugPrint('[Squat ML] Confidence score: ${score.toStringAsFixed(3)}');
+    
+    // Provide some minimal UI feedback for deep squat if score is rising
+    if (score > 0.4 && !state.isInDeepSquat) {
+      state = state.copyWith(isInDeepSquat: true);
+    } else if (score < 0.2 && state.isInDeepSquat) {
+      state = state.copyWith(isInDeepSquat: false);
+    }
+
+    if (score >= _mlThreshold) {
+      debugPrint('[Squat ML] ✓ Squat detected! Score: ${score.toStringAsFixed(3)}');
+      incrementSquat();
+      // Pause buffer for 1.5 seconds to prevent double-counting the same squat
+      _sensorBuffer?.pauseForCooldown(const Duration(milliseconds: 1500));
+    }
+  }
+
   void incrementSquat() {
     final nextCount = state.count + 1;
     state = state.copyWith(
       count: nextCount,
       isTargetReached: nextCount >= _targetSquats,
-    );
-  }
-
-  // ML-based squat detection using pose landmarks
-  Future<void> evaluatePoseLandmarks(List<double> landmarks) async {
-    final isComplete = await MissionMLService.evaluate(MissionType.squat, landmarks);
-    
-    if (isComplete) {
-      incrementSquat();
-    }
-
-    // Update state with current angle info for UI feedback
-    state = state.copyWith(
-      currentKneeAngle: MissionMLService.lastKneeAngle,
-      isInDeepSquat: MissionMLService.wasInDeepSquat,
+      isInDeepSquat: false, // Reset after successful squat
     );
   }
 }
