@@ -31,7 +31,10 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
       backgroundColor: const Color(0xFF101014),
       appBar: AppBar(
         backgroundColor: const Color(0xFF101014),
-        title: const Text('Ringtone', style: TextStyle(color: Colors.white, fontSize: 18)),
+        title: const Text(
+          'Ringtone',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () {
@@ -45,7 +48,14 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
               ref.read(selectedSoundProvider.notifier).stopPreview();
               Navigator.pop(context, selectedId);
             },
-            child: const Text('Done', style: TextStyle(color: Color(0xFFFF3B30), fontSize: 16, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Done',
+              style: TextStyle(
+                color: Color(0xFFFF3B30),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -58,7 +68,11 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
                 padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
                 child: Text(
                   entry.key,
-                  style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               ...entry.value.map((sound) {
@@ -70,8 +84,12 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
                     ref.read(selectedSoundProvider.notifier).select(sound.id);
                   },
                   leading: Icon(
-                    isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-                    color: isSelected ? const Color(0xFFFF3B30) : Colors.white30,
+                    isSelected
+                        ? Icons.radio_button_checked
+                        : Icons.radio_button_unchecked,
+                    color: isSelected
+                        ? const Color(0xFFFF3B30)
+                        : Colors.white30,
                   ),
                   title: Text(
                     sound.name,
@@ -80,7 +98,13 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
                       fontSize: 16,
                     ),
                   ),
-                  trailing: isSelected ? const Icon(Icons.volume_up, color: Color(0xFFFF3B30), size: 20) : null,
+                  trailing: isSelected
+                      ? const Icon(
+                          Icons.volume_up,
+                          color: Color(0xFFFF3B30),
+                          size: 20,
+                        )
+                      : null,
                 );
               }),
             ],

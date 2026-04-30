@@ -36,19 +36,19 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
 
   Future<void> _handleDismiss() async {
     if (_isDismissing) return;
-    
+
     setState(() => _isDismissing = true);
-    
+
     // Stop vibration
     await Vibration.cancel();
-    
+
     // Cancel both the pre-alarm and main alarm
     final mainAlarmId = widget.alarm.id.hashCode;
     final secondaryAlarmId = mainAlarmId + 10000;
-    
+
     await AlarmService.cancelAlarmById(secondaryAlarmId.toString());
     await AlarmService.cancelAlarmById(widget.alarm.id);
-    
+
     if (mounted) {
       widget.onDismiss();
       Navigator.of(context).pop();
@@ -77,7 +77,7 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(),
-                
+
                 // Gentle wake icon
                 Container(
                   width: 120,
@@ -92,9 +92,9 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
                     color: Color(0xFF5856D6),
                   ),
                 ),
-                
+
                 const SizedBox(height: 48),
-                
+
                 // Gentle message
                 const Text(
                   'Time to wake up gently',
@@ -106,9 +106,9 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Subtitle
                 Text(
                   'Tap below to confirm you\'re awake',
@@ -118,9 +118,9 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Warning about main alarm
                 Text(
                   'Or the main alarm will ring in a few minutes',
@@ -130,9 +130,9 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const Spacer(),
-                
+
                 // Dismiss button
                 GestureDetector(
                   onTap: _handleDismiss,
@@ -171,9 +171,9 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Time display
                 Text(
                   '${widget.alarm.hour.toString().padLeft(2, '0')}:${widget.alarm.minute.toString().padLeft(2, '0')}',
@@ -183,7 +183,7 @@ class _WakeupCheckScreenState extends State<WakeupCheckScreen> {
                     fontWeight: FontWeight.w200,
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
               ],
             ),

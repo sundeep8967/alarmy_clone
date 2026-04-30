@@ -9,9 +9,11 @@ import '../../core/models/alarm_model.dart';
 import '../../core/repositories/alarm_repository.dart';
 import '../ramadan/ramadan_service.dart';
 
-final ramadanEnabledProvider = NotifierProvider<RamadanEnabledNotifier, bool>(() {
-  return RamadanEnabledNotifier();
-});
+final ramadanEnabledProvider = NotifierProvider<RamadanEnabledNotifier, bool>(
+  () {
+    return RamadanEnabledNotifier();
+  },
+);
 
 class RamadanEnabledNotifier extends Notifier<bool> {
   @override
@@ -155,17 +157,43 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
                       const SizedBox(height: 16),
                       if (_isLoadingLocation)
                         const Center(
-                          child: CircularProgressIndicator(color: Color(0xFF00D1FF)),
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF00D1FF),
+                          ),
                         )
                       else if (_prayerTimes == null)
                         _buildLocationError()
                       else ...[
                         if (suhoorTime != null)
-                          _buildPrayerTimeCard('Suhoor', suhoorTime, '🥣', const Color(0xFFFFD700), 'Pre-dawn meal alarm', isEnabled, () => _addPrayerAlarm(suhoorTime, 'Suhoor')),
+                          _buildPrayerTimeCard(
+                            'Suhoor',
+                            suhoorTime,
+                            '🥣',
+                            const Color(0xFFFFD700),
+                            'Pre-dawn meal alarm',
+                            isEnabled,
+                            () => _addPrayerAlarm(suhoorTime, 'Suhoor'),
+                          ),
                         if (fajrTime != null)
-                          _buildPrayerTimeCard('Fajr', fajrTime, '🌅', const Color(0xFF87CEEB), 'Dawn prayer', isEnabled, () => _addPrayerAlarm(fajrTime, 'Fajr')),
+                          _buildPrayerTimeCard(
+                            'Fajr',
+                            fajrTime,
+                            '🌅',
+                            const Color(0xFF87CEEB),
+                            'Dawn prayer',
+                            isEnabled,
+                            () => _addPrayerAlarm(fajrTime, 'Fajr'),
+                          ),
                         if (maghribTime != null)
-                          _buildPrayerTimeCard('Iftar', maghribTime, '🍽️', const Color(0xFFFF6B6B), 'Sunset - Break fast', isEnabled, () => _addPrayerAlarm(maghribTime, 'Iftar')),
+                          _buildPrayerTimeCard(
+                            'Iftar',
+                            maghribTime,
+                            '🍽️',
+                            const Color(0xFFFF6B6B),
+                            'Sunset - Break fast',
+                            isEnabled,
+                            () => _addPrayerAlarm(maghribTime, 'Iftar'),
+                          ),
                       ],
                     ],
                   ),
@@ -196,7 +224,10 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
             const SizedBox(height: 4),
             Text(
               '🌙 Special fasting alarms',
-              style: TextStyle(color: Colors.amber.withOpacity(0.8), fontSize: 16),
+              style: TextStyle(
+                color: Colors.amber.withOpacity(0.8),
+                fontSize: 16,
+              ),
             ),
           ],
         ),
@@ -228,11 +259,15 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isEnabled ? const Color(0xFF00D1FF).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.1),
+                color: isEnabled
+                    ? const Color(0xFF00D1FF).withValues(alpha: 0.2)
+                    : Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Icon(
-                isEnabled ? Icons.notifications_active : Icons.notifications_off,
+                isEnabled
+                    ? Icons.notifications_active
+                    : Icons.notifications_off,
                 color: isEnabled ? const Color(0xFF00D1FF) : Colors.white54,
                 size: 24,
               ),
@@ -252,7 +287,9 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    isEnabled ? 'Auto-scheduling enabled' : 'Tap to enable automatic alarms',
+                    isEnabled
+                        ? 'Auto-scheduling enabled'
+                        : 'Tap to enable automatic alarms',
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.6),
                       fontSize: 13,
@@ -323,7 +360,11 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
     );
   }
 
-  Widget _buildOffsetButton(int minutes, int currentOffset, SuhoorOffsetNotifier notifier) {
+  Widget _buildOffsetButton(
+    int minutes,
+    int currentOffset,
+    SuhoorOffsetNotifier notifier,
+  ) {
     final isSelected = currentOffset == minutes;
     return Expanded(
       child: InkWell(
@@ -332,10 +373,14 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+            color: isSelected
+                ? const Color(0xFFFFD700).withValues(alpha: 0.2)
+                : Colors.white.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: isSelected ? const Color(0xFFFFD700) : Colors.white.withValues(alpha: 0.1),
+              color: isSelected
+                  ? const Color(0xFFFFD700)
+                  : Colors.white.withValues(alpha: 0.1),
             ),
           ),
           child: Text(
@@ -352,7 +397,15 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
     );
   }
 
-  Widget _buildPrayerTimeCard(String name, DateTime time, String emoji, Color color, String label, bool isEnabled, VoidCallback onTap) {
+  Widget _buildPrayerTimeCard(
+    String name,
+    DateTime time,
+    String emoji,
+    Color color,
+    String label,
+    bool isEnabled,
+    VoidCallback onTap,
+  ) {
     final hour = time.hour;
     final minute = time.minute;
     final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
@@ -384,10 +437,7 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: Text(
-                      emoji,
-                      style: const TextStyle(fontSize: 24),
-                    ),
+                    child: Text(emoji, style: const TextStyle(fontSize: 24)),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -406,7 +456,10 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
                       const SizedBox(height: 4),
                       Text(
                         label,
-                        style: const TextStyle(color: Colors.white38, fontSize: 13),
+                        style: const TextStyle(
+                          color: Colors.white38,
+                          fontSize: 13,
+                        ),
                       ),
                     ],
                   ),
@@ -510,7 +563,11 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
             Text(
               'During Ramadan, Muslims fast from dawn to sunset. '
               'This mode provides pre-configured alarms for:',
-              style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 14, height: 1.5),
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.6),
+                fontSize: 14,
+                height: 1.5,
+              ),
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -539,7 +596,11 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
       ),
       child: Text(
         text,
-        style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: color,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -559,7 +620,9 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$name alarm added for ${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}!'),
+          content: Text(
+            '$name alarm added for ${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}!',
+          ),
           backgroundColor: const Color(0xFF00D1FF),
           duration: const Duration(seconds: 2),
         ),

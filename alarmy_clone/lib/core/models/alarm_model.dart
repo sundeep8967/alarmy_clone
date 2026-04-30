@@ -20,7 +20,7 @@ class AlarmModel {
   final bool isVolumeCrescendo;
   final int crescendoDuration;
   final int smartAlarmWindow; // 0 = disabled, max 30 mins
-  final bool timePressure;   // TTS announces time every 30s
+  final bool timePressure; // TTS announces time every 30s
 
   const AlarmModel({
     required this.id,
@@ -75,7 +75,9 @@ class AlarmModel {
       missionTypes: missionTypes ?? this.missionTypes,
       missionSettings: missionSettings ?? this.missionSettings,
       activeDays: activeDays ?? this.activeDays,
-      wallpaperId: wallpaperId == _sentinel ? this.wallpaperId : wallpaperId as String?,
+      wallpaperId: wallpaperId == _sentinel
+          ? this.wallpaperId
+          : wallpaperId as String?,
       soundId: soundId == _sentinel ? this.soundId : soundId as String?,
       isVibrateEnabled: isVibrateEnabled ?? this.isVibrateEnabled,
       snoozeMinutes: snoozeMinutes ?? this.snoozeMinutes,
@@ -92,27 +94,27 @@ class AlarmModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'hour': hour,
-        'minute': minute,
-        'isActive': isActive,
-        'missionTypes': missionTypes,
-        'missionSettings': missionSettings,
-        'activeDays': activeDays,
-        'wallpaperId': wallpaperId,
-        'soundId': soundId,
-        'isVibrateEnabled': isVibrateEnabled,
-        'snoozeMinutes': snoozeMinutes,
-        'snoozeCount': snoozeCount,
-        'isWakeUpCheckEnabled': isWakeUpCheckEnabled,
-        'wakeUpCheckMinutes': wakeUpCheckMinutes,
-        'isPendingWakeupCheck': isPendingWakeupCheck,
-        'volume': volume,
-        'isVolumeCrescendo': isVolumeCrescendo,
-        'crescendoDuration': crescendoDuration,
-        'smartAlarmWindow': smartAlarmWindow,
-        'timePressure': timePressure,
-      };
+    'id': id,
+    'hour': hour,
+    'minute': minute,
+    'isActive': isActive,
+    'missionTypes': missionTypes,
+    'missionSettings': missionSettings,
+    'activeDays': activeDays,
+    'wallpaperId': wallpaperId,
+    'soundId': soundId,
+    'isVibrateEnabled': isVibrateEnabled,
+    'snoozeMinutes': snoozeMinutes,
+    'snoozeCount': snoozeCount,
+    'isWakeUpCheckEnabled': isWakeUpCheckEnabled,
+    'wakeUpCheckMinutes': wakeUpCheckMinutes,
+    'isPendingWakeupCheck': isPendingWakeupCheck,
+    'volume': volume,
+    'isVolumeCrescendo': isVolumeCrescendo,
+    'crescendoDuration': crescendoDuration,
+    'smartAlarmWindow': smartAlarmWindow,
+    'timePressure': timePressure,
+  };
 
   factory AlarmModel.fromJson(Map<String, dynamic> json) {
     // activeDays / missionTypes may arrive as JSON strings (from DB raw rows)

@@ -2,10 +2,7 @@ class MotivationModel {
   final String quote;
   final String author;
 
-  const MotivationModel({
-    required this.quote,
-    required this.author,
-  });
+  const MotivationModel({required this.quote, required this.author});
 
   factory MotivationModel.fromJson(Map<String, dynamic> json) {
     return MotivationModel(
@@ -15,9 +12,6 @@ class MotivationModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'quote': quote,
-      'author': author,
-    };
+    return {'quote': quote, 'author': author};
   }
 }

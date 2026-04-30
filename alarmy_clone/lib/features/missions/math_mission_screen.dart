@@ -7,7 +7,11 @@ class MathMissionScreen extends StatefulWidget {
   final VoidCallback onMissionComplete;
   final Map<String, dynamic>? settings;
 
-  const MathMissionScreen({super.key, required this.onMissionComplete, this.settings});
+  const MathMissionScreen({
+    super.key,
+    required this.onMissionComplete,
+    this.settings,
+  });
 
   @override
   State<MathMissionScreen> createState() => _MathMissionScreenState();
@@ -126,7 +130,11 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
             children: [
               const Text(
                 'Math Mission',
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Solve $requiredProblems problems to stop',
@@ -139,11 +147,16 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
             decoration: BoxDecoration(
               color: const Color(0xFFFF3B30).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFFF3B30).withValues(alpha: 0.3)),
+              border: Border.all(
+                color: const Color(0xFFFF3B30).withValues(alpha: 0.3),
+              ),
             ),
             child: Text(
               '$problemsSolved / $requiredProblems',
-              style: const TextStyle(color: Color(0xFFFF3B30), fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: Color(0xFFFF3B30),
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -176,12 +189,19 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
                 height: 80,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.1), width: 2)),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      width: 2,
+                    ),
+                  ),
                 ),
                 child: Text(
                   _input.isEmpty ? '?' : _input,
                   style: TextStyle(
-                    color: _input.isEmpty ? Colors.white24 : const Color(0xFFFF3B30),
+                    color: _input.isEmpty
+                        ? Colors.white24
+                        : const Color(0xFFFF3B30),
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
                   ),
@@ -195,7 +215,20 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
   }
 
   Widget _buildKeypad() {
-    final keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "DEL", "0", "OK"];
+    final keys = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "DEL",
+      "0",
+      "OK",
+    ];
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -215,7 +248,7 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
         itemBuilder: (context, index) {
           final key = keys[index];
           final isSpecial = key == "DEL" || key == "OK";
-          
+
           return InkWell(
             onTap: () => _onKeyPress(key),
             borderRadius: BorderRadius.circular(16),

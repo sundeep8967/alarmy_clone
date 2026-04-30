@@ -23,9 +23,11 @@ class IntroStep1 extends StatelessWidget {
                 child: Lottie.asset(
                   'assets/lottie/lottie_trophy.lottie',
                   fit: BoxFit.contain,
-                  errorBuilder:
-                      (context, error, stackTrace) =>
-                          const Icon(Icons.emoji_events, color: Colors.amber, size: 80),
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.emoji_events,
+                    color: Colors.amber,
+                    size: 80,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -43,10 +45,7 @@ class IntroStep1 extends StatelessWidget {
               const Text(
                 'Wake up refreshed everyday',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white54,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.white54),
               ),
               const SizedBox(height: 48),
               _buildTrustBadge('#1 Ranked alarm app', 'in 97 countries'),

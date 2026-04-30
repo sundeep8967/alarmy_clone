@@ -7,7 +7,11 @@ import '../widgets/onboarding_widgets.dart';
 class OnboardingStep2 extends ConsumerWidget {
   final VoidCallback onNext;
   final VoidCallback onSkipPreview;
-  const OnboardingStep2({super.key, required this.onNext, required this.onSkipPreview});
+  const OnboardingStep2({
+    super.key,
+    required this.onNext,
+    required this.onSkipPreview,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +23,10 @@ class OnboardingStep2 extends ConsumerWidget {
       {'key': 'animal', 'label': '🐾 Animal'},
       {'key': 'morning', 'label': '🌅 Morning'},
       {'key': 'simple', 'label': '✨ Simple'},
-      {'key': 'landscape', 'label': '🪐 Into Space'},  // APK has 'landscape' category, displayed as 'Into Space'
+      {
+        'key': 'landscape',
+        'label': '🪐 Into Space',
+      }, // APK has 'landscape' category, displayed as 'Into Space'
       {'key': 'affirmation', 'label': '💪 Affirmation'},
       {'key': 'religion', 'label': '🙏 Religion'},
       {'key': 'authentic', 'label': '☕ Authentic'},
@@ -46,39 +53,42 @@ class OnboardingStep2 extends ConsumerWidget {
         ),
         const SizedBox(height: 24),
         Expanded(
-          child: ref.watch(wallpapersProvider).when(
-            loading:
-                () => const Center(
+          child: ref
+              .watch(wallpapersProvider)
+              .when(
+                loading: () => const Center(
                   child: CircularProgressIndicator(color: Color(0xFFFF3B30)),
                 ),
-            error:
-                (err, stack) => Center(
+                error: (err, stack) => Center(
                   child: Text(
                     'Error loading wallpapers: $err',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
-            data: (wallpapers) {
-              return ListView(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                children: categories.map((cat) {
-                  final items =
-                      wallpapers.where((w) => w.category == cat['key']).toList();
+                data: (wallpapers) {
+                  return ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    children: categories.map((cat) {
+                      final items = wallpapers
+                          .where((w) => w.category == cat['key'])
+                          .toList();
 
-                  if (items.isEmpty) return const SizedBox.shrink();
-                  return WallpaperSectionWidget(
-                    label: cat['label']!,
-                    items: items,
-                    selectedWallpaperId: state.selectedWallpaperId,
-                    onSelect: (id) {
-                      ref.read(onboardingProvider.notifier).setWallpaper(id);
-                      onNext(); // Navigate to preview screen
-                    },
+                      if (items.isEmpty) return const SizedBox.shrink();
+                      return WallpaperSectionWidget(
+                        label: cat['label']!,
+                        items: items,
+                        selectedWallpaperId: state.selectedWallpaperId,
+                        onSelect: (id) {
+                          ref
+                              .read(onboardingProvider.notifier)
+                              .setWallpaper(id);
+                          onNext(); // Navigate to preview screen
+                        },
+                      );
+                    }).toList(),
                   );
-                }).toList(),
-              );
-            },
-          ),
+                },
+              ),
         ),
         Padding(
           padding: const EdgeInsets.all(24.0),
@@ -119,7 +129,8 @@ class OnboardingStep2 extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    onPressed: onSkipPreview, // Skip preview and go directly to sound (3/4)
+                    onPressed:
+                        onSkipPreview, // Skip preview and go directly to sound (3/4)
                     child: const Text(
                       'Next',
                       style: TextStyle(

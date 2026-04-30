@@ -29,11 +29,10 @@ class OnboardingProcessingStep extends ConsumerWidget {
               Lottie.asset(
                 'assets/lottie/character_larmy_stage_1.lottie',
                 fit: BoxFit.contain,
-                errorBuilder:
-                    (context, error, stackTrace) => Lottie.asset(
-                      'assets/lottie/anim_fire.json',
-                      fit: BoxFit.contain,
-                    ),
+                errorBuilder: (context, error, stackTrace) => Lottie.asset(
+                  'assets/lottie/anim_fire.json',
+                  fit: BoxFit.contain,
+                ),
               ),
             ],
           ),
@@ -62,11 +61,20 @@ class OnboardingProcessingStep extends ConsumerWidget {
         ),
         const SizedBox(height: 32),
         // Checklist
-        _buildCheckItem('Setting up alarm time', state.processingProgress >= 0.3),
+        _buildCheckItem(
+          'Setting up alarm time',
+          state.processingProgress >= 0.3,
+        ),
         const SizedBox(height: 12),
-        _buildCheckItem('Setting up a refreshing wake-up sound', state.processingProgress >= 0.6),
+        _buildCheckItem(
+          'Setting up a refreshing wake-up sound',
+          state.processingProgress >= 0.6,
+        ),
         const SizedBox(height: 12),
-        _buildCheckItem('Setting up a mission to make you wide awake', state.processingProgress >= 0.9),
+        _buildCheckItem(
+          'Setting up a mission to make you wide awake',
+          state.processingProgress >= 0.9,
+        ),
         const SizedBox(height: 24),
         Text(
           '$percent%',

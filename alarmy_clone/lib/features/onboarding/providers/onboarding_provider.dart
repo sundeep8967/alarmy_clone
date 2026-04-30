@@ -35,7 +35,8 @@ class OnboardingState {
       selectedMissionVideo: selectedMissionVideo ?? this.selectedMissionVideo,
       selectedWallpaperId: selectedWallpaperId ?? this.selectedWallpaperId,
       processingProgress: processingProgress ?? this.processingProgress,
-      showPermissionOverlay: showPermissionOverlay ?? this.showPermissionOverlay,
+      showPermissionOverlay:
+          showPermissionOverlay ?? this.showPermissionOverlay,
     );
   }
 }

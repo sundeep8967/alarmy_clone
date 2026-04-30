@@ -28,8 +28,11 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
       width: 80,
       child: CupertinoPicker(
         itemExtent: 64,
-        selectionOverlay: const SizedBox.shrink(), // Overlay handled behind the row
-        scrollController: FixedExtentScrollController(initialItem: initialValue),
+        selectionOverlay:
+            const SizedBox.shrink(), // Overlay handled behind the row
+        scrollController: FixedExtentScrollController(
+          initialItem: initialValue,
+        ),
         onSelectedItemChanged: onSelectedItemChanged,
         children: List.generate(itemCount, (index) {
           return Center(
@@ -60,7 +63,11 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
         ),
         title: const Text(
           'Wake-up alarm',
-          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         centerTitle: true,
       ),
@@ -77,15 +84,27 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
                       children: [
-                        const Icon(Icons.wb_sunny, color: Colors.amber, size: 28),
+                        const Icon(
+                          Icons.wb_sunny,
+                          color: Colors.amber,
+                          size: 28,
+                        ),
                         const SizedBox(width: 16),
                         const Expanded(
                           child: Text(
                             'Please fill in the alarm\nname',
-                            style: TextStyle(color: Colors.white30, fontSize: 18, height: 1.3),
+                            style: TextStyle(
+                              color: Colors.white30,
+                              fontSize: 18,
+                              height: 1.3,
+                            ),
                           ),
                         ),
-                        Icon(Icons.edit, color: Colors.white.withValues(alpha: 0.2), size: 20),
+                        Icon(
+                          Icons.edit,
+                          color: Colors.white.withValues(alpha: 0.2),
+                          size: 20,
+                        ),
                       ],
                     ),
                   ),
@@ -115,15 +134,27 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildWheelPicker(24, selectedHour, (val) => setState(() => selectedHour = val)),
+                          _buildWheelPicker(
+                            24,
+                            selectedHour,
+                            (val) => setState(() => selectedHour = val),
+                          ),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 24.0),
                             child: Text(
                               ':',
-                              style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                          _buildWheelPicker(60, selectedMinute, (val) => setState(() => selectedMinute = val)),
+                          _buildWheelPicker(
+                            60,
+                            selectedMinute,
+                            (val) => setState(() => selectedMinute = val),
+                          ),
                         ],
                       ),
                     ],
@@ -136,7 +167,10 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Daily', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                        const Text(
+                          'Daily',
+                          style: TextStyle(color: Colors.white70, fontSize: 14),
+                        ),
                         Row(
                           children: [
                             SizedBox(
@@ -156,12 +190,21 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                                 },
                                 activeColor: const Color(0xFF00D1FF),
                                 checkColor: Colors.black,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
                                 side: BorderSide.none,
                               ),
                             ),
                             const SizedBox(width: 8),
-                            const Text('Daily', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                            const Text(
+                              'Daily',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -185,7 +228,8 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                                 isDailyChecked = false;
                               } else {
                                 activeDays.add(index);
-                                if (activeDays.length == 7) isDailyChecked = true;
+                                if (activeDays.length == 7)
+                                  isDailyChecked = true;
                               }
                             });
                           },
@@ -194,17 +238,23 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                             height: 40,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: isSelected ? const Color(0xFF112D36) : const Color(0xFF1E1E20),
+                              color: isSelected
+                                  ? const Color(0xFF112D36)
+                                  : const Color(0xFF1E1E20),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: isSelected ? const Color(0xFF00D1FF) : Colors.transparent,
+                                color: isSelected
+                                    ? const Color(0xFF00D1FF)
+                                    : Colors.transparent,
                                 width: 1,
                               ),
                             ),
                             child: Text(
                               days[index],
                               style: TextStyle(
-                                color: isSelected ? const Color(0xFF00D1FF) : Colors.white54,
+                                color: isSelected
+                                    ? const Color(0xFF00D1FF)
+                                    : Colors.white54,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -222,7 +272,9 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                     padding: const EdgeInsets.all(24),
                     decoration: const BoxDecoration(
                       color: Color(0xFF1C1D24),
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(24),
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,16 +284,23 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                           children: [
                             Text(
                               'Wake-up mission',
-                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
                               '0/5',
-                              style: TextStyle(color: Colors.white54, fontSize: 14),
+                              style: TextStyle(
+                                color: Colors.white54,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 32),
-                        
+
                         // Save Button
                         SizedBox(
                           width: double.infinity,
@@ -249,7 +308,9 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFFF3B30),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                             onPressed: () async {
                               final newAlarm = AlarmModel(
@@ -257,15 +318,23 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                                 hour: selectedHour,
                                 minute: selectedMinute,
                                 isActive: true,
-                                missionTypes: const ['math'], // Default for Habit alarm
+                                missionTypes: const [
+                                  'math',
+                                ], // Default for Habit alarm
                                 activeDays: activeDays,
                               );
-                              await ref.read(alarmsProvider.notifier).createAlarm(newAlarm);
+                              await ref
+                                  .read(alarmsProvider.notifier)
+                                  .createAlarm(newAlarm);
                               if (mounted) Navigator.pop(context);
                             },
                             child: const Text(
                               'Save',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

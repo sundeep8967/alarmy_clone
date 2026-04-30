@@ -30,7 +30,7 @@ class SleepScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // Main Track Sleep Card
               Container(
                 padding: const EdgeInsets.all(24),
@@ -41,7 +41,9 @@ class SleepScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      isTracking ? 'Tracking your sleep...' : 'Find out what you did in\nyour sleep',
+                      isTracking
+                          ? 'Tracking your sleep...'
+                          : 'Find out what you did in\nyour sleep',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
@@ -52,7 +54,9 @@ class SleepScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      isTracking ? 'Current Decibels: ${sleepState.currentDecibels.toStringAsFixed(1)} dB' : 'Check your tossing, snoring sounds',
+                      isTracking
+                          ? 'Current Decibels: ${sleepState.currentDecibels.toStringAsFixed(1)} dB'
+                          : 'Check your tossing, snoring sounds',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white70,
@@ -60,7 +64,7 @@ class SleepScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    
+
                     // Waveform Container
                     Container(
                       height: 80,
@@ -77,11 +81,17 @@ class SleepScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 isTracking ? 'Live' : 'am 01:26',
-                                style: const TextStyle(color: Colors.white54, fontSize: 12),
+                                style: const TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
                               ),
                               Text(
                                 _getSeverityText(sleepState.currentDecibels),
-                                style: const TextStyle(color: Colors.white54, fontSize: 12),
+                                style: const TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -98,14 +108,16 @@ class SleepScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    
+
                     // Track my sleep button
                     SizedBox(
                       width: double.infinity,
                       height: 56,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isTracking ? Colors.redAccent : Colors.white,
+                          backgroundColor: isTracking
+                              ? Colors.redAccent
+                              : Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -135,9 +147,9 @@ class SleepScreen extends ConsumerWidget {
               // Dual-Pipeline Analysis Stats
               if (sleepState.events.isNotEmpty)
                 _buildAnalysisStats(sleepState.events),
-              
+
               if (sleepState.events.isEmpty)
-              // My Sleep Report Card
+                // My Sleep Report Card
                 GestureDetector(
                   onTap: () {
                     debugPrint('🎯 [Sleep] My sleep report tapped');
@@ -153,7 +165,9 @@ class SleepScreen extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF42A5F5).withValues(alpha: 0.2),
+                            color: const Color(
+                              0xFF42A5F5,
+                            ).withValues(alpha: 0.2),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -166,10 +180,7 @@ class SleepScreen extends ConsumerWidget {
                         const Expanded(
                           child: Text(
                             'My sleep report',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ),
                         const Icon(
@@ -197,7 +208,13 @@ class SleepScreen extends ConsumerWidget {
   }
 
   Widget _buildAnalysisStats(List<SleepEvent> events) {
-    int ampLoudCount = events.where((e) => e.severity == SnoreSeverity.loud || e.severity == SnoreSeverity.veryLoud).length;
+    int ampLoudCount = events
+        .where(
+          (e) =>
+              e.severity == SnoreSeverity.loud ||
+              e.severity == SnoreSeverity.veryLoud,
+        )
+        .length;
     int yamnetSnoreCount = events.where((e) => e.yamnetClass != null).length;
 
     return Container(
@@ -210,16 +227,31 @@ class SleepScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Dual-Pipeline Analysis', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text(
+            'Dual-Pipeline Analysis',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: _StatCard('Amplitude\nLoud Events', ampLoudCount.toString(), Colors.orange),
+                child: _StatCard(
+                  'Amplitude\nLoud Events',
+                  ampLoudCount.toString(),
+                  Colors.orange,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _StatCard('YAMNet\nSnore Events', yamnetSnoreCount.toString(), Colors.blue),
+                child: _StatCard(
+                  'YAMNet\nSnore Events',
+                  yamnetSnoreCount.toString(),
+                  Colors.blue,
+                ),
               ),
             ],
           ),
@@ -248,9 +280,19 @@ class _StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(value, style: TextStyle(color: color, fontSize: 24, fontWeight: FontWeight.bold)),
+          Text(
+            value,
+            style: TextStyle(
+              color: color,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(title, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+          Text(
+            title,
+            style: const TextStyle(color: Colors.white70, fontSize: 12),
+          ),
         ],
       ),
     );
@@ -273,22 +315,27 @@ class WaveformPainter extends CustomPainter {
     final centerY = size.height / 2;
     const spacing = 4.0;
     final barCount = (size.width / spacing).floor();
-    
-    final random = math.Random(isTracking ? DateTime.now().millisecondsSinceEpoch : 42); 
-    
+
+    final random = math.Random(
+      isTracking ? DateTime.now().millisecondsSinceEpoch : 42,
+    );
+
     for (int i = 0; i < barCount; i++) {
       final x = i * spacing;
-      double height = 2.0; 
-      
+      double height = 2.0;
+
       if (isTracking && i > barCount - 10) {
         // Live bars based on current decibels
-        height = math.max(2.0, currentDecibels / 4.0) + random.nextDouble() * 5.0;
+        height =
+            math.max(2.0, currentDecibels / 4.0) + random.nextDouble() * 5.0;
         paint.color = Colors.lightBlueAccent;
       } else if (!isTracking) {
         // Static pattern
         if (i > barCount * 0.3 && i < barCount * 0.7) {
-          if (i % 3 == 0) height = 15.0 + random.nextDouble() * 15.0;
-          else height = 5.0 + random.nextDouble() * 10.0;
+          if (i % 3 == 0)
+            height = 15.0 + random.nextDouble() * 15.0;
+          else
+            height = 5.0 + random.nextDouble() * 10.0;
         } else {
           height = 2.0 + random.nextDouble() * 4.0;
         }
@@ -308,6 +355,8 @@ class WaveformPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant WaveformPainter oldDelegate) {
-    return isTracking || oldDelegate.isTracking != isTracking || oldDelegate.currentDecibels != currentDecibels;
+    return isTracking ||
+        oldDelegate.isTracking != isTracking ||
+        oldDelegate.currentDecibels != currentDecibels;
   }
 }

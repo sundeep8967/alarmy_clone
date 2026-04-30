@@ -76,9 +76,14 @@ class _StageMissionScreenState extends ConsumerState<StageMissionScreen> {
     }
 
     // Mission passes when the user is detected as "Standing" with >60% confidence
-    if (result.stage == BodyStage.standing && result.confidence > 0.6 && !_missionComplete) {
+    if (result.stage == BodyStage.standing &&
+        result.confidence > 0.6 &&
+        !_missionComplete) {
       setState(() => _missionComplete = true);
-      Future.delayed(const Duration(milliseconds: 800), widget.onMissionComplete);
+      Future.delayed(
+        const Duration(milliseconds: 800),
+        widget.onMissionComplete,
+      );
     }
   }
 
@@ -91,19 +96,27 @@ class _StageMissionScreenState extends ConsumerState<StageMissionScreen> {
 
   Color get _stageColor {
     switch (_currentStage) {
-      case BodyStage.standing: return const Color(0xFF30D158);
-      case BodyStage.sitting:  return const Color(0xFFFF9500);
-      case BodyStage.lying:    return const Color(0xFF00D1FF);
-      case BodyStage.unknown:  return Colors.white24;
+      case BodyStage.standing:
+        return const Color(0xFF30D158);
+      case BodyStage.sitting:
+        return const Color(0xFFFF9500);
+      case BodyStage.lying:
+        return const Color(0xFF00D1FF);
+      case BodyStage.unknown:
+        return Colors.white24;
     }
   }
 
   IconData get _stageIcon {
     switch (_currentStage) {
-      case BodyStage.standing: return Icons.accessibility_new;
-      case BodyStage.sitting:  return Icons.chair;
-      case BodyStage.lying:    return Icons.hotel;
-      case BodyStage.unknown:  return Icons.device_unknown;
+      case BodyStage.standing:
+        return Icons.accessibility_new;
+      case BodyStage.sitting:
+        return Icons.chair;
+      case BodyStage.lying:
+        return Icons.hotel;
+      case BodyStage.unknown:
+        return Icons.device_unknown;
     }
   }
 
@@ -146,8 +159,18 @@ class _StageMissionScreenState extends ConsumerState<StageMissionScreen> {
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Stage Mission', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-              Text('Stand up to dismiss the alarm', style: TextStyle(color: Colors.white54, fontSize: 14)),
+              Text(
+                'Stage Mission',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'Stand up to dismiss the alarm',
+                style: TextStyle(color: Colors.white54, fontSize: 14),
+              ),
             ],
           ),
           GlassContainer(
@@ -177,7 +200,9 @@ class _StageMissionScreenState extends ConsumerState<StageMissionScreen> {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: _stageColor.withValues(alpha: _currentStage == BodyStage.standing ? 0.4 : 0.08),
+                color: _stageColor.withValues(
+                  alpha: _currentStage == BodyStage.standing ? 0.4 : 0.08,
+                ),
                 blurRadius: 80,
                 spreadRadius: 20,
               ),
@@ -213,7 +238,11 @@ class _StageMissionScreenState extends ConsumerState<StageMissionScreen> {
               const SizedBox(height: 8),
               Text(
                 _missionComplete ? 'Done!' : _currentStage.label,
-                style: TextStyle(color: _stageColor, fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: _stageColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 '$pct%',
@@ -249,7 +278,11 @@ class _StageMissionScreenState extends ConsumerState<StageMissionScreen> {
                     _missionComplete
                         ? 'Great! You\'re up and moving!'
                         : 'Place your phone on your chest and stand up straight. The sensor will detect your position.',
-                    style: const TextStyle(color: Colors.white, fontSize: 15, height: 1.4),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      height: 1.4,
+                    ),
                   ),
                 ),
               ],

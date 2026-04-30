@@ -29,7 +29,9 @@ class _PermissionOverlayState extends State<PermissionOverlay> {
 
     try {
       final plugin = FlutterLocalNotificationsPlugin();
-      debugPrint('🔘 [PermissionOverlay] Requesting system notification permission...');
+      debugPrint(
+        '🔘 [PermissionOverlay] Requesting system notification permission...',
+      );
       plugin
           .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin

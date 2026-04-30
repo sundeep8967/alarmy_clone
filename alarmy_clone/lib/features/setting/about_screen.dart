@@ -42,7 +42,11 @@ class AboutScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: const Icon(Icons.alarm, color: Colors.white, size: 60),
+                          child: const Icon(
+                            Icons.alarm,
+                            color: Colors.white,
+                            size: 60,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -50,7 +54,11 @@ class AboutScreen extends StatelessWidget {
                         delay: const Duration(milliseconds: 200),
                         child: const Text(
                           'Alarmy Clone',
-                          style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const Text(
@@ -94,11 +102,22 @@ class AboutScreen extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 22),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 22,
+            ),
           ),
           const Expanded(
-            child: Text('About', textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            child: Text(
+              'About',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           const SizedBox(width: 48),
         ],
@@ -115,7 +134,11 @@ class AboutScreen extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+        style: const TextStyle(
+          color: Colors.white70,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
@@ -136,9 +159,23 @@ class AboutScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(description, style: const TextStyle(color: Colors.white54, fontSize: 13, height: 1.4)),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      color: Colors.white54,
+                      fontSize: 13,
+                      height: 1.4,
+                    ),
+                  ),
                 ],
               ),
             ),

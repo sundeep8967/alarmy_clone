@@ -81,7 +81,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Sort alarms', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            const Text(
+              'Sort alarms',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 20),
             _buildSortOption('Default (by time)', 'time'),
             const Divider(color: Colors.white10),
@@ -97,8 +104,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final isSelected = _sortMode == mode;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text(label, style: TextStyle(color: isSelected ? const Color(0xFFFF3B30) : Colors.white)),
-      trailing: isSelected ? const Icon(Icons.check, color: Color(0xFFFF3B30)) : null,
+      title: Text(
+        label,
+        style: TextStyle(
+          color: isSelected ? const Color(0xFFFF3B30) : Colors.white,
+        ),
+      ),
+      trailing: isSelected
+          ? const Icon(Icons.check, color: Color(0xFFFF3B30))
+          : null,
       onTap: () {
         setState(() => _sortMode = mode);
         Navigator.pop(context);
@@ -111,7 +125,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: const Color(0xFF1C1C1E),
-        title: const Text('Delete inactive alarms', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Delete inactive alarms',
+          style: TextStyle(color: Colors.white),
+        ),
         content: const Text(
           'All alarms that are currently toggled OFF will be permanently deleted.',
           style: TextStyle(color: Colors.white54),
@@ -119,14 +136,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel', style: TextStyle(color: Colors.white38)),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.white38),
+            ),
           ),
           TextButton(
             onPressed: () async {
               Navigator.pop(ctx);
               await _deleteInactiveAlarms();
             },
-            child: const Text('Delete', style: TextStyle(color: Color(0xFFFF3B30), fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(
+                color: Color(0xFFFF3B30),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -140,16 +166,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       await ref.read(alarmsProvider.notifier).deleteAlarm(alarm.id);
     }
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('${inactive.length} inactive alarm${inactive.length == 1 ? '' : 's'} deleted.'),
-        backgroundColor: const Color(0xFF1C1C1E),
-        behavior: SnackBarBehavior.floating,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${inactive.length} inactive alarm${inactive.length == 1 ? '' : 's'} deleted.',
+          ),
+          backgroundColor: const Color(0xFF1C1C1E),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
   }
 
   void _showFabMenu() {
-    final RenderBox? fabBox = _fabKey.currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? fabBox =
+        _fabKey.currentContext?.findRenderObject() as RenderBox?;
     Offset? fabPosition;
     if (fabBox != null) {
       fabPosition = fabBox.localToGlobal(Offset.zero);
@@ -168,7 +199,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               if (fabPosition != null)
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height - fabPosition.dy + 24,
+                  bottom:
+                      MediaQuery.of(context).size.height - fabPosition.dy + 24,
                   right: 24,
                   child: FadeInUp(
                     duration: const Duration(milliseconds: 300),
@@ -176,25 +208,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        _buildFabMenuItem('Habit alarm', Icons.calendar_month, const Color(0xFF6B7BFF), () async {
-                          Navigator.pop(context);
-                          await Navigator.push(this.context, MaterialPageRoute(builder: (_) => const HabitAlarmScreen()));
-                        }),
+                        _buildFabMenuItem(
+                          'Habit alarm',
+                          Icons.calendar_month,
+                          const Color(0xFF6B7BFF),
+                          () async {
+                            Navigator.pop(context);
+                            await Navigator.push(
+                              this.context,
+                              MaterialPageRoute(
+                                builder: (_) => const HabitAlarmScreen(),
+                              ),
+                            );
+                          },
+                        ),
                         const SizedBox(height: 12),
-                        _buildFabMenuItem('Quick alarm', Icons.bolt, const Color(0xFF00D1FF), () {
-                          Navigator.pop(context);
-                          showModalBottomSheet(
-                            context: this.context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) => const QuickAlarmSheet(),
-                          );
-                        }),
+                        _buildFabMenuItem(
+                          'Quick alarm',
+                          Icons.bolt,
+                          const Color(0xFF00D1FF),
+                          () {
+                            Navigator.pop(context);
+                            showModalBottomSheet(
+                              context: this.context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => const QuickAlarmSheet(),
+                            );
+                          },
+                        ),
                         const SizedBox(height: 12),
-                        _buildFabMenuItem('New Alarm', Icons.alarm_add, const Color(0xFFFF3B30), () async {
-                          Navigator.pop(context);
-                          await Navigator.push(this.context, MaterialPageRoute(builder: (_) => const AlarmEditorScreen()));
-                        }),
+                        _buildFabMenuItem(
+                          'New Alarm',
+                          Icons.alarm_add,
+                          const Color(0xFFFF3B30),
+                          () async {
+                            Navigator.pop(context);
+                            await Navigator.push(
+                              this.context,
+                              MaterialPageRoute(
+                                builder: (_) => const AlarmEditorScreen(),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -209,7 +266,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       shape: const CircleBorder(),
                       elevation: 0,
                       onPressed: () => Navigator.pop(context),
-                      child: const Icon(Icons.close, size: 28, color: Colors.black),
+                      child: const Icon(
+                        Icons.close,
+                        size: 28,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
@@ -220,7 +281,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildFabMenuItem(String label, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildFabMenuItem(
+    String label,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -232,7 +298,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             borderRadius: BorderRadius.circular(12),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              child: Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -250,17 +322,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final alarmsAsync = ref.watch(alarmsProvider);
-    
+
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
       body: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFF101014),
-        ),
+        decoration: const BoxDecoration(color: Color(0xFF101014)),
         child: SafeArea(
           child: alarmsAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.white))),
+            error: (err, stack) => Center(
+              child: Text(
+                'Error: $err',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
             data: (alarmList) {
               // Apply sorting
               final sortedAlarms = [...alarmList];
@@ -284,54 +359,60 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               }
 
               return CustomScrollView(
-                    slivers: [
-                      _buildSliverAppBar(),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildPromoBanner(),
-                              const SizedBox(height: 32),
-                              _buildUpcomingHeader(alarmList.where((a) => a.isActive).toList()),
-                              const SizedBox(height: 16),
-                            ],
+                slivers: [
+                  _buildSliverAppBar(),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildPromoBanner(),
+                          const SizedBox(height: 32),
+                          _buildUpcomingHeader(
+                            alarmList.where((a) => a.isActive).toList(),
                           ),
-                        ),
+                          const SizedBox(height: 16),
+                        ],
                       ),
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              if (sortedAlarms.isEmpty) {
-                                return const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 40),
-                                    child: Text('No alarms set yet', style: TextStyle(color: Colors.white24)),
-                                  ),
-                                );
-                              }
-                              final alarm = sortedAlarms[index];
-                              return FadeInUp(
-                                delay: Duration(milliseconds: 100 * index),
-                                child: _buildAlarmCard(alarm),
-                              );
-                            },
-                            childCount: sortedAlarms.isEmpty ? 1 : sortedAlarms.length,
-                          ),
-                        ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          if (sortedAlarms.isEmpty) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 40),
+                                child: Text(
+                                  'No alarms set yet',
+                                  style: TextStyle(color: Colors.white24),
+                                ),
+                              ),
+                            );
+                          }
+                          final alarm = sortedAlarms[index];
+                          return FadeInUp(
+                            delay: Duration(milliseconds: 100 * index),
+                            child: _buildAlarmCard(alarm),
+                          );
+                        },
+                        childCount: sortedAlarms.isEmpty
+                            ? 1
+                            : sortedAlarms.length,
                       ),
-                      const SliverToBoxAdapter(child: SizedBox(height: 100)),
-                    ],
-                  );
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
+                ],
+              );
             },
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-
         key: _fabKey,
         backgroundColor: const Color(0xFFFF3B30),
         shape: const CircleBorder(),
@@ -349,7 +430,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       expandedHeight: 80,
       title: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const PremiumScreen()),
+          );
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -364,7 +448,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               Icon(Icons.verified, color: Colors.white, size: 15),
               SizedBox(width: 5),
-              Text('PRO Activated', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+              Text(
+                'PRO Activated',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
@@ -375,7 +466,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           color: const Color(0xFF1C1C1E),
           onSelected: (value) {
             if (value == 'settings') {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const AlarmSettingsScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AlarmSettingsScreen()),
+              );
             } else if (value == 'sort') {
               _showSortSheet();
             } else if (value == 'delete_inactive') {
@@ -390,7 +484,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const PopupMenuItem<String>(
                 value: 'edit',
-                child: Text('Edit Alarms', style: TextStyle(color: Colors.white)),
+                child: Text(
+                  'Edit Alarms',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               const PopupMenuItem<String>(
                 value: 'sort',
@@ -398,7 +495,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const PopupMenuItem<String>(
                 value: 'delete_inactive',
-                child: Text('Delete inactive alarms', style: TextStyle(color: Colors.white)),
+                child: Text(
+                  'Delete inactive alarms',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ];
           },
@@ -411,7 +511,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildPromoBanner() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => const OversleptMissionScreen()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const OversleptMissionScreen()),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(top: 8),
@@ -473,16 +576,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildUpcomingHeader(List<AlarmModel> activeAlarms) {
     if (activeAlarms.isEmpty) return const SizedBox.shrink();
-    
+
     final now = DateTime.now();
     DateTime? nextAlarmTime;
-    
+
     for (final alarm in activeAlarms) {
-      DateTime scheduleTime = DateTime(now.year, now.month, now.day, alarm.hour, alarm.minute);
+      DateTime scheduleTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        alarm.hour,
+        alarm.minute,
+      );
       if (alarm.activeDays.isEmpty) {
-        if (scheduleTime.isBefore(now)) scheduleTime = scheduleTime.add(const Duration(days: 1));
+        if (scheduleTime.isBefore(now))
+          scheduleTime = scheduleTime.add(const Duration(days: 1));
       } else {
-        while (!alarm.activeDays.contains(scheduleTime.weekday % 7) || scheduleTime.isBefore(now)) {
+        while (!alarm.activeDays.contains(scheduleTime.weekday % 7) ||
+            scheduleTime.isBefore(now)) {
           scheduleTime = scheduleTime.add(const Duration(days: 1));
         }
       }
@@ -527,7 +638,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return GestureDetector(
       onTap: () async {
-        await Navigator.push(context, MaterialPageRoute(builder: (_) => AlarmEditorScreen(alarm: alarm)));
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => AlarmEditorScreen(alarm: alarm)),
+        );
         ref.invalidate(alarmsProvider);
       },
       child: Container(
@@ -551,7 +665,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         days[i],
                         style: TextStyle(
                           color: active ? Colors.white : Colors.white24,
-                          fontWeight: active ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: active
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                           fontSize: 12,
                         ),
                       ),
@@ -563,7 +679,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   activeColor: const Color(0xFF00E5FF),
                   onChanged: (v) async {
                     final updated = alarm.copyWith(isActive: v);
-                    await ref.read(alarmsProvider.notifier).updateAlarm(updated);
+                    await ref
+                        .read(alarmsProvider.notifier)
+                        .updateAlarm(updated);
                   },
                 ),
               ],
@@ -585,7 +703,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         letterSpacing: -2,
                       ),
                     ),
-                    if (alarm.missionTypes.isNotEmpty && alarm.missionTypes[0] != 'default') ...[
+                    if (alarm.missionTypes.isNotEmpty &&
+                        alarm.missionTypes[0] != 'default') ...[
                       const SizedBox(width: 16),
                       Icon(
                         _getMissionIcon(alarm.missionTypes[0]),
@@ -609,17 +728,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   IconData _getMissionIcon(String type) {
     switch (type.toLowerCase()) {
-      case 'math': return Icons.calculate;
-      case 'shake': return Icons.vibration;
-      case 'memory': case 'tiles': return Icons.grid_view;
-      case 'typing': return Icons.keyboard;
-      case 'squat': return Icons.accessibility_new;
-      case 'step': return Icons.directions_walk;
-      case 'stage': return Icons.self_improvement;
-      case 'qr': return Icons.qr_code_scanner;
-      case 'picture': case 'photo': return Icons.camera_alt;
-      default: return Icons.notifications_active;
+      case 'math':
+        return Icons.calculate;
+      case 'shake':
+        return Icons.vibration;
+      case 'memory':
+      case 'tiles':
+        return Icons.grid_view;
+      case 'typing':
+        return Icons.keyboard;
+      case 'squat':
+        return Icons.accessibility_new;
+      case 'step':
+        return Icons.directions_walk;
+      case 'stage':
+        return Icons.self_improvement;
+      case 'qr':
+        return Icons.qr_code_scanner;
+      case 'picture':
+      case 'photo':
+        return Icons.camera_alt;
+      default:
+        return Icons.notifications_active;
     }
   }
 }
-

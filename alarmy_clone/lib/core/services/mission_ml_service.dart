@@ -24,7 +24,9 @@ class MissionMLService {
 
     // Initialize Pose Landmarker for squat missions
     try {
-      _poseInterpreter = await Interpreter.fromAsset('assets/ml/pose_landmarker.task');
+      _poseInterpreter = await Interpreter.fromAsset(
+        'assets/ml/pose_landmarker.task',
+      );
     } catch (e) {
       // If model fails to load, we'll use fallback threshold-based detection
     }
@@ -51,7 +53,7 @@ class MissionMLService {
     // MediaPipe Pose indices (0-indexed):
     // 23: left hip, 25: left knee, 27: left ankle
     // 24: right hip, 26: right knee, 28: right ankle
-    
+
     // Calculate left knee angle
     final leftKneeAngle = _calculateAngle(
       _getLandmark(landmarks, 23), // left hip
@@ -71,24 +73,24 @@ class MissionMLService {
 
     // Store state for squat detection (deep squat < 90°, then standing > 160°)
     _lastKneeAngle = avgKneeAngle;
-    
+
     // Check if we were in deep squat and now standing
     if (_wasInDeepSquat && avgKneeAngle > 160) {
       _wasInDeepSquat = false;
       return true; // One complete squat
     }
-    
+
     // Mark if currently in deep squat
     if (avgKneeAngle < 90) {
       _wasInDeepSquat = true;
     }
-    
+
     return false;
   }
 
   static double _lastKneeAngle = 180;
   static bool _wasInDeepSquat = false;
-  
+
   // Public getters for provider access
   static double get lastKneeAngle => _lastKneeAngle;
   static bool get wasInDeepSquat => _wasInDeepSquat;
@@ -98,9 +100,14 @@ class MissionMLService {
     return [landmarks[start], landmarks[start + 1], landmarks[start + 2]];
   }
 
-  static double _calculateAngle(List<double> p1, List<double> p2, List<double> p3) {
-    final rads = atan2(p3[1] - p2[1], p3[0] - p2[0]) - 
-                 atan2(p1[1] - p2[1], p1[0] - p2[0]);
+  static double _calculateAngle(
+    List<double> p1,
+    List<double> p2,
+    List<double> p3,
+  ) {
+    final rads =
+        atan2(p3[1] - p2[1], p3[0] - p2[0]) -
+        atan2(p1[1] - p2[1], p1[0] - p2[0]);
     var angle = (rads * 180 / pi).abs();
     if (angle > 180) angle = 360 - angle;
     return angle;
@@ -114,7 +121,7 @@ class MissionMLService {
 
   static bool _evaluateWalk(int? currentSteps) {
     if (currentSteps == null) return false;
-    
+
     if (!_walkInitialized) {
       _initialSteps = currentSteps;
       _walkInitialized = true;
@@ -158,9 +165,14 @@ class MissionMLService {
   }
 
   // Check if detected objects match target
-  static bool checkObjectMatch(List<String> detectedLabels, String targetLabel) {
+  static bool checkObjectMatch(
+    List<String> detectedLabels,
+    String targetLabel,
+  ) {
     final target = targetLabel.toLowerCase();
-    return detectedLabels.any((label) => label.contains(target) || target.contains(label));
+    return detectedLabels.any(
+      (label) => label.contains(target) || target.contains(label),
+    );
   }
 
   // Dispose resources

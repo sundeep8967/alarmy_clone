@@ -8,10 +8,15 @@ class TypingMissionScreen extends ConsumerStatefulWidget {
   final VoidCallback onMissionComplete;
   final Map<String, dynamic>? settings;
 
-  const TypingMissionScreen({super.key, required this.onMissionComplete, this.settings});
+  const TypingMissionScreen({
+    super.key,
+    required this.onMissionComplete,
+    this.settings,
+  });
 
   @override
-  ConsumerState<TypingMissionScreen> createState() => _TypingMissionScreenState();
+  ConsumerState<TypingMissionScreen> createState() =>
+      _TypingMissionScreenState();
 }
 
 class _TypingMissionScreenState extends ConsumerState<TypingMissionScreen> {
@@ -83,7 +88,9 @@ class _TypingMissionScreenState extends ConsumerState<TypingMissionScreen> {
     if (!_isInitialized || phrasesState.isLoading) {
       return Scaffold(
         backgroundColor: const Color(0xFF101014),
-        body: const Center(child: CircularProgressIndicator(color: Color(0xFF00FF85))),
+        body: const Center(
+          child: CircularProgressIndicator(color: Color(0xFF00FF85)),
+        ),
       );
     }
 
@@ -123,8 +130,18 @@ class _TypingMissionScreenState extends ConsumerState<TypingMissionScreen> {
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Typing Mission', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-              Text('Type carefully to stop alarm', style: TextStyle(color: Colors.white54, fontSize: 14)),
+              Text(
+                'Typing Mission',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'Type carefully to stop alarm',
+                style: TextStyle(color: Colors.white54, fontSize: 14),
+              ),
             ],
           ),
           GlassContainer(
@@ -216,7 +233,12 @@ class _TypingMissionScreenState extends ConsumerState<TypingMissionScreen> {
                       }
                       return TextSpan(
                         text: char,
-                        style: TextStyle(color: color, fontSize: 22, fontWeight: weight, letterSpacing: 0.5),
+                        style: TextStyle(
+                          color: color,
+                          fontSize: 22,
+                          fontWeight: weight,
+                          letterSpacing: 0.5,
+                        ),
                       );
                     }),
                   ),
@@ -225,7 +247,9 @@ class _TypingMissionScreenState extends ConsumerState<TypingMissionScreen> {
                 const SizedBox(height: 16),
                 GestureDetector(
                   onTap: () {
-                    final phrase = ref.read(phrasesProvider.notifier).getRandomPhrase();
+                    final phrase = ref
+                        .read(phrasesProvider.notifier)
+                        .getRandomPhrase();
                     setState(() {
                       _targetQuote = phrase;
                       _controller.clear();
@@ -234,9 +258,19 @@ class _TypingMissionScreenState extends ConsumerState<TypingMissionScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.refresh, color: Colors.white24, size: 16),
+                      const Icon(
+                        Icons.refresh,
+                        color: Colors.white24,
+                        size: 16,
+                      ),
                       const SizedBox(width: 4),
-                      Text('New phrase', style: TextStyle(color: Colors.white.withValues(alpha: 0.2), fontSize: 12)),
+                      Text(
+                        'New phrase',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                 ),

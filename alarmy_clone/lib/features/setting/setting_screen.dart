@@ -32,7 +32,10 @@ class SettingScreen extends ConsumerWidget {
               children: [
                 _buildHeader(),
                 const SizedBox(height: 12),
-                FadeInUp(duration: const Duration(milliseconds: 600), child: _buildProStatusBadge()),
+                FadeInUp(
+                  duration: const Duration(milliseconds: 600),
+                  child: _buildProStatusBadge(),
+                ),
                 const SizedBox(height: 24),
                 _buildSectionHeader('SYSTEM'),
                 FadeInUp(
@@ -42,19 +45,34 @@ class SettingScreen extends ConsumerWidget {
                       'Alarm optimization',
                       Icons.auto_fix_high,
                       const Color(0xFF00D1FF),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AlarmOptimizationScreen())),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AlarmOptimizationScreen(),
+                        ),
+                      ),
                     ),
                     _SettingModel(
                       'Permission & Security',
                       Icons.security,
                       const Color(0xFFFF3B30),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PermissionDoaScreen())),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PermissionDoaScreen(),
+                        ),
+                      ),
                     ),
                     _SettingModel(
                       'Battery Optimization',
                       Icons.battery_charging_full,
                       const Color(0xFFFF9500),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BatteryOptimizationScreen())),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const BatteryOptimizationScreen(),
+                        ),
+                      ),
                     ),
                   ]),
                 ),
@@ -67,25 +85,45 @@ class SettingScreen extends ConsumerWidget {
                       'Language',
                       Icons.language,
                       const Color(0xFF5856D6),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageScreen())),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const LanguageScreen(),
+                        ),
+                      ),
                     ),
                     _SettingModel(
                       'Alarm Settings',
                       Icons.alarm,
                       const Color(0xFFFF9500),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AlarmSettingsScreen())),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AlarmSettingsScreen(),
+                        ),
+                      ),
                     ),
                     _SettingModel(
                       'Ramadan Mode',
                       Icons.nightlight_round,
                       const Color(0xFF00D1FF),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RamadanScreen())),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const RamadanScreen(),
+                        ),
+                      ),
                     ),
                     _SettingModel(
                       'Behaviour & System',
                       Icons.tune,
                       const Color(0xFF8E8E93),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const GeneralSettingScreen())),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const GeneralSettingScreen(),
+                        ),
+                      ),
                     ),
                   ]),
                 ),
@@ -103,7 +141,11 @@ class SettingScreen extends ConsumerWidget {
       padding: EdgeInsets.all(24.0),
       child: Text(
         'Settings',
-        style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -115,13 +157,22 @@ class SettingScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF1C1C1E),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF30D158).withValues(alpha: 0.4)),
+        border: Border.all(
+          color: const Color(0xFF30D158).withValues(alpha: 0.4),
+        ),
       ),
       child: const Row(
         children: [
           Icon(Icons.verified, color: Color(0xFF30D158), size: 22),
           SizedBox(width: 12),
-          Text('All PRO features activated', style: TextStyle(color: Color(0xFF30D158), fontWeight: FontWeight.bold, fontSize: 15)),
+          Text(
+            'All PRO features activated',
+            style: TextStyle(
+              color: Color(0xFF30D158),
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
         ],
       ),
     );
@@ -132,11 +183,15 @@ class SettingScreen extends ConsumerWidget {
       padding: const EdgeInsets.only(left: 24, bottom: 8),
       child: Text(
         title,
-        style: const TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+        style: const TextStyle(
+          color: Colors.white38,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.2,
+        ),
       ),
     );
   }
-
 
   Widget _buildSettingsGroup(List<_SettingModel> items) {
     return Container(
@@ -172,7 +227,11 @@ class SettingScreen extends ConsumerWidget {
                       Expanded(
                         child: Text(
                           item.title,
-                          style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                       if (item.hasNotice)
@@ -180,17 +239,28 @@ class SettingScreen extends ConsumerWidget {
                           width: 8,
                           height: 8,
                           margin: const EdgeInsets.only(right: 12),
-                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       if (item.trailing != null)
                         item.trailing!
                       else
-                        const Icon(Icons.chevron_right, color: Colors.white12, size: 20),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: Colors.white12,
+                          size: 20,
+                        ),
                     ],
                   ),
                 ),
                 if (!isLast)
-                  Divider(height: 1, color: Colors.white.withValues(alpha: 0.05), indent: 64),
+                  Divider(
+                    height: 1,
+                    color: Colors.white.withValues(alpha: 0.05),
+                    indent: 64,
+                  ),
               ],
             ),
           );
@@ -208,5 +278,12 @@ class _SettingModel {
   final VoidCallback? onTap;
   final Widget? trailing;
 
-  _SettingModel(this.title, this.icon, this.iconColor, {this.hasNotice = false, this.onTap, this.trailing});
+  _SettingModel(
+    this.title,
+    this.icon,
+    this.iconColor, {
+    this.hasNotice = false,
+    this.onTap,
+    this.trailing,
+  });
 }

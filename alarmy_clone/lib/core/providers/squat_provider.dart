@@ -60,10 +60,10 @@ class SquatNotifier extends Notifier<SquatState> {
 
   void _evaluateWindow(List<List<double>> window) {
     final score = TFLiteMissionService.evaluateSquat(window);
-    
+
     // Debug: Print ML confidence score
     debugPrint('[Squat ML] Confidence score: ${score.toStringAsFixed(3)}');
-    
+
     // Provide some minimal UI feedback for deep squat if score is rising
     if (score > 0.4 && !state.isInDeepSquat) {
       state = state.copyWith(isInDeepSquat: true);
@@ -72,7 +72,9 @@ class SquatNotifier extends Notifier<SquatState> {
     }
 
     if (score >= _mlThreshold) {
-      debugPrint('[Squat ML] ✓ Squat detected! Score: ${score.toStringAsFixed(3)}');
+      debugPrint(
+        '[Squat ML] ✓ Squat detected! Score: ${score.toStringAsFixed(3)}',
+      );
       incrementSquat();
       // Pause buffer for 1.5 seconds to prevent double-counting the same squat
       _sensorBuffer?.pauseForCooldown(const Duration(milliseconds: 1500));

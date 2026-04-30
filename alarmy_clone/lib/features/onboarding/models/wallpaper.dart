@@ -42,26 +42,26 @@ class Wallpaper {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'category': category,
-        'name': name,
-        'thumbnailURL': thumbnailURL,
-        'url': url,
-        'mediaType': mediaType,
-        'videoURL': videoURL,
-        'audioPath': audioPath,
-      };
+    'id': id,
+    'category': category,
+    'name': name,
+    'thumbnailURL': thumbnailURL,
+    'url': url,
+    'mediaType': mediaType,
+    'videoURL': videoURL,
+    'audioPath': audioPath,
+  };
 
   factory Wallpaper.fromJson(Map<String, dynamic> json) => Wallpaper(
-        id: json['id'] as String,
-        category: json['category'] as String,
-        name: json['name'] as String,
-        thumbnailURL: json['thumbnailURL'] as String,
-        url: json['url'] as String,
-        mediaType: json['mediaType'] as String? ?? 'IMAGE',
-        videoURL: json['videoURL'] as String?,
-        audioPath: json['audioPath'] as String?,
-      );
+    id: json['id'] as String,
+    category: json['category'] as String,
+    name: json['name'] as String,
+    thumbnailURL: json['thumbnailURL'] as String,
+    url: json['url'] as String,
+    mediaType: json['mediaType'] as String? ?? 'IMAGE',
+    videoURL: json['videoURL'] as String?,
+    audioPath: json['audioPath'] as String?,
+  );
 
   @override
   bool operator ==(Object other) =>

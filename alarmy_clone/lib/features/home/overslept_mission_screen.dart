@@ -59,7 +59,11 @@ class OversleptMissionScreen extends ConsumerWidget {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const SizedBox(width: 8),
@@ -89,13 +93,20 @@ class OversleptMissionScreen extends ConsumerWidget {
               padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Text(
                 'These missions force your body to move — making it nearly impossible to fall back asleep.',
-                style: TextStyle(color: Colors.white54, fontSize: 14, height: 1.5),
+                style: TextStyle(
+                  color: Colors.white54,
+                  fontSize: 14,
+                  height: 1.5,
+                ),
               ),
             ),
             const Divider(color: Colors.white10, height: 32),
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 itemCount: _missions.length,
                 itemBuilder: (context, i) {
                   final m = _missions[i];
@@ -118,7 +129,11 @@ class OversleptMissionScreen extends ConsumerWidget {
                                   color: color.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(18),
                                 ),
-                                child: Icon(m['icon'] as IconData, color: color, size: 28),
+                                child: Icon(
+                                  m['icon'] as IconData,
+                                  color: color,
+                                  size: 28,
+                                ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
@@ -136,7 +151,10 @@ class OversleptMissionScreen extends ConsumerWidget {
                                     const SizedBox(height: 4),
                                     Text(
                                       m['subtitle'] as String,
-                                      style: TextStyle(color: color, fontSize: 13),
+                                      style: TextStyle(
+                                        color: color,
+                                        fontSize: 13,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -149,7 +167,10 @@ class OversleptMissionScreen extends ConsumerWidget {
                           child: Text(
                             m['description'] as String,
                             style: const TextStyle(
-                                color: Colors.white54, fontSize: 13, height: 1.5),
+                              color: Colors.white54,
+                              fontSize: 13,
+                              height: 1.5,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -161,17 +182,25 @@ class OversleptMissionScreen extends ConsumerWidget {
                               style: OutlinedButton.styleFrom(
                                 side: BorderSide(color: color),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14)),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
                               ),
                               onPressed: () => _applyMissionToNextAlarm(
-                                  context, ref, m['id'] as String, m['title'] as String),
+                                context,
+                                ref,
+                                m['id'] as String,
+                                m['title'] as String,
+                              ),
                               child: Text(
                                 'Add to my next alarm',
                                 style: TextStyle(
-                                    color: color,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
+                                  color: color,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
                           ),
@@ -189,19 +218,29 @@ class OversleptMissionScreen extends ConsumerWidget {
   }
 
   Future<void> _applyMissionToNextAlarm(
-      BuildContext context, WidgetRef ref, String missionId, String missionName) async {
+    BuildContext context,
+    WidgetRef ref,
+    String missionId,
+    String missionName,
+  ) async {
     final alarms = await ref.read(alarmsProvider.future);
     if (!context.mounted) return;
 
     if (alarms.isEmpty) {
       // No alarms — send straight to editor to create one with this mission
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Create an alarm first, then select the $missionName mission.'),
-        backgroundColor: const Color(0xFF1C1C1E),
-        behavior: SnackBarBehavior.floating,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Create an alarm first, then select the $missionName mission.',
+          ),
+          backgroundColor: const Color(0xFF1C1C1E),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const AlarmEditorScreen()));
+        context,
+        MaterialPageRoute(builder: (_) => const AlarmEditorScreen()),
+      );
       return;
     }
 
@@ -218,11 +257,15 @@ class OversleptMissionScreen extends ConsumerWidget {
     await ref.read(alarmsProvider.notifier).updateAlarm(updated);
 
     if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('$missionName mission added to your ${next.hour.toString().padLeft(2, '0')}:${next.minute.toString().padLeft(2, '0')} alarm!'),
-      backgroundColor: const Color(0xFF30D158),
-      behavior: SnackBarBehavior.floating,
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '$missionName mission added to your ${next.hour.toString().padLeft(2, '0')}:${next.minute.toString().padLeft(2, '0')} alarm!',
+        ),
+        backgroundColor: const Color(0xFF30D158),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
     Navigator.pop(context);
   }
 }

@@ -6,22 +6,19 @@ import 'package:sensors_plus/sensors_plus.dart';
 class SensorBufferProvider {
   final int windowSize;
   final void Function(List<List<double>> window) onWindowReady;
-  
+
   StreamSubscription<AccelerometerEvent>? _accelSub;
   StreamSubscription<GyroscopeEvent>? _gyroSub;
 
   final List<List<double>> _buffer = [];
-  
+
   double _lastGyroX = 0.0;
   double _lastGyroY = 0.0;
   double _lastGyroZ = 0.0;
 
   bool _isPaused = false;
 
-  SensorBufferProvider({
-    this.windowSize = 20,
-    required this.onWindowReady,
-  });
+  SensorBufferProvider({this.windowSize = 20, required this.onWindowReady});
 
   void start() {
     _buffer.clear();
@@ -52,7 +49,7 @@ class SensorBufferProvider {
       if (_buffer.length == windowSize) {
         // Yield a copy of the buffer
         onWindowReady(List.from(_buffer));
-        
+
         // Sliding window approach: remove oldest frame (overlap) for continuous detection
         _buffer.removeAt(0);
       }

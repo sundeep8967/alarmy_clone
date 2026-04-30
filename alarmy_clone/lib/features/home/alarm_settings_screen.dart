@@ -141,7 +141,8 @@ class AlarmSettingsScreen extends ConsumerWidget {
             fontSize: 13,
           ),
         ),
-        trailing: trailing ?? const Icon(Icons.chevron_right, color: Colors.white38),
+        trailing:
+            trailing ?? const Icon(Icons.chevron_right, color: Colors.white38),
         onTap: onTap,
       ),
     );
@@ -180,7 +181,9 @@ class AlarmSettingsScreen extends ConsumerWidget {
           for (final minutes in durations)
             CupertinoActionSheetAction(
               onPressed: () {
-                ref.read(settingsProvider.notifier).updateSnoozeDuration(minutes);
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateSnoozeDuration(minutes);
                 Navigator.pop(context);
               },
               child: Text('$minutes minutes'),
@@ -204,7 +207,9 @@ class AlarmSettingsScreen extends ConsumerWidget {
           for (final minutes in durations)
             CupertinoActionSheetAction(
               onPressed: () {
-                ref.read(settingsProvider.notifier).updateAlarmDuration(minutes);
+                ref
+                    .read(settingsProvider.notifier)
+                    .updateAlarmDuration(minutes);
                 Navigator.pop(context);
               },
               child: Text('$minutes minutes'),

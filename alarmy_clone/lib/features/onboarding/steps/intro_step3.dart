@@ -24,10 +24,7 @@ class IntroStep3 extends StatelessWidget {
         const Text(
           'Wake up instantly',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.white54,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.white54),
         ),
         const SizedBox(height: 64),
         // Sound wave visualization
@@ -88,12 +85,27 @@ class SoundWavePainter extends CustomPainter {
     final gap = 8.0;
 
     // Draw sound wave bars
-    final barHeights = [20.0, 40.0, 60.0, 80.0, 60.0, 40.0, 30.0, 50.0, 70.0, 50.0, 30.0, 20.0];
-    
+    final barHeights = [
+      20.0,
+      40.0,
+      60.0,
+      80.0,
+      60.0,
+      40.0,
+      30.0,
+      50.0,
+      70.0,
+      50.0,
+      30.0,
+      20.0,
+    ];
+
     for (int i = 0; i < barHeights.length; i++) {
-      final x = (size.width - (barHeights.length * (barWidth + gap))) / 2 + i * (barWidth + gap);
+      final x =
+          (size.width - (barHeights.length * (barWidth + gap))) / 2 +
+          i * (barWidth + gap);
       final height = barHeights[i];
-      
+
       canvas.drawLine(
         Offset(x + barWidth / 2, centerY - height / 2),
         Offset(x + barWidth / 2, centerY + height / 2),

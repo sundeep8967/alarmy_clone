@@ -28,39 +28,51 @@ class BadgeScreen extends ConsumerWidget {
               const SliverAppBar(
                 backgroundColor: Colors.transparent,
                 floating: true,
-                title: Text('Achievements', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
+                title: Text(
+                  'Achievements',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               SliverPadding(
                 padding: const EdgeInsets.all(24.0),
                 sliver: badgesAsync.when(
                   data: (badges) => SliverGrid(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.85,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final badge = badges[index];
-                        return FadeInUp(
-                          delay: Duration(milliseconds: 50 * index),
-                          child: _buildBadgeCard(badge),
-                        );
-                      },
-                      childCount: badges.length,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.85,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final badge = badges[index];
+                      return FadeInUp(
+                        delay: Duration(milliseconds: 50 * index),
+                        child: _buildBadgeCard(badge),
+                      );
+                    }, childCount: badges.length),
                   ),
                   loading: () => SliverToBoxAdapter(
                     child: Center(
                       child: Container(
                         height: 200,
-                        child: const CircularProgressIndicator(color: Color(0xFFFF3B30)),
+                        child: const CircularProgressIndicator(
+                          color: Color(0xFFFF3B30),
+                        ),
                       ),
                     ),
                   ),
                   error: (_, __) => const SliverToBoxAdapter(
-                    child: Center(child: Text('Failed to load badges', style: TextStyle(color: Colors.white38))),
+                    child: Center(
+                      child: Text(
+                        'Failed to load badges',
+                        style: TextStyle(color: Colors.white38),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -132,14 +144,14 @@ class BadgeScreen extends ConsumerWidget {
                   ? Color(badge.tier.colorValue).withOpacity(0.2)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
-              border: isUnlocked
-                  ? null
-                  : Border.all(color: Colors.white10),
+              border: isUnlocked ? null : Border.all(color: Colors.white10),
             ),
             child: Text(
               isUnlocked ? badge.tier.label : 'Locked',
               style: TextStyle(
-                color: isUnlocked ? Color(badge.tier.colorValue) : Colors.white10,
+                color: isUnlocked
+                    ? Color(badge.tier.colorValue)
+                    : Colors.white10,
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),

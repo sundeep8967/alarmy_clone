@@ -154,7 +154,10 @@ class PictureMissionScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             Text(
               'Using ML to verify image',
-              style: TextStyle(color: Colors.white.withValues(alpha: 0.5), fontSize: 14),
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.5),
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 24),
             // Dual-ML Reports
@@ -234,16 +237,13 @@ class PictureMissionScreen extends ConsumerWidget {
                       children: [
                         const Text(
                           'Native Similarity',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
                         ),
                         Text(
                           '${(pictureState.nativeScore * 100).toStringAsFixed(1)}%',
                           style: TextStyle(
-                            color: pictureState.nativeScore > 0.85 
-                                ? const Color(0xFF00FF85) 
+                            color: pictureState.nativeScore > 0.85
+                                ? const Color(0xFF00FF85)
                                 : Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -274,13 +274,10 @@ class PictureMissionScreen extends ConsumerWidget {
                       children: [
                         const Text(
                           'Google ML Labels',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
                         ),
                         Text(
-                          pictureState.googleLabels.isEmpty 
+                          pictureState.googleLabels.isEmpty
                               ? 'Scanning...'
                               : pictureState.googleLabels.take(3).join(', '),
                           style: const TextStyle(

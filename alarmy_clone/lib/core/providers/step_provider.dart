@@ -25,10 +25,15 @@ class StepState {
     bool clearErrorMessage = false,
   }) {
     return StepState(
-      initialSteps: clearInitialSteps ? null : (initialSteps ?? this.initialSteps),
+      initialSteps: clearInitialSteps
+          ? null
+          : (initialSteps ?? this.initialSteps),
       currentSteps: currentSteps ?? this.currentSteps,
-      stepsTakenDuringMission: stepsTakenDuringMission ?? this.stepsTakenDuringMission,
-      errorMessage: clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      stepsTakenDuringMission:
+          stepsTakenDuringMission ?? this.stepsTakenDuringMission,
+      errorMessage: clearErrorMessage
+          ? null
+          : (errorMessage ?? this.errorMessage),
     );
   }
 }
@@ -61,12 +66,14 @@ class StepNotifier extends Notifier<StepState> {
 
   void _evaluateWindow(List<List<double>> window) {
     final score = TFLiteMissionService.evaluateStep(window);
-    
+
     // Debug: Print ML confidence score
     debugPrint('[Step ML] Confidence score: ${score.toStringAsFixed(3)}');
-    
+
     if (score >= _mlThreshold) {
-      debugPrint('[Step ML] ✓ Step detected! Score: ${score.toStringAsFixed(3)}');
+      debugPrint(
+        '[Step ML] ✓ Step detected! Score: ${score.toStringAsFixed(3)}',
+      );
       incrementStep();
       // Pause buffer for 0.8 seconds to prevent double-counting the same step
       _sensorBuffer?.pauseForCooldown(const Duration(milliseconds: 800));

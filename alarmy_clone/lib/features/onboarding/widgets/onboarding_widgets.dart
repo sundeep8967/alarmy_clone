@@ -61,30 +61,30 @@ class WallpaperSectionWidget extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         Image.network(
-                                thumbUrl,
-                                fit: BoxFit.cover,
-                                headers: const {'User-Agent': 'Mozilla/5.0'},
-                                errorBuilder: (_, __, ___) => Container(
+                          thumbUrl,
+                          fit: BoxFit.cover,
+                          headers: const {'User-Agent': 'Mozilla/5.0'},
+                          errorBuilder: (_, __, ___) => Container(
+                            color: const Color(0xFF2A2A2E),
+                            child: const Icon(
+                              Icons.image,
+                              color: Colors.white24,
+                              size: 40,
+                            ),
+                          ),
+                          loadingBuilder: (_, child, progress) =>
+                              progress == null
+                              ? child
+                              : Container(
                                   color: const Color(0xFF2A2A2E),
-                                  child: const Icon(
-                                    Icons.image,
-                                    color: Colors.white24,
-                                    size: 40,
+                                  child: const Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Color(0xFFFF3B30),
+                                    ),
                                   ),
                                 ),
-                                loadingBuilder: (_, child, progress) =>
-                                    progress == null
-                                        ? child
-                                        : Container(
-                                            color: const Color(0xFF2A2A2E),
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                color: Color(0xFFFF3B30),
-                                              ),
-                                            ),
-                                          ),
-                              ),
+                        ),
                         if (isSelected)
                           Positioned(
                             top: 8,
@@ -221,7 +221,11 @@ class SoundTileWidget extends StatelessWidget {
             if (isSelected)
               Pulse(
                 infinite: true,
-                child: const Icon(Icons.graphic_eq, color: Color(0xFFFF3B30), size: 18),
+                child: const Icon(
+                  Icons.graphic_eq,
+                  color: Color(0xFFFF3B30),
+                  size: 18,
+                ),
               ),
           ],
         ),

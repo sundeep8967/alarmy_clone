@@ -25,7 +25,9 @@ class RatingDialog extends StatelessWidget {
         child: Container(
           width: 320,
           decoration: BoxDecoration(
-            color: const Color(0xFF2C2C2E), // Dark grey background for the bottom part
+            color: const Color(
+              0xFF2C2C2E,
+            ), // Dark grey background for the bottom part
             borderRadius: BorderRadius.circular(24),
           ),
           child: Column(
@@ -33,7 +35,9 @@ class RatingDialog extends StatelessWidget {
             children: [
               // Top Purple Header with Lottie
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
                 child: Container(
                   height: 160,
                   width: double.infinity,
@@ -68,7 +72,11 @@ class RatingDialog extends StatelessWidget {
                         height: 140,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.pets, color: Colors.white, size: 80),
+                            const Icon(
+                              Icons.pets,
+                              color: Colors.white,
+                              size: 80,
+                            ),
                       ),
                       // Close button
                       Positioned(
@@ -76,7 +84,11 @@ class RatingDialog extends StatelessWidget {
                         right: 12,
                         child: GestureDetector(
                           onTap: () => Navigator.pop(context),
-                          child: const Icon(Icons.close, color: Colors.white70, size: 24),
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.white70,
+                            size: 24,
+                          ),
                         ),
                       ),
                     ],

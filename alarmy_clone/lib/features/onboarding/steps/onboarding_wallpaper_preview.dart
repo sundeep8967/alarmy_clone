@@ -43,8 +43,8 @@ class OnboardingWallpaperPreview extends ConsumerWidget {
             },
             loading: () => Container(color: Colors.black),
             error: (e, __) {
-               debugPrint('❌ [WallpaperPreview] Provider error: $e');
-               return Container(color: const Color(0xFF1E1E20));
+              debugPrint('❌ [WallpaperPreview] Provider error: $e');
+              return Container(color: const Color(0xFF1E1E20));
             },
           ),
 

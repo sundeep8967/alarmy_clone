@@ -25,13 +25,20 @@ class PermissionDoaScreen extends StatelessWidget {
               _buildAppBar(context),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 20,
+                  ),
                   child: Column(
                     children: [
                       FadeInDown(
                         child: const Text(
                           'Permission  1 / 1',
-                          style: TextStyle(color: Color(0xFF00D1FF), fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Color(0xFF00D1FF),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -40,7 +47,12 @@ class PermissionDoaScreen extends StatelessWidget {
                         child: const Text(
                           'Dismiss alarm\nwithout unlocking',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold, height: 1.2),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -49,7 +61,11 @@ class PermissionDoaScreen extends StatelessWidget {
                         child: const Text(
                           'Please allow "Display over other apps" permission to ensure the alarm screen shows up correctly.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white54, fontSize: 16, height: 1.5),
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontSize: 16,
+                            height: 1.5,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 60),
@@ -114,7 +130,14 @@ class PermissionDoaScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.circular(2))),
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.white10,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -134,7 +157,11 @@ class PermissionDoaScreen extends StatelessWidget {
                       children: [
                         const Text(
                           'Display over apps',
-                          style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Pulse(
                           infinite: true,
@@ -176,18 +203,30 @@ class PermissionDoaScreen extends StatelessWidget {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF3B30),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               elevation: 0,
             ),
             onPressed: () async {
               try {
-                await const MethodChannel('com.example.alarmy_clone/system')
-                    .invokeMethod('openSettings', {'action': 'android.settings.action.MANAGE_OVERLAY_PERMISSION'});
+                await const MethodChannel(
+                  'com.example.alarmy_clone/system',
+                ).invokeMethod('openSettings', {
+                  'action': 'android.settings.action.MANAGE_OVERLAY_PERMISSION',
+                });
               } catch (_) {
                 Navigator.pop(context);
               }
             },
-            child: const Text('Go to Setting', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Go to Setting',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),

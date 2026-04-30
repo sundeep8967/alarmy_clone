@@ -25,7 +25,9 @@ Future<List<Wallpaper>> wallpapers(Ref ref) async {
     final rawThumb = map['thumbnailURL'] as String;
 
     final fullUrl = rawUrl.startsWith('http') ? rawUrl : 'https://$rawUrl';
-    final fullThumb = rawThumb.startsWith('http') ? rawThumb : 'https://$rawThumb';
+    final fullThumb = rawThumb.startsWith('http')
+        ? rawThumb
+        : 'https://$rawThumb';
 
     // Use original category and name from JSON (matching APK)
     final category = map['category'] as String;

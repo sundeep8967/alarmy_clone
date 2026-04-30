@@ -1,7 +1,9 @@
 import 'package:flutter/services.dart';
 
 class UninstallBlockerService {
-  static const _channel = MethodChannel('com.example.alarmy_clone/device_admin');
+  static const _channel = MethodChannel(
+    'com.example.alarmy_clone/device_admin',
+  );
 
   static Future<bool> isActive() async {
     try {

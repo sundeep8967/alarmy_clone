@@ -43,8 +43,11 @@ class Today extends _$Today {
   }
 
   Future<TodayData> _fetchAll(TodayData current) async {
-    TodayData result = current.copyWith(errorMessage: null, httpStatusCode: null);
-    
+    TodayData result = current.copyWith(
+      errorMessage: null,
+      httpStatusCode: null,
+    );
+
     // Fetch Weather
     try {
       result = await TodayDataService.fetchWeather(result);

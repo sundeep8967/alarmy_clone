@@ -23,12 +23,12 @@ class AppRoutes {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await AlarmService.init();
   await HomeWidgetService.initialize();
   await MissionMLService.initialize();
   await TFLiteMissionService.initialize();
-  
+
   await EasyLocalization.ensureInitialized();
 
   // Evaluate Ramadan mode on app launch
@@ -39,12 +39,15 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('es'), Locale('fr'), Locale('de')],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+        Locale('fr'),
+        Locale('de'),
+      ],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: ProviderScope(
-        child: MyApp(hasSeenOnboarding: hasSeenOnboarding),
-      ),
+      child: ProviderScope(child: MyApp(hasSeenOnboarding: hasSeenOnboarding)),
     ),
   );
 }
@@ -65,8 +68,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     _router = GoRouter(
-      initialLocation:
-          widget.hasSeenOnboarding ? AppRoutes.home : AppRoutes.onboarding,
+      initialLocation: widget.hasSeenOnboarding
+          ? AppRoutes.home
+          : AppRoutes.onboarding,
       routes: [
         GoRoute(
           path: AppRoutes.onboarding,
@@ -114,7 +118,9 @@ class _MyAppState extends ConsumerState<MyApp> {
           brightness: Brightness.dark,
           surface: const Color(0xFF212121), // Native blackThemeColorPrimary
         ),
-        scaffoldBackgroundColor: const Color(0xFF121315), // Native alarm_background_dim
+        scaffoldBackgroundColor: const Color(
+          0xFF121315,
+        ), // Native alarm_background_dim
       ),
       // Light theme — used when device is in light mode
       theme: ThemeData(
@@ -124,7 +130,9 @@ class _MyAppState extends ConsumerState<MyApp> {
           seedColor: const Color(0xFFFC314C), // Native primary_red
           brightness: Brightness.light,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF2F2F7), // Keeping standard light bg
+        scaffoldBackgroundColor: const Color(
+          0xFFF2F2F7,
+        ), // Keeping standard light bg
       ),
       routerConfig: _router,
     );

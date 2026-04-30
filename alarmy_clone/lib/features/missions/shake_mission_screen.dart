@@ -9,7 +9,11 @@ class ShakeMissionScreen extends StatefulWidget {
   final VoidCallback onMissionComplete;
   final Map<String, dynamic>? settings;
 
-  const ShakeMissionScreen({super.key, required this.onMissionComplete, this.settings});
+  const ShakeMissionScreen({
+    super.key,
+    required this.onMissionComplete,
+    this.settings,
+  });
 
   @override
   State<ShakeMissionScreen> createState() => _ShakeMissionScreenState();
@@ -18,8 +22,8 @@ class ShakeMissionScreen extends StatefulWidget {
 class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
   int shakeCount = 0;
   late final int requiredShakes;
-  
-  static const double shakeThreshold = 15.0; 
+
+  static const double shakeThreshold = 15.0;
   DateTime? lastShakeTime;
   StreamSubscription? _accelerometerSubscription;
   bool _isGlow = false;
@@ -28,16 +32,20 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
   void initState() {
     super.initState();
     requiredShakes = widget.settings?['shake_count'] ?? 30;
-    _accelerometerSubscription = accelerometerEventStream().listen((AccelerometerEvent event) {
+    _accelerometerSubscription = accelerometerEventStream().listen((
+      AccelerometerEvent event,
+    ) {
       double gX = event.x / 9.80665;
       double gY = event.y / 9.80665;
       double gZ = event.z / 9.80665;
-      
+
       double gForce = sqrt(gX * gX + gY * gY + gZ * gZ);
-      
+
       if (gForce > shakeThreshold / 9.80665) {
         final now = DateTime.now();
-        if (lastShakeTime == null || now.difference(lastShakeTime!) > const Duration(milliseconds: 200)) {
+        if (lastShakeTime == null ||
+            now.difference(lastShakeTime!) >
+                const Duration(milliseconds: 200)) {
           lastShakeTime = now;
           _triggerShake();
         }
@@ -68,7 +76,7 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
   @override
   Widget build(BuildContext context) {
     final progress = shakeCount / requiredShakes;
-    
+
     return Scaffold(
       backgroundColor: const Color(0xFF101014),
       body: Container(
@@ -106,7 +114,11 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
             children: [
               Text(
                 'Shake Mission',
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Shake vigorously to dismiss',
@@ -119,11 +131,16 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
             decoration: BoxDecoration(
               color: const Color(0xFF00D1FF).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFF00D1FF).withValues(alpha: 0.3)),
+              border: Border.all(
+                color: const Color(0xFF00D1FF).withValues(alpha: 0.3),
+              ),
             ),
             child: Text(
               '$shakeCount / $requiredShakes',
-              style: const TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: Color(0xFF00D1FF),
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -144,7 +161,9 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF00D1FF).withValues(alpha: _isGlow ? 0.4 : 0.1),
+                color: const Color(
+                  0xFF00D1FF,
+                ).withValues(alpha: _isGlow ? 0.4 : 0.1),
                 blurRadius: _isGlow ? 60 : 20,
                 spreadRadius: _isGlow ? 20 : 0,
               ),
@@ -175,12 +194,20 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
             children: [
               Pulse(
                 infinite: true,
-                child: const Icon(Icons.vibration, color: Color(0xFF00D1FF), size: 48),
+                child: const Icon(
+                  Icons.vibration,
+                  color: Color(0xFF00D1FF),
+                  size: 48,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 '$shakeCount',
-                style: const TextStyle(color: Colors.white, fontSize: 64, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 64,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -196,7 +223,11 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
         children: [
           const Text(
             'Keep Shaking!',
-            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 12),
           Container(

@@ -16,9 +16,13 @@ class MotivationService {
   static Future<void> _loadQuotesIfNeeded() async {
     if (_cachedQuotes != null) return;
     try {
-      final jsonString = await rootBundle.loadString('assets/phrases/typing_mission_phrase_motivational_en.json');
+      final jsonString = await rootBundle.loadString(
+        'assets/phrases/typing_mission_phrase_motivational_en.json',
+      );
       final jsonList = jsonDecode(jsonString) as List<dynamic>;
-      _cachedQuotes = jsonList.map((item) => item as Map<String, dynamic>).toList();
+      _cachedQuotes = jsonList
+          .map((item) => item as Map<String, dynamic>)
+          .toList();
     } catch (e) {
       _cachedQuotes = []; // Prevents endless retries on failure
     }
@@ -27,7 +31,7 @@ class MotivationService {
   /// Gets a random quote from the loaded JSON
   static Future<MotivationModel> getRandomQuoteAsync() async {
     await _loadQuotesIfNeeded();
-    
+
     if (_cachedQuotes == null || _cachedQuotes!.isEmpty) {
       return _fallbackQuote;
     }
@@ -35,7 +39,7 @@ class MotivationService {
     final random = Random();
     final index = random.nextInt(_cachedQuotes!.length);
     final selected = _cachedQuotes![index];
-    
+
     return MotivationModel(
       quote: selected['text'] as String? ?? _fallbackQuote.quote,
       author: selected['speaker'] as String? ?? _fallbackQuote.author,

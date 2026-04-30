@@ -20,7 +20,9 @@ class SquatMissionScreen extends ConsumerWidget {
     final int requiredSquats = (settings?['squat_count'] as int?) ?? 5;
     final squatState = ref.watch(squatProvider);
     final int currentSquats = math.min(squatState.count, requiredSquats);
-    final progress = requiredSquats == 0 ? 0.0 : currentSquats.toDouble() / requiredSquats;
+    final progress = requiredSquats == 0
+        ? 0.0
+        : currentSquats.toDouble() / requiredSquats;
     final isPulse = squatState.count > 0;
 
     ref.listen<SquatState>(squatProvider, (previous, next) {
@@ -75,7 +77,11 @@ class SquatMissionScreen extends ConsumerWidget {
             children: [
               Text(
                 'Squat Mission',
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Perform full squats to dismiss',
@@ -115,7 +121,9 @@ class SquatMissionScreen extends ConsumerWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFFF7A00).withValues(alpha: isPulse ? 0.4 : 0.05),
+                color: const Color(
+                  0xFFFF7A00,
+                ).withValues(alpha: isPulse ? 0.4 : 0.05),
                 blurRadius: isPulse ? 80 : 20,
                 spreadRadius: isPulse ? 25 : 0,
               ),
@@ -148,12 +156,20 @@ class SquatMissionScreen extends ConsumerWidget {
                 key: ValueKey(currentSquats),
                 child: Text(
                   '$currentSquats',
-                  style: const TextStyle(color: Colors.white, fontSize: 84, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 84,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Text(
                 'Target: $requiredSquats',
-                style: const TextStyle(color: Colors.white54, fontSize: 16, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -162,9 +178,7 @@ class SquatMissionScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBottomIllustration({
-    required bool isTargetReached,
-  }) {
+  Widget _buildBottomIllustration({required bool isTargetReached}) {
     return FadeInUp(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -179,13 +193,23 @@ class SquatMissionScreen extends ConsumerWidget {
                 Row(
                   children: [
                     Icon(
-                         isTargetReached ? Icons.check_circle : Icons.accessibility_new,
-                         color: const Color(0xFFFF7A00), size: 32),
+                      isTargetReached
+                          ? Icons.check_circle
+                          : Icons.accessibility_new,
+                      color: const Color(0xFFFF7A00),
+                      size: 32,
+                    ),
                     const SizedBox(width: 20),
                     Expanded(
                       child: Text(
-                        isTargetReached ? 'Great job! Target reached.' : 'Do full squats to increase count.',
-                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                        isTargetReached
+                            ? 'Great job! Target reached.'
+                            : 'Do full squats to increase count.',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -193,7 +217,11 @@ class SquatMissionScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 const Text(
                   'Hold your phone firmly in both hands in front of your chest while squatting.',
-                  style: TextStyle(color: Colors.white38, fontSize: 12, height: 1.4),
+                  style: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
                 ),
               ],
             ),

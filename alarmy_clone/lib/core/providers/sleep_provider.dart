@@ -54,7 +54,7 @@ class SleepNotifier extends Notifier<SleepState> {
   Future<void> stopTracking() async {
     await _service.stopTracking();
     state = state.copyWith(isTracking: false);
-    
+
     // Here we would typically save to the database using AlarmRepository or similar
   }
 }

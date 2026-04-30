@@ -30,8 +30,11 @@ class AlarmRepository {
     }
 
     // Guide user to enable Accessibility Service (uninstall guard)
-    await Future.delayed(const Duration(seconds: 2)); // Let Device Admin dialog settle
-    final accessEnabled = await UninstallBlockerService.isAccessibilityEnabled();
+    await Future.delayed(
+      const Duration(seconds: 2),
+    ); // Let Device Admin dialog settle
+    final accessEnabled =
+        await UninstallBlockerService.isAccessibilityEnabled();
     if (!accessEnabled) {
       await UninstallBlockerService.openAccessibilitySettings();
     }
@@ -60,7 +63,11 @@ class AlarmRepository {
     await updateAlarm(updated);
   }
 
-  Future<void> addRecord(String alarmId, bool isSuccess, {int? solvingTimeSeconds}) async {
+  Future<void> addRecord(
+    String alarmId,
+    bool isSuccess, {
+    int? solvingTimeSeconds,
+  }) async {
     await _db.addRecord(
       alarmId: alarmId,
       isSuccess: isSuccess,
@@ -69,7 +76,8 @@ class AlarmRepository {
   }
 
   Future<double> getSuccessRate() => _db.getSuccessRate();
-  Future<List<Map<String, dynamic>>> getRecentRecords(int limit) => _db.getRecentRecords(limit);
+  Future<List<Map<String, dynamic>>> getRecentRecords(int limit) =>
+      _db.getRecentRecords(limit);
 }
 
 // ── Providers ────────────────────────────────────────────────────────────────

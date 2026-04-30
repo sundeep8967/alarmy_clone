@@ -8,7 +8,11 @@ class MemoryMissionScreen extends StatefulWidget {
   final VoidCallback onMissionComplete;
   final Map<String, dynamic>? settings;
 
-  const MemoryMissionScreen({super.key, required this.onMissionComplete, this.settings});
+  const MemoryMissionScreen({
+    super.key,
+    required this.onMissionComplete,
+    this.settings,
+  });
 
   @override
   State<MemoryMissionScreen> createState() => _MemoryMissionScreenState();
@@ -17,10 +21,10 @@ class MemoryMissionScreen extends StatefulWidget {
 class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
   int _currentRound = 1;
   late final int _totalRounds;
-  
+
   List<int> _sequence = [];
   List<int> _userSequence = [];
-  
+
   bool _isPlayingSequence = false;
   int _activeTile = -1;
 
@@ -35,12 +39,12 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
     _sequence.clear();
     _userSequence.clear();
     final random = Random();
-    int sequenceLength = 3 + _currentRound; 
-    
+    int sequenceLength = 3 + _currentRound;
+
     for (int i = 0; i < sequenceLength; i++) {
-      _sequence.add(random.nextInt(9)); 
+      _sequence.add(random.nextInt(9));
     }
-    
+
     _playSequence();
   }
 
@@ -67,7 +71,7 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
     setState(() {
       _userSequence.add(index);
       int currentIndex = _userSequence.length - 1;
-      
+
       if (_userSequence[currentIndex] != _sequence[currentIndex]) {
         _handleFailure();
       } else if (_userSequence.length == _sequence.length) {
@@ -135,11 +139,18 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
             children: [
               const Text(
                 'Memory Mission',
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Round $_currentRound/$_totalRounds',
-                style: const TextStyle(color: Color(0xFF00FF85), fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Color(0xFF00FF85),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -150,7 +161,9 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
               value: progress,
               minHeight: 6,
               backgroundColor: Colors.white.withValues(alpha: 0.05),
-              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00FF85)),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFF00FF85),
+              ),
             ),
           ),
         ],
@@ -164,13 +177,21 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
         children: [
           Text(
             _isPlayingSequence ? 'Watch Carefully' : 'Repeat the Pattern',
-            style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w300),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.w300,
+            ),
           ),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
-              color: (_isPlayingSequence ? const Color(0xFFFFD700) : const Color(0xFF00FF85)).withValues(alpha: 0.1),
+              color:
+                  (_isPlayingSequence
+                          ? const Color(0xFFFFD700)
+                          : const Color(0xFF00FF85))
+                      .withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -179,13 +200,17 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
                 Icon(
                   _isPlayingSequence ? Icons.visibility : Icons.touch_app,
                   size: 14,
-                  color: _isPlayingSequence ? const Color(0xFFFFD700) : const Color(0xFF00FF85),
+                  color: _isPlayingSequence
+                      ? const Color(0xFFFFD700)
+                      : const Color(0xFF00FF85),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   _isPlayingSequence ? 'EYES ON TILES' : 'YOUR TURN',
                   style: TextStyle(
-                    color: _isPlayingSequence ? const Color(0xFFFFD700) : const Color(0xFF00FF85),
+                    color: _isPlayingSequence
+                        ? const Color(0xFFFFD700)
+                        : const Color(0xFF00FF85),
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
@@ -215,7 +240,7 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
         itemBuilder: (context, index) {
           bool isActive = _activeTile == index;
           bool isTapped = !_isPlayingSequence && _userSequence.contains(index);
-          
+
           return FadeIn(
             duration: Duration(milliseconds: 300 + (index * 50)),
             child: GestureDetector(
@@ -229,19 +254,27 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: isActive ? const Color(0xFF00FF85) : Colors.white.withValues(alpha: 0.05),
+                      color: isActive
+                          ? const Color(0xFF00FF85)
+                          : Colors.white.withValues(alpha: 0.05),
                       width: isActive ? 3 : 1,
                     ),
-                    color: isActive 
-                        ? const Color(0xFF00FF85).withValues(alpha: 0.3) 
-                        : (isTapped ? const Color(0xFF00FF85).withValues(alpha: 0.1) : Colors.transparent),
-                    boxShadow: isActive ? [
-                      BoxShadow(
-                        color: const Color(0xFF00FF85).withValues(alpha: 0.2),
-                        blurRadius: 15,
-                        spreadRadius: 2,
-                      )
-                    ] : [],
+                    color: isActive
+                        ? const Color(0xFF00FF85).withValues(alpha: 0.3)
+                        : (isTapped
+                              ? const Color(0xFF00FF85).withValues(alpha: 0.1)
+                              : Colors.transparent),
+                    boxShadow: isActive
+                        ? [
+                            BoxShadow(
+                              color: const Color(
+                                0xFF00FF85,
+                              ).withValues(alpha: 0.2),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ]
+                        : [],
                   ),
                 ),
               ),

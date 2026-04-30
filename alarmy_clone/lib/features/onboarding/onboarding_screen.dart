@@ -47,7 +47,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     if (currentPage == 9) {
       _completeOnboarding();
     } else if (currentPage == 3) {
-      debugPrint('🔔 [Onboarding] Page 3: Requesting Notification Permission via Overlay');
+      debugPrint(
+        '🔔 [Onboarding] Page 3: Requesting Notification Permission via Overlay',
+      );
       showPermissionOverlay(context, _goToNext);
     } else if (currentPage == 6) {
       debugPrint('🔊 [Onboarding] Page 6: Showing Volume Overlay');
@@ -97,10 +99,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     bool showProgressBar = false;
     if (state.currentPage >= 3 && state.currentPage <= 8) {
       showProgressBar = true;
-      if (state.currentPage == 3) progressStep = 1;
-      else if (state.currentPage == 4 || state.currentPage == 5) progressStep = 2;
-      else if (state.currentPage == 6) progressStep = 3;
-      else if (state.currentPage >= 7) progressStep = 4;
+      if (state.currentPage == 3)
+        progressStep = 1;
+      else if (state.currentPage == 4 || state.currentPage == 5)
+        progressStep = 2;
+      else if (state.currentPage == 6)
+        progressStep = 3;
+      else if (state.currentPage >= 7)
+        progressStep = 4;
     }
 
     // Don't show bar on the full-screen wallpaper preview (page 5)
@@ -128,7 +134,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 const IntroStep2(),
                 const IntroStep3(),
                 const OnboardingStep1(),
-                OnboardingStep2(onNext: _nextPage, onSkipPreview: _skipPreviewAndGoToSound),
+                OnboardingStep2(
+                  onNext: _nextPage,
+                  onSkipPreview: _skipPreviewAndGoToSound,
+                ),
                 OnboardingWallpaperPreview(onNext: _goToNext, goBack: _goBack),
                 OnboardingStep3(onNext: _nextPage),
                 OnboardingStep4List(onNext: _nextPage),
@@ -154,7 +163,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (state.currentPage < 3) _buildPageIndicator(state.currentPage),
+                  if (state.currentPage < 3)
+                    _buildPageIndicator(state.currentPage),
                   if (_shouldShowBottomButton(state.currentPage))
                     _buildBottomButton(state.currentPage),
                 ],
@@ -166,8 +176,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  bool _shouldShowBottomButton(int page) =>
-      ![4, 5, 6, 7, 9].contains(page);
+  bool _shouldShowBottomButton(int page) => ![4, 5, 6, 7, 9].contains(page);
 
   Widget _buildProgressBar(int step) {
     return Container(
@@ -238,7 +247,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFF3B30),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
           onPressed: _nextPage,
           child: Text(

@@ -70,7 +70,9 @@ class PictureNotifier extends Notifier<PictureState> {
     try {
       await CameraService.initialize();
       _controller = CameraService.controller;
-      state = state.copyWith(isInitialized: _controller?.value.isInitialized ?? false);
+      state = state.copyWith(
+        isInitialized: _controller?.value.isInitialized ?? false,
+      );
     } catch (e) {
       state = state.copyWith(error: 'Failed to initialize camera: $e');
     }
@@ -86,7 +88,10 @@ class PictureNotifier extends Notifier<PictureState> {
   }
 
   void startObjectDetection() async {
-    if (_controller == null || !_controller!.value.isInitialized || _isStreaming) return;
+    if (_controller == null ||
+        !_controller!.value.isInitialized ||
+        _isStreaming)
+      return;
 
     _isStreaming = true;
     await _controller!.startImageStream((CameraImage image) async {
@@ -99,14 +104,15 @@ class PictureNotifier extends Notifier<PictureState> {
 
         // Detect objects
         final detectedLabels = await MissionMLService.detectObjects(inputImage);
-        
+
         // Update state with Google ML labels
         state = state.copyWith(googleLabels: detectedLabels);
-        
+
         // Check if target object is detected via Google ML Kit
-        final googleMatch = _targetObject != null && 
+        final googleMatch =
+            _targetObject != null &&
             MissionMLService.checkObjectMatch(detectedLabels, _targetObject!);
-        
+
         if (googleMatch) {
           state = state.copyWith(isVerified: true);
           await stopObjectDetection();
@@ -156,15 +162,14 @@ class PictureNotifier extends Notifier<PictureState> {
 
     final metadata = InputImageMetadata(
       size: Size(image.width.toDouble(), image.height.toDouble()),
-      rotation: InputImageRotationValue.fromRawValue(sensorOrientation) ?? InputImageRotation.rotation0deg,
+      rotation:
+          InputImageRotationValue.fromRawValue(sensorOrientation) ??
+          InputImageRotation.rotation0deg,
       format: format,
       bytesPerRow: image.planes.first.bytesPerRow,
     );
 
-    return InputImage.fromBytes(
-      bytes: bytes,
-      metadata: metadata,
-    );
+    return InputImage.fromBytes(bytes: bytes, metadata: metadata);
   }
 
   /// Performs dual-inference verification using both Native TFLite and Google ML Kit
@@ -173,10 +178,10 @@ class PictureNotifier extends Notifier<PictureState> {
 
     // Start Google ML Kit object detection stream
     startObjectDetection();
-    
+
     // Wait for camera frames and perform native TFLite similarity check
     await Future<void>.delayed(const Duration(seconds: 2));
-    
+
     // Capture current frame and compare with original using TFLite
     double nativeScore = 0.0;
     if (_originalImageBytes != null && _controller != null) {
@@ -184,45 +189,55 @@ class PictureNotifier extends Notifier<PictureState> {
         // Take a picture
         final XFile photo = await _controller!.takePicture();
         final currentBytes = await photo.readAsBytes();
-        
+
         // Preprocess both images
-        final originalProcessed = ImageUtils.preprocessForTFLite(_originalImageBytes!);
+        final originalProcessed = ImageUtils.preprocessForTFLite(
+          _originalImageBytes!,
+        );
         final currentProcessed = ImageUtils.preprocessForTFLite(currentBytes);
-        
+
         if (originalProcessed.isNotEmpty && currentProcessed.isNotEmpty) {
           // Run TFLite similarity inference
-          nativeScore = TFLiteMissionService.evaluateSimilarity(originalProcessed, currentProcessed);
-          debugPrint('[Picture ML] Native similarity score: ${nativeScore.toStringAsFixed(3)}');
+          nativeScore = TFLiteMissionService.evaluateSimilarity(
+            originalProcessed,
+            currentProcessed,
+          );
+          debugPrint(
+            '[Picture ML] Native similarity score: ${nativeScore.toStringAsFixed(3)}',
+          );
         }
       } catch (e) {
         debugPrint('[Picture ML] Error in native inference: $e');
       }
     }
-    
+
     // Update state with native score
     state = state.copyWith(nativeScore: nativeScore);
-    
+
     // Check if verified via either method
     // Method 1: Native TFLite similarity > 0.85
     final nativeMatch = nativeScore > 0.85;
-    
+
     // Method 2: Google ML Kit object match (already checked in stream)
-    final googleMatch = state.googleLabels.isNotEmpty && 
+    final googleMatch =
+        state.googleLabels.isNotEmpty &&
         _targetObject != null &&
         MissionMLService.checkObjectMatch(state.googleLabels, _targetObject!);
-    
+
     final isVerified = nativeMatch || googleMatch;
-    
+
     if (isVerified) {
-      debugPrint('[Picture ML] ✓ Verified! Native: $nativeMatch, Google: $googleMatch');
+      debugPrint(
+        '[Picture ML] ✓ Verified! Native: $nativeMatch, Google: $googleMatch',
+      );
       state = state.copyWith(isVerified: true, isVerifying: false);
       stopObjectDetection();
       return true;
     }
-    
+
     // Continue trying for a few more seconds if not verified
     await Future<void>.delayed(const Duration(seconds: 3));
-    
+
     stopObjectDetection();
     state = state.copyWith(isVerifying: false);
     return state.isVerified;

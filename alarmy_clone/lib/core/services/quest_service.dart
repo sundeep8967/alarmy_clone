@@ -139,10 +139,7 @@ class QuestService {
     );
   }
 
-  static Future<void> updateQuestProgress(
-    String questId,
-    int progress,
-  ) async {
+  static Future<void> updateQuestProgress(String questId, int progress) async {
     final quests = await getDailyQuests();
     final index = quests.indexWhere((q) => q.id == questId);
     if (index == -1) return;
@@ -185,18 +182,14 @@ class QuestService {
   static UserProgressModel _checkLevelUp(UserProgressModel progress) {
     final nextLevelXP = progress.currentLevel * 100;
     if (progress.totalXP >= nextLevelXP) {
-      return progress.copyWith(
-        currentLevel: progress.currentLevel + 1,
-      );
+      return progress.copyWith(currentLevel: progress.currentLevel + 1);
     }
     return progress;
   }
 
   static Future<void> addXP(int amount) async {
     final progress = await getProgress();
-    final newProgress = progress.copyWith(
-      totalXP: progress.totalXP + amount,
-    );
+    final newProgress = progress.copyWith(totalXP: progress.totalXP + amount);
     await saveProgress(_checkLevelUp(newProgress));
   }
 
@@ -365,7 +358,8 @@ class QuestService {
     if (progress.perfectWakeUps >= 10 && !unlocked.contains('no_snooze_10')) {
       unlocked.add('no_snooze_10');
     }
-    if (progress.totalMissionsCompleted >= 50 && !unlocked.contains('mission_master')) {
+    if (progress.totalMissionsCompleted >= 50 &&
+        !unlocked.contains('mission_master')) {
       unlocked.add('mission_master');
     }
     if (progress.currentLevel >= 50 && !unlocked.contains('legend')) {

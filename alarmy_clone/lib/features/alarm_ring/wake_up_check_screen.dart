@@ -55,11 +55,19 @@ class _WakeUpCheckScreenState extends State<WakeUpCheckScreen> {
         child: Column(
           children: [
             const Spacer(),
-            const Icon(Icons.wb_sunny_outlined, color: Color(0xFFFF3B30), size: 100),
+            const Icon(
+              Icons.wb_sunny_outlined,
+              color: Color(0xFFFF3B30),
+              size: 100,
+            ),
             const SizedBox(height: 40),
             const Text(
               'Wake Up Check',
-              style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -69,7 +77,11 @@ class _WakeUpCheckScreenState extends State<WakeUpCheckScreen> {
             const Spacer(),
             Text(
               '$_secondsRemaining',
-              style: const TextStyle(color: Colors.white, fontSize: 64, fontWeight: FontWeight.w200),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 64,
+                fontWeight: FontWeight.w200,
+              ),
             ),
             const Text(
               'seconds remaining',
@@ -84,7 +96,9 @@ class _WakeUpCheckScreenState extends State<WakeUpCheckScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF3B30),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                   onPressed: () {
                     _timer?.cancel();
@@ -92,7 +106,11 @@ class _WakeUpCheckScreenState extends State<WakeUpCheckScreen> {
                   },
                   child: const Text(
                     'I AM AWAKE!',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

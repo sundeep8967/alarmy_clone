@@ -133,7 +133,9 @@ class VolumeOverlay extends ConsumerWidget {
                   onTap: () {
                     // Play preview of currently selected sound or first sound
                     final selectedSoundId = ref.read(selectedSoundProvider);
-                    final soundsNotifier = ref.read(selectedSoundProvider.notifier);
+                    final soundsNotifier = ref.read(
+                      selectedSoundProvider.notifier,
+                    );
                     if (selectedSoundId != null) {
                       soundsNotifier.select(selectedSoundId);
                     } else {

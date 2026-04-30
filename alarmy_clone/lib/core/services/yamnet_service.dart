@@ -33,13 +33,15 @@ class YamnetService {
 
   Future<void> _loadClassMap() async {
     try {
-      final csvString = await rootBundle.loadString('assets/ml/yamnet_class_map.csv');
+      final csvString = await rootBundle.loadString(
+        'assets/ml/yamnet_class_map.csv',
+      );
       final lines = csvString.split('\n');
       // Skip header
       for (var i = 1; i < lines.length; i++) {
         final line = lines[i].trim();
         if (line.isEmpty) continue;
-        
+
         final parts = line.split(',');
         if (parts.length >= 3) {
           final index = int.tryParse(parts[0]);
@@ -49,7 +51,9 @@ class YamnetService {
           }
         }
       }
-      log('🤖 [YamnetService] Loaded ${_classMap.length} classes. Class 411 is: ${_classMap[411]}');
+      log(
+        '🤖 [YamnetService] Loaded ${_classMap.length} classes. Class 411 is: ${_classMap[411]}',
+      );
     } catch (e) {
       log('❌ [YamnetService] Error loading class map: $e');
     }
@@ -63,7 +67,7 @@ class YamnetService {
     try {
       // YAMNet expects input shape [N] where N is number of samples (15600 for 0.975s)
       final input = audioChunk.reshape([audioChunk.length]);
-      
+
       // Output shape is [frames, 521]
       // We'll prepare an output buffer. If input is exactly 15600, frames = 1.
       final numFrames = (audioChunk.length / 15600).ceil().clamp(1, 100);
