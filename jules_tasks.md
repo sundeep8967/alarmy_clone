@@ -1,69 +1,69 @@
 # Alarmy Clone - Detailed Execution Tasks
 
-Based on the analysis in `jules_analysis.md` and the existing `todo.md`, here is a highly granular, step-by-step task list to bridge the gap between the `alarmy_clone` and the `decoded_apk`, ensuring all features are present and Pro features are unlocked.
+Based on the analysis in `jules_analysis.md`, the existing `todo.md`, and the latest verified missing files/integrations, here is a highly granular, step-by-step task list to bridge the gap between the `alarmy_clone` and the `decoded_apk`, ensuring all features are present and Pro features are unlocked.
 
-## Phase 1: Completing the Settings Domain (Medium Priority Gap)
+## Phase 1: Home Screen Widget Integration
 
-### Task 1.1: Implement "Theme Settings"
-- [ ] 1.  Create `lib/features/setting/theme_setting_screen.dart`.
-- [ ] 2.  Design the UI using `Scaffold`, `AppBar`, and `GlassCard` containers.
-- [ ] 3.  Add three options: "System Default", "Light Mode", "Dark Mode".
-- [ ] 4.  Connect these options to `themeProvider` (ensure the provider saves the preference via `SharedPreferences`).
-- [ ] 5.  Update `lib/features/setting/setting_screen.dart` to add a new `_SettingModel` entry for "Theme" under the "PREFERENCES" section, routing to the new screen.
-
-### Task 1.2: Implement "About" Section
-- [ ] 1.  Create `lib/features/setting/about_screen.dart`.
-- [ ] 2.  Use the `package_info_plus` package (already in `pubspec.yaml`) to fetch the app version dynamically.
-- [ ] 3.  Design the UI to display the app logo, app name ("Alarmy Clone"), and version number.
-- [ ] 4.  Add a section for "Open Source Licenses" that routes to Flutter's native `LicensePage`.
-- [ ] 5.  Update `lib/features/setting/setting_screen.dart` to add an "About" entry under the "SYSTEM" section.
-
-### Task 1.3: Implement "Feedback & Support" Section
-- [ ] 1.  Create `lib/features/setting/feedback_screen.dart`.
-- [ ] 2.  Design a UI with options for:
-    *   "Report a Bug"
-    *   "Suggest a Feature"
-    *   "Contact Support"
-- [ ] 3.  Use the `url_launcher` package to implement email launching intents for these options (e.g., `mailto:support@example.com?subject=Bug Report`).
-- [ ] 4.  Update `lib/features/setting/setting_screen.dart` to add a "Feedback" entry.
+### Task 1.1: Complete `AnalogAppWidgetProvider` Implementation
+- [ ] 1.  Open `android/app/src/main/res/xml/` and create `widget_info.xml` to define the widget's properties (minWidth, minHeight, updatePeriodMillis=0).
+- [ ] 2.  Open `android/app/src/main/res/layout/` and create `widget_analog_clock.xml` to design the visual layout (an analog clock face, a text view for `alarm_time`, and a text view for `mission_type`).
+- [ ] 3.  Create or update the Kotlin class `AnalogAppWidgetProvider.kt` extending `AppWidgetProvider`.
+- [ ] 4.  In `AnalogAppWidgetProvider.kt`, implement `onUpdate` to read `SharedPreferences` (where `home_widget` writes data) and update the `RemoteViews` for the widget layout.
+- [ ] 5.  Update `AndroidManifest.xml` to declare the `<receiver android:name=".AnalogAppWidgetProvider">` with the `android.appwidget.action.APPWIDGET_UPDATE` intent filter and link it to the `widget_info.xml` metadata.
+- [ ] 6.  Test the widget on an emulator: verify that updating alarms in `lib/features/widget/home_widget_service.dart` correctly pushes the time and mission type to the native widget.
 
 ## Phase 2: Missing ML Models Integration
 
 ### Task 2.1: Integrate `stage.tflite`
-- [ ] 1.  Copy `stage.tflite` from `decoded_apk/assets/stage.tflite` to `alarmy_clone/assets/ml/`.
-- [ ] 2.  Analyze the model's expected inputs/outputs (likely related to posture/position given the name).
-- [ ] 3.  Create a new service method in `lib/core/services/tflite_mission_service.dart` or `MissionMLService` to load and run inference on `stage.tflite`.
-- [ ] 4.  Create a corresponding mission UI (e.g., `PositionMissionScreen`) that utilizes this model.
-- [ ] 5.  Ensure this new mission is available in the `AlarmEditor` mission selection screen.
+- [ ] 1.  Copy `stage.tflite` from `decoded_apk/assets/stage.tflite` to `alarmy_clone/assets/ml/stage.tflite`.
+- [ ] 2.  Open `pubspec.yaml` and ensure `assets/ml/` is registered in the `assets:` section. Run `flutter pub get`.
+- [ ] 3.  Open `lib/core/services/tflite_mission_service.dart` (or create it if it doesn't exist).
+- [ ] 4.  Implement a method `loadStageModel()` using `tflite_flutter` package to load the `stage.tflite` interpreter.
+- [ ] 5.  Implement a method `runStageInference(Float32List input)` that feeds data (e.g., from camera or accelerometer, depending on what `stage` represents) into the model and returns the classified output.
+- [ ] 6.  Create a new UI screen `lib/features/missions/stage_mission_screen.dart` that consumes this service to verify the user has completed the stage/posture mission.
+- [ ] 7.  Add the `StageMissionScreen` to the `AlarmEditor`'s mission selection list, ensuring it is marked as a free feature.
 
 ### Task 2.2: Integrate `model_final_all.tflite`
-- [ ] 1.  Copy `model_final_all.tflite` from `decoded_apk/assets/model_final_all.tflite` to `alarmy_clone/assets/ml/`.
-- [ ] 2.  Determine its exact purpose (likely advanced sleep stage classification based on audio/movement).
-- [ ] 3.  Integrate the model into `lib/features/sleep/sleep_screen.dart` or related sleep tracking services to enhance the data provided beyond basic decibel tracking.
+- [ ] 1.  Copy `model_final_all.tflite` from `decoded_apk/assets/model_final_all.tflite` to `alarmy_clone/assets/ml/model_final_all.tflite`.
+- [ ] 2.  Open `lib/core/services/mission_ml_service.dart` (or the sleep tracker equivalent service).
+- [ ] 3.  Implement `loadSleepClassifier()` to load the `model_final_all.tflite` interpreter.
+- [ ] 4.  Implement inference logic that takes audio PCM buffers (from `record` package) and runs them through the classifier to detect advanced sleep stages or anomalies.
+- [ ] 5.  Update `lib/features/sleep/sleep_screen.dart` to display the outputs of this model (e.g., categorizing sleep into stages instead of just plotting decibels).
 
-## Phase 3: Localization Asset Porting
+## Phase 3: Localization & Asset Wiring
 
-### Task 3.1: Port Typing Mission Phrases
-- [ ] 1.  Locate all `typing_mission_phrase_*.json` files in the `decoded_apk/assets/` directory.
-- [ ] 2.  Copy all these files into the clone's `assets/phrases/` directory.
-- [ ] 3.  Ensure they are correctly referenced in `pubspec.yaml` (if necessary, though the directory might be wildcarded).
-- [ ] 4.  Update the `TypingMissionScreen` logic to dynamically load the correct JSON file based on the user's current locale.
+### Task 3.1: Wire up all Typing Mission Phrases
+- [ ] 1.  Verify that all 6 English JSON files (affirmation, basic, love, motivational, short, study) exist in `alarmy_clone/assets/phrases/`.
+- [ ] 2.  Open `pubspec.yaml` and verify `assets/phrases/` is listed.
+- [ ] 3.  Open `lib/core/services/motivation_service.dart`.
+- [ ] 4.  Refactor the service to maintain a list of available phrase categories: `['affirmation', 'basic', 'love', 'motivational', 'short', 'study']`.
+- [ ] 5.  Modify the `loadPhrases()` method to accept an optional `category` parameter.
+- [ ] 6.  Update the logic to load the corresponding file: `rootBundle.loadString('assets/phrases/typing_mission_phrase_${category}_en.json')`.
+- [ ] 7.  Update the UI in the Typing Mission to allow users to select which phrase category they want to type, and fetch the phrases accordingly.
 
-## Phase 4: Home Screen Widget
+## Phase 4: Completing the Settings Domain
 
-### Task 4.1: Flutter Native Widget Setup
-- [ ] 1.  Review `lib/features/widget/home_widget_service.dart`.
-- [ ] 2.  Use the `home_widget` package to set up communication between Dart and the native Android widget provider.
-- [ ] 3.  Write the necessary Kotlin/XML code in the `android/` directory to create a visual representation of the Analog Clock widget as seen in the original app.
-- [ ] 4.  Ensure the widget can display the time of the "Next Alarm".
+### Task 4.1: Implement "Theme Settings"
+- [ ] 1.  Create `lib/features/setting/theme_setting_screen.dart`.
+- [ ] 2.  Design the UI using `Scaffold`, `AppBar`, and `GlassCard`.
+- [ ] 3.  Add options for "System Default", "Light Mode", "Dark Mode", and update `themeProvider`.
+- [ ] 4.  Update `lib/features/setting/setting_screen.dart` to route to this new screen.
 
-## Phase 5: "Pro" Feature Audit
+### Task 4.2: Implement "About" Section
+- [ ] 1.  Create `lib/features/setting/about_screen.dart`.
+- [ ] 2.  Use `package_info_plus` to display app version and logo.
+- [ ] 3.  Add a button routing to Flutter's native `LicensePage`.
+- [ ] 4.  Update `lib/features/setting/setting_screen.dart` to add the "About" entry.
 
-### Task 5.1: Verify Unlocked Features
-- [ ] 1.  Audit the `AlarmEditor` screen. Ensure all sounds, wallpapers, and advanced snooze/mission configurations that would typically be locked behind a paywall are freely selectable without any "upgrade" prompts.
-- [ ] 2.  Audit the `RecordsScreen` / Analytics. Ensure all detailed charts and timeline views are accessible.
+### Task 4.3: Implement "Feedback & Support" Section
+- [ ] 1.  Create `lib/features/setting/feedback_screen.dart`.
+- [ ] 2.  Design UI for "Report a Bug", "Suggest a Feature", "Contact Support".
+- [ ] 3.  Use `url_launcher` to handle `mailto:` intents for these options.
+- [ ] 4.  Update `lib/features/setting/setting_screen.dart` to add the "Feedback" entry.
 
-## Phase 6: Code Quality & Consistency Check
-- [ ] 1.  Review all newly created models to ensure they do *not* use `Freezed` or `json_serializable` and strictly adhere to plain Dart with manual `copyWith` and `toJson`.
-- [ ] 2.  Ensure all state management for new features utilizes Riverpod annotations (`@riverpod`) where appropriate.
-- [ ] 3.  Run the build runner: `dart run build_runner build --delete-conflicting-outputs`.
+## Phase 5: Code Quality & Pro Audit
+
+### Task 5.1: Final Audit
+- [ ] 1.  Verify no `Freezed` or `json_serializable` codegen is used in newly created files.
+- [ ] 2.  Verify all premium configurations in `AlarmEditor` are unlocked.
+- [ ] 3.  Run `dart run build_runner build --delete-conflicting-outputs` for Riverpod generated files.
