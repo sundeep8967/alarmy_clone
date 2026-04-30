@@ -19,7 +19,7 @@ import '../missions/squat_mission_screen.dart';
 import '../missions/step_mission_screen.dart';
 import '../missions/stage_mission_screen.dart';
 import '../missions/barcode_mission_screen.dart';
-import '../missions/photo_mission_screen.dart';
+import '../missions/picture_mission_screen.dart';
 import 'wake_up_check_screen.dart';
 
 class AlarmRingScreen extends ConsumerStatefulWidget {
@@ -249,7 +249,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
       case 'step': missionScreen = StepMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
       case 'stage': missionScreen = StageMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
       case 'qr': missionScreen = BarcodeMissionScreen(onMissionComplete: onComplete); break;
-      case 'photo': missionScreen = PhotoMissionScreen(onMissionComplete: onComplete); break;
+      case 'picture': missionScreen = PictureMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
       default: _runMissionSequence(index + 1); return;
     }
 

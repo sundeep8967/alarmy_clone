@@ -39,6 +39,8 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
       _settings['barcode_data'] ??= null;
     } else if (widget.missionId == 'squat') {
       _settings['squat_count'] ??= 10;
+    } else if (widget.missionId == 'picture') {
+      _settings['picture_sensitivity'] ??= 70; // ML confidence threshold (0-100)
     }
   }
 
@@ -101,6 +103,13 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
       return [
         _buildSectionHeader('Number of Squats'),
         _buildCounterRow('squat_count', 5, 50, step: 5),
+      ];
+    } else if (widget.missionId == 'picture') {
+      return [
+        _buildSectionHeader('ML Confidence Threshold'),
+        _buildPictureSensitivitySlider(),
+        const SizedBox(height: 24),
+        _buildPictureMissionInfo(),
       ];
     }
     return [const Center(child: Text('No settings for this mission', style: TextStyle(color: Colors.white70)))];
@@ -254,6 +263,96 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
     }
   }
 
+  Widget _buildPictureSensitivitySlider() {
+    final sensitivity = (_settings['picture_sensitivity'] as int).toDouble();
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1C1D24),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Threshold: ${sensitivity.toInt()}%',
+                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF00FF85).withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  sensitivity >= 85 ? 'Strict' : sensitivity >= 65 ? 'Balanced' : 'Lenient',
+                  style: const TextStyle(color: Color(0xFF00FF85), fontSize: 12, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              activeTrackColor: const Color(0xFFFF3B30),
+              thumbColor: const Color(0xFFFF3B30),
+              inactiveTrackColor: Colors.white12,
+              overlayColor: const Color(0xFFFF3B30).withValues(alpha: 0.2),
+            ),
+            child: Slider(
+              value: sensitivity,
+              min: 50,
+              max: 100,
+              divisions: 10,
+              onChanged: (val) => setState(() => _settings['picture_sensitivity'] = val.toInt()),
+            ),
+          ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Lenient (50%)', style: TextStyle(color: Colors.white38, fontSize: 11)),
+              Text('Strict (100%)', style: TextStyle(color: Colors.white38, fontSize: 11)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPictureMissionInfo() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1C1D24),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF3B8CFF).withValues(alpha: 0.3)),
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.info_outline, color: Color(0xFF3B8CFF), size: 18),
+              SizedBox(width: 8),
+              Text('How Picture Mission Works', style: TextStyle(color: Color(0xFF3B8CFF), fontWeight: FontWeight.bold, fontSize: 14)),
+            ],
+          ),
+          SizedBox(height: 10),
+          Text(
+            '• Take a photo of any object\n'
+            '• TFLite checks pixel-level similarity\n'
+            '• Google ML Kit labels the scene\n'
+            '• Both results must pass the threshold',
+            style: TextStyle(color: Colors.white54, fontSize: 13, height: 1.6),
+          ),
+        ],
+      ),
+    );
+  }
+
   String _getMissionName(String id) {
     switch (id) {
       case 'math': return 'Math';
@@ -262,6 +361,7 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
       case 'typing': return 'Typing';
       case 'qr': return 'Barcode';
       case 'photo': return 'Photo';
+      case 'picture': return 'Picture';
       case 'squat': return 'Squat';
       case 'step': return 'Step';
       default: return 'Default';

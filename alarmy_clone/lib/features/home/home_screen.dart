@@ -354,15 +354,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xFFFF3B30)),
+            gradient: const LinearGradient(
+              colors: [Color(0xFFFF3B30), Color(0xFFFF6B35)],
+            ),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Row(
+          child: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.bolt, color: Color(0xFFFF3B30), size: 16),
-              const SizedBox(width: 4),
-              const Text('PRO Free Trial', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+              Icon(Icons.verified, color: Colors.white, size: 15),
+              SizedBox(width: 5),
+              Text('PRO Activated', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -613,8 +615,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       case 'typing': return Icons.keyboard;
       case 'squat': return Icons.accessibility_new;
       case 'step': return Icons.directions_walk;
+      case 'stage': return Icons.self_improvement;
       case 'qr': return Icons.qr_code_scanner;
-      case 'photo': return Icons.photo_camera;
+      case 'picture': case 'photo': return Icons.camera_alt;
       default: return Icons.notifications_active;
     }
   }
