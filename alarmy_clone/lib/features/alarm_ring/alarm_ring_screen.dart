@@ -17,6 +17,7 @@ import '../missions/memory_mission_screen.dart';
 import '../missions/typing_mission_screen.dart';
 import '../missions/squat_mission_screen.dart';
 import '../missions/step_mission_screen.dart';
+import '../missions/stage_mission_screen.dart';
 import '../missions/barcode_mission_screen.dart';
 import '../missions/photo_mission_screen.dart';
 import 'wake_up_check_screen.dart';
@@ -246,6 +247,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
       case 'typing': missionScreen = TypingMissionScreen(onMissionComplete: onComplete); break;
       case 'squat': missionScreen = SquatMissionScreen(onMissionComplete: onComplete); break;
       case 'step': missionScreen = StepMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
+      case 'stage': missionScreen = StageMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
       case 'qr': missionScreen = BarcodeMissionScreen(onMissionComplete: onComplete); break;
       case 'photo': missionScreen = PhotoMissionScreen(onMissionComplete: onComplete); break;
       default: _runMissionSequence(index + 1); return;

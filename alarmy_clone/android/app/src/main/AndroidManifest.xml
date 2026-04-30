@@ -67,16 +67,16 @@
             </intent-filter>
         </receiver>
         
-        <!-- Home Widget Provider -->
+        <!-- Custom Analog Home Widget Provider -->
         <receiver
-            android:name="es.antonborri.home_widget.HomeWidgetProvider"
+            android:name=".AnalogAppWidgetProvider"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/home_widget_info" />
+                android:resource="@xml/widget_info" />
         </receiver>
 
         <!-- Device Admin Receiver for Uninstall Blocker -->

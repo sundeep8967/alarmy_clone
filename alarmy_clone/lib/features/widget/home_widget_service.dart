@@ -34,7 +34,7 @@ class HomeWidgetService {
       // Update the widget UI
       await HomeWidget.updateWidget(
         name: widgetName,
-        androidName: 'HomeWidgetProvider',
+        androidName: 'AnalogAppWidgetProvider',
       );
     } catch (e) {
       // Fail silently - widget updates should not break alarm functionality

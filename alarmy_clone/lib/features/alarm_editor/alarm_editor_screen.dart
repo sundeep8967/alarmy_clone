@@ -46,6 +46,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     {'id': 'typing', 'icon': Icons.keyboard, 'name': 'Typing'},
     {'id': 'squat', 'icon': Icons.accessibility_new, 'name': 'Squat'},
     {'id': 'step', 'icon': Icons.directions_walk, 'name': 'Step'},
+    {'id': 'stage', 'icon': Icons.self_improvement, 'name': 'Stage'},
     {'id': 'qr', 'icon': Icons.qr_code_scanner, 'name': 'Barcode'},
   ];
 

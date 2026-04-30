@@ -5,7 +5,10 @@ import 'dart:typed_data';
 import 'package:record/record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/database_helper.dart';
+export 'sleep_stage_service.dart' show SleepStage, SleepStageResult;
+
 import 'yamnet_service.dart';
+import 'sleep_stage_service.dart';
 
 enum SnoreSeverity { none, background, low, moderate, loud, veryLoud }
 
@@ -15,6 +18,8 @@ class SleepEvent {
   final SnoreSeverity severity;
   final String? yamnetClass;
   final double? yamnetScore;
+  final SleepStage? sleepStage;
+  final double? sleepStageConfidence;
 
   SleepEvent({
     required this.timestamp,
@@ -22,6 +27,8 @@ class SleepEvent {
     required this.severity,
     this.yamnetClass,
     this.yamnetScore,
+    this.sleepStage,
+    this.sleepStageConfidence,
   });
 
   Map<String, dynamic> toJson() => {
@@ -30,12 +37,15 @@ class SleepEvent {
     'severity': severity.name,
     'yamnetClass': yamnetClass,
     'yamnetScore': yamnetScore,
+    'sleepStage': sleepStage?.name,
+    'sleepStageConfidence': sleepStageConfidence,
   };
 }
 
 class SleepTrackingService {
   final AudioRecorder _audioRecorder = AudioRecorder();
   final YamnetService _yamnetService = YamnetService();
+  final SleepStageService _sleepStageService = SleepStageService();
 
   StreamSubscription<Uint8List>? _audioStreamSub;
   Timer? _analysisTimer;
@@ -50,12 +60,18 @@ class SleepTrackingService {
   final StreamController<double> _decibelStreamCtrl = StreamController<double>.broadcast();
   Stream<double> get decibelStream => _decibelStreamCtrl.stream;
 
+  // Expose current sleep stage for the UI
+  final StreamController<SleepStageResult?> _stageStreamCtrl =
+      StreamController<SleepStageResult?>.broadcast();
+  Stream<SleepStageResult?> get sleepStageStream => _stageStreamCtrl.stream;
+
   // The final recorded events
   final List<SleepEvent> events = [];
   DateTime? sessionStartTime;
 
   Future<void> init() async {
     await _yamnetService.init();
+    await _sleepStageService.init();
   }
 
   Future<void> startTracking() async {
@@ -171,17 +187,25 @@ class SleepTrackingService {
     else if (normalizedDb > 55) severity = SnoreSeverity.moderate;
     else if (normalizedDb > 40) severity = SnoreSeverity.low;
 
-    // 4. Pipeline B: YAMNet Inference
+    // 4. Pipeline B: YAMNet Inference (snore detection)
     YamnetResult? yamnetRes;
     if (_yamnetService.isReady && float32List.length >= 15600) {
-      // Pass 0.975s (15600 samples at 16kHz) to YAMNet
       yamnetRes = _yamnetService.processAudioFrame(
         float32List.sublist(0, 15600)
       );
     }
 
-    // Record the event if it's considered an "event" (loud enough or ML recognized snore)
-    // Snore is class 411
+    // 5. Pipeline C: Sleep Stage Classification (model_final_all)
+    SleepStageResult? stageRes;
+    if (_sleepStageService.isReady && float32List.isNotEmpty) {
+      stageRes = _sleepStageService.classify(float32List);
+      if (stageRes != null) {
+        _stageStreamCtrl.add(stageRes);
+      }
+    }
+
+    // Record the event if it's loud enough or ML recognised a snore
+    // YAMNet class 411 = Snoring
     final isMlSnore = yamnetRes?.highestClassIndex == 411 && (yamnetRes?.score ?? 0) > 0.3;
     final isAmplitudeSnore = severity != SnoreSeverity.background;
 
@@ -192,6 +216,8 @@ class SleepTrackingService {
         severity: severity,
         yamnetClass: yamnetRes?.highestClassName,
         yamnetScore: yamnetRes?.score,
+        sleepStage: stageRes?.stage,
+        sleepStageConfidence: stageRes?.confidence,
       ));
     }
 
@@ -213,6 +239,8 @@ class SleepTrackingService {
 
   void dispose() {
     _decibelStreamCtrl.close();
+    _stageStreamCtrl.close();
     _yamnetService.dispose();
+    _sleepStageService.dispose();
   }
 }
