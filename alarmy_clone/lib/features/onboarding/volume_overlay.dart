@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/sounds_provider.dart';
 
-class VolumeOverlay extends ConsumerWidget {
+class VolumeOverlay extends ConsumerStatefulWidget {
   final VoidCallback onNext;
 
   const VolumeOverlay({super.key, required this.onNext});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<VolumeOverlay> createState() => _VolumeOverlayState();
+}
+
+class _VolumeOverlayState extends ConsumerState<VolumeOverlay> {
+  double _volume = 0.95;
+  bool _gentleWakeUp = true;
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -37,10 +45,10 @@ class VolumeOverlay extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Volume',
                       style: TextStyle(
                         color: Colors.white,
@@ -50,8 +58,8 @@ class VolumeOverlay extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      '95%',
-                      style: TextStyle(
+                      '${(_volume * 100).round()}%',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -80,8 +88,12 @@ class VolumeOverlay extends ConsumerWidget {
                           ),
                         ),
                         child: Slider(
-                          value: 0.95,
-                          onChanged: (value) {}, // Mock slider
+                          value: _volume,
+                          onChanged: (value) {
+                            setState(() {
+                              _volume = value;
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -120,11 +132,15 @@ class VolumeOverlay extends ConsumerWidget {
                       ),
                     ),
                     CupertinoSwitch(
-                      value: true,
+                      value: _gentleWakeUp,
                       activeTrackColor: const Color(
                         0xFF42A5F5,
                       ), // Light blue switch
-                      onChanged: (val) {},
+                      onChanged: (val) {
+                        setState(() {
+                          _gentleWakeUp = val;
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -136,12 +152,7 @@ class VolumeOverlay extends ConsumerWidget {
                     final soundsNotifier = ref.read(
                       selectedSoundProvider.notifier,
                     );
-                    if (selectedSoundId != null) {
-                      soundsNotifier.select(selectedSoundId);
-                    } else {
-                      // Select and play the first sound if none selected
-                      soundsNotifier.select('1'); // Default to first sound
-                    }
+                    soundsNotifier.select(selectedSoundId);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +192,7 @@ class VolumeOverlay extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    onPressed: onNext,
+                    onPressed: widget.onNext,
                     child: const Text(
                       'Next',
                       style: TextStyle(
