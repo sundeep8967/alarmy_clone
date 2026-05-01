@@ -16,6 +16,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
   bool _uninstallBlocker = false;
   bool _volumeSnooze = true;
   bool _autoDismiss = false;
+  bool _preventTurnOff = false;
   String _selectedLanguage = 'English';
   String _timeFormat = '24 Hour';
 
@@ -32,6 +33,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
       _uninstallBlocker = uninstallBlockerActive;
       _volumeSnooze = prefs.getBool('pref_volume_snooze') ?? true;
       _autoDismiss = prefs.getBool('pref_auto_dismiss') ?? false;
+      _preventTurnOff = prefs.getBool('pref_prevent_turn_off') ?? false;
       _timeFormat = prefs.getString('pref_time_format') ?? '24 Hour';
     });
   }
@@ -156,6 +158,20 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                         setState(() => _uninstallBlocker = active);
                       },
                     ),
+                  ),
+                  _SettingItem(
+                    'Prevent Phone Turn-off',
+                    Icons.power_off,
+                    Colors.deepPurple,
+                    trailing: CupertinoSwitch(
+                      value: _preventTurnOff,
+                      activeColor: const Color(0xFFFF3B30),
+                      onChanged: (v) {
+                        setState(() => _preventTurnOff = v);
+                        _saveToggle('pref_prevent_turn_off', v);
+                      },
+                    ),
+                    subtitle: 'Blocks power menu when alarm is ringing',
                   ),
                   _SettingItem(
                     'Volume Button',
