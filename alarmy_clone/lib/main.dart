@@ -93,7 +93,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     // Listen for alarm ring events from the background isolate
     AlarmService.port.listen((message) {
       if (message is Map && message['type'] == 'ring') {
-        final alarm = AlarmModel.fromJson(message['alarm']);
+        final alarm = AlarmModel.fromJson(Map<String, dynamic>.from(message['alarm'] as Map));
         _router.push(AppRoutes.ring, extra: alarm);
       }
     });
