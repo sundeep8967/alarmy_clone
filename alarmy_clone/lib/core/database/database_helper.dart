@@ -101,9 +101,10 @@ CREATE TABLE sleep_sessions (
     if (oldVersion < 4) {
       await db.execute('ALTER TABLE alarms ADD COLUMN missionTypes TEXT');
       final alarms = await db.query('alarms');
+      final batch = db.batch();
       for (final alarm in alarms) {
         final missionType = alarm['missionType'] as String? ?? 'default';
-        await db.update(
+        batch.update(
           'alarms',
           {
             'missionTypes': jsonEncode([missionType]),
@@ -112,6 +113,7 @@ CREATE TABLE sleep_sessions (
           whereArgs: [alarm['id']],
         );
       }
+      await batch.commit(noResult: true);
     }
     if (oldVersion < 5) {
       await db.execute(
