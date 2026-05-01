@@ -1,27 +1,40 @@
 # Jules Analysis
 
-## Gap Analysis
+## Gap Analysis - Pro Features & Functionalities
 
-1.  **Multiple Missions:**
-    *   **Status:** Implemented (UX limit of 3, loops correctly)
-    *   **Details:** The `AlarmRingScreen` DOES have `_runMissionSequence(int index)` which iterates through `widget.alarm.missionTypes`. The gap was perceived but upon closer inspection of `alarm_editor_screen.dart`, it handles selecting up to 3 missions if "Default" is not selected.
+After a thorough line-by-line review of the decoded APK versus the Flutter project (`alarmy_clone`), here is the granular gap analysis of functionalities:
 
-2.  **Smart Alarm (Sleep window):**
-    *   **Status:** Implemented
-    *   **Details:** `AlarmModel` has `int smartAlarmWindow`, and `AlarmService` has logic to schedule a `smartAlarmWindowCallback` if `smartAlarmWindow > 0`. We successfully added the UI selector in the Advanced section of `AlarmEditorScreen`.
+### 1. Alarm Cheat Prevention (Pro Features)
+*   **Prevent Phone Turn-off (Power Off Blocker):**
+    *   **Decoded APK:** Contains `ShutdownBlockerService` (Accessibility Service) that detects power-off system UI and prevents it while an alarm is ringing.
+    *   **Flutter Project:** Missing. Has an `UninstallGuardService` (for preventing uninstall) but lacks the logic to intercept the power-off/reboot UI.
+*   **Prevent App Uninstall:**
+    *   **Decoded APK:** Prevents uninstall via Device Admin and Accessibility.
+    *   **Flutter Project:** Implemented via `UninstallGuardService` and Device Admin.
+*   **Prevent Last-Minute Edits (Mute/Turn off before ringing):**
+    *   **Decoded APK:** A premium feature that prevents users from modifying or turning off an alarm when it is close to ringing.
+    *   **Flutter Project:** Missing. Currently, users can toggle off the alarm right before it rings.
+*   **Mute During Mission Limits:**
+    *   **Decoded APK:** Limits the number of times a user can mute the alarm while performing a mission (e.g., 3 times).
+    *   **Flutter Project:** Missing. The user could theoretically mute indefinitely or it's not handled as a limited resource.
 
-3.  **Time Pressure:**
-    *   **Status:** Implemented
-    *   **Details:** Both the UI in `AlarmEditorScreen` and the ring execution in `AlarmRingScreen` are functional.
+### 2. Missions (Pro Features)
+*   **Multiple Missions:** Implemented.
+*   **Squat, Step, Picture Missions (ML based):** Implemented using TFLite/MediaPipe/MLKit.
+*   **Time Pressure (TTS Voice):** Implemented.
+*   **Wake Up Check:** Implemented (Scheduled upon dismissal).
+*   **Typing/Math/Memory/Shake/Barcode:** Implemented.
+*   **Extra Math Difficulties/Features:** Need to ensure all premium difficulties are unlocked without paywalls.
 
-4.  **Wake Up Check:**
-    *   **Status:** Implemented
-    *   **Details:** Was not being triggered appropriately upon alarm dismiss. We added a check in `_dismissAlarm` to trigger `AlarmService.scheduleWakeUpCheck` when dismissed.
+### 3. Alarm Sounds & Extra Settings
+*   **Premium Sounds & Wallpapers:** Implemented (Ad-free & fully unlocked).
+*   **Smart Alarm (Sleep window):** Implemented.
+*   **Gradual Volume Increase (Crescendo):** Implemented.
+*   **Auto-Dismiss / Volume Button Snooze:** Implemented in `general_setting_screen.dart`.
 
-5.  **Premium Sounds & Ad-Free Experience:**
-    *   **Status:** Implemented
-    *   **Details:** All sounds in `sounds_provider.dart` and wallpapers are completely free without any `isPremium` locking mechanisms. No ad SDKs are loaded.
+### 4. Background Reliability
+*   **Foreground Service / Wake Locks:** Implemented (`AlarmForegroundService`).
+*   **Battery Optimization Prompt:** Implemented.
 
-## Actionable Fixes Applied
-1.  **Smart Alarm UI:** Added a Dropdown in `AlarmEditorScreen` to let users pick the smart window range (Off, 10, 20, 30 min).
-2.  **Wake Up Check Trigger:** Corrected `AlarmRingScreen` to ensure the check is actually scheduled after dismissing an alarm.
+## Conclusion
+The project has a surprisingly robust implementation of most Alarmy features! The primary missing pieces revolve around the **"Alarm Cheat Prevention"** suite (Prevent Phone Turn-off, Prevent Last-Minute Edits, Mute During Mission Limit).
