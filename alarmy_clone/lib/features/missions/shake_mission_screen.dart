@@ -31,7 +31,7 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
   @override
   void initState() {
     super.initState();
-    requiredShakes = widget.settings?['shake_count'] ?? 30;
+    requiredShakes = (widget.settings?['shake_count'] as int?) ?? 30;
     _accelerometerSubscription = accelerometerEventStream().listen((
       AccelerometerEvent event,
     ) {

@@ -100,7 +100,7 @@ class LanguageScreen extends StatelessWidget {
 
           return InkWell(
             onTap: () async {
-              await context.setLocale(Locale(language['code']));
+              await context.setLocale(Locale(language['code'] as String));
             },
             borderRadius: BorderRadius.circular(24),
             child: Column(
@@ -110,13 +110,13 @@ class LanguageScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        language['flag'],
+                        language['flag'] as String,
                         style: const TextStyle(fontSize: 24),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Text(
-                          language['name'],
+                          language['name'] as String,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

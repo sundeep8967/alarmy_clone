@@ -678,6 +678,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   value: alarm.isActive,
                   activeColor: const Color(0xFF00E5FF),
                   onChanged: (v) async {
+                    // Task 1.2 — Prevent Last-Minute Edits guard
+                    if (!v && alarm.preventLastMinuteEdits) {
+                      final now = DateTime.now();
+                      final alarmToday = DateTime(
+                        now.year,
+                        now.month,
+                        now.day,
+                        alarm.hour,
+                        alarm.minute,
+                      );
+                      final diff = alarmToday.difference(now).inMinutes;
+                      if (diff >= 0 && diff <= 30) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            backgroundColor: const Color(0xFF1C1C1E),
+                            title: const Text(
+                              'Cannot Turn Off Alarm',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            content: Text(
+                              'This alarm is set to ring in $diff minutes. '
+                              'Last-minute edits are blocked to prevent cheating.',
+                              style: const TextStyle(color: Colors.white70),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text(
+                                  'OK',
+                                  style: TextStyle(color: Color(0xFFFF3B30)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        return;
+                      }
+                    }
                     final updated = alarm.copyWith(isActive: v);
                     await ref
                         .read(alarmsProvider.notifier)

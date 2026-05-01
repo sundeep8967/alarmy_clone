@@ -64,14 +64,14 @@ class TodayData {
 
   factory TodayData.fromJson(Map<String, dynamic> json) {
     return TodayData(
-      weatherLabel: json['weatherLabel'] ?? 'Weather',
-      weatherValue: json['weatherValue'] ?? 'N/A',
-      horoscopeLabel: json['horoscopeLabel'] ?? 'Horoscope',
-      horoscopeValue: json['horoscopeValue'] ?? 'N/A',
-      newsLabel: json['newsLabel'] ?? 'News',
-      newsValue: json['newsValue'] ?? 'N/A',
+      weatherLabel: (json['weatherLabel'] as String?) ?? 'Weather',
+      weatherValue: (json['weatherValue'] as String?) ?? 'N/A',
+      horoscopeLabel: (json['horoscopeLabel'] as String?) ?? 'Horoscope',
+      horoscopeValue: (json['horoscopeValue'] as String?) ?? 'N/A',
+      newsLabel: (json['newsLabel'] as String?) ?? 'News',
+      newsValue: (json['newsValue'] as String?) ?? 'N/A',
       lastFetchedAt: json['lastFetchedAt'] != null
-          ? DateTime.parse(json['lastFetchedAt'])
+          ? DateTime.parse(json['lastFetchedAt'] as String)
           : null,
     );
   }
@@ -91,7 +91,7 @@ class TodayCacheService {
     final jsonStr = prefs.getString(_cacheKey);
     if (jsonStr != null) {
       try {
-        return TodayData.fromJson(json.decode(jsonStr));
+        return TodayData.fromJson(json.decode(jsonStr) as Map<String, dynamic>);
       } catch (e) {
         return null;
       }
@@ -222,7 +222,7 @@ class TodayDataService {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final temp = data['current_weather']['temperature'];
-      final code = data['current_weather']['weathercode'];
+      final code = data['current_weather']['weathercode'] as int;
       final description = _getWeatherDescription(code);
 
       return current.copyWith(
@@ -269,7 +269,7 @@ class TodayDataService {
         ];
         String keyword = 'Daily';
         for (final k in keywords) {
-          if (horoscope.toLowerCase().contains(k)) {
+          if ((horoscope as String).toLowerCase().contains(k)) {
             keyword = k.substring(0, 1).toUpperCase() + k.substring(1);
             break;
           }
@@ -300,8 +300,8 @@ class TodayDataService {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       if (data['articles'] != null && (data['articles'] as List).isNotEmpty) {
-        final article = data['articles'][0];
-        String title = article['title'] ?? 'No title';
+        final article = data['articles'][0] as Map<String, dynamic>;
+        String title = (article['title'] as String?) ?? 'No title';
 
         return current.copyWith(
           newsLabel: 'Top News',

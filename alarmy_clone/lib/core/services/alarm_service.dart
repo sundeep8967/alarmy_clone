@@ -89,7 +89,7 @@ class AlarmService {
       title: 'Alarmy Clone',
       body: 'Time to wake up!',
       notificationDetails: const NotificationDetails(android: androidDetails),
-      payload: params['id'],
+      payload: params['id'] as String?,
     );
   }
 
@@ -143,7 +143,7 @@ class AlarmService {
     final reFireTime = DateTime.now().add(const Duration(minutes: 1));
     await AndroidAlarmManager.oneShotAt(
       reFireTime,
-      params['id'].hashCode + 300000,
+      (params['id'] as String).hashCode + 300000,
       alarmCallback,
       exact: true,
       wakeup: true,
@@ -304,11 +304,13 @@ class AlarmService {
           notificationDetails: const NotificationDetails(
             android: androidDetails,
           ),
-          payload: params['id'],
+          payload: params['id'] as String?,
         );
 
         // Cancel the main alarm since we're triggering early
-        await AndroidAlarmManager.cancel(params['id'].hashCode);
+        await AndroidAlarmManager.cancel(
+          (params['id'] as String).hashCode,
+        );
       }
       // If no light sleep detected, do nothing - let the main alarm fire at scheduled time
     } else {

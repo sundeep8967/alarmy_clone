@@ -44,6 +44,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   Timer? _timePressureTimer;
   double _currentVolume = 0.0;
   bool _isAlarmActive = true;
+  int _muteCount = 0; // Task 1.3 — mute limit tracker
 
   @override
   void initState() {
@@ -181,6 +182,22 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   }
 
   void _snoozeAlarm({bool isAuto = false}) async {
+    // Task 1.3 — enforce mute during mission limit
+    final limit = widget.alarm.muteDuringMissionLimit;
+    if (!isAuto && limit > 0 && _muteCount >= limit) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: const Color(0xFF1C1C1E),
+          content: Text(
+            'Exceeded mute during mission limit ($limit times).',
+            style: const TextStyle(color: Colors.white),
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    if (!isAuto) setState(() => _muteCount++);
     _isAlarmActive = false;
     await AlarmLockService.stopLock();
     Vibration.cancel();
@@ -386,23 +403,36 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
                         SizedBox(
                           width: double.infinity,
                           height: 64,
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.white10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
+                          child: Builder(builder: (context) {
+                            final limit = widget.alarm.muteDuringMissionLimit;
+                            final limitReached =
+                                limit > 0 && _muteCount >= limit;
+                            return OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                  color: limitReached
+                                      ? Colors.white12
+                                      : Colors.white10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
                               ),
-                            ),
-                            onPressed: () => _snoozeAlarm(),
-                            child: Text(
-                              'SNOOZE (${widget.alarm.snoozeMinutes}m)',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                              onPressed: limitReached ? null : () => _snoozeAlarm(),
+                              child: Text(
+                                limitReached
+                                    ? 'MUTE LIMIT REACHED'
+                                    : 'SNOOZE (${widget.alarm.snoozeMinutes}m)',
+                                style: TextStyle(
+                                  color: limitReached
+                                      ? Colors.white24
+                                      : Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                         ),
                         const SizedBox(height: 16),
                         TextButton(

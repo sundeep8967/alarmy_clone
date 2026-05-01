@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 14,
+      version: 15,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -49,7 +49,9 @@ CREATE TABLE alarms (
   isVolumeCrescendo INTEGER NOT NULL DEFAULT 0,
   crescendoDuration INTEGER NOT NULL DEFAULT 30,
   smartAlarmWindow INTEGER NOT NULL DEFAULT 0,
-  timePressure INTEGER NOT NULL DEFAULT 0
+  timePressure INTEGER NOT NULL DEFAULT 0,
+  preventLastMinuteEdits INTEGER NOT NULL DEFAULT 0,
+  muteDuringMissionLimit INTEGER NOT NULL DEFAULT 0
 )
 ''');
     await db.execute('''
@@ -211,6 +213,14 @@ CREATE TABLE sleep_sessions (
 )
 ''');
     }
+    if (oldVersion < 15) {
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN preventLastMinuteEdits INTEGER NOT NULL DEFAULT 0',
+      );
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN muteDuringMissionLimit INTEGER NOT NULL DEFAULT 0',
+      );
+    }
   }
 
   Future<AlarmModel> create(AlarmModel alarm) async {
@@ -222,6 +232,8 @@ CREATE TABLE sleep_sessions (
     map['isPendingWakeupCheck'] = (map['isPendingWakeupCheck'] as bool) ? 1 : 0;
     map['isVolumeCrescendo'] = (map['isVolumeCrescendo'] as bool) ? 1 : 0;
     map['timePressure'] = (map['timePressure'] as bool) ? 1 : 0;
+    map['preventLastMinuteEdits'] =
+        (map['preventLastMinuteEdits'] as bool) ? 1 : 0;
     map['activeDays'] = jsonEncode(map['activeDays']);
     map['missionTypes'] = jsonEncode(map['missionTypes']);
     map['missionSettings'] = jsonEncode(map['missionSettings']);
@@ -241,6 +253,7 @@ CREATE TABLE sleep_sessions (
       map['isPendingWakeupCheck'] = map['isPendingWakeupCheck'] == 1;
       map['isVolumeCrescendo'] = map['isVolumeCrescendo'] == 1;
       map['timePressure'] = map['timePressure'] == 1;
+      map['preventLastMinuteEdits'] = map['preventLastMinuteEdits'] == 1;
       map['activeDays'] = jsonDecode(map['activeDays'] as String);
       map['missionTypes'] = jsonDecode(map['missionTypes'] as String);
       map['missionSettings'] = jsonDecode(
@@ -259,6 +272,8 @@ CREATE TABLE sleep_sessions (
     map['isPendingWakeupCheck'] = (map['isPendingWakeupCheck'] as bool) ? 1 : 0;
     map['isVolumeCrescendo'] = (map['isVolumeCrescendo'] as bool) ? 1 : 0;
     map['timePressure'] = (map['timePressure'] as bool) ? 1 : 0;
+    map['preventLastMinuteEdits'] =
+        (map['preventLastMinuteEdits'] as bool) ? 1 : 0;
     map['activeDays'] = jsonEncode(map['activeDays']);
     map['missionTypes'] = jsonEncode(map['missionTypes']);
     map['missionSettings'] = jsonEncode(map['missionSettings']);

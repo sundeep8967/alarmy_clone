@@ -38,6 +38,8 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
   late Map<String, dynamic> missionSettings;
   late bool timePressure;
   late int smartAlarmWindow;
+  late bool preventLastMinuteEdits;
+  late int muteDuringMissionLimit;
 
   final List<Map<String, dynamic>> missions = [
     {'id': 'default', 'icon': Icons.notifications_active, 'name': 'Default'},
@@ -72,6 +74,8 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     missionSettings = Map.from(widget.alarm?.missionSettings ?? {});
     timePressure = widget.alarm?.timePressure ?? false;
     smartAlarmWindow = widget.alarm?.smartAlarmWindow ?? 0;
+    preventLastMinuteEdits = widget.alarm?.preventLastMinuteEdits ?? false;
+    muteDuringMissionLimit = widget.alarm?.muteDuringMissionLimit ?? 0;
   }
 
   void _saveAlarm() async {
@@ -97,6 +101,8 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         wakeUpCheckMinutes: wakeUpCheckMinutes,
         timePressure: timePressure,
         smartAlarmWindow: smartAlarmWindow,
+        preventLastMinuteEdits: preventLastMinuteEdits,
+        muteDuringMissionLimit: muteDuringMissionLimit,
       );
       await ref.read(alarmsProvider.notifier).createAlarm(alarmToSchedule);
     } else {
@@ -118,6 +124,8 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         wakeUpCheckMinutes: wakeUpCheckMinutes,
         timePressure: timePressure,
         smartAlarmWindow: smartAlarmWindow,
+        preventLastMinuteEdits: preventLastMinuteEdits,
+        muteDuringMissionLimit: muteDuringMissionLimit,
       );
       await ref.read(alarmsProvider.notifier).updateAlarm(alarmToSchedule);
     }
@@ -269,11 +277,11 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                         selectedMissions = ['default'];
                       } else {
                         selectedMissions.remove('default');
-                        if (isSelected) {
+                          if (isSelected) {
                           if (selectedMissions.length > 1)
-                            selectedMissions.remove(m['id']);
+                            selectedMissions.remove(m['id'] as String);
                         } else {
-                          selectedMissions.add(m['id']);
+                          selectedMissions.add(m['id'] as String);
                         }
                       }
                     });
@@ -436,6 +444,35 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
               ],
               onChanged: (v) {
                 if (v != null) setState(() => smartAlarmWindow = v);
+              },
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          _buildRow(
+            'Prevent Last-Minute Edits',
+            Switch(
+              value: preventLastMinuteEdits,
+              activeColor: const Color(0xFFFF3B30),
+              onChanged: (v) =>
+                  setState(() => preventLastMinuteEdits = v),
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          _buildRow(
+            'Mute During Mission Limit',
+            DropdownButton<int>(
+              value: muteDuringMissionLimit,
+              dropdownColor: const Color(0xFF1C1C1E),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              underline: const SizedBox(),
+              items: const [
+                DropdownMenuItem(value: 0, child: Text('Unlimited')),
+                DropdownMenuItem(value: 1, child: Text('1 time')),
+                DropdownMenuItem(value: 3, child: Text('3 times')),
+                DropdownMenuItem(value: 5, child: Text('5 times')),
+              ],
+              onChanged: (v) {
+                if (v != null) setState(() => muteDuringMissionLimit = v);
               },
             ),
           ),

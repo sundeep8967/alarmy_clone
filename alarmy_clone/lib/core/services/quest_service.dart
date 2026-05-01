@@ -16,7 +16,8 @@ class QuestService {
     final prefs = await SharedPreferences.getInstance();
     final jsonStr = prefs.getString(_progressKey);
     if (jsonStr != null) {
-      return UserProgressModel.fromJson(jsonDecode(jsonStr));
+      return UserProgressModel.fromJson(
+          jsonDecode(jsonStr) as Map<String, dynamic>);
     }
     return UserProgressModel.initial();
   }
@@ -122,7 +123,9 @@ class QuestService {
     final jsonStr = prefs.getString(_questsKey);
     if (jsonStr != null) {
       final list = jsonDecode(jsonStr) as List;
-      return list.map((e) => QuestModel.fromJson(e)).toList();
+      return list
+          .map((e) => QuestModel.fromJson(e as Map<String, dynamic>))
+          .toList();
     }
 
     final quests = generateDailyQuests();

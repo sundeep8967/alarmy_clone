@@ -31,7 +31,7 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
   @override
   void initState() {
     super.initState();
-    _totalRounds = widget.settings?['tiles_count'] ?? 3;
+    _totalRounds = (widget.settings?['tiles_count'] as int?) ?? 3;
     _startRound();
   }
 

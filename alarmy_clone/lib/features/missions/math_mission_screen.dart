@@ -29,7 +29,7 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
   @override
   void initState() {
     super.initState();
-    requiredProblems = widget.settings?['math_count'] ?? 3;
+    requiredProblems = (widget.settings?['math_count'] as int?) ?? 3;
     _generateProblem();
   }
 

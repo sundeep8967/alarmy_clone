@@ -21,6 +21,8 @@ class AlarmModel {
   final int crescendoDuration;
   final int smartAlarmWindow; // 0 = disabled, max 30 mins
   final bool timePressure; // TTS announces time every 30s
+  final bool preventLastMinuteEdits; // blocks toggling off alarm within X mins
+  final int muteDuringMissionLimit; // 0 = unlimited, >0 = max mutes allowed
 
   const AlarmModel({
     required this.id,
@@ -43,6 +45,8 @@ class AlarmModel {
     this.crescendoDuration = 30,
     this.smartAlarmWindow = 0,
     this.timePressure = false,
+    this.preventLastMinuteEdits = false,
+    this.muteDuringMissionLimit = 0,
   });
 
   AlarmModel copyWith({
@@ -66,6 +70,8 @@ class AlarmModel {
     int? crescendoDuration,
     int? smartAlarmWindow,
     bool? timePressure,
+    bool? preventLastMinuteEdits,
+    int? muteDuringMissionLimit,
   }) {
     return AlarmModel(
       id: id ?? this.id,
@@ -90,6 +96,10 @@ class AlarmModel {
       crescendoDuration: crescendoDuration ?? this.crescendoDuration,
       smartAlarmWindow: smartAlarmWindow ?? this.smartAlarmWindow,
       timePressure: timePressure ?? this.timePressure,
+      preventLastMinuteEdits:
+          preventLastMinuteEdits ?? this.preventLastMinuteEdits,
+      muteDuringMissionLimit:
+          muteDuringMissionLimit ?? this.muteDuringMissionLimit,
     );
   }
 
@@ -114,6 +124,8 @@ class AlarmModel {
     'crescendoDuration': crescendoDuration,
     'smartAlarmWindow': smartAlarmWindow,
     'timePressure': timePressure,
+    'preventLastMinuteEdits': preventLastMinuteEdits,
+    'muteDuringMissionLimit': muteDuringMissionLimit,
   };
 
   factory AlarmModel.fromJson(Map<String, dynamic> json) {
@@ -133,7 +145,7 @@ class AlarmModel {
 
     Map<String, dynamic> parseMissionSettings(dynamic v) {
       if (v is Map) return Map<String, dynamic>.from(v);
-      if (v is String) return Map<String, dynamic>.from(jsonDecode(v));
+      if (v is String) return Map<String, dynamic>.from(jsonDecode(v) as Map);
       return {};
     }
 
@@ -170,6 +182,11 @@ class AlarmModel {
       timePressure: json['timePressure'] is bool
           ? json['timePressure'] as bool
           : (json['timePressure'] as int?) == 1,
+      preventLastMinuteEdits: json['preventLastMinuteEdits'] is bool
+          ? json['preventLastMinuteEdits'] as bool
+          : (json['preventLastMinuteEdits'] as int?) == 1,
+      muteDuringMissionLimit:
+          (json['muteDuringMissionLimit'] as int?) ?? 0,
     );
   }
 

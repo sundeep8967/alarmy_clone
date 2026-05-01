@@ -27,7 +27,7 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen>
   @override
   void initState() {
     super.initState();
-    targetBarcode = widget.settings?['barcode_data'];
+    targetBarcode = widget.settings?['barcode_data'] as String?;
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
