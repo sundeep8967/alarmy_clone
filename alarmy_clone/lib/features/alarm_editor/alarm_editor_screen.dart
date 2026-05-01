@@ -37,6 +37,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
   late int crescendoDuration;
   late Map<String, dynamic> missionSettings;
   late bool timePressure;
+  late int smartAlarmWindow;
 
   final List<Map<String, dynamic>> missions = [
     {'id': 'default', 'icon': Icons.notifications_active, 'name': 'Default'},
@@ -70,6 +71,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     crescendoDuration = widget.alarm?.crescendoDuration ?? 30;
     missionSettings = Map.from(widget.alarm?.missionSettings ?? {});
     timePressure = widget.alarm?.timePressure ?? false;
+    smartAlarmWindow = widget.alarm?.smartAlarmWindow ?? 0;
   }
 
   void _saveAlarm() async {
@@ -94,6 +96,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         isWakeUpCheckEnabled: isWakeUpCheckEnabled,
         wakeUpCheckMinutes: wakeUpCheckMinutes,
         timePressure: timePressure,
+        smartAlarmWindow: smartAlarmWindow,
       );
       await ref.read(alarmsProvider.notifier).createAlarm(alarmToSchedule);
     } else {
@@ -114,10 +117,11 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         isWakeUpCheckEnabled: isWakeUpCheckEnabled,
         wakeUpCheckMinutes: wakeUpCheckMinutes,
         timePressure: timePressure,
+        smartAlarmWindow: smartAlarmWindow,
       );
       await ref.read(alarmsProvider.notifier).updateAlarm(alarmToSchedule);
     }
-    
+
     if (mounted) Navigator.pop(context);
   }
 
@@ -167,15 +171,29 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         children: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.white54, fontSize: 16)),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.white54, fontSize: 16),
+            ),
           ),
           Text(
             widget.alarm == null ? 'New Alarm' : 'Edit Alarm',
-            style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           TextButton(
             onPressed: _saveAlarm,
-            child: const Text('Save', style: TextStyle(color: Color(0xFFFF3B30), fontSize: 18, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Save',
+              style: TextStyle(
+                color: Color(0xFFFF3B30),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -187,8 +205,19 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildWheel(24, selectedHour, (v) => setState(() => selectedHour = v)),
-        const Text(':', style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.w200)),
-        _buildWheel(60, selectedMinute, (v) => setState(() => selectedMinute = v)),
+        const Text(
+          ':',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 48,
+            fontWeight: FontWeight.w200,
+          ),
+        ),
+        _buildWheel(
+          60,
+          selectedMinute,
+          (v) => setState(() => selectedMinute = v),
+        ),
       ],
     );
   }
@@ -208,7 +237,11 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
           builder: (context, index) => Center(
             child: Text(
               index.toString().padLeft(2, '0'),
-              style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.w300),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 48,
+                fontWeight: FontWeight.w300,
+              ),
             ),
           ),
         ),
@@ -217,101 +250,198 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
   }
 
   Widget _buildMissionSection() {
-    return _buildCard('Mission', Column(
-      children: [
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: missions.length,
-            itemBuilder: (context, i) {
-              final m = missions[i];
-              final isSelected = selectedMissions.contains(m['id']);
-              return GestureDetector(
-                onTap: () async {
-                  setState(() {
-                    if (m['id'] == 'default') {
-                      selectedMissions = ['default'];
-                    } else {
-                      selectedMissions.remove('default');
-                      if (isSelected) {
-                        if (selectedMissions.length > 1) selectedMissions.remove(m['id']);
+    return _buildCard(
+      'Mission',
+      Column(
+        children: [
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: missions.length,
+              itemBuilder: (context, i) {
+                final m = missions[i];
+                final isSelected = selectedMissions.contains(m['id']);
+                return GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      if (m['id'] == 'default') {
+                        selectedMissions = ['default'];
                       } else {
-                        selectedMissions.add(m['id']);
+                        selectedMissions.remove('default');
+                        if (isSelected) {
+                          if (selectedMissions.length > 1)
+                            selectedMissions.remove(m['id']);
+                        } else {
+                          selectedMissions.add(m['id']);
+                        }
                       }
-                    }
-                  });
-                },
-                child: Container(
-                  width: 80,
-                  margin: const EdgeInsets.only(right: 12),
-                  decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFFFF3B30).withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(20),
-                    border: isSelected ? Border.all(color: const Color(0xFFFF3B30)) : null,
+                    });
+                  },
+                  child: Container(
+                    width: 80,
+                    margin: const EdgeInsets.only(right: 12),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color(0xFFFF3B30).withValues(alpha: 0.1)
+                          : Colors.white.withValues(alpha: 0.05),
+                      borderRadius: BorderRadius.circular(20),
+                      border: isSelected
+                          ? Border.all(color: const Color(0xFFFF3B30))
+                          : null,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          m['icon'] as IconData,
+                          color: isSelected
+                              ? const Color(0xFFFF3B30)
+                              : Colors.white38,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          m['name'] as String,
+                          style: TextStyle(
+                            color: isSelected ? Colors.white : Colors.white38,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(m['icon'] as IconData, color: isSelected ? const Color(0xFFFF3B30) : Colors.white38),
-                      const SizedBox(height: 8),
-                      Text(m['name'] as String, style: TextStyle(color: isSelected ? Colors.white : Colors.white38, fontSize: 12)),
-                    ],
-                  ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ],
-    ));
+        ],
+      ),
+    );
   }
 
   Widget _buildRepeatSection() {
     final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    return _buildCard('Repeat', Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(7, (i) {
-        final active = activeDays.contains(i);
-        return GestureDetector(
-          onTap: () => setState(() => active ? activeDays.remove(i) : activeDays.add(i)),
-          child: Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: active ? const Color(0xFFFF3B30) : Colors.transparent,
-              shape: BoxShape.circle,
-              border: active ? null : Border.all(color: Colors.white10),
+    return _buildCard(
+      'Repeat',
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(7, (i) {
+          final active = activeDays.contains(i);
+          return GestureDetector(
+            onTap: () => setState(
+              () => active ? activeDays.remove(i) : activeDays.add(i),
             ),
-            child: Center(child: Text(days[i], style: TextStyle(color: active ? Colors.white : Colors.white24, fontWeight: FontWeight.bold))),
-          ),
-        );
-      }),
-    ));
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: active ? const Color(0xFFFF3B30) : Colors.transparent,
+                shape: BoxShape.circle,
+                border: active ? null : Border.all(color: Colors.white10),
+              ),
+              child: Center(
+                child: Text(
+                  days[i],
+                  style: TextStyle(
+                    color: active ? Colors.white : Colors.white24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
   }
 
   Widget _buildGeneralSection() {
-    return _buildCard('General', Column(
-      children: [
-        _buildRow('Ringtone', Text(selectedSoundId, style: const TextStyle(color: Colors.white38))),
-        const Divider(color: Colors.white10, height: 32),
-        _buildRow('Vibrate', Switch(value: isVibrateEnabled, activeColor: const Color(0xFFFF3B30), onChanged: (v) => setState(() => isVibrateEnabled = v))),
-        const Divider(color: Colors.white10, height: 32),
-        _buildRow('Snooze', Text('$snoozeMinutes min', style: const TextStyle(color: Colors.white38))),
-      ],
-    ));
+    return _buildCard(
+      'General',
+      Column(
+        children: [
+          _buildRow(
+            'Ringtone',
+            Text(
+              selectedSoundId,
+              style: const TextStyle(color: Colors.white38),
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          _buildRow(
+            'Vibrate',
+            Switch(
+              value: isVibrateEnabled,
+              activeColor: const Color(0xFFFF3B30),
+              onChanged: (v) => setState(() => isVibrateEnabled = v),
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          _buildRow(
+            'Snooze',
+            Text(
+              '$snoozeMinutes min',
+              style: const TextStyle(color: Colors.white38),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildAdvancedSection() {
-    return _buildCard('Advanced', Column(
-      children: [
-        _buildRow('Wake Up Check', Switch(value: isWakeUpCheckEnabled, activeColor: const Color(0xFFFF3B30), onChanged: (v) => setState(() => isWakeUpCheckEnabled = v))),
-        const Divider(color: Colors.white10, height: 32),
-        _buildRow('Fade-in Sound', Switch(value: isVolumeCrescendo, activeColor: const Color(0xFFFF3B30), onChanged: (v) => setState(() => isVolumeCrescendo = v))),
-        const Divider(color: Colors.white10, height: 32),
-        _buildRow('Time Pressure', Switch(value: timePressure, activeColor: const Color(0xFFFF3B30), onChanged: (v) => setState(() => timePressure = v))),
-      ],
-    ));
+    return _buildCard(
+      'Advanced',
+      Column(
+        children: [
+          _buildRow(
+            'Wake Up Check',
+            Switch(
+              value: isWakeUpCheckEnabled,
+              activeColor: const Color(0xFFFF3B30),
+              onChanged: (v) => setState(() => isWakeUpCheckEnabled = v),
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          _buildRow(
+            'Fade-in Sound',
+            Switch(
+              value: isVolumeCrescendo,
+              activeColor: const Color(0xFFFF3B30),
+              onChanged: (v) => setState(() => isVolumeCrescendo = v),
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          _buildRow(
+            'Time Pressure',
+            Switch(
+              value: timePressure,
+              activeColor: const Color(0xFFFF3B30),
+              onChanged: (v) => setState(() => timePressure = v),
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          _buildRow(
+            'Smart Alarm',
+            DropdownButton<int>(
+              value: smartAlarmWindow,
+              dropdownColor: const Color(0xFF1C1C1E),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              underline: const SizedBox(),
+              items: const [
+                DropdownMenuItem(value: 0, child: Text('Off')),
+                DropdownMenuItem(value: 10, child: Text('10 mins')),
+                DropdownMenuItem(value: 20, child: Text('20 mins')),
+                DropdownMenuItem(value: 30, child: Text('30 mins')),
+              ],
+              onChanged: (v) {
+                if (v != null) setState(() => smartAlarmWindow = v);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildCard(String title, Widget child) {
@@ -322,16 +452,21 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 8),
-            child: Text(title.toUpperCase(), style: const TextStyle(color: Colors.white24, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+            child: Text(
+              title.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white24,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1,
+              ),
+            ),
           ),
           GlassContainer(
             blur: 15,
             opacity: 0.05,
             borderRadius: BorderRadius.circular(24),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: child,
-            ),
+            child: Padding(padding: const EdgeInsets.all(20), child: child),
           ),
         ],
       ),

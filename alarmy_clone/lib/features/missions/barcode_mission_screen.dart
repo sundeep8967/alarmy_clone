@@ -17,7 +17,8 @@ class BarcodeMissionScreen extends StatefulWidget {
   State<BarcodeMissionScreen> createState() => _BarcodeMissionScreenState();
 }
 
-class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with SingleTickerProviderStateMixin {
+class _BarcodeMissionScreenState extends State<BarcodeMissionScreen>
+    with SingleTickerProviderStateMixin {
   final MobileScannerController controller = MobileScannerController();
   bool _isCompleted = false;
   late final String? targetBarcode;
@@ -35,7 +36,7 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with Single
 
   void _onDetect(BarcodeCapture capture) {
     if (_isCompleted) return;
-    
+
     final List<Barcode> barcodes = capture.barcodes;
     for (final barcode in barcodes) {
       if (targetBarcode == null || barcode.rawValue == targetBarcode) {
@@ -60,10 +61,7 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with Single
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          MobileScanner(
-            controller: controller,
-            onDetect: _onDetect,
-          ),
+          MobileScanner(controller: controller, onDetect: _onDetect),
           // Gradient Overlay
           Container(
             decoration: BoxDecoration(
@@ -102,7 +100,11 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with Single
                 children: [
                   Text(
                     'Barcode Mission',
-                    style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     'Locate the registered item',
@@ -153,13 +155,19 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with Single
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF00D1FF).withValues(alpha: 0.5),
+                              color: const Color(
+                                0xFF00D1FF,
+                              ).withValues(alpha: 0.5),
                               blurRadius: 10,
                               spreadRadius: 2,
                             ),
                           ],
                           gradient: const LinearGradient(
-                            colors: [Colors.transparent, Color(0xFF00D1FF), Colors.transparent],
+                            colors: [
+                              Colors.transparent,
+                              Color(0xFF00D1FF),
+                              Colors.transparent,
+                            ],
                           ),
                         ),
                       ),
@@ -220,16 +228,20 @@ class _BarcodeMissionScreenState extends State<BarcodeMissionScreen> with Single
                 const Icon(Icons.info_outline, color: Colors.white54, size: 24),
                 const SizedBox(height: 12),
                 Text(
-                  targetBarcode == null 
-                      ? 'Scan any barcode to stop' 
+                  targetBarcode == null
+                      ? 'Scan any barcode to stop'
                       : 'Scan your registered barcode',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  targetBarcode == null 
-                      ? 'Go to your bathroom or kitchen and scan a product.' 
+                  targetBarcode == null
+                      ? 'Go to your bathroom or kitchen and scan a product.'
                       : 'Target: $targetBarcode',
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white38, fontSize: 13),

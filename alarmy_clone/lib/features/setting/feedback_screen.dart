@@ -16,7 +16,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   void _submitFeedback() {
     if (_controller.text.isEmpty && _rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide a rating or some feedback.')),
+        const SnackBar(
+          content: Text('Please provide a rating or some feedback.'),
+        ),
       );
       return;
     }
@@ -28,15 +30,20 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         backgroundColor: const Color(0xFF1C1D24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         title: const Text('Thank You!', style: TextStyle(color: Colors.white)),
-        content: const Text('Your feedback has been received and helps us improve.',
-            style: TextStyle(color: Colors.white70)),
+        content: const Text(
+          'Your feedback has been received and helps us improve.',
+          style: TextStyle(color: Colors.white70),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context); // Close dialog
               Navigator.pop(context); // Return to settings
             },
-            child: const Text('Close', style: TextStyle(color: Color(0xFFFF3B30))),
+            child: const Text(
+              'Close',
+              style: TextStyle(color: Color(0xFFFF3B30)),
+            ),
           ),
         ],
       ),
@@ -68,7 +75,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       FadeInDown(
                         child: const Text(
                           'How are we doing?',
-                          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const Text(
@@ -99,11 +110,22 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 22),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 22,
+            ),
           ),
           const Expanded(
-            child: Text('Feedback', textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            child: Text(
+              'Feedback',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           const SizedBox(width: 48),
         ],
@@ -115,7 +137,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Rating', style: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w600)),
+        const Text(
+          'Rating',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,10 +157,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected ? const Color(0xFFFF3B30).withOpacity(0.1) : Colors.white.withOpacity(0.05),
+                  color: isSelected
+                      ? const Color(0xFFFF3B30).withOpacity(0.1)
+                      : Colors.white.withOpacity(0.05),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isSelected ? const Color(0xFFFF3B30) : Colors.transparent,
+                    color: isSelected
+                        ? const Color(0xFFFF3B30)
+                        : Colors.transparent,
                   ),
                 ),
                 child: Icon(
@@ -151,7 +184,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Message', style: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w600)),
+        const Text(
+          'Message',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         const SizedBox(height: 16),
         GlassContainer(
           blur: 20,
@@ -182,12 +222,21 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFFF3B30),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           elevation: 0,
         ),
         onPressed: _submitFeedback,
-        child: const Text('SUBMIT FEEDBACK',
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        child: const Text(
+          'SUBMIT FEEDBACK',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1,
+          ),
+        ),
       ),
     );
   }

@@ -24,10 +24,12 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
     final repo = ref.read(alarmRepositoryProvider);
     final successRate = await repo.getSuccessRate();
     final recentRecords = await repo.getRecentRecords(30);
-    
+
     double avgSolvingTime = 0.0;
     if (recentRecords.isNotEmpty) {
-      final times = recentRecords.where((r) => r['solvingTimeSeconds'] != null).map((r) => r['solvingTimeSeconds'] as int);
+      final times = recentRecords
+          .where((r) => r['solvingTimeSeconds'] != null)
+          .map((r) => r['solvingTimeSeconds'] as int);
       if (times.isNotEmpty) {
         avgSolvingTime = times.reduce((a, b) => a + b) / times.length;
       }
@@ -57,10 +59,13 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
           child: FutureBuilder<Map<String, dynamic>>(
             future: _statsFuture,
             builder: (context, snapshot) {
-              final stats = snapshot.data ?? {'successRate': 0.0, 'avgSolvingTime': 0.0, 'count': 0};
-              final successPercent = ((stats['successRate'] as num) * 100).toInt();
+              final stats =
+                  snapshot.data ??
+                  {'successRate': 0.0, 'avgSolvingTime': 0.0, 'count': 0};
+              final successPercent = ((stats['successRate'] as num) * 100)
+                  .toInt();
               final avgTime = stats['avgSolvingTime'] as double;
-              final timeStr = avgTime > 60 
+              final timeStr = avgTime > 60
                   ? '${(avgTime / 60).floor()}m ${(avgTime % 60).toInt()}s'
                   : '${avgTime.toInt()}s';
 
@@ -78,9 +83,18 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
                     const SizedBox(height: 40),
                     _buildStatsRow(timeStr, successPercent),
                     const SizedBox(height: 32),
-                    const Text('Recent Records', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Recent Records',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 16),
-                    _buildTimeline(stats['records'] as List<Map<String, dynamic>>? ?? []),
+                    _buildTimeline(
+                      stats['records'] as List<Map<String, dynamic>>? ?? [],
+                    ),
                     const SizedBox(height: 40),
                     if (stats['count'] == 0) _buildEmptyState(context),
                     const SizedBox(height: 40),
@@ -95,7 +109,14 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
   }
 
   Widget _buildHeader() {
-    return const Text('Report', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold));
+    return const Text(
+      'Report',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 32,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 
   Widget _buildDateSelector() {
@@ -103,7 +124,14 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
       children: [
         const Icon(Icons.chevron_left, color: Colors.white70, size: 24),
         const SizedBox(width: 8),
-        const Text('Recent History', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
+        const Text(
+          'Recent History',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         const SizedBox(width: 8),
         const Icon(Icons.chevron_right, color: Colors.white24, size: 24),
       ],
@@ -125,7 +153,10 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
                 entry.value,
-                style: TextStyle(color: isSelected ? const Color(0xFFFF3B30) : Colors.white38, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFFFF3B30) : Colors.white38,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
               ),
             ),
           ),
@@ -149,9 +180,9 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
 
         String timeText = '';
         if (solvingTime != null) {
-          timeText = solvingTime > 60 
-            ? 'Dismissed in ${(solvingTime / 60).floor()}m ${(solvingTime % 60).toInt()}s'
-            : 'Dismissed in ${solvingTime}s';
+          timeText = solvingTime > 60
+              ? 'Dismissed in ${(solvingTime / 60).floor()}m ${(solvingTime % 60).toInt()}s'
+              : 'Dismissed in ${solvingTime}s';
         } else {
           timeText = isSuccess ? 'Success' : 'Snoozed/Skipped';
         }
@@ -168,18 +199,26 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
               leading: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isSuccess ? const Color(0xFF00FF85).withValues(alpha: 0.2) : const Color(0xFFFF3B30).withValues(alpha: 0.2),
+                  color: isSuccess
+                      ? const Color(0xFF00FF85).withValues(alpha: 0.2)
+                      : const Color(0xFFFF3B30).withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   isSuccess ? Icons.check : Icons.close,
-                  color: isSuccess ? const Color(0xFF00FF85) : const Color(0xFFFF3B30),
+                  color: isSuccess
+                      ? const Color(0xFF00FF85)
+                      : const Color(0xFFFF3B30),
                   size: 20,
                 ),
               ),
               title: Text(
                 timeOfDay,
-                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               subtitle: Text(
                 timeText,
@@ -199,7 +238,11 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
   Widget _buildStatsRow(String timeStr, int successPercent) {
     return Row(
       children: [
-        _buildStatItem('$successPercent%', 'Success Rate', const Color(0xFF00D1FF)),
+        _buildStatItem(
+          '$successPercent%',
+          'Success Rate',
+          const Color(0xFF00D1FF),
+        ),
         const SizedBox(width: 16),
         _buildStatItem(timeStr, 'Avg. to solve', const Color(0xFF00FF85)),
       ],
@@ -218,9 +261,19 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(value, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 4),
-                Text(label, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                Text(
+                  label,
+                  style: const TextStyle(color: Colors.white38, fontSize: 12),
+                ),
                 const SizedBox(height: 12),
                 Container(height: 2, width: 40, color: color),
               ],
@@ -237,7 +290,10 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
         children: [
           const Icon(Icons.history_toggle_off, color: Colors.white10, size: 64),
           const SizedBox(height: 24),
-          const Text('No records yet', style: TextStyle(color: Colors.white54, fontSize: 16)),
+          const Text(
+            'No records yet',
+            style: TextStyle(color: Colors.white54, fontSize: 16),
+          ),
           const SizedBox(height: 32),
           SizedBox(
             width: double.infinity,
@@ -247,10 +303,15 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
                 foregroundColor: const Color(0xFFFF3B30),
                 side: const BorderSide(color: Color(0xFFFF3B30), width: 1),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
               onPressed: () => Navigator.popUntil(context, (r) => r.isFirst),
-              child: const Text('Back to Alarms', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                'Back to Alarms',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],

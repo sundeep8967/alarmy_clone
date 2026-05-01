@@ -8,7 +8,7 @@ class ImageUtils {
   /// 2. Center crops to a square
   /// 3. Resizes to 224x224
   /// 4. Normalizes pixel values to [0.0, 1.0] (pixel / 255.0)
-  /// 
+  ///
   /// Returns a List&lt;double&gt; of length 224*224*3 (Float32 format in a list).
   static List<double> preprocessForTFLite(Uint8List bytes) {
     final image = img.decodeImage(bytes);

@@ -36,15 +36,18 @@ class GlassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final glassColor = color ?? Colors.white.withValues(alpha: opacity);
-    
+
     Widget innerContainer = Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: glassColor,
         shape: shape,
-        borderRadius: shape == BoxShape.circle ? null : (borderRadius ?? BorderRadius.circular(16)),
-        border: border ??
+        borderRadius: shape == BoxShape.circle
+            ? null
+            : (borderRadius ?? BorderRadius.circular(16)),
+        border:
+            border ??
             Border.all(
               color: Colors.white.withValues(alpha: opacity * 0.5),
               width: 0.5,

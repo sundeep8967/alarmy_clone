@@ -29,7 +29,9 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF101014), // Dark background matching screenshot
+      backgroundColor: const Color(
+        0xFF101014,
+      ), // Dark background matching screenshot
       body: _pages[_currentIndex],
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,

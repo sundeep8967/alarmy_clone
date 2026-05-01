@@ -40,7 +40,11 @@ class AlarmOptimizationScreen extends StatelessWidget {
                 FadeInDown(
                   child: const Text(
                     "Your alarm isn't ringing?",
-                    style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -48,47 +52,62 @@ class AlarmOptimizationScreen extends StatelessWidget {
                   delay: const Duration(milliseconds: 200),
                   child: const Text(
                     "Alarms may be blocked by your phone's system. Please check these essential settings to ensure reliable wake-ups.",
-                    style: TextStyle(color: Colors.white54, fontSize: 16, height: 1.5),
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 16,
+                      height: 1.5,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
-                
+
                 _buildGuidelineSection(context, 'MUST DO', [
                   _GuidelineItem(
                     'Essential Permission',
                     'Allow notifications and "Draw over other apps"',
                     Icons.security,
                     const Color(0xFFFF3B30),
-                    onTap: (_) => _openSettings('android.settings.action.MANAGE_OVERLAY_PERMISSION'),
+                    onTap: (_) => _openSettings(
+                      'android.settings.action.MANAGE_OVERLAY_PERMISSION',
+                    ),
                   ),
                   _GuidelineItem(
                     'Battery Optimization',
                     'Exclude Alarmy from power saving modes',
                     Icons.battery_alert,
                     const Color(0xFFFF9500),
-                    onTap: (ctx) => Navigator.push(ctx, MaterialPageRoute(builder: (_) => const BatteryOptimizationScreen())),
+                    onTap: (ctx) => Navigator.push(
+                      ctx,
+                      MaterialPageRoute(
+                        builder: (_) => const BatteryOptimizationScreen(),
+                      ),
+                    ),
                   ),
                 ]),
-                
+
                 const SizedBox(height: 32),
-                
+
                 _buildGuidelineSection(context, 'RECOMMENDED', [
                   _GuidelineItem(
                     'DND Override',
                     'Allow alarms even in Do Not Disturb mode',
                     Icons.do_not_disturb_on,
                     const Color(0xFF5856D6),
-                    onTap: (_) => _openSettings('android.settings.NOTIFICATION_POLICY_ACCESS_SETTINGS'),
+                    onTap: (_) => _openSettings(
+                      'android.settings.NOTIFICATION_POLICY_ACCESS_SETTINGS',
+                    ),
                   ),
                   _GuidelineItem(
                     'Auto-start',
                     'Allow the app to launch after restart',
                     Icons.bolt,
                     const Color(0xFF00D1FF),
-                    onTap: (_) => _openSettings('android.settings.APPLICATION_DETAILS_SETTINGS'),
+                    onTap: (_) => _openSettings(
+                      'android.settings.APPLICATION_DETAILS_SETTINGS',
+                    ),
                   ),
                 ]),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
@@ -108,7 +127,14 @@ class AlarmOptimizationScreen extends StatelessWidget {
             icon: const Icon(Icons.close, color: Colors.white, size: 28),
           ),
           const Spacer(),
-          const Text('Optimization', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text(
+            'Optimization',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const Spacer(),
           const SizedBox(width: 48),
         ],
@@ -116,13 +142,25 @@ class AlarmOptimizationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGuidelineSection(BuildContext context, String title, List<_GuidelineItem> items) {
+  Widget _buildGuidelineSection(
+    BuildContext context,
+    String title,
+    List<_GuidelineItem> items,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 4, bottom: 12),
-          child: Text(title, style: const TextStyle(color: Colors.white24, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white24,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+            ),
+          ),
         ),
         Column(
           children: items.asMap().entries.map((entry) {
@@ -159,13 +197,29 @@ class AlarmOptimizationScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                                Text(
+                                  item.title,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 const SizedBox(height: 4),
-                                Text(item.subtitle, style: const TextStyle(color: Colors.white38, fontSize: 13)),
+                                Text(
+                                  item.subtitle,
+                                  style: const TextStyle(
+                                    color: Colors.white38,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          const Icon(Icons.chevron_right, color: Colors.white12),
+                          const Icon(
+                            Icons.chevron_right,
+                            color: Colors.white12,
+                          ),
                         ],
                       ),
                     ),
@@ -187,5 +241,11 @@ class _GuidelineItem {
   final Color color;
   final void Function(BuildContext)? onTap;
 
-  _GuidelineItem(this.title, this.subtitle, this.icon, this.color, {this.onTap});
+  _GuidelineItem(
+    this.title,
+    this.subtitle,
+    this.icon,
+    this.color, {
+    this.onTap,
+  });
 }

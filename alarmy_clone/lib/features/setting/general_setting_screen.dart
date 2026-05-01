@@ -90,7 +90,9 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFFF3B30).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+          color: isSelected
+              ? const Color(0xFFFF3B30).withValues(alpha: 0.2)
+              : Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(16),
           border: isSelected
               ? Border.all(color: const Color(0xFFFF3B30), width: 1)
@@ -108,8 +110,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 ),
               ),
             ),
-            if (isSelected)
-              const Icon(Icons.check, color: Color(0xFFFF3B30)),
+            if (isSelected) const Icon(Icons.check, color: Color(0xFFFF3B30)),
           ],
         ),
       ),
@@ -191,7 +192,10 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                     'Time Format',
                     Icons.schedule,
                     Colors.cyan,
-                    trailing: Text(_timeFormat, style: const TextStyle(color: Colors.white38)),
+                    trailing: Text(
+                      _timeFormat,
+                      style: const TextStyle(color: Colors.white38),
+                    ),
                     onTap: _showTimeFormatPicker,
                   ),
                 ]),
@@ -211,10 +215,21 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 24),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 24,
+            ),
           ),
           const Spacer(),
-          const Text('General Settings', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text(
+            'General Settings',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const Spacer(),
           const SizedBox(width: 48),
         ],
@@ -228,7 +243,15 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 4, bottom: 12),
-          child: Text(title, style: const TextStyle(color: Colors.white24, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white24,
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+            ),
+          ),
         ),
         GlassContainer(
           blur: 20,
@@ -261,9 +284,22 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500)),
+                                Text(
+                                  item.title,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                                 if (item.subtitle != null)
-                                  Text(item.subtitle!, style: const TextStyle(color: Colors.white24, fontSize: 12)),
+                                  Text(
+                                    item.subtitle!,
+                                    style: const TextStyle(
+                                      color: Colors.white24,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -273,7 +309,11 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                     ),
                   ),
                   if (!isLast)
-                    Divider(height: 1, color: Colors.white.withValues(alpha: 0.05), indent: 64),
+                    Divider(
+                      height: 1,
+                      color: Colors.white.withValues(alpha: 0.05),
+                      indent: 64,
+                    ),
                 ],
               );
             }).toList(),
@@ -292,5 +332,12 @@ class _SettingItem {
   final Widget? trailing;
   final VoidCallback? onTap;
 
-  _SettingItem(this.title, this.icon, this.color, {this.subtitle, this.trailing, this.onTap});
+  _SettingItem(
+    this.title,
+    this.icon,
+    this.color, {
+    this.subtitle,
+    this.trailing,
+    this.onTap,
+  });
 }

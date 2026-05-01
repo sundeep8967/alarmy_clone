@@ -37,10 +37,7 @@ class IntroStep2 extends StatelessWidget {
         const Text(
           'Based on behavioral science',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.white54,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.white54),
         ),
         const SizedBox(height: 48),
         // Research highlights
@@ -89,10 +86,7 @@ class IntroStep2 extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.white54,
-            fontSize: 14,
-          ),
+          style: const TextStyle(color: Colors.white54, fontSize: 14),
         ),
       ],
     );

@@ -8,7 +8,8 @@ class AlarmWallpaperScreen extends ConsumerStatefulWidget {
   const AlarmWallpaperScreen({super.key, this.initialWallpaperId});
 
   @override
-  ConsumerState<AlarmWallpaperScreen> createState() => _AlarmWallpaperScreenState();
+  ConsumerState<AlarmWallpaperScreen> createState() =>
+      _AlarmWallpaperScreenState();
 }
 
 class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
@@ -28,7 +29,10 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
       backgroundColor: const Color(0xFF101014),
       appBar: AppBar(
         backgroundColor: const Color(0xFF101014),
-        title: const Text('Wallpaper', style: TextStyle(color: Colors.white, fontSize: 18)),
+        title: const Text(
+          'Wallpaper',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -36,7 +40,14 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, selectedId),
-            child: const Text('Done', style: TextStyle(color: Color(0xFFFF3B30), fontSize: 16, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Done',
+              style: TextStyle(
+                color: Color(0xFFFF3B30),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -55,16 +66,22 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
                   id: 'default',
                   category: 'Default',
                   name: 'Default',
-                  thumbnailURL: 'https://images.unsplash.com/photo-1557683316-973673baf926',
-                  url: 'https://images.unsplash.com/photo-1557683316-973673baf926',
-                )
+                  thumbnailURL:
+                      'https://images.unsplash.com/photo-1557683316-973673baf926',
+                  url:
+                      'https://images.unsplash.com/photo-1557683316-973673baf926',
+                ),
               ]),
               ...grouped.entries.map((e) => _buildSection(e.key, e.value)),
             ],
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator(color: Color(0xFFFF3B30))),
-        error: (e, _) => Center(child: Text('Error: $e', style: const TextStyle(color: Colors.white))),
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: Color(0xFFFF3B30)),
+        ),
+        error: (e, _) => Center(
+          child: Text('Error: $e', style: const TextStyle(color: Colors.white)),
+        ),
       ),
     );
   }
@@ -77,7 +94,11 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
           child: Text(
             title,
-            style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         SizedBox(
@@ -97,7 +118,9 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
                   margin: const EdgeInsets.only(right: 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    border: isSelected ? Border.all(color: const Color(0xFFFF3B30), width: 2) : null,
+                    border: isSelected
+                        ? Border.all(color: const Color(0xFFFF3B30), width: 2)
+                        : null,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
@@ -107,7 +130,8 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
                         Image.network(
                           w.thumbnailURL,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(color: Colors.white10),
+                          errorBuilder: (_, __, ___) =>
+                              Container(color: Colors.white10),
                         ),
                         if (isSelected)
                           const Positioned(
@@ -116,7 +140,11 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
                             child: CircleAvatar(
                               radius: 10,
                               backgroundColor: Color(0xFFFF3B30),
-                              child: Icon(Icons.check, size: 12, color: Colors.white),
+                              child: Icon(
+                                Icons.check,
+                                size: 12,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                       ],

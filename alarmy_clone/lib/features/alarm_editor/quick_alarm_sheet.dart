@@ -134,7 +134,9 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                     ),
                   ),
                   Text(
-                    _addedMinutes >= 60 ? 'h' : 'm', // Simplistic display for the large text
+                    _addedMinutes >= 60
+                        ? 'h'
+                        : 'm', // Simplistic display for the large text
                     style: const TextStyle(
                       color: Colors.white54,
                       fontSize: 28,
@@ -144,20 +146,21 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                   const SizedBox(width: 16),
                   GestureDetector(
                     onTap: _resetTime,
-                    child: const Icon(Icons.refresh, color: Colors.white54, size: 28),
+                    child: const Icon(
+                      Icons.refresh,
+                      color: Colors.white54,
+                      size: 28,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              
+
               // Ring At Text
               Center(
                 child: Text(
                   'Ring at ${_calculateRingTime()}',
-                  style: const TextStyle(
-                    color: Colors.white54,
-                    fontSize: 16,
-                  ),
+                  style: const TextStyle(color: Colors.white54, fontSize: 16),
                 ),
               ),
               const SizedBox(height: 32),
@@ -194,7 +197,8 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                   final result = await Navigator.push<String>(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AlarmSoundScreen(initialSoundId: _selectedSoundId),
+                      builder: (context) =>
+                          AlarmSoundScreen(initialSoundId: _selectedSoundId),
                     ),
                   );
                   if (result != null) {
@@ -211,11 +215,23 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                     Row(
                       children: [
                         Text(
-                          sounds.firstWhere((s) => s.id == _selectedSoundId, orElse: () => sounds.first).name,
-                          style: const TextStyle(color: Colors.white, fontSize: 16),
+                          sounds
+                              .firstWhere(
+                                (s) => s.id == _selectedSoundId,
+                                orElse: () => sounds.first,
+                              )
+                              .name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                         const SizedBox(width: 4),
-                        Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.5), size: 20),
+                        Icon(
+                          Icons.chevron_right,
+                          color: Colors.white.withValues(alpha: 0.5),
+                          size: 20,
+                        ),
                       ],
                     ),
                   ],
@@ -236,7 +252,9 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                         inactiveTrackColor: Colors.white.withValues(alpha: 0.2),
                         thumbColor: Colors.white,
                         overlayShape: SliderComponentShape.noOverlay,
-                        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                        thumbShape: const RoundSliderThumbShape(
+                          enabledThumbRadius: 6,
+                        ),
                       ),
                       child: Slider(
                         value: _volume,
@@ -245,11 +263,7 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                     ),
                   ),
                   const SizedBox(width: 24),
-                  Container(
-                    width: 1,
-                    height: 24,
-                    color: Colors.white24,
-                  ),
+                  Container(width: 1, height: 24, color: Colors.white24),
                   const SizedBox(width: 24),
                   const Icon(Icons.vibration, color: Colors.white),
                   const SizedBox(width: 12),
@@ -258,7 +272,8 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                     child: CupertinoSwitch(
                       value: _isVibrateEnabled,
                       activeColor: const Color(0xFF00D1FF), // Alarmy blue
-                      onChanged: (val) => setState(() => _isVibrateEnabled = val),
+                      onChanged: (val) =>
+                          setState(() => _isVibrateEnabled = val),
                     ),
                   ),
                 ],
@@ -271,7 +286,9 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF3B30),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                   onPressed: _saveQuickAlarm,
                   child: const Text(
@@ -304,10 +321,7 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
           child: Center(
             child: Text(
               label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ),

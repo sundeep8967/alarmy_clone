@@ -55,9 +55,10 @@ class SleepTrackingService {
 
   // Track the raw PCM bytes received between analysis intervals
   final List<int> _audioBuffer = [];
-  
+
   // Expose current decibels for the UI Waveform
-  final StreamController<double> _decibelStreamCtrl = StreamController<double>.broadcast();
+  final StreamController<double> _decibelStreamCtrl =
+      StreamController<double>.broadcast();
   Stream<double> get decibelStream => _decibelStreamCtrl.stream;
 
   // Expose current sleep stage for the UI
@@ -109,23 +110,27 @@ class SleepTrackingService {
     _analysisTimer?.cancel();
     await _audioStreamSub?.cancel();
     await _audioRecorder.stop();
-    
+
     // Save session to database
     if (sessionStartTime != null) {
       final endTime = DateTime.now();
       final durationMinutes = endTime.difference(sessionStartTime!).inMinutes;
 
       // Count all events that had any detectable noise (severity != none)
-      final snoreCount = events.where((e) =>
-        e.severity != SnoreSeverity.none ||
-        e.yamnetClass == 'snore' ||
-        e.yamnetClass == 'Speech'
-      ).length;
+      final snoreCount = events
+          .where(
+            (e) =>
+                e.severity != SnoreSeverity.none ||
+                e.yamnetClass == 'snore' ||
+                e.yamnetClass == 'Speech',
+          )
+          .length;
 
       // Calculate average decibels across all recorded events
       final double avgDecibels = events.isEmpty
           ? 0.0
-          : events.map((e) => e.decibels).reduce((a, b) => a + b) / events.length;
+          : events.map((e) => e.decibels).reduce((a, b) => a + b) /
+                events.length;
 
       try {
         await DatabaseHelper.instance.insertSleepSession({
@@ -135,13 +140,17 @@ class SleepTrackingService {
           'snoreCount': snoreCount,
           'avgDecibels': avgDecibels,
         });
-        log('💤 [SleepTrackingService] Saved session: $durationMinutes mins, $snoreCount snores, ${avgDecibels.toStringAsFixed(1)} avg dB.');
+        log(
+          '💤 [SleepTrackingService] Saved session: $durationMinutes mins, $snoreCount snores, ${avgDecibels.toStringAsFixed(1)} avg dB.',
+        );
       } catch (e) {
         log('❌ [SleepTrackingService] Failed to save session: $e');
       }
     }
-    
-    log('💤 [SleepTrackingService] Stopped tracking. Recorded ${events.length} events.');
+
+    log(
+      '💤 [SleepTrackingService] Stopped tracking. Recorded ${events.length} events.',
+    );
   }
 
   void _analyzeBuffer() {
@@ -153,7 +162,7 @@ class SleepTrackingService {
 
     final int16List = bytes.buffer.asInt16List();
     final float32List = Float32List(int16List.length);
-    
+
     double sumOfSquares = 0.0;
     double peakVal = 0.0;
 
@@ -170,8 +179,8 @@ class SleepTrackingService {
     // 2. Calculate Decibels (RMS)
     final rms = math.sqrt(sumOfSquares / int16List.length);
     // Add small epsilon to avoid log10(0)
-    double db = 20 * math.log(rms + 1e-9) / math.ln10; 
-    
+    double db = 20 * math.log(rms + 1e-9) / math.ln10;
+
     // Normalize dB roughly to a 0-100 positive scale for UI/severity logic
     // Usually RMS of 1.0 is 0dB (max digital), silence is -90dB.
     // Let's shift it: +90 so 0 is silence, 90 is max.
@@ -182,16 +191,20 @@ class SleepTrackingService {
 
     // 3. Pipeline A: Amplitude Severity Bucket
     SnoreSeverity severity = SnoreSeverity.background;
-    if (normalizedDb > 85) severity = SnoreSeverity.veryLoud;
-    else if (normalizedDb > 70) severity = SnoreSeverity.loud;
-    else if (normalizedDb > 55) severity = SnoreSeverity.moderate;
-    else if (normalizedDb > 40) severity = SnoreSeverity.low;
+    if (normalizedDb > 85)
+      severity = SnoreSeverity.veryLoud;
+    else if (normalizedDb > 70)
+      severity = SnoreSeverity.loud;
+    else if (normalizedDb > 55)
+      severity = SnoreSeverity.moderate;
+    else if (normalizedDb > 40)
+      severity = SnoreSeverity.low;
 
     // 4. Pipeline B: YAMNet Inference (snore detection)
     YamnetResult? yamnetRes;
     if (_yamnetService.isReady && float32List.length >= 15600) {
       yamnetRes = _yamnetService.processAudioFrame(
-        float32List.sublist(0, 15600)
+        float32List.sublist(0, 15600),
       );
     }
 
@@ -206,19 +219,22 @@ class SleepTrackingService {
 
     // Record the event if it's loud enough or ML recognised a snore
     // YAMNet class 411 = Snoring
-    final isMlSnore = yamnetRes?.highestClassIndex == 411 && (yamnetRes?.score ?? 0) > 0.3;
+    final isMlSnore =
+        yamnetRes?.highestClassIndex == 411 && (yamnetRes?.score ?? 0) > 0.3;
     final isAmplitudeSnore = severity != SnoreSeverity.background;
 
     if (isMlSnore || isAmplitudeSnore) {
-      events.add(SleepEvent(
-        timestamp: DateTime.now(),
-        decibels: normalizedDb,
-        severity: severity,
-        yamnetClass: yamnetRes?.highestClassName,
-        yamnetScore: yamnetRes?.score,
-        sleepStage: stageRes?.stage,
-        sleepStageConfidence: stageRes?.confidence,
-      ));
+      events.add(
+        SleepEvent(
+          timestamp: DateTime.now(),
+          decibels: normalizedDb,
+          severity: severity,
+          yamnetClass: yamnetRes?.highestClassName,
+          yamnetScore: yamnetRes?.score,
+          sleepStage: stageRes?.stage,
+          sleepStageConfidence: stageRes?.confidence,
+        ),
+      );
     }
 
     // Determine light sleep state
@@ -226,8 +242,15 @@ class SleepTrackingService {
     bool isLightSleep = true;
     if (events.isNotEmpty) {
       final now = DateTime.now();
-      final recentEvents = events.where((e) => now.difference(e.timestamp).inMinutes < 5).toList();
-      final hasLoudSnore = recentEvents.any((e) => e.severity == SnoreSeverity.loud || e.severity == SnoreSeverity.veryLoud || e.yamnetClass == 'snore');
+      final recentEvents = events
+          .where((e) => now.difference(e.timestamp).inMinutes < 5)
+          .toList();
+      final hasLoudSnore = recentEvents.any(
+        (e) =>
+            e.severity == SnoreSeverity.loud ||
+            e.severity == SnoreSeverity.veryLoud ||
+            e.yamnetClass == 'snore',
+      );
       isLightSleep = !hasLoudSnore;
     }
 

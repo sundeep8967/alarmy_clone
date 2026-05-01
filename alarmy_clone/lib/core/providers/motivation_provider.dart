@@ -10,10 +10,13 @@ class MotivationNotifier extends AsyncNotifier<MotivationModel> {
 
   Future<void> refreshQuote() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => MotivationService.getRandomQuoteAsync());
+    state = await AsyncValue.guard(
+      () => MotivationService.getRandomQuoteAsync(),
+    );
   }
 }
 
-final motivationProvider = AsyncNotifierProvider<MotivationNotifier, MotivationModel>(
-  MotivationNotifier.new,
-);
+final motivationProvider =
+    AsyncNotifierProvider<MotivationNotifier, MotivationModel>(
+      MotivationNotifier.new,
+    );

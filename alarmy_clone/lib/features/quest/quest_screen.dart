@@ -104,8 +104,14 @@ class QuestScreen extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      loading: () => const SizedBox(width: 50, child: LinearProgressIndicator(minHeight: 2)),
-                      error: (_, __) => const Text('0 XP', style: TextStyle(color: Colors.white38)),
+                      loading: () => const SizedBox(
+                        width: 50,
+                        child: LinearProgressIndicator(minHeight: 2),
+                      ),
+                      error: (_, __) => const Text(
+                        '0 XP',
+                        style: TextStyle(color: Colors.white38),
+                      ),
                     );
                   },
                 ),
@@ -144,7 +150,10 @@ class QuestScreen extends ConsumerWidget {
                     const SizedBox(height: 4),
                     Text(
                       '${progress.xpInCurrentLevel} / ${progress.xpForNextLevel} XP',
-                      style: const TextStyle(color: Colors.white38, fontSize: 14),
+                      style: const TextStyle(
+                        color: Colors.white38,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
@@ -154,7 +163,10 @@ class QuestScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: const Color(0xFFFF3B30).withOpacity(0.2),
                     shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xFFFF3B30), width: 2),
+                    border: Border.all(
+                      color: const Color(0xFFFF3B30),
+                      width: 2,
+                    ),
                   ),
                   child: Center(
                     child: Text(
@@ -185,7 +197,11 @@ class QuestScreen extends ConsumerWidget {
               children: [
                 _buildStatItem('🔥', '${progress.streakDays}', 'Day Streak'),
                 _buildStatItem('⏰', '${progress.totalWakeUps}', 'Wake Ups'),
-                _buildStatItem('🎯', '${progress.totalMissionsCompleted}', 'Missions'),
+                _buildStatItem(
+                  '🎯',
+                  '${progress.totalMissionsCompleted}',
+                  'Missions',
+                ),
               ],
             ),
           ],
@@ -267,7 +283,9 @@ class QuestScreen extends ConsumerWidget {
   }
 
   Widget _buildQuestCard(QuestModel quest, WidgetRef ref) {
-    final progress = quest.target > 0 ? (quest.current / quest.target).clamp(0.0, 1.0) : 0.0;
+    final progress = quest.target > 0
+        ? (quest.current / quest.target).clamp(0.0, 1.0)
+        : 0.0;
 
     return GlassContainer(
       blur: 15,
@@ -287,10 +305,7 @@ class QuestScreen extends ConsumerWidget {
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: Text(
-                  quest.icon,
-                  style: const TextStyle(fontSize: 24),
-                ),
+                child: Text(quest.icon, style: const TextStyle(fontSize: 24)),
               ),
             ),
             const SizedBox(width: 16),
@@ -304,7 +319,9 @@ class QuestScreen extends ConsumerWidget {
                       color: quest.isCompleted ? Colors.white38 : Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      decoration: quest.isCompleted ? TextDecoration.lineThrough : null,
+                      decoration: quest.isCompleted
+                          ? TextDecoration.lineThrough
+                          : null,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -319,7 +336,9 @@ class QuestScreen extends ConsumerWidget {
                       value: progress,
                       backgroundColor: Colors.white.withOpacity(0.1),
                       valueColor: AlwaysStoppedAnimation(
-                        quest.isCompleted ? const Color(0xFF00D1FF) : const Color(0xFFFF3B30),
+                        quest.isCompleted
+                            ? const Color(0xFF00D1FF)
+                            : const Color(0xFFFF3B30),
                       ),
                       minHeight: 6,
                     ),
@@ -342,8 +361,13 @@ class QuestScreen extends ConsumerWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFFD700),
                   foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                 ),
                 child: Text('+${quest.xpReward}'),
               )
@@ -351,7 +375,10 @@ class QuestScreen extends ConsumerWidget {
               const Icon(Icons.check_circle, color: Color(0xFF00D1FF), size: 28)
             else
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(12),
@@ -412,7 +439,10 @@ class QuestScreen extends ConsumerWidget {
                           : Colors.white.withOpacity(0.05),
                       shape: BoxShape.circle,
                       border: badge.isUnlocked
-                          ? Border.all(color: Color(badge.tier.colorValue), width: 2)
+                          ? Border.all(
+                              color: Color(badge.tier.colorValue),
+                              width: 2,
+                            )
                           : null,
                     ),
                     child: Center(

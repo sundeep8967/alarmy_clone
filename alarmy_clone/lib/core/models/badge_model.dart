@@ -37,36 +37,38 @@ class BadgeModel {
       tier: tier ?? this.tier,
       requirement: requirement ?? this.requirement,
       isUnlocked: isUnlocked ?? this.isUnlocked,
-      unlockedAt: unlockedAt == _sentinel ? this.unlockedAt : unlockedAt as DateTime?,
+      unlockedAt: unlockedAt == _sentinel
+          ? this.unlockedAt
+          : unlockedAt as DateTime?,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-        'icon': icon,
-        'tier': tier.name,
-        'requirement': requirement,
-        'isUnlocked': isUnlocked,
-        'unlockedAt': unlockedAt?.toIso8601String(),
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'icon': icon,
+    'tier': tier.name,
+    'requirement': requirement,
+    'isUnlocked': isUnlocked,
+    'unlockedAt': unlockedAt?.toIso8601String(),
+  };
 
   factory BadgeModel.fromJson(Map<String, dynamic> json) => BadgeModel(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        description: json['description'] as String,
-        icon: json['icon'] as String,
-        tier: BadgeTier.values.firstWhere(
-          (t) => t.name == json['tier'],
-          orElse: () => BadgeTier.bronze,
-        ),
-        requirement: json['requirement'] as int,
-        isUnlocked: json['isUnlocked'] as bool? ?? false,
-        unlockedAt: json['unlockedAt'] != null
-            ? DateTime.parse(json['unlockedAt'] as String)
-            : null,
-      );
+    id: json['id'] as String,
+    name: json['name'] as String,
+    description: json['description'] as String,
+    icon: json['icon'] as String,
+    tier: BadgeTier.values.firstWhere(
+      (t) => t.name == json['tier'],
+      orElse: () => BadgeTier.bronze,
+    ),
+    requirement: json['requirement'] as int,
+    isUnlocked: json['isUnlocked'] as bool? ?? false,
+    unlockedAt: json['unlockedAt'] != null
+        ? DateTime.parse(json['unlockedAt'] as String)
+        : null,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -83,20 +85,20 @@ enum BadgeTier { bronze, silver, gold, platinum, diamond }
 
 extension BadgeTierX on BadgeTier {
   String get label => switch (this) {
-        BadgeTier.bronze => 'Bronze',
-        BadgeTier.silver => 'Silver',
-        BadgeTier.gold => 'Gold',
-        BadgeTier.platinum => 'Platinum',
-        BadgeTier.diamond => 'Diamond',
-      };
+    BadgeTier.bronze => 'Bronze',
+    BadgeTier.silver => 'Silver',
+    BadgeTier.gold => 'Gold',
+    BadgeTier.platinum => 'Platinum',
+    BadgeTier.diamond => 'Diamond',
+  };
 
   int get colorValue => switch (this) {
-        BadgeTier.bronze => 0xFFCD7F32,
-        BadgeTier.silver => 0xFFC0C0C0,
-        BadgeTier.gold => 0xFFFFD700,
-        BadgeTier.platinum => 0xFFE5E4E2,
-        BadgeTier.diamond => 0xFFB9F2FF,
-      };
+    BadgeTier.bronze => 0xFFCD7F32,
+    BadgeTier.silver => 0xFFC0C0C0,
+    BadgeTier.gold => 0xFFFFD700,
+    BadgeTier.platinum => 0xFFE5E4E2,
+    BadgeTier.diamond => 0xFFB9F2FF,
+  };
 }
 
 const _sentinel = Object();

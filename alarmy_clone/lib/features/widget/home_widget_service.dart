@@ -15,9 +15,10 @@ class HomeWidgetService {
   static Future<void> updateWidget() async {
     try {
       final nextAlarm = await _getNextActiveAlarm();
-      
+
       if (nextAlarm != null) {
-        final timeString = '${nextAlarm.hour.toString().padLeft(2, '0')}:${nextAlarm.minute.toString().padLeft(2, '0')}';
+        final timeString =
+            '${nextAlarm.hour.toString().padLeft(2, '0')}:${nextAlarm.minute.toString().padLeft(2, '0')}';
         final missionType = _getMissionTypeString(nextAlarm.missionTypes);
         final missionLabel = _getMissionLabel(nextAlarm.missionTypes);
 
@@ -30,7 +31,7 @@ class HomeWidgetService {
         await HomeWidget.saveWidgetData('mission_type', '');
         await HomeWidget.saveWidgetData('has_alarm', false);
       }
-      
+
       // Update the widget UI
       await HomeWidget.updateWidget(
         name: widgetName,
@@ -46,25 +47,25 @@ class HomeWidgetService {
     try {
       final alarms = await DatabaseHelper.instance.readAllAlarms();
       final now = DateTime.now();
-      
+
       // Filter active alarms and sort by time
       final activeAlarms = alarms.where((alarm) => alarm.isActive).toList();
-      
+
       if (activeAlarms.isEmpty) return null;
-      
+
       // Find the next alarm that will ring
       AlarmModel? nextAlarm;
       DateTime? nextAlarmTime;
-      
+
       for (final alarm in activeAlarms) {
         final alarmTime = _getNextOccurrence(alarm, now);
-        
+
         if (nextAlarmTime == null || alarmTime.isBefore(nextAlarmTime)) {
           nextAlarmTime = alarmTime;
           nextAlarm = alarm;
         }
       }
-      
+
       return nextAlarm;
     } catch (e) {
       return null;
@@ -73,8 +74,14 @@ class HomeWidgetService {
 
   /// Calculate the next occurrence of an alarm
   static DateTime _getNextOccurrence(AlarmModel alarm, DateTime now) {
-    DateTime scheduleTime = DateTime(now.year, now.month, now.day, alarm.hour, alarm.minute);
-    
+    DateTime scheduleTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      alarm.hour,
+      alarm.minute,
+    );
+
     if (alarm.activeDays.isEmpty) {
       // Single alarm - if passed, next is tomorrow
       if (scheduleTime.isBefore(now)) {
@@ -82,18 +89,19 @@ class HomeWidgetService {
       }
     } else {
       // Recurring alarm - find next active day
-      while (!alarm.activeDays.contains(scheduleTime.weekday % 7) || scheduleTime.isBefore(now)) {
+      while (!alarm.activeDays.contains(scheduleTime.weekday % 7) ||
+          scheduleTime.isBefore(now)) {
         scheduleTime = scheduleTime.add(const Duration(days: 1));
       }
     }
-    
+
     return scheduleTime;
   }
 
   /// Get a readable string for the mission type
   static String _getMissionTypeString(List<String> missionTypes) {
     if (missionTypes.isEmpty) return 'default';
-    
+
     final type = missionTypes.first.toLowerCase();
     switch (type) {
       case 'squat':
@@ -115,18 +123,29 @@ class HomeWidgetService {
 
   /// Human-readable label shown on the home screen widget
   static String _getMissionLabel(List<String> missionTypes) {
-    if (missionTypes.isEmpty || missionTypes.first == 'default') return 'No mission';
+    if (missionTypes.isEmpty || missionTypes.first == 'default')
+      return 'No mission';
     final labels = missionTypes.map((t) {
       switch (t.toLowerCase()) {
-        case 'math': return 'Math';
-        case 'shake': return 'Shake';
-        case 'memory': case 'tiles': return 'Memory';
-        case 'typing': return 'Typing';
-        case 'squat': return 'Squat';
-        case 'step': return 'Walk';
-        case 'qr': return 'Barcode';
-        case 'photo': return 'Photo';
-        default: return t;
+        case 'math':
+          return 'Math';
+        case 'shake':
+          return 'Shake';
+        case 'memory':
+        case 'tiles':
+          return 'Memory';
+        case 'typing':
+          return 'Typing';
+        case 'squat':
+          return 'Squat';
+        case 'step':
+          return 'Walk';
+        case 'qr':
+          return 'Barcode';
+        case 'photo':
+          return 'Photo';
+        default:
+          return t;
       }
     });
     return labels.join(' + ') + ' Mission';

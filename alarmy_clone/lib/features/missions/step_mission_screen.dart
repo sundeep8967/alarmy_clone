@@ -25,7 +25,10 @@ class StepMissionScreen extends ConsumerWidget {
     final isPulse = currentSteps > 0;
 
     // Listen for mission completion
-    ref.listen<step_provider.StepState>(step_provider.stepProvider, (previous, next) {
+    ref.listen<step_provider.StepState>(step_provider.stepProvider, (
+      previous,
+      next,
+    ) {
       final wasDone = (previous?.stepsTakenDuringMission ?? 0) >= requiredSteps;
       final isDone = next.stepsTakenDuringMission >= requiredSteps;
       if (!wasDone && isDone) {
@@ -75,7 +78,11 @@ class StepMissionScreen extends ConsumerWidget {
             children: [
               Text(
                 'Step Mission',
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Walk to dismiss the alarm',
@@ -115,7 +122,9 @@ class StepMissionScreen extends ConsumerWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF00FF85).withValues(alpha: isPulse ? 0.3 : 0.05),
+                color: const Color(
+                  0xFF00FF85,
+                ).withValues(alpha: isPulse ? 0.3 : 0.05),
                 blurRadius: isPulse ? 60 : 20,
                 spreadRadius: isPulse ? 20 : 0,
               ),
@@ -148,12 +157,20 @@ class StepMissionScreen extends ConsumerWidget {
                 key: ValueKey(currentSteps),
                 child: Text(
                   '$currentSteps',
-                  style: const TextStyle(color: Colors.white, fontSize: 72, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 72,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Text(
                 'Steps left: $remainingSteps',
-                style: const TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -179,7 +196,11 @@ class StepMissionScreen extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     'Walking helps your body wake up naturally. Keep moving!',
-                    style: TextStyle(color: Colors.white70, fontSize: 14, height: 1.4),
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
                   ),
                 ),
               ],

@@ -70,7 +70,9 @@ class TodayData {
       horoscopeValue: json['horoscopeValue'] ?? 'N/A',
       newsLabel: json['newsLabel'] ?? 'News',
       newsValue: json['newsValue'] ?? 'N/A',
-      lastFetchedAt: json['lastFetchedAt'] != null ? DateTime.parse(json['lastFetchedAt']) : null,
+      lastFetchedAt: json['lastFetchedAt'] != null
+          ? DateTime.parse(json['lastFetchedAt'])
+          : null,
     );
   }
 }
@@ -103,11 +105,11 @@ class TodayDataService {
   static Future<TodayData> fetchAllWithCache() async {
     // Try to load cached data first
     final cachedData = await TodayCacheService.load();
-    
+
     try {
       // Try to fetch fresh data
       var data = TodayData();
-      
+
       try {
         data = await fetchWeather(data);
       } catch (e) {
@@ -119,7 +121,7 @@ class TodayDataService {
           );
         }
       }
-      
+
       try {
         data = await fetchHoroscope(data);
       } catch (e) {
@@ -131,7 +133,7 @@ class TodayDataService {
           );
         }
       }
-      
+
       try {
         data = await fetchNews(data);
       } catch (e) {
@@ -143,11 +145,11 @@ class TodayDataService {
           );
         }
       }
-      
+
       // Save successful data to cache
       data = data.copyWith(lastFetchedAt: DateTime.now());
       await TodayCacheService.save(data);
-      
+
       return data;
     } catch (e) {
       // If everything fails, return cached data or default
@@ -209,11 +211,13 @@ class TodayDataService {
 
     final url =
         'https://api.open-meteo.com/v1/forecast?latitude=${position.latitude}&longitude=${position.longitude}&current_weather=true';
-    
-    final response = await http.get(Uri.parse(url)).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => throw Exception('Timeout'),
-    );
+
+    final response = await http
+        .get(Uri.parse(url))
+        .timeout(
+          const Duration(seconds: 10),
+          onTimeout: () => throw Exception('Timeout'),
+        );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -239,17 +243,30 @@ class TodayDataService {
 
     final url =
         'https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=$sign&day=TODAY';
-    
-    final response = await http.get(Uri.parse(url)).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => throw Exception('Timeout'),
-    );
+
+    final response = await http
+        .get(Uri.parse(url))
+        .timeout(
+          const Duration(seconds: 10),
+          onTimeout: () => throw Exception('Timeout'),
+        );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       if (data['data'] != null && data['data']['horoscope'] != null) {
         final horoscope = data['data']['horoscope'];
-        final keywords = ['love', 'success', 'career', 'health', 'lucky', 'happy', 'challenging', 'good', 'great', 'positive'];
+        final keywords = [
+          'love',
+          'success',
+          'career',
+          'health',
+          'lucky',
+          'happy',
+          'challenging',
+          'good',
+          'great',
+          'positive',
+        ];
         String keyword = 'Daily';
         for (final k in keywords) {
           if (horoscope.toLowerCase().contains(k)) {
@@ -270,12 +287,15 @@ class TodayDataService {
 
   // Get news
   static Future<TodayData> fetchNews(TodayData current) async {
-    final url = 'https://saurav.tech/NewsAPI/top-headlines/category/general/us.json';
-    
-    final response = await http.get(Uri.parse(url)).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () => throw Exception('Timeout'),
-    );
+    final url =
+        'https://saurav.tech/NewsAPI/top-headlines/category/general/us.json';
+
+    final response = await http
+        .get(Uri.parse(url))
+        .timeout(
+          const Duration(seconds: 10),
+          onTimeout: () => throw Exception('Timeout'),
+        );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -302,10 +322,14 @@ class TodayDataService {
     if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return 'leo';
     if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return 'virgo';
     if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return 'libra';
-    if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return 'scorpio';
-    if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return 'sagittarius';
-    if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return 'capricorn';
-    if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'aquarius';
+    if ((month == 10 && day >= 23) || (month == 11 && day <= 21))
+      return 'scorpio';
+    if ((month == 11 && day >= 22) || (month == 12 && day <= 21))
+      return 'sagittarius';
+    if ((month == 12 && day >= 22) || (month == 1 && day <= 19))
+      return 'capricorn';
+    if ((month == 1 && day >= 20) || (month == 2 && day <= 18))
+      return 'aquarius';
     return 'pisces';
   }
 }

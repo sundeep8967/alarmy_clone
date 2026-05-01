@@ -22,7 +22,7 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
   void initState() {
     super.initState();
     _settings = Map<String, dynamic>.from(widget.initialSettings);
-    
+
     // Initialize defaults if missing
     if (widget.missionId == 'math') {
       _settings['math_count'] ??= 3;
@@ -40,7 +40,8 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
     } else if (widget.missionId == 'squat') {
       _settings['squat_count'] ??= 10;
     } else if (widget.missionId == 'picture') {
-      _settings['picture_sensitivity'] ??= 70; // ML confidence threshold (0-100)
+      _settings['picture_sensitivity'] ??=
+          70; // ML confidence threshold (0-100)
     }
   }
 
@@ -54,7 +55,13 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, _settings),
-            child: const Text('Save', style: TextStyle(color: Color(0xFFFF3B30), fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Save',
+              style: TextStyle(
+                color: Color(0xFFFF3B30),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -112,7 +119,14 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
         _buildPictureMissionInfo(),
       ];
     }
-    return [const Center(child: Text('No settings for this mission', style: TextStyle(color: Colors.white70)))];
+    return [
+      const Center(
+        child: Text(
+          'No settings for this mission',
+          style: TextStyle(color: Colors.white70),
+        ),
+      ),
+    ];
   }
 
   Widget _buildSectionHeader(String title) {
@@ -120,7 +134,11 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Text(
         title,
-        style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: Colors.white70,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -136,15 +154,29 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('$value', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(
+            '$value',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Row(
             children: [
               IconButton(
-                onPressed: value > min ? () => setState(() => _settings[key] = value - step) : null,
-                icon: const Icon(Icons.remove_circle_outline, color: Colors.white),
+                onPressed: value > min
+                    ? () => setState(() => _settings[key] = value - step)
+                    : null,
+                icon: const Icon(
+                  Icons.remove_circle_outline,
+                  color: Colors.white,
+                ),
               ),
               IconButton(
-                onPressed: value < max ? () => setState(() => _settings[key] = value + step) : null,
+                onPressed: value < max
+                    ? () => setState(() => _settings[key] = value + step)
+                    : null,
                 icon: const Icon(Icons.add_circle_outline, color: Colors.white),
               ),
             ],
@@ -157,7 +189,7 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
   Widget _buildDifficultySelector() {
     final difficulty = _settings['math_difficulty'] as int;
     final labels = ['Easy', 'Normal', 'Hard'];
-    
+
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF1C1D24),
@@ -167,14 +199,22 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
         children: List.generate(3, (index) {
           final isSelected = difficulty == index + 1;
           return InkWell(
-            onTap: () => setState(() => _settings['math_difficulty'] = index + 1),
+            onTap: () =>
+                setState(() => _settings['math_difficulty'] = index + 1),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(labels[index], style: TextStyle(color: isSelected ? Colors.white : Colors.white70, fontSize: 16)),
-                  if (isSelected) const Icon(Icons.check, color: Color(0xFFFF3B30)),
+                  Text(
+                    labels[index],
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.white70,
+                      fontSize: 16,
+                    ),
+                  ),
+                  if (isSelected)
+                    const Icon(Icons.check, color: Color(0xFFFF3B30)),
                 ],
               ),
             ),
@@ -220,12 +260,16 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
               Icon(
                 barcode == null ? Icons.qr_code_scanner : Icons.check_circle,
                 size: 48,
-                color: barcode == null ? Colors.white24 : const Color(0xFF00D1FF),
+                color: barcode == null
+                    ? Colors.white24
+                    : const Color(0xFF00D1FF),
               ),
               const SizedBox(height: 16),
               Text(
                 barcode ?? 'No barcode registered',
-                style: TextStyle(color: barcode == null ? Colors.white38 : Colors.white),
+                style: TextStyle(
+                  color: barcode == null ? Colors.white38 : Colors.white,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -279,17 +323,32 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
             children: [
               Text(
                 'Threshold: ${sensitivity.toInt()}%',
-                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF00FF85).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  sensitivity >= 85 ? 'Strict' : sensitivity >= 65 ? 'Balanced' : 'Lenient',
-                  style: const TextStyle(color: Color(0xFF00FF85), fontSize: 12, fontWeight: FontWeight.w600),
+                  sensitivity >= 85
+                      ? 'Strict'
+                      : sensitivity >= 65
+                      ? 'Balanced'
+                      : 'Lenient',
+                  style: const TextStyle(
+                    color: Color(0xFF00FF85),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -307,14 +366,22 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
               min: 50,
               max: 100,
               divisions: 10,
-              onChanged: (val) => setState(() => _settings['picture_sensitivity'] = val.toInt()),
+              onChanged: (val) => setState(
+                () => _settings['picture_sensitivity'] = val.toInt(),
+              ),
             ),
           ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Lenient (50%)', style: TextStyle(color: Colors.white38, fontSize: 11)),
-              Text('Strict (100%)', style: TextStyle(color: Colors.white38, fontSize: 11)),
+              Text(
+                'Lenient (50%)',
+                style: TextStyle(color: Colors.white38, fontSize: 11),
+              ),
+              Text(
+                'Strict (100%)',
+                style: TextStyle(color: Colors.white38, fontSize: 11),
+              ),
             ],
           ),
         ],
@@ -328,7 +395,9 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF1C1D24),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF3B8CFF).withValues(alpha: 0.3)),
+        border: Border.all(
+          color: const Color(0xFF3B8CFF).withValues(alpha: 0.3),
+        ),
       ),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,7 +406,14 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
             children: [
               Icon(Icons.info_outline, color: Color(0xFF3B8CFF), size: 18),
               SizedBox(width: 8),
-              Text('How Picture Mission Works', style: TextStyle(color: Color(0xFF3B8CFF), fontWeight: FontWeight.bold, fontSize: 14)),
+              Text(
+                'How Picture Mission Works',
+                style: TextStyle(
+                  color: Color(0xFF3B8CFF),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
             ],
           ),
           SizedBox(height: 10),
@@ -355,16 +431,26 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
 
   String _getMissionName(String id) {
     switch (id) {
-      case 'math': return 'Math';
-      case 'shake': return 'Shake';
-      case 'tiles': return 'Tiles';
-      case 'typing': return 'Typing';
-      case 'qr': return 'Barcode';
-      case 'photo': return 'Photo';
-      case 'picture': return 'Picture';
-      case 'squat': return 'Squat';
-      case 'step': return 'Step';
-      default: return 'Default';
+      case 'math':
+        return 'Math';
+      case 'shake':
+        return 'Shake';
+      case 'tiles':
+        return 'Tiles';
+      case 'typing':
+        return 'Typing';
+      case 'qr':
+        return 'Barcode';
+      case 'photo':
+        return 'Photo';
+      case 'picture':
+        return 'Picture';
+      case 'squat':
+        return 'Squat';
+      case 'step':
+        return 'Step';
+      default:
+        return 'Default';
     }
   }
 }
@@ -373,7 +459,8 @@ class BarcodeRegistrationScreen extends StatefulWidget {
   const BarcodeRegistrationScreen({super.key});
 
   @override
-  State<BarcodeRegistrationScreen> createState() => _BarcodeRegistrationScreenState();
+  State<BarcodeRegistrationScreen> createState() =>
+      _BarcodeRegistrationScreenState();
 }
 
 class _BarcodeRegistrationScreenState extends State<BarcodeRegistrationScreen> {

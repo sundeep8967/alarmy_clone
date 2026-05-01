@@ -64,8 +64,8 @@ class _DismissLogsScreenState extends State<DismissLogsScreen> {
                   child: CircularProgressIndicator(color: Color(0xFF00FF85)),
                 )
               : _records.isEmpty
-                  ? _buildEmptyState()
-                  : _buildLogsList(),
+              ? _buildEmptyState()
+              : _buildLogsList(),
         ),
       ),
     );
@@ -139,7 +139,9 @@ class _DismissLogsScreenState extends State<DismissLogsScreen> {
                         ),
                         child: Icon(
                           isSuccess ? Icons.check_circle : Icons.snooze,
-                          color: isSuccess ? const Color(0xFF34C759) : const Color(0xFFFF9500),
+                          color: isSuccess
+                              ? const Color(0xFF34C759)
+                              : const Color(0xFFFF9500),
                           size: 24,
                         ),
                       ),
@@ -151,7 +153,9 @@ class _DismissLogsScreenState extends State<DismissLogsScreen> {
                             Text(
                               isSuccess ? 'Dismissed' : 'Snoozed',
                               style: TextStyle(
-                                color: isSuccess ? const Color(0xFF34C759) : const Color(0xFFFF9500),
+                                color: isSuccess
+                                    ? const Color(0xFF34C759)
+                                    : const Color(0xFFFF9500),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),

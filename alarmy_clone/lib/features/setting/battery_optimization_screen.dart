@@ -8,7 +8,8 @@ class BatteryOptimizationScreen extends StatefulWidget {
   const BatteryOptimizationScreen({super.key});
 
   @override
-  State<BatteryOptimizationScreen> createState() => _BatteryOptimizationScreenState();
+  State<BatteryOptimizationScreen> createState() =>
+      _BatteryOptimizationScreenState();
 }
 
 class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
@@ -39,7 +40,8 @@ class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
 
   Future<void> _checkBatteryOptimizationStatus() async {
     try {
-      final isDisabled = await DisableBatteryOptimization.isBatteryOptimizationDisabled;
+      final isDisabled =
+          await DisableBatteryOptimization.isBatteryOptimizationDisabled;
       if (mounted) {
         setState(() => _isBatteryOptimizationDisabled = isDisabled ?? false);
       }
@@ -50,14 +52,14 @@ class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
 
   Future<void> _openBatteryOptimizationSettings() async {
     setState(() => _isLoading = true);
-    
+
     try {
       // First, try the standard Android battery optimization settings
       await DisableBatteryOptimization.showDisableBatteryOptimizationSettings();
-      
+
       // Then, attempt OEM-specific deep links
       await _openOemSpecificSettings();
-      
+
       // Recheck status after user interaction
       await _checkBatteryOptimizationStatus();
     } catch (e) {
@@ -222,7 +224,9 @@ class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
-                _isBatteryOptimizationDisabled ? Icons.check_circle : Icons.warning,
+                _isBatteryOptimizationDisabled
+                    ? Icons.check_circle
+                    : Icons.warning,
                 color: _isBatteryOptimizationDisabled
                     ? const Color(0xFF00FF85)
                     : const Color(0xFFFF3B30),

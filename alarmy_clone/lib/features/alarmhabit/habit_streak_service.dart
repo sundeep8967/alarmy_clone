@@ -31,7 +31,11 @@ class HabitStreakService {
   /// Get current habit stats
   Future<HabitStats> getStats() async {
     final db = await DatabaseHelper.instance.database;
-    final result = await db.query('habit_stats', where: 'id = ?', whereArgs: [1]);
+    final result = await db.query(
+      'habit_stats',
+      where: 'id = ?',
+      whereArgs: [1],
+    );
     if (result.isEmpty) {
       // Initialize if not exists
       await db.insert('habit_stats', {
@@ -73,7 +77,8 @@ class HabitStreakService {
     // Get all alarms
     final alarmsResult = await db.query('alarms');
     final hasScheduledAlarmYesterday = alarmsResult.any((alarm) {
-      final activeDays = jsonDecode(alarm['activeDays'] as String) as List<dynamic>;
+      final activeDays =
+          jsonDecode(alarm['activeDays'] as String) as List<dynamic>;
       // Check if alarm was active on yesterday's day of week
       final yesterdayWeekday = yesterday.weekday % 7; // 0 = Sunday
       return activeDays.contains(yesterdayWeekday);
@@ -133,7 +138,10 @@ class HabitStreakService {
 
   /// Record a successful alarm dismissal
   /// Call this when user successfully dismisses an alarm
-  Future<void> recordDismissal(String alarmId, {bool wasSnoozed = false}) async {
+  Future<void> recordDismissal(
+    String alarmId, {
+    bool wasSnoozed = false,
+  }) async {
     final db = await DatabaseHelper.instance.database;
 
     // Add record

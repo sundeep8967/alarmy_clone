@@ -13,10 +13,14 @@ class SleepStageResult {
 
   String get label {
     switch (stage) {
-      case SleepStage.awake:  return 'Awake';
-      case SleepStage.light:  return 'Light';
-      case SleepStage.deep:   return 'Deep';
-      case SleepStage.rem:    return 'REM';
+      case SleepStage.awake:
+        return 'Awake';
+      case SleepStage.light:
+        return 'Light';
+      case SleepStage.deep:
+        return 'Deep';
+      case SleepStage.rem:
+        return 'REM';
     }
   }
 }
@@ -32,10 +36,14 @@ class SleepStageService {
   Future<void> init() async {
     try {
       log('🧠 [SleepStageService] Loading model_final_all.tflite...');
-      _interpreter = await Interpreter.fromAsset('assets/ml/model_final_all.tflite');
-      log('🧠 [SleepStageService] Model loaded. '
-          'Input: ${_interpreter!.getInputTensor(0).shape}, '
-          'Output: ${_interpreter!.getOutputTensor(0).shape}');
+      _interpreter = await Interpreter.fromAsset(
+        'assets/ml/model_final_all.tflite',
+      );
+      log(
+        '🧠 [SleepStageService] Model loaded. '
+        'Input: ${_interpreter!.getInputTensor(0).shape}, '
+        'Output: ${_interpreter!.getOutputTensor(0).shape}',
+      );
     } catch (e) {
       log('❌ [SleepStageService] Failed to load: $e');
     }
@@ -47,9 +55,9 @@ class SleepStageService {
     if (_interpreter == null) return null;
 
     try {
-      final inputShape  = _interpreter!.getInputTensor(0).shape;   // e.g. [1, N]
-      final outputShape = _interpreter!.getOutputTensor(0).shape;  // e.g. [1, 4]
-      final numClasses  = outputShape.last;
+      final inputShape = _interpreter!.getInputTensor(0).shape; // e.g. [1, N]
+      final outputShape = _interpreter!.getOutputTensor(0).shape; // e.g. [1, 4]
+      final numClasses = outputShape.last;
 
       // Pad or truncate to the expected input size
       final expectedSamples = inputShape.last;
@@ -57,7 +65,7 @@ class SleepStageService {
       final copyLen = audioChunk.length.clamp(0, expectedSamples);
       input.setRange(0, copyLen, audioChunk);
 
-      final inputBuffer  = [input];
+      final inputBuffer = [input];
       final outputBuffer = [List<double>.filled(numClasses, 0.0)];
 
       _interpreter!.runForMultipleInputs(inputBuffer, {0: outputBuffer});
@@ -69,7 +77,8 @@ class SleepStageService {
       }
 
       // Map index → stage (0=Awake, 1=Light, 2=Deep, 3=REM)
-      final stage = SleepStage.values[bestIdx.clamp(0, SleepStage.values.length - 1)];
+      final stage =
+          SleepStage.values[bestIdx.clamp(0, SleepStage.values.length - 1)];
       return SleepStageResult(stage, scores[bestIdx]);
     } catch (e) {
       log('❌ [SleepStageService] Inference error: $e');

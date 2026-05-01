@@ -8,10 +8,14 @@ enum BodyStage { unknown, standing, lying, sitting }
 extension BodyStageLabel on BodyStage {
   String get label {
     switch (this) {
-      case BodyStage.standing: return 'Standing';
-      case BodyStage.lying:    return 'Lying Down';
-      case BodyStage.sitting:  return 'Sitting';
-      case BodyStage.unknown:  return 'Unknown';
+      case BodyStage.standing:
+        return 'Standing';
+      case BodyStage.lying:
+        return 'Lying Down';
+      case BodyStage.sitting:
+        return 'Sitting';
+      case BodyStage.unknown:
+        return 'Unknown';
     }
   }
 }
@@ -24,10 +28,14 @@ class StageResult {
 
   String get label {
     switch (stage) {
-      case BodyStage.standing: return 'Standing';
-      case BodyStage.lying:    return 'Lying Down';
-      case BodyStage.sitting:  return 'Sitting';
-      case BodyStage.unknown:  return 'Unknown';
+      case BodyStage.standing:
+        return 'Standing';
+      case BodyStage.lying:
+        return 'Lying Down';
+      case BodyStage.sitting:
+        return 'Sitting';
+      case BodyStage.unknown:
+        return 'Unknown';
     }
   }
 }
@@ -44,9 +52,11 @@ class StageMissionService {
     try {
       log('🏋️ [StageMissionService] Loading stage.tflite...');
       _interpreter = await Interpreter.fromAsset('assets/ml/stage.tflite');
-      log('🏋️ [StageMissionService] Model loaded. '
-          'Input: ${_interpreter!.getInputTensor(0).shape}, '
-          'Output: ${_interpreter!.getOutputTensor(0).shape}');
+      log(
+        '🏋️ [StageMissionService] Model loaded. '
+        'Input: ${_interpreter!.getInputTensor(0).shape}, '
+        'Output: ${_interpreter!.getOutputTensor(0).shape}',
+      );
     } catch (e) {
       log('❌ [StageMissionService] Failed to load: $e');
     }
@@ -58,9 +68,9 @@ class StageMissionService {
     if (_interpreter == null) return null;
 
     try {
-      final inputShape  = _interpreter!.getInputTensor(0).shape;
+      final inputShape = _interpreter!.getInputTensor(0).shape;
       final outputShape = _interpreter!.getOutputTensor(0).shape;
-      final numClasses  = outputShape.last;
+      final numClasses = outputShape.last;
 
       // Pad or truncate to expected input
       final expectedLen = inputShape.reduce((a, b) => a * b);
@@ -78,7 +88,8 @@ class StageMissionService {
       }
 
       // Map index → BodyStage (0=Unknown/other, 1=Standing, 2=Lying, 3=Sitting)
-      final stage = BodyStage.values[bestIdx.clamp(0, BodyStage.values.length - 1)];
+      final stage =
+          BodyStage.values[bestIdx.clamp(0, BodyStage.values.length - 1)];
       return StageResult(stage, scores[bestIdx]);
     } catch (e) {
       log('❌ [StageMissionService] Inference error: $e');

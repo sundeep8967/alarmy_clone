@@ -61,7 +61,9 @@ class ThemeSettingScreen extends ConsumerWidget {
                     return FadeInUp(
                       delay: Duration(milliseconds: 100 * i),
                       child: GestureDetector(
-                        onTap: () => ref.read(themeProvider.notifier).setThemeMode(opt.mode),
+                        onTap: () => ref
+                            .read(themeProvider.notifier)
+                            .setThemeMode(opt.mode),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
                           margin: const EdgeInsets.only(bottom: 16),
@@ -72,7 +74,9 @@ class ThemeSettingScreen extends ConsumerWidget {
                                 : Colors.white.withValues(alpha: 0.04),
                             borderRadius: BorderRadius.circular(24),
                             border: Border.all(
-                              color: isSelected ? opt.color : Colors.white.withValues(alpha: 0.07),
+                              color: isSelected
+                                  ? opt.color
+                                  : Colors.white.withValues(alpha: 0.07),
                               width: isSelected ? 1.5 : 1,
                             ),
                           ),
@@ -84,22 +88,35 @@ class ThemeSettingScreen extends ConsumerWidget {
                                   color: opt.color.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(14),
                                 ),
-                                child: Icon(opt.icon, color: opt.color, size: 22),
+                                child: Icon(
+                                  opt.icon,
+                                  color: opt.color,
+                                  size: 22,
+                                ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(opt.label,
-                                        style: TextStyle(
-                                          color: isSelected ? Colors.white : Colors.white70,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        )),
+                                    Text(
+                                      opt.label,
+                                      style: TextStyle(
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.white70,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                     const SizedBox(height: 2),
-                                    Text(opt.subtitle,
-                                        style: const TextStyle(color: Colors.white38, fontSize: 13)),
+                                    Text(
+                                      opt.subtitle,
+                                      style: const TextStyle(
+                                        color: Colors.white38,
+                                        fontSize: 13,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -109,14 +126,22 @@ class ThemeSettingScreen extends ConsumerWidget {
                                 height: 22,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: isSelected ? opt.color : Colors.transparent,
+                                  color: isSelected
+                                      ? opt.color
+                                      : Colors.transparent,
                                   border: Border.all(
-                                    color: isSelected ? opt.color : Colors.white24,
+                                    color: isSelected
+                                        ? opt.color
+                                        : Colors.white24,
                                     width: 2,
                                   ),
                                 ),
                                 child: isSelected
-                                    ? const Icon(Icons.check, color: Colors.white, size: 14)
+                                    ? const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 14,
+                                      )
                                     : null,
                               ),
                             ],
@@ -141,11 +166,22 @@ class ThemeSettingScreen extends ConsumerWidget {
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 22),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 22,
+            ),
           ),
           const Expanded(
-            child: Text('Appearance', textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            child: Text(
+              'Appearance',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           const SizedBox(width: 48),
         ],

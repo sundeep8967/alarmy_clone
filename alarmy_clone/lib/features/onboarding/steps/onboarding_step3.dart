@@ -51,7 +51,8 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
         final box = context.findRenderObject() as RenderBox?;
         if (box != null) {
           final position = box.localToGlobal(Offset.zero);
-          final sectionTop = position.dy + scrollOffset - 100; // Adjust for padding
+          final sectionTop =
+              position.dy + scrollOffset - 100; // Adjust for padding
           final sectionBottom = sectionTop + box.size.height;
 
           if (centerOffset >= sectionTop && centerOffset < sectionBottom) {
@@ -72,7 +73,8 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
       final box = context.findRenderObject() as RenderBox?;
       if (box != null) {
         final position = box.localToGlobal(Offset.zero);
-        final scrollOffset = _scrollController.offset + position.dy - 150; // Offset for header
+        final scrollOffset =
+            _scrollController.offset + position.dy - 150; // Offset for header
         _scrollController.animateTo(
           scrollOffset.clamp(0.0, _scrollController.position.maxScrollExtent),
           duration: const Duration(milliseconds: 300),
@@ -127,7 +129,9 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                     cat['label']!,
                     style: TextStyle(
                       color: isActive ? Colors.black : Colors.white70,
-                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: isActive
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                       fontSize: 14,
                     ),
                   ),
@@ -148,7 +152,9 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                   final cat = entry.value;
                   final catKey = cat['key']!;
                   final catLabel = cat['label']!;
-                  final catSounds = sounds.where((s) => s.category == catKey).toList();
+                  final catSounds = sounds
+                      .where((s) => s.category == catKey)
+                      .toList();
 
                   if (catSounds.isEmpty) return const SizedBox.shrink();
 
@@ -171,7 +177,10 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                 left: 24,
                 right: 24,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(16),
@@ -180,7 +189,7 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                         color: Colors.black.withValues(alpha: 0.5),
                         blurRadius: 10,
                         spreadRadius: 2,
-                      )
+                      ),
                     ],
                   ),
                   child: Row(
@@ -191,7 +200,11 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                           color: const Color(0xFFFF3B30),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.alarm, color: Colors.white, size: 16),
+                        child: const Icon(
+                          Icons.alarm,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       const Expanded(
@@ -220,7 +233,9 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFFF3B30),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
               onPressed: () {
                 ref.read(selectedSoundProvider.notifier).stopPreview();
@@ -228,7 +243,11 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
               },
               child: const Text(
                 'Next',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -267,8 +286,12 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: sounds.length,
-            separatorBuilder: (context, index) =>
-                const Divider(color: Colors.white10, height: 1, indent: 16, endIndent: 16),
+            separatorBuilder: (context, index) => const Divider(
+              color: Colors.white10,
+              height: 1,
+              indent: 16,
+              endIndent: 16,
+            ),
             itemBuilder: (context, index) {
               final sound = sounds[index];
               return SoundTileWidget(

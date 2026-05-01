@@ -6,7 +6,9 @@ import 'habit_streak_service.dart';
 
 // ── Providers ────────────────────────────────────────────────────────────────
 
-final calendarDataProvider = FutureProvider<Map<String, Map<String, int>>>((ref) async {
+final calendarDataProvider = FutureProvider<Map<String, Map<String, int>>>((
+  ref,
+) async {
   return DatabaseHelper.instance.getCalendarRecords(days: 84);
 });
 
@@ -52,7 +54,14 @@ class StreakCalendarScreen extends ConsumerWidget {
                       // Stats cards row
                       statsAsync.when(
                         data: (stats) => _buildStatsRow(stats),
-                        loading: () => const SizedBox(height: 80, child: Center(child: CircularProgressIndicator(color: Color(0xFFFF6B35)))),
+                        loading: () => const SizedBox(
+                          height: 80,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFFF6B35),
+                            ),
+                          ),
+                        ),
                         error: (_, __) => const SizedBox.shrink(),
                       ),
                       const SizedBox(height: 24),
@@ -62,12 +71,16 @@ class StreakCalendarScreen extends ConsumerWidget {
                         loading: () => const Center(
                           child: Padding(
                             padding: EdgeInsets.all(40),
-                            child: CircularProgressIndicator(color: Color(0xFFFF6B35)),
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFFF6B35),
+                            ),
                           ),
                         ),
                         error: (err, _) => Center(
-                          child: Text('Error loading data: $err',
-                              style: const TextStyle(color: Colors.white54)),
+                          child: Text(
+                            'Error loading data: $err',
+                            style: const TextStyle(color: Colors.white54),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -99,7 +112,11 @@ class StreakCalendarScreen extends ConsumerWidget {
                 color: Colors.white.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 18,
+              ),
             ),
           ),
           const SizedBox(width: 16),
@@ -108,7 +125,11 @@ class StreakCalendarScreen extends ConsumerWidget {
             children: [
               Text(
                 'Habit Calendar',
-                style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 'Last 12 weeks',
@@ -131,7 +152,10 @@ class StreakCalendarScreen extends ConsumerWidget {
           iconColor: const Color(0xFFFF6B35),
           value: '${stats.currentStreak}',
           label: 'Current\nStreak',
-          gradient: [const Color(0xFFFF6B35).withValues(alpha: 0.25), const Color(0xFFFF3B30).withValues(alpha: 0.1)],
+          gradient: [
+            const Color(0xFFFF6B35).withValues(alpha: 0.25),
+            const Color(0xFFFF3B30).withValues(alpha: 0.1),
+          ],
         ),
         const SizedBox(width: 12),
         _buildStatCard(
@@ -139,7 +163,10 @@ class StreakCalendarScreen extends ConsumerWidget {
           iconColor: const Color(0xFFFFCC00),
           value: '${stats.longestStreak}',
           label: 'Longest\nStreak',
-          gradient: [const Color(0xFFFFCC00).withValues(alpha: 0.2), const Color(0xFFFF9500).withValues(alpha: 0.08)],
+          gradient: [
+            const Color(0xFFFFCC00).withValues(alpha: 0.2),
+            const Color(0xFFFF9500).withValues(alpha: 0.08),
+          ],
         ),
       ],
     );
@@ -156,7 +183,11 @@ class StreakCalendarScreen extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: gradient, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+            colors: gradient,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         ),
@@ -169,10 +200,22 @@ class StreakCalendarScreen extends ConsumerWidget {
               children: [
                 Text(
                   value,
-                  style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold, height: 1),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                  ),
                 ),
                 const SizedBox(height: 2),
-                Text(label, style: const TextStyle(color: Colors.white54, fontSize: 11, height: 1.3)),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white54,
+                    fontSize: 11,
+                    height: 1.3,
+                  ),
+                ),
               ],
             ),
           ],
@@ -190,13 +233,17 @@ class StreakCalendarScreen extends ConsumerWidget {
     // Build a list of weeks (newest at bottom). 12 weeks = 84 days.
     // We start from the Monday of the current week and go back 11 more weeks.
     final int weekdayOffset = (today.weekday - 1) % 7; // Monday = 0
-    final DateTime startOfThisWeek = today.subtract(Duration(days: weekdayOffset));
+    final DateTime startOfThisWeek = today.subtract(
+      Duration(days: weekdayOffset),
+    );
 
     // Group cells into 12 weeks, each 7 days (Mon–Sun)
     final List<List<DateTime>> weeks = [];
     for (int w = 11; w >= 0; w--) {
       final List<DateTime> week = [];
-      final DateTime weekStart = startOfThisWeek.subtract(Duration(days: w * 7));
+      final DateTime weekStart = startOfThisWeek.subtract(
+        Duration(days: w * 7),
+      );
       for (int d = 0; d < 7; d++) {
         week.add(weekStart.add(Duration(days: d)));
       }
@@ -227,7 +274,8 @@ class StreakCalendarScreen extends ConsumerWidget {
       rows.add(
         Row(
           children: week.map((day) {
-            final key = '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+            final key =
+                '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
             final dayData = data[key];
             final status = _statusFor(day, today, dayData);
             return Expanded(child: _buildDayCell(day, status, today));
@@ -253,11 +301,20 @@ class StreakCalendarScreen extends ConsumerWidget {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return Row(
       children: days
-          .map((d) => Expanded(
-                child: Center(
-                  child: Text(d, style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w600)),
+          .map(
+            (d) => Expanded(
+              child: Center(
+                child: Text(
+                  d,
+                  style: const TextStyle(
+                    color: Colors.white38,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ))
+              ),
+            ),
+          )
           .toList(),
     );
   }
@@ -265,7 +322,12 @@ class StreakCalendarScreen extends ConsumerWidget {
   Widget _buildMonthHeader(String label) {
     return Text(
       label,
-      style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 0.5),
+      style: const TextStyle(
+        color: Colors.white70,
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.5,
+      ),
     );
   }
 
@@ -305,13 +367,22 @@ class StreakCalendarScreen extends ConsumerWidget {
             ? Border.all(color: const Color(0xFFFF6B35), width: 2)
             : null,
         boxShadow: status == _DayStatus.success
-            ? [BoxShadow(color: const Color(0xFF00C96E).withValues(alpha: 0.4), blurRadius: 6)]
+            ? [
+                BoxShadow(
+                  color: const Color(0xFF00C96E).withValues(alpha: 0.4),
+                  blurRadius: 6,
+                ),
+              ]
             : null,
       ),
       child: Center(
         child: Text(
           '${day.day}',
-          style: TextStyle(color: textColor, fontSize: 11, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: textColor,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
@@ -338,17 +409,27 @@ class StreakCalendarScreen extends ConsumerWidget {
         Container(
           width: 12,
           height: 12,
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(3)),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(3),
+          ),
         ),
         const SizedBox(width: 6),
-        Text(label, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white54, fontSize: 12),
+        ),
       ],
     );
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
 
-  _DayStatus _statusFor(DateTime day, DateTime today, Map<String, int>? dayData) {
+  _DayStatus _statusFor(
+    DateTime day,
+    DateTime today,
+    Map<String, int>? dayData,
+  ) {
     if (day.isAfter(today)) return _DayStatus.future;
     if (dayData == null) return _DayStatus.none;
     final success = dayData['success'] ?? 0;
@@ -358,7 +439,20 @@ class StreakCalendarScreen extends ConsumerWidget {
   }
 
   String _monthName(int month) {
-    const names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const names = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return names[month - 1];
   }
 }

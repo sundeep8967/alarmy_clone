@@ -42,23 +42,51 @@ class PremiumScreen extends StatelessWidget {
               const Text(
                 'All features are permanently unlocked for you. Enjoy a completely free, ad-free experience!',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white70, fontSize: 16, height: 1.5),
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                  height: 1.5,
+                ),
               ),
               const SizedBox(height: 40),
               Expanded(
                 child: ListView(
                   children: [
-                    _buildFeatureItem(Icons.verified_user, 'Ad-Free Experience', 'No interruptions, ever.'),
+                    _buildFeatureItem(
+                      Icons.verified_user,
+                      'Ad-Free Experience',
+                      'No interruptions, ever.',
+                    ),
                     const SizedBox(height: 16),
-                    _buildFeatureItem(Icons.alarm_on, 'Wake Up Check', 'Ensure you are fully awake after the alarm.'),
+                    _buildFeatureItem(
+                      Icons.alarm_on,
+                      'Wake Up Check',
+                      'Ensure you are fully awake after the alarm.',
+                    ),
                     const SizedBox(height: 16),
-                    _buildFeatureItem(Icons.library_music, 'Premium Sounds', 'Access to extra loud and relaxing sounds.'),
+                    _buildFeatureItem(
+                      Icons.library_music,
+                      'Premium Sounds',
+                      'Access to extra loud and relaxing sounds.',
+                    ),
                     const SizedBox(height: 16),
-                    _buildFeatureItem(Icons.extension, 'Multiple Missions', 'Combine Math, Squat, and Steps for a guaranteed wake up.'),
+                    _buildFeatureItem(
+                      Icons.extension,
+                      'Multiple Missions',
+                      'Combine Math, Squat, and Steps for a guaranteed wake up.',
+                    ),
                     const SizedBox(height: 16),
-                    _buildFeatureItem(Icons.bed, 'Smart Alarm', 'Detects light sleep and wakes you up during the optimal window.'),
+                    _buildFeatureItem(
+                      Icons.bed,
+                      'Smart Alarm',
+                      'Detects light sleep and wakes you up during the optimal window.',
+                    ),
                     const SizedBox(height: 16),
-                    _buildFeatureItem(Icons.record_voice_over, 'Time Pressure', 'Your device announces the current time out loud every 30 seconds so you can\'t ignore it.'),
+                    _buildFeatureItem(
+                      Icons.record_voice_over,
+                      'Time Pressure',
+                      'Your device announces the current time out loud every 30 seconds so you can\'t ignore it.',
+                    ),
                   ],
                 ),
               ),
@@ -121,10 +149,7 @@ class PremiumScreen extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      color: Colors.white54,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: Colors.white54, fontSize: 14),
                   ),
                 ],
               ),

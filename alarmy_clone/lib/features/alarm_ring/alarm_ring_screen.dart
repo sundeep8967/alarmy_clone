@@ -66,13 +66,18 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     // Announce time immediately, then every 30 seconds
     if (widget.alarm.timePressure) {
       _announceTime();
-      _timePressureTimer = Timer.periodic(const Duration(seconds: 30), (_) => _announceTime());
+      _timePressureTimer = Timer.periodic(
+        const Duration(seconds: 30),
+        (_) => _announceTime(),
+      );
     }
   }
 
   void _announceTime() {
     final now = DateTime.now();
-    final hour = now.hour > 12 ? now.hour - 12 : (now.hour == 0 ? 12 : now.hour);
+    final hour = now.hour > 12
+        ? now.hour - 12
+        : (now.hour == 0 ? 12 : now.hour);
     final minute = now.minute.toString().padLeft(2, '0');
     final amPm = now.hour >= 12 ? 'PM' : 'AM';
     _tts.speak('It is $hour $minute $amPm');
@@ -83,10 +88,16 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     final effectiveSnooze = widget.alarm.snoozeMinutes > 0
         ? widget.alarm.snoozeMinutes
         : globalSnooze;
-    _autoSnoozeTimer = Timer(Duration(minutes: effectiveSnooze), () => _snoozeAlarm(isAuto: true));
+    _autoSnoozeTimer = Timer(
+      Duration(minutes: effectiveSnooze),
+      () => _snoozeAlarm(isAuto: true),
+    );
 
     final globalDuration = ref.read(settingsProvider).alarmDuration;
-    _autoDismissTimer = Timer(Duration(minutes: globalDuration), () => _dismissAlarm(isAuto: true));
+    _autoDismissTimer = Timer(
+      Duration(minutes: globalDuration),
+      () => _dismissAlarm(isAuto: true),
+    );
   }
 
   Future<void> _startRinging() async {
@@ -99,7 +110,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     final soundId = widget.alarm.soundId ?? 'orkney';
     final soundPath = 'sounds/$soundId.mp3';
     await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    
+
     if (widget.alarm.isVolumeCrescendo) {
       _currentVolume = 0.0;
       await _audioPlayer.setVolume(_currentVolume);
@@ -114,7 +125,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   void _startCrescendo() {
     final targetVolume = widget.alarm.volume;
     final durationSec = widget.alarm.crescendoDuration;
-    const steps = 20; 
+    const steps = 20;
     final volumeStep = targetVolume / steps;
     final interval = Duration(milliseconds: (durationSec * 1000) ~/ steps);
 
@@ -193,25 +204,17 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
 
     // Track Record
     final solvingTime = DateTime.now().difference(_startTime).inSeconds;
-    await ref.read(alarmRepositoryProvider).addRecord(
-      widget.alarm.id,
-      !isAuto,
-      solvingTimeSeconds: solvingTime,
-    );
+    await ref
+        .read(alarmRepositoryProvider)
+        .addRecord(widget.alarm.id, !isAuto, solvingTimeSeconds: solvingTime);
 
-    if (widget.alarm.isWakeUpCheckEnabled) {
+    // Trigger Wake Up Check if enabled
+    if (widget.alarm.isWakeUpCheckEnabled &&
+        widget.alarm.wakeUpCheckMinutes > 0) {
       await AlarmService.scheduleWakeUpCheck(widget.alarm);
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WakeUpCheckScreen(
-            onConfirmed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-            onFailed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AlarmRingScreen(alarm: widget.alarm))),
-          ),
-        ),
-      );
-    } else {
+    }
+
+    if (mounted) {
       Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
@@ -222,7 +225,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     _crescendoTimer?.cancel();
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();
-    
+
     if (widget.alarm.missionTypes.isEmpty) {
       _dismissAlarm(isManual: true);
       return;
@@ -241,19 +244,61 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     final onComplete = () => _runMissionSequence(index + 1);
 
     switch (missionType) {
-      case 'math': missionScreen = MathMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
-      case 'shake': missionScreen = ShakeMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
-      case 'memory': case 'tiles': missionScreen = MemoryMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
-      case 'typing': missionScreen = TypingMissionScreen(onMissionComplete: onComplete); break;
-      case 'squat': missionScreen = SquatMissionScreen(onMissionComplete: onComplete); break;
-      case 'step': missionScreen = StepMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
-      case 'stage': missionScreen = StageMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
-      case 'qr': missionScreen = BarcodeMissionScreen(onMissionComplete: onComplete); break;
-      case 'picture': missionScreen = PictureMissionScreen(onMissionComplete: onComplete, settings: widget.alarm.missionSettings); break;
-      default: _runMissionSequence(index + 1); return;
+      case 'math':
+        missionScreen = MathMissionScreen(
+          onMissionComplete: onComplete,
+          settings: widget.alarm.missionSettings,
+        );
+        break;
+      case 'shake':
+        missionScreen = ShakeMissionScreen(
+          onMissionComplete: onComplete,
+          settings: widget.alarm.missionSettings,
+        );
+        break;
+      case 'memory':
+      case 'tiles':
+        missionScreen = MemoryMissionScreen(
+          onMissionComplete: onComplete,
+          settings: widget.alarm.missionSettings,
+        );
+        break;
+      case 'typing':
+        missionScreen = TypingMissionScreen(onMissionComplete: onComplete);
+        break;
+      case 'squat':
+        missionScreen = SquatMissionScreen(onMissionComplete: onComplete);
+        break;
+      case 'step':
+        missionScreen = StepMissionScreen(
+          onMissionComplete: onComplete,
+          settings: widget.alarm.missionSettings,
+        );
+        break;
+      case 'stage':
+        missionScreen = StageMissionScreen(
+          onMissionComplete: onComplete,
+          settings: widget.alarm.missionSettings,
+        );
+        break;
+      case 'qr':
+        missionScreen = BarcodeMissionScreen(onMissionComplete: onComplete);
+        break;
+      case 'picture':
+        missionScreen = PictureMissionScreen(
+          onMissionComplete: onComplete,
+          settings: widget.alarm.missionSettings,
+        );
+        break;
+      default:
+        _runMissionSequence(index + 1);
+        return;
     }
 
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => missionScreen));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => missionScreen),
+    );
   }
 
   @override
@@ -269,7 +314,10 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
                 duration: const Duration(seconds: 1),
                 decoration: BoxDecoration(
                   gradient: RadialGradient(
-                    colors: [const Color(0xFFFF3B30).withValues(alpha: 0.15), Colors.transparent],
+                    colors: [
+                      const Color(0xFFFF3B30).withValues(alpha: 0.15),
+                      Colors.transparent,
+                    ],
                     center: Alignment.topCenter,
                     radius: 1.5,
                   ),
@@ -280,11 +328,29 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
               child: Column(
                 children: [
                   const SizedBox(height: 80),
-                  Text(_currentDate, style: const TextStyle(color: Colors.white54, fontSize: 18)),
+                  Text(
+                    _currentDate,
+                    style: const TextStyle(color: Colors.white54, fontSize: 18),
+                  ),
                   const SizedBox(height: 8),
-                  Text(_currentTime, style: const TextStyle(color: Colors.white, fontSize: 100, fontWeight: FontWeight.w200, letterSpacing: -2)),
+                  Text(
+                    _currentTime,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 100,
+                      fontWeight: FontWeight.w200,
+                      letterSpacing: -2,
+                    ),
+                  ),
                   const SizedBox(height: 12),
-                  const Text('Alarm ringing', style: TextStyle(color: Color(0xFFFF3B30), fontSize: 20, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Alarm ringing',
+                    style: TextStyle(
+                      color: Color(0xFFFF3B30),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -296,12 +362,24 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFFF3B30),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
                               elevation: 10,
-                              shadowColor: const Color(0xFFFF3B30).withValues(alpha: 0.5),
+                              shadowColor: const Color(
+                                0xFFFF3B30,
+                              ).withValues(alpha: 0.5),
                             ),
                             onPressed: _navigateToMission,
-                            child: const Text('START MISSION', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                            child: const Text(
+                              'START MISSION',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -311,16 +389,31 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
                           child: OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.white10),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
                             ),
                             onPressed: () => _snoozeAlarm(),
-                            child: Text('SNOOZE (${widget.alarm.snoozeMinutes}m)', style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                            child: Text(
+                              'SNOOZE (${widget.alarm.snoozeMinutes}m)',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
                         TextButton(
                           onPressed: () => _dismissAlarm(isManual: true),
-                          child: const Text('Dismiss', style: TextStyle(color: Colors.white24, fontSize: 16)),
+                          child: const Text(
+                            'Dismiss',
+                            style: TextStyle(
+                              color: Colors.white24,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ],
                     ),

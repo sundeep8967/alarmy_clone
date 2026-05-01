@@ -8,11 +8,12 @@ class SettingsService {
   static const String _snoozeDurationKey = 'snooze_duration';
   static const String _alarmDurationKey = 'alarm_duration';
   static const String _alarmVolumeKey = 'alarm_volume';
-  static const String _themeKey = 'theme_mode_index'; // 0=system, 1=light, 2=dark
+  static const String _themeKey =
+      'theme_mode_index'; // 0=system, 1=light, 2=dark
 
   static Future<AppSettings> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    
+
     return AppSettings(
       vibrationEnabled: prefs.getBool(_vibrationKey) ?? true,
       gradualVolumeEnabled: prefs.getBool(_gradualVolumeKey) ?? true,

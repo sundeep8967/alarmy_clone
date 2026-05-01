@@ -30,7 +30,7 @@ class MorningScreen extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           // Sun Glow
           Positioned(
             top: -100,
@@ -136,7 +136,9 @@ class MorningScreen extends ConsumerWidget {
       ),
       loading: () => const SizedBox(
         height: 150,
-        child: Center(child: CircularProgressIndicator(color: Color(0xFFFFD700))),
+        child: Center(
+          child: CircularProgressIndicator(color: Color(0xFFFFD700)),
+        ),
       ),
       error: (_, __) => const SizedBox.shrink(),
     );
@@ -153,9 +155,16 @@ class MorningScreen extends ConsumerWidget {
               const SizedBox(width: 8),
               const Text(
                 'New York',
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              Icon(Icons.keyboard_arrow_down, color: Colors.white.withValues(alpha: 0.5)),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white.withValues(alpha: 0.5),
+              ),
             ],
           ),
           const CircleAvatar(
@@ -190,19 +199,30 @@ class MorningScreen extends ConsumerWidget {
                   ),
                   Text(
                     'Mostly Sunny',
-                    style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ],
               ),
               ZoomIn(
-                child: const Icon(Icons.wb_sunny, color: Color(0xFFFFD700), size: 100),
+                child: const Icon(
+                  Icons.wb_sunny,
+                  color: Color(0xFFFFD700),
+                  size: 100,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             'H:28° L:16°',
-            style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 16),
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.6),
+              fontSize: 16,
+            ),
           ),
         ],
       ),
@@ -222,8 +242,17 @@ class MorningScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Hourly Forecast', style: TextStyle(color: Colors.white70, fontSize: 14)),
-                  Text('Next 24h', style: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 12)),
+                  const Text(
+                    'Hourly Forecast',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                  Text(
+                    'Next 24h',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.3),
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -238,13 +267,31 @@ class MorningScreen extends ConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('${8 + index}AM', style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                          Text(
+                            '${8 + index}AM',
+                            style: const TextStyle(
+                              color: Colors.white38,
+                              fontSize: 12,
+                            ),
+                          ),
                           Icon(
-                            index == 0 ? Icons.wb_sunny : (index < 3 ? Icons.cloud : Icons.wb_cloudy_outlined),
-                            color: index == 0 ? const Color(0xFFFFD700) : Colors.white70,
+                            index == 0
+                                ? Icons.wb_sunny
+                                : (index < 3
+                                      ? Icons.cloud
+                                      : Icons.wb_cloudy_outlined),
+                            color: index == 0
+                                ? const Color(0xFFFFD700)
+                                : Colors.white70,
                             size: 24,
                           ),
-                          Text('${22 + index}°', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          Text(
+                            '${22 + index}°',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -260,9 +307,21 @@ class MorningScreen extends ConsumerWidget {
 
   Widget _buildQuickActions() {
     final actions = [
-      {'icon': Icons.psychology, 'label': 'Insights', 'color': const Color(0xFF00D1FF)},
-      {'icon': Icons.auto_graph, 'label': 'Records', 'color': const Color(0xFF00FF85)},
-      {'icon': Icons.newspaper, 'label': 'News', 'color': const Color(0xFFFF7A00)},
+      {
+        'icon': Icons.psychology,
+        'label': 'Insights',
+        'color': const Color(0xFF00D1FF),
+      },
+      {
+        'icon': Icons.auto_graph,
+        'label': 'Records',
+        'color': const Color(0xFF00FF85),
+      },
+      {
+        'icon': Icons.newspaper,
+        'label': 'News',
+        'color': const Color(0xFFFF7A00),
+      },
       {'icon': Icons.more_horiz, 'label': 'More', 'color': Colors.white54},
     ];
 
@@ -281,12 +340,20 @@ class MorningScreen extends ConsumerWidget {
                 blur: 10,
                 opacity: 0.1,
                 borderRadius: BorderRadius.circular(20),
-                child: Icon(action['icon'] as IconData, color: action['color'] as Color, size: 28),
+                child: Icon(
+                  action['icon'] as IconData,
+                  color: action['color'] as Color,
+                  size: 28,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 action['label'] as String,
-                style: const TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -303,7 +370,11 @@ class MorningScreen extends ConsumerWidget {
           children: [
             const Text(
               'Good Morning!',
-              style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
             Container(

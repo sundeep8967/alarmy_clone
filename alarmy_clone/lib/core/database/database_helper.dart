@@ -70,7 +70,11 @@ CREATE TABLE habit_stats (
 )
 ''');
     // Initialize habit stats row
-    await db.insert('habit_stats', {'id': 1, 'current_streak': 0, 'longest_streak': 0});
+    await db.insert('habit_stats', {
+      'id': 1,
+      'current_streak': 0,
+      'longest_streak': 0,
+    });
     await db.execute('''
 CREATE TABLE sleep_sessions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,7 +88,10 @@ CREATE TABLE sleep_sessions (
   }
 
   Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) await db.execute('ALTER TABLE alarms ADD COLUMN activeDays TEXT NOT NULL DEFAULT "[]"');
+    if (oldVersion < 2)
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN activeDays TEXT NOT NULL DEFAULT "[]"',
+      );
     if (oldVersion < 3) {
       await db.execute('ALTER TABLE alarms ADD COLUMN wallpaperId TEXT');
       await db.execute('ALTER TABLE alarms ADD COLUMN soundId TEXT');
@@ -94,23 +101,49 @@ CREATE TABLE sleep_sessions (
       final alarms = await db.query('alarms');
       for (final alarm in alarms) {
         final missionType = alarm['missionType'] as String? ?? 'default';
-        await db.update('alarms', {'missionTypes': jsonEncode([missionType])}, where: 'id = ?', whereArgs: [alarm['id']]);
+        await db.update(
+          'alarms',
+          {
+            'missionTypes': jsonEncode([missionType]),
+          },
+          where: 'id = ?',
+          whereArgs: [alarm['id']],
+        );
       }
     }
     if (oldVersion < 5) {
-      await db.execute('ALTER TABLE alarms ADD COLUMN isWakeUpCheckEnabled INTEGER NOT NULL DEFAULT 0');
-      await db.execute('ALTER TABLE alarms ADD COLUMN wakeUpCheckMinutes INTEGER NOT NULL DEFAULT 5');
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN isWakeUpCheckEnabled INTEGER NOT NULL DEFAULT 0',
+      );
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN wakeUpCheckMinutes INTEGER NOT NULL DEFAULT 5',
+      );
     }
-    if (oldVersion < 6) await db.execute('ALTER TABLE alarms ADD COLUMN missionSettings TEXT NOT NULL DEFAULT "{}"');
+    if (oldVersion < 6)
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN missionSettings TEXT NOT NULL DEFAULT "{}"',
+      );
     if (oldVersion < 7) {
-      await db.execute('ALTER TABLE alarms ADD COLUMN isVibrateEnabled INTEGER NOT NULL DEFAULT 1');
-      await db.execute('ALTER TABLE alarms ADD COLUMN snoozeMinutes INTEGER NOT NULL DEFAULT 5');
-      await db.execute('ALTER TABLE alarms ADD COLUMN snoozeCount INTEGER NOT NULL DEFAULT 3');
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN isVibrateEnabled INTEGER NOT NULL DEFAULT 1',
+      );
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN snoozeMinutes INTEGER NOT NULL DEFAULT 5',
+      );
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN snoozeCount INTEGER NOT NULL DEFAULT 3',
+      );
     }
     if (oldVersion < 8) {
-      await db.execute('ALTER TABLE alarms ADD COLUMN volume REAL NOT NULL DEFAULT 0.7');
-      await db.execute('ALTER TABLE alarms ADD COLUMN isVolumeCrescendo INTEGER NOT NULL DEFAULT 0');
-      await db.execute('ALTER TABLE alarms ADD COLUMN crescendoDuration INTEGER NOT NULL DEFAULT 30');
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN volume REAL NOT NULL DEFAULT 0.7',
+      );
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN isVolumeCrescendo INTEGER NOT NULL DEFAULT 0',
+      );
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN crescendoDuration INTEGER NOT NULL DEFAULT 30',
+      );
     }
     if (oldVersion < 9) {
       await db.execute('''
@@ -124,10 +157,14 @@ CREATE TABLE records (
 ''');
     }
     if (oldVersion < 10) {
-      await db.execute('ALTER TABLE alarms ADD COLUMN isPendingWakeupCheck INTEGER NOT NULL DEFAULT 0');
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN isPendingWakeupCheck INTEGER NOT NULL DEFAULT 0',
+      );
     }
     if (oldVersion < 11) {
-      await db.execute('ALTER TABLE alarms ADD COLUMN smartAlarmWindow INTEGER NOT NULL DEFAULT 0');
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN smartAlarmWindow INTEGER NOT NULL DEFAULT 0',
+      );
       await db.execute('''
 CREATE TABLE habit_stats (
   id INTEGER PRIMARY KEY CHECK (id = 1),
@@ -136,10 +173,16 @@ CREATE TABLE habit_stats (
   last_evaluated_date TEXT
 )
 ''');
-      await db.insert('habit_stats', {'id': 1, 'current_streak': 0, 'longest_streak': 0});
+      await db.insert('habit_stats', {
+        'id': 1,
+        'current_streak': 0,
+        'longest_streak': 0,
+      });
     }
     if (oldVersion < 12) {
-      await db.execute('ALTER TABLE alarms ADD COLUMN timePressure INTEGER NOT NULL DEFAULT 0');
+      await db.execute(
+        'ALTER TABLE alarms ADD COLUMN timePressure INTEGER NOT NULL DEFAULT 0',
+      );
     }
     if (oldVersion < 13) {
       await db.execute('''
@@ -200,7 +243,9 @@ CREATE TABLE sleep_sessions (
       map['timePressure'] = map['timePressure'] == 1;
       map['activeDays'] = jsonDecode(map['activeDays'] as String);
       map['missionTypes'] = jsonDecode(map['missionTypes'] as String);
-      map['missionSettings'] = jsonDecode(map['missionSettings'] as String? ?? '{}');
+      map['missionSettings'] = jsonDecode(
+        map['missionSettings'] as String? ?? '{}',
+      );
       return AlarmModel.fromJson(map);
     }).toList();
   }
@@ -227,7 +272,11 @@ CREATE TABLE sleep_sessions (
 
   // --- Records Logic ---
 
-  Future<void> addRecord({required String alarmId, required bool isSuccess, int? solvingTimeSeconds}) async {
+  Future<void> addRecord({
+    required String alarmId,
+    required bool isSuccess,
+    int? solvingTimeSeconds,
+  }) async {
     final db = await instance.database;
     await db.insert('records', {
       'alarmId': alarmId,
@@ -254,7 +303,7 @@ CREATE TABLE sleep_sessions (
     final db = await instance.database;
     final endDate = DateTime.now();
     final startDate = endDate.subtract(const Duration(days: 6));
-    
+
     final records = await db.query(
       'records',
       where: 'timestamp >= ?',
@@ -266,15 +315,17 @@ CREATE TABLE sleep_sessions (
     final Map<String, Map<String, int>> stats = {};
     for (int i = 0; i < 7; i++) {
       final date = endDate.subtract(Duration(days: i));
-      final dateKey = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      final dateKey =
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
       stats[dateKey] = {'success': 0, 'snoozed': 0};
     }
 
     // Aggregate records
     for (final record in records) {
       final timestamp = DateTime.parse(record['timestamp'] as String);
-      final dateKey = '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
-      
+      final dateKey =
+          '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
+
       if (stats.containsKey(dateKey)) {
         final isSuccess = record['isSuccess'] == 1;
         if (isSuccess) {
@@ -295,7 +346,9 @@ CREATE TABLE sleep_sessions (
 
   /// Returns a map of dateKey → {'success': int, 'snoozed': int} for the last [days] days.
   /// Used by the streak calendar UI.
-  Future<Map<String, Map<String, int>>> getCalendarRecords({int days = 84}) async {
+  Future<Map<String, Map<String, int>>> getCalendarRecords({
+    int days = 84,
+  }) async {
     final db = await instance.database;
     final endDate = DateTime.now();
     final startDate = endDate.subtract(Duration(days: days - 1));
@@ -303,20 +356,28 @@ CREATE TABLE sleep_sessions (
     final records = await db.query(
       'records',
       where: 'timestamp >= ?',
-      whereArgs: [DateTime(startDate.year, startDate.month, startDate.day).toIso8601String()],
+      whereArgs: [
+        DateTime(
+          startDate.year,
+          startDate.month,
+          startDate.day,
+        ).toIso8601String(),
+      ],
       orderBy: 'timestamp ASC',
     );
 
     final Map<String, Map<String, int>> result = {};
     for (int i = 0; i < days; i++) {
       final date = endDate.subtract(Duration(days: i));
-      final key = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      final key =
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
       result[key] = {'success': 0, 'snoozed': 0};
     }
 
     for (final record in records) {
       final ts = DateTime.parse(record['timestamp'] as String);
-      final key = '${ts.year}-${ts.month.toString().padLeft(2, '0')}-${ts.day.toString().padLeft(2, '0')}';
+      final key =
+          '${ts.year}-${ts.month.toString().padLeft(2, '0')}-${ts.day.toString().padLeft(2, '0')}';
       if (result.containsKey(key)) {
         if (record['isSuccess'] == 1) {
           result[key]!['success'] = (result[key]!['success'] ?? 0) + 1;
@@ -339,7 +400,7 @@ CREATE TABLE sleep_sessions (
     final db = await instance.database;
     final endDate = DateTime.now();
     final startDate = endDate.subtract(const Duration(days: 6));
-    
+
     final sessions = await db.query(
       'sleep_sessions',
       where: 'startTime >= ?',
@@ -351,22 +412,34 @@ CREATE TABLE sleep_sessions (
     final Map<String, Map<String, dynamic>> stats = {};
     for (int i = 0; i < 7; i++) {
       final date = endDate.subtract(Duration(days: i));
-      final dateKey = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-      stats[dateKey] = {'durationMinutes': 0, 'snoreCount': 0, 'avgDecibels': 0.0};
+      final dateKey =
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      stats[dateKey] = {
+        'durationMinutes': 0,
+        'snoreCount': 0,
+        'avgDecibels': 0.0,
+      };
     }
 
     // Aggregate sessions
     for (final session in sessions) {
       final timestamp = DateTime.parse(session['startTime'] as String);
-      final dateKey = '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
-      
+      final dateKey =
+          '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
+
       if (stats.containsKey(dateKey)) {
-        stats[dateKey]!['durationMinutes'] = (stats[dateKey]!['durationMinutes'] as int) + (session['durationMinutes'] as int);
-        stats[dateKey]!['snoreCount'] = (stats[dateKey]!['snoreCount'] as int) + ((session['snoreCount'] as int?) ?? 0);
+        stats[dateKey]!['durationMinutes'] =
+            (stats[dateKey]!['durationMinutes'] as int) +
+            (session['durationMinutes'] as int);
+        stats[dateKey]!['snoreCount'] =
+            (stats[dateKey]!['snoreCount'] as int) +
+            ((session['snoreCount'] as int?) ?? 0);
         // Average the avgDecibels across sessions for the same day
         final existingDb = stats[dateKey]!['avgDecibels'] as double;
         final newDb = (session['avgDecibels'] as num?)?.toDouble() ?? 0.0;
-        stats[dateKey]!['avgDecibels'] = existingDb == 0.0 ? newDb : (existingDb + newDb) / 2;
+        stats[dateKey]!['avgDecibels'] = existingDb == 0.0
+            ? newDb
+            : (existingDb + newDb) / 2;
       }
     }
 
@@ -377,11 +450,19 @@ CREATE TABLE sleep_sessions (
 
   Future<Map<String, dynamic>?> getHabitStats() async {
     final db = await instance.database;
-    final result = await db.query('habit_stats', where: 'id = ?', whereArgs: [1]);
+    final result = await db.query(
+      'habit_stats',
+      where: 'id = ?',
+      whereArgs: [1],
+    );
     return result.isNotEmpty ? result.first : null;
   }
 
-  Future<void> updateHabitStats({required int currentStreak, required int longestStreak, String? lastEvaluatedDate}) async {
+  Future<void> updateHabitStats({
+    required int currentStreak,
+    required int longestStreak,
+    String? lastEvaluatedDate,
+  }) async {
     final db = await instance.database;
     await db.update(
       'habit_stats',

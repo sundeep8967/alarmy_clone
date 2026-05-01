@@ -51,46 +51,48 @@ class QuestModel {
       xpReward: xpReward ?? this.xpReward,
       isCompleted: isCompleted ?? this.isCompleted,
       isClaimed: isClaimed ?? this.isClaimed,
-      completedAt: completedAt == _sentinel ? this.completedAt : completedAt as DateTime?,
+      completedAt: completedAt == _sentinel
+          ? this.completedAt
+          : completedAt as DateTime?,
       createdAt: createdAt ?? this.createdAt,
       type: type ?? this.type,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'icon': icon,
-        'target': target,
-        'current': current,
-        'xpReward': xpReward,
-        'isCompleted': isCompleted,
-        'isClaimed': isClaimed,
-        'completedAt': completedAt?.toIso8601String(),
-        'createdAt': createdAt.toIso8601String(),
-        'type': type.name,
-      };
+    'id': id,
+    'title': title,
+    'description': description,
+    'icon': icon,
+    'target': target,
+    'current': current,
+    'xpReward': xpReward,
+    'isCompleted': isCompleted,
+    'isClaimed': isClaimed,
+    'completedAt': completedAt?.toIso8601String(),
+    'createdAt': createdAt.toIso8601String(),
+    'type': type.name,
+  };
 
   factory QuestModel.fromJson(Map<String, dynamic> json) => QuestModel(
-        id: json['id'] as String,
-        title: json['title'] as String,
-        description: json['description'] as String,
-        icon: json['icon'] as String,
-        target: json['target'] as int,
-        current: json['current'] as int,
-        xpReward: json['xpReward'] as int,
-        isCompleted: json['isCompleted'] as bool? ?? false,
-        isClaimed: json['isClaimed'] as bool? ?? false,
-        completedAt: json['completedAt'] != null
-            ? DateTime.parse(json['completedAt'] as String)
-            : null,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-        type: QuestType.values.firstWhere(
-          (t) => t.name == json['type'],
-          orElse: () => QuestType.wakeUpEarly,
-        ),
-      );
+    id: json['id'] as String,
+    title: json['title'] as String,
+    description: json['description'] as String,
+    icon: json['icon'] as String,
+    target: json['target'] as int,
+    current: json['current'] as int,
+    xpReward: json['xpReward'] as int,
+    isCompleted: json['isCompleted'] as bool? ?? false,
+    isClaimed: json['isClaimed'] as bool? ?? false,
+    completedAt: json['completedAt'] != null
+        ? DateTime.parse(json['completedAt'] as String)
+        : null,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+    type: QuestType.values.firstWhere(
+      (t) => t.name == json['type'],
+      orElse: () => QuestType.wakeUpEarly,
+    ),
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -104,16 +106,16 @@ class QuestModel {
 }
 
 enum QuestType {
-  wakeUpEarly,      // Wake up before 7 AM
-  noSnooze,         // Don't snooze for 3 days
-  streak3,          // 3-day streak
-  streak7,          // 7-day streak
-  streak30,         // 30-day streak
+  wakeUpEarly, // Wake up before 7 AM
+  noSnooze, // Don't snooze for 3 days
+  streak3, // 3-day streak
+  streak7, // 7-day streak
+  streak30, // 30-day streak
   completeMissions, // Complete 5 missions
-  setAlarms,        // Set 3 different alarms
-  useAllMissions,   // Try every mission type
-  weekendWarrior,   // Wake up on weekend
-  earlyBird,        // Wake up 5 days before alarm
+  setAlarms, // Set 3 different alarms
+  useAllMissions, // Try every mission type
+  weekendWarrior, // Wake up on weekend
+  earlyBird, // Wake up 5 days before alarm
 }
 
 const _sentinel = Object();

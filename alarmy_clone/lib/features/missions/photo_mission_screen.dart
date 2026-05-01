@@ -16,12 +16,12 @@ class _PhotoMissionScreenState extends State<PhotoMissionScreen> {
 
   Future<void> _takePhoto() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-    
+
     if (photo != null) {
       setState(() {
         _image = File(photo.path);
       });
-      
+
       // Any photo confirms the mission for this demo
       Future.delayed(const Duration(seconds: 1), widget.onMissionComplete);
     }
@@ -56,7 +56,11 @@ class _PhotoMissionScreenState extends State<PhotoMissionScreen> {
                   ),
                 ),
                 child: const Center(
-                  child: Icon(Icons.check_circle, color: Color(0xFF00FF85), size: 100),
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Color(0xFF00FF85),
+                    size: 100,
+                  ),
                 ),
               )
             else
@@ -69,12 +73,20 @@ class _PhotoMissionScreenState extends State<PhotoMissionScreen> {
                       color: Colors.white.withValues(alpha: 0.05),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.camera_alt, color: Color(0xFFFF3B30), size: 80),
+                    child: const Icon(
+                      Icons.camera_alt,
+                      color: Color(0xFFFF3B30),
+                      size: 80,
+                    ),
                   ),
                   const SizedBox(height: 40),
                   const Text(
                     'Take a photo to dismiss',
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   const Text(
@@ -88,10 +100,19 @@ class _PhotoMissionScreenState extends State<PhotoMissionScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFF3B30),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
                       onPressed: _takePhoto,
-                      child: const Text('Capture', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                      child: const Text(
+                        'Capture',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],

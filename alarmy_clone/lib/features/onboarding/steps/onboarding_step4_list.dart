@@ -38,7 +38,9 @@ class OnboardingStep4List extends ConsumerWidget {
                   videoPath: '',
                   iconColor: Colors.white54,
                   isOff: true,
-                  selectedMission: ref.watch(onboardingProvider).selectedMission,
+                  selectedMission: ref
+                      .watch(onboardingProvider)
+                      .selectedMission,
                   onTap: onNext,
                 );
               }

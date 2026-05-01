@@ -17,11 +17,11 @@ const List<String> kPhraseCategories = [
 
 const Map<String, String> kPhraseCategoryLabels = {
   'motivational': 'Motivational',
-  'affirmation':  'Affirmation',
-  'basic':        'Basic',
-  'love':         'Love',
-  'short':        'Short',
-  'study':        'Study',
+  'affirmation': 'Affirmation',
+  'basic': 'Basic',
+  'love': 'Love',
+  'short': 'Short',
+  'study': 'Study',
 };
 
 // ---------------------------------------------------------------------------
@@ -54,10 +54,10 @@ class PhrasesState {
     String? category,
   }) {
     return PhrasesState(
-      phrases:   phrases   ?? this.phrases,
+      phrases: phrases ?? this.phrases,
       isLoading: isLoading ?? this.isLoading,
-      error:     error     ?? this.error,
-      category:  category  ?? this.category,
+      error: error ?? this.error,
+      category: category ?? this.category,
     );
   }
 }
