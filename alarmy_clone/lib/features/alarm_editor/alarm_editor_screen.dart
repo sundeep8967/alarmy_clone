@@ -159,6 +159,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                       _buildRepeatSection(),
                       _buildGeneralSection(),
                       _buildAdvancedSection(),
+                      if (widget.alarm != null) _buildDeleteButton(),
                       const SizedBox(height: 40),
                     ],
                   ),
@@ -506,6 +507,51 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             child: Padding(padding: const EdgeInsets.all(20), child: child),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDeleteButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF1C1C1E),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          onPressed: () async {
+            if (preventLastMinuteEdits && widget.alarm?.isActive == true) {
+              final now = DateTime.now();
+              final alarmToday = DateTime(
+                now.year,
+                now.month,
+                now.day,
+                selectedHour,
+                selectedMinute,
+              );
+              var diff = alarmToday.difference(now).inMinutes;
+              if (diff < 0) diff += 24 * 60;
+              if (diff >= 0 && diff <= 30) {
+                return;
+              }
+            }
+            await ref.read(alarmsProvider.notifier).deleteAlarm(widget.alarm!.id);
+            if (mounted) Navigator.pop(context);
+          },
+          child: const Text(
+            'Delete Alarm',
+            style: TextStyle(
+              color: Color(0xFFFF3B30),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }

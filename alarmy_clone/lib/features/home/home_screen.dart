@@ -162,14 +162,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _deleteInactiveAlarms() async {
     final alarms = await ref.read(alarmsProvider.future);
     final inactive = alarms.where((a) => !a.isActive).toList();
+    int deletedCount = 0;
     for (final alarm in inactive) {
+      if (alarm.preventLastMinuteEdits && alarm.isActive) {
+        final now = DateTime.now();
+        final alarmToday = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          alarm.hour,
+          alarm.minute,
+        );
+        var diff = alarmToday.difference(now).inMinutes;
+        if (diff < 0) diff += 24 * 60;
+        if (diff >= 0 && diff <= 30) continue;
+      }
       await ref.read(alarmsProvider.notifier).deleteAlarm(alarm.id);
+      deletedCount++;
     }
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            '${inactive.length} inactive alarm${inactive.length == 1 ? '' : 's'} deleted.',
+            '$deletedCount inactive alarm${deletedCount == 1 ? '' : 's'} deleted.',
           ),
           backgroundColor: const Color(0xFF1C1C1E),
           behavior: SnackBarBehavior.floating,
@@ -638,6 +653,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return GestureDetector(
       onTap: () async {
+        if (alarm.preventLastMinuteEdits && alarm.isActive) {
+          final now = DateTime.now();
+          final alarmToday = DateTime(
+            now.year,
+            now.month,
+            now.day,
+            alarm.hour,
+            alarm.minute,
+          );
+          var diff = alarmToday.difference(now).inMinutes;
+          // If the time already passed today, it might ring tomorrow.
+          if (diff < 0) {
+            diff += 24 * 60;
+          }
+          if (diff >= 0 && diff <= 30) {
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                backgroundColor: const Color(0xFF1C1C1E),
+                title: const Text(
+                  'Cannot Edit Alarm',
+                  style: TextStyle(color: Colors.white),
+                ),
+                content: Text(
+                  'This alarm is set to ring in $diff minutes. '
+                  'Last-minute edits are blocked to prevent cheating.',
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(color: Color(0xFFFF3B30)),
+                    ),
+                  ),
+                ],
+              ),
+            );
+            return;
+          }
+        }
         await Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => AlarmEditorScreen(alarm: alarm)),
@@ -688,7 +745,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         alarm.hour,
                         alarm.minute,
                       );
-                      final diff = alarmToday.difference(now).inMinutes;
+                      var diff = alarmToday.difference(now).inMinutes;
+                      if (diff < 0) {
+                        diff += 24 * 60;
+                      }
                       if (diff >= 0 && diff <= 30) {
                         showDialog(
                           context: context,

@@ -3,6 +3,8 @@ package com.example.alarmy_clone
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.view.accessibility.AccessibilityEvent
+import android.content.Context
+import android.content.SharedPreferences
 
 class UninstallGuardService : AccessibilityService() {
 
@@ -15,6 +17,16 @@ class UninstallGuardService : AccessibilityService() {
         "com.oneplus.packageinstaller",
         "com.coloros.packageinstaller",
         "com.oppo.packageinstaller"
+    )
+
+    // Known system package names for power menu
+    private val SYSTEM_PACKAGES = setOf(
+        "android",
+        "com.android.systemui",
+        "com.miui.powerkeeper",
+        "com.samsung.android.globalactions",
+        "com.oneplus.systemui",
+        "com.coloros.systemui"
     )
 
     override fun onServiceConnected() {
@@ -32,16 +44,36 @@ class UninstallGuardService : AccessibilityService() {
 
         val pkg = ev.packageName?.toString() ?: return
 
-        // Is this the uninstaller UI?
-        if (pkg !in INSTALLER_PACKAGES) return
+        // Is this the uninstaller UI or system UI?
+        val isUninstaller = pkg in INSTALLER_PACKAGES
+        val isSystemUi = pkg in SYSTEM_PACKAGES
+
+        if (!isUninstaller && !isSystemUi) return
 
         // Does the window mention our app?
         val root = rootInActiveWindow ?: return
         val allText = collectText(root).lowercase()
 
-        if ("alarmy" in allText) {
+        if (isUninstaller && "alarmy" in allText) {
             // Boot user back to Home — same as real Alarmy ShutdownBlockerService
             performGlobalAction(GLOBAL_ACTION_HOME)
+            return
+        }
+
+        // Check for power off menu
+        if (isSystemUi) {
+            val powerOffKeywords = listOf("power off", "restart", "shut down", "reboot", "emergency")
+            val isPowerMenu = powerOffKeywords.any { it in allText }
+
+            if (isPowerMenu) {
+                val prefs: SharedPreferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
+                val preventTurnOff = prefs.getBoolean("flutter.pref_prevent_turn_off", false)
+                val isRinging = prefs.getBoolean("flutter.is_alarm_ringing", false)
+
+                if (preventTurnOff && isRinging) {
+                    performGlobalAction(GLOBAL_ACTION_HOME)
+                }
+            }
         }
     }
 

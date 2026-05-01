@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import '../../core/services/alarm_service.dart';
 import '../../core/services/alarm_lock_service.dart';
@@ -46,10 +47,16 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   bool _isAlarmActive = true;
   int _muteCount = 0; // Task 1.3 — mute limit tracker
 
+  Future<void> _setRingingState(bool isRinging) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_alarm_ringing', isRinging);
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    _setRingingState(true);
     AlarmService.acquireWakeLock();
     _startTime = DateTime.now();
     _updateTime();
@@ -144,6 +151,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _setRingingState(false);
     AlarmLockService.stopLock();
     AlarmService.releaseWakeLock();
     _crescendoTimer?.cancel();
