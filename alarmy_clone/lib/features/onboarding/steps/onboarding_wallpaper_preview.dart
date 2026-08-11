@@ -129,7 +129,7 @@ class OnboardingWallpaperPreview extends ConsumerWidget {
                       const SizedBox(width: 12),
                       const Expanded(
                         child: Text(
-                          'Please raise the system volume to hear ringtone previews.',
+                          'This is a preview of your morning wake-up screen.',
                           style: TextStyle(color: Colors.white, fontSize: 13),
                         ),
                       ),

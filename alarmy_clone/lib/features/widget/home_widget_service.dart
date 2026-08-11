@@ -3,7 +3,7 @@ import '../../core/models/alarm_model.dart';
 import '../../core/database/database_helper.dart';
 
 class HomeWidgetService {
-  static const String appGroupId = 'com.example.alarmy_clone';
+  static const String appGroupId = 'com.sundeep.alarmi';
   static const String widgetName = 'AlarmyWidget';
 
   /// Initialize the home widget service

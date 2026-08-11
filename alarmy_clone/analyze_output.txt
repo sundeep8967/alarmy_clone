@@ -1,0 +1,291 @@
+Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 92.0.0 (100.0.0 available)
+  analyzer 9.0.0 (13.0.0 available)
+  analyzer_buffer 0.3.0 (0.3.2 available)
+  build 4.0.5 (4.0.6 available)
+  build_runner 2.14.1 (2.15.0 available)
+  built_value 8.12.5 (8.12.6 available)
+  camera 0.10.6 (0.12.0+1 available)
+  camera_android 0.10.10+16 (0.10.10+17 available)
+  camera_avfoundation 0.9.23+2 (0.10.1 available)
+  code_assets 1.0.0 (1.1.0 available)
+  dart_style 3.1.3 (3.1.9 available)
+  device_info_plus 12.4.0 (13.1.0 available)
+  device_info_plus_platform_interface 7.0.3 (8.1.0 available)
+  fl_chart 0.68.0 (1.2.0 available)
+  geolocator_linux 0.2.3 (0.2.4 available)
+  go_router 17.2.2 (17.2.3 available)
+  google_fonts 8.0.2 (8.1.0 available)
+  google_mlkit_commons 0.7.1 (0.11.1 available)
+  google_mlkit_object_detection 0.12.1 (0.15.1 available)
+  home_widget 0.6.0 (0.9.1 available)
+  hooks 1.0.3 (2.0.0 available)
+  image_picker 1.2.1 (1.2.2 available)
+  image_picker_android 0.8.13+16 (0.8.13+17 available)
+  json_annotation 4.11.0 (4.12.0 available)
+  matcher 0.12.19 (0.12.20 available)
+  meta 1.17.0 (1.18.2 available)
+  mockito 5.6.4 (5.7.0 available)
+  native_toolchain_c 0.17.6 (0.19.0 available)
+  package_info_plus 8.3.1 (10.1.0 available)
+  package_info_plus_platform_interface 3.2.1 (4.1.0 available)
+  riverpod_analyzer_utils 1.0.0-dev.9 (1.0.0-dev.10 available)
+  source_gen 4.2.2 (4.2.3 available)
+  sqflite_common 2.5.6+1 (2.5.8 available)
+  test 1.30.0 (1.31.1 available)
+  test_api 0.7.10 (0.7.12 available)
+  test_core 0.6.16 (0.6.18 available)
+  url_launcher_web 2.4.2 (2.4.3 available)
+  vector_math 2.2.0 (2.3.0 available)
+  video_player_avfoundation 2.9.4 (2.9.7 available)
+  video_player_platform_interface 6.6.0 (6.7.0 available)
+  vm_service 15.1.0 (15.2.0 available)
+  win32 5.15.0 (6.2.0 available)
+  win32_registry 2.1.0 (3.0.3 available)
+  xml 6.6.1 (7.0.1 available)
+Got dependencies!
+44 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing alarmy_clone...                                       
+
+   info • Statements in an if should be enclosed in a block • lib/core/database/database_helper.dart:94:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/database/database_helper.dart:127:7 • curly_braces_in_flow_control_structures
+   info • Use the null-aware marker '?' rather than a null check via an 'if' • lib/core/database/database_helper.dart:489:9 • use_null_aware_elements
+   info • Statements in an if should be enclosed in a block • lib/core/providers/picture_provider.dart:94:7 • curly_braces_in_flow_control_structures
+   info • Don't use 'BuildContext's across async gaps • lib/core/repositories/alarm_repository.dart:31:64 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/core/repositories/alarm_repository.dart:44:66 • use_build_context_synchronously
+warning • The type argument(s) of the constructor 'Future.delayed' can't be inferred • lib/core/repositories/alarm_repository.dart:61:11 • inference_failure_on_instance_creation
+   info • Don't use 'BuildContext's across async gaps • lib/core/repositories/alarm_repository.dart:79:66 • use_build_context_synchronously
+   info • Statements in an if should be enclosed in a block • lib/core/services/alarm_service.dart:64:15 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/alarm_service.dart:235:9 • curly_braces_in_flow_control_structures
+warning • The value of the local variable 'minutesUntilAlarm' isn't used • lib/core/services/alarm_service.dart:333:13 • unused_local_variable
+   info • Use 'const' with the constructor to improve performance • lib/core/services/motivation_service.dart:10:49 • prefer_const_constructors
+warning • The value of the field '_badgesKey' isn't used • lib/core/services/quest_service.dart:10:23 • unused_field
+warning • The value of the local variable 'prefs' isn't used • lib/core/services/quest_service.dart:345:11 • unused_local_variable
+   info • Statements in an if should be enclosed in a block • lib/core/services/sleep_tracking_service.dart:195:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/sleep_tracking_service.dart:197:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/sleep_tracking_service.dart:199:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/sleep_tracking_service.dart:201:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/tflite_mission_service.dart:80:7 • curly_braces_in_flow_control_structures
+   info • 'desiredAccuracy' is deprecated and shouldn't be used. use settings parameter with AndroidSettings, AppleSettings, WebSettings, or LocationSettings • lib/core/services/today_data_service.dart:209:7 • deprecated_member_use
+   info • Use 'const' for final variables initialized to a constant value • lib/core/services/today_data_service.dart:290:5 • prefer_const_declarations
+   info • Statements in an if should be enclosed in a block • lib/core/services/today_data_service.dart:326:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/today_data_service.dart:328:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/today_data_service.dart:330:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/core/services/today_data_service.dart:332:7 • curly_braces_in_flow_control_structures
+warning • Unused import: 'dart:io' • lib/core/services/yamnet_service.dart:2:8 • unused_import
+   info • The private field _classMap could be 'final' • lib/core/services/yamnet_service.dart:17:20 • prefer_final_fields
+warning • The type argument(s) of the function 'reshape' can't be inferred • lib/core/services/yamnet_service.dart:69:32 • inference_failure_on_function_invocation
+   info • Don't use 'BuildContext's across async gaps • lib/core/widgets/alarm_permission_dialog.dart:22:9 • use_build_context_synchronously
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/core/widgets/alarm_permission_dialog.dart:147:54 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/core/widgets/alarm_permission_dialog.dart:147:86 • deprecated_member_use
+   info • The import of 'package:flutter/cupertino.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/features/alarm_editor/alarm_editor_screen.dart:1:8 • unnecessary_import
+warning • Unused import: 'package:animate_do/animate_do.dart' • lib/features/alarm_editor/alarm_editor_screen.dart:5:8 • unused_import
+warning • Unused import: 'mission_settings_screen.dart' • lib/features/alarm_editor/alarm_editor_screen.dart:9:8 • unused_import
+warning • Unused import: 'alarm_sound_screen.dart' • lib/features/alarm_editor/alarm_editor_screen.dart:10:8 • unused_import
+warning • Unused import: 'alarm_wallpaper_screen.dart' • lib/features/alarm_editor/alarm_editor_screen.dart:11:8 • unused_import
+warning • Unused import: '../onboarding/providers/sounds_provider.dart' • lib/features/alarm_editor/alarm_editor_screen.dart:12:8 • unused_import
+warning • Unused import: '../onboarding/providers/wallpapers_provider.dart' • lib/features/alarm_editor/alarm_editor_screen.dart:13:8 • unused_import
+   info • Statements in an if should be enclosed in a block • lib/features/alarm_editor/alarm_editor_screen.dart:283:29 • curly_braces_in_flow_control_structures
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/features/alarm_editor/alarm_editor_screen.dart:384:15 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/features/alarm_editor/alarm_editor_screen.dart:410:15 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/features/alarm_editor/alarm_editor_screen.dart:419:15 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/features/alarm_editor/alarm_editor_screen.dart:428:15 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/features/alarm_editor/alarm_editor_screen.dart:456:15 • deprecated_member_use
+   info • Unnecessary use of multiple underscores • lib/features/alarm_editor/alarm_wallpaper_screen.dart:133:45 • unnecessary_underscores
+   info • Unnecessary use of multiple underscores • lib/features/alarm_editor/alarm_wallpaper_screen.dart:133:49 • unnecessary_underscores
+   info • Statements in an if should be enclosed in a block • lib/features/alarm_editor/habit_alarm_screen.dart:232:35 • curly_braces_in_flow_control_structures
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/alarm_editor/habit_alarm_screen.dart:329:58 • use_build_context_synchronously
+   info • Unnecessary assignment of 'null' • lib/features/alarm_editor/mission_settings_screen.dart:39:7 • unnecessary_null_aware_assignments
+   info • Use interpolation to compose strings and values • lib/features/alarm_editor/mission_settings_screen.dart:54:21 • prefer_interpolation_to_compose_strings
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeTrackColor instead. This feature was deprecated after v3.24.0-0.2.pre • lib/features/alarm_editor/quick_alarm_sheet.dart:274:23 • deprecated_member_use
+   info • The import of 'package:flutter/services.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/features/alarm_ring/alarm_ring_screen.dart:3:8 • unnecessary_import
+warning • Unused import: 'wake_up_check_screen.dart' • lib/features/alarm_ring/alarm_ring_screen.dart:24:8 • unused_import
+warning • Dead code • lib/features/alarm_ring/alarm_ring_screen.dart:113:41 • dead_code
+warning • The left operand can't be null, so the right operand is never executed • lib/features/alarm_ring/alarm_ring_screen.dart:113:44 • dead_null_aware_expression
+   info • Use a function declaration rather than a variable assignment to bind a function to a name • lib/features/alarm_ring/alarm_ring_screen.dart:269:11 • prefer_function_declarations_over_variables
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/alarm_ring/alarm_ring_screen.dart:325:7 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'Future.delayed' can't be inferred • lib/features/alarm_ring/wakeup_check_screen.dart:33:13 • inference_failure_on_instance_creation
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/alarm_ring/wakeup_check_screen.dart:68:39 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/alarm_ring/wakeup_check_screen.dart:86:52 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/alarm_ring/wakeup_check_screen.dart:116:41 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/alarm_ring/wakeup_check_screen.dart:128:41 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/alarm_ring/wakeup_check_screen.dart:147:58 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/alarm_ring/wakeup_check_screen.dart:181:41 • deprecated_member_use
+warning • The value of the local variable 'stats' isn't used • lib/features/alarmhabit/habit_streak_service.dart:164:11 • unused_local_variable
+   info • Unnecessary use of multiple underscores • lib/features/alarmhabit/streak_calendar_screen.dart:65:36 • unnecessary_underscores
+warning • The type argument(s) of the function 'showCupertinoModalPopup' can't be inferred • lib/features/home/alarm_settings_screen.dart:152:5 • inference_failure_on_function_invocation
+warning • The type argument(s) of the function 'showCupertinoModalPopup' can't be inferred • lib/features/home/alarm_settings_screen.dart:176:5 • inference_failure_on_function_invocation
+warning • The type argument(s) of the function 'showCupertinoModalPopup' can't be inferred • lib/features/home/alarm_settings_screen.dart:202:5 • inference_failure_on_function_invocation
+warning • The type argument(s) of the function 'showCupertinoDialog' can't be inferred • lib/features/home/alarm_settings_screen.dart:227:5 • inference_failure_on_function_invocation
+warning • Unused import: '../../core/services/alarm_service.dart' • lib/features/home/home_screen.dart:9:8 • unused_import
+warning • Unused import: '../../core/services/today_data_service.dart' • lib/features/home/home_screen.dart:10:8 • unused_import
+warning • Unused import: '../../core/providers/today_provider.dart' • lib/features/home/home_screen.dart:11:8 • unused_import
+warning • Unused import: 'rating_dialog.dart' • lib/features/home/home_screen.dart:18:8 • unused_import
+warning • The type argument(s) of the function 'showModalBottomSheet' can't be inferred • lib/features/home/home_screen.dart:72:5 • inference_failure_on_function_invocation
+warning • The type argument(s) of the function 'showDialog' can't be inferred • lib/features/home/home_screen.dart:124:5 • inference_failure_on_function_invocation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/home/home_screen.dart:234:31 • inference_failure_on_instance_creation
+warning • The type argument(s) of the function 'showModalBottomSheet' can't be inferred • lib/features/home/home_screen.dart:247:29 • inference_failure_on_function_invocation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/home/home_screen.dart:264:31 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/home/home_screen.dart:450:13 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/home/home_screen.dart:486:17 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/home/home_screen.dart:531:11 • inference_failure_on_instance_creation
+   info • Statements in an if should be enclosed in a block • lib/features/home/home_screen.dart:608:11 • curly_braces_in_flow_control_structures
+warning • The type argument(s) of the function 'showDialog' can't be inferred • lib/features/home/home_screen.dart:671:13 • inference_failure_on_function_invocation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/home/home_screen.dart:700:11 • inference_failure_on_instance_creation
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeTrackColor instead. This feature was deprecated after v3.24.0-0.2.pre • lib/features/home/home_screen.dart:736:19 • deprecated_member_use
+warning • The type argument(s) of the function 'showDialog' can't be inferred • lib/features/home/home_screen.dart:753:25 • inference_failure_on_function_invocation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/home/overslept_mission_screen.dart:242:9 • inference_failure_on_instance_creation
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:49:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:52:32 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:54:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:57:32 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:59:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:62:32 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:64:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/home/rating_dialog.dart:67:32 • prefer_const_constructors
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:27:19 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:57:16 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:63:18 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:65:25 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:84:31 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:219:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:220:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:221:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:222:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:223:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:224:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:225:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:226:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:227:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:228:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:229:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:230:7 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:250:36 • prefer_single_quotes
+   info • Unnecessary use of double quotes • lib/features/missions/math_mission_screen.dart:250:52 • prefer_single_quotes
+   info • The private field _sequence could be 'final' • lib/features/missions/memory_mission_screen.dart:25:13 • prefer_final_fields
+   info • The private field _userSequence could be 'final' • lib/features/missions/memory_mission_screen.dart:26:13 • prefer_final_fields
+warning • The type argument(s) of the constructor 'Future.delayed' can't be inferred • lib/features/missions/memory_mission_screen.dart:54:11 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'Future.delayed' can't be inferred • lib/features/missions/memory_mission_screen.dart:59:13 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'Future.delayed' can't be inferred • lib/features/missions/memory_mission_screen.dart:62:13 • inference_failure_on_instance_creation
+warning • The generic type 'StreamSubscription<dynamic>?' should have explicit type arguments but doesn't • lib/features/missions/shake_mission_screen.dart:28:3 • strict_raw_type
+   info • Unnecessary 'const' keyword • lib/features/missions/shake_mission_screen.dart:125:24 • unnecessary_const
+   info • Use 'const' with the constructor to improve performance • lib/features/missions/shake_mission_screen.dart:195:15 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/missions/typing_mission_screen.dart:89:14 • prefer_const_constructors
+   info • Unnecessary use of multiple underscores • lib/features/missions/typing_mission_screen.dart:168:31 • unnecessary_underscores
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/morning/morning_screen.dart:105:45 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/morning/morning_screen.dart:127:41 • deprecated_member_use
+   info • Unnecessary use of multiple underscores • lib/features/morning/morning_screen.dart:143:18 • unnecessary_underscores
+   info • Use 'const' with the constructor to improve performance • lib/features/morning/morning_screen.dart:185:11 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/morning/morning_screen.dart:187:23 • prefer_const_literals_to_create_immutables
+   info • Use 'const' with the constructor to improve performance • lib/features/morning/morning_screen.dart:210:15 • prefer_const_constructors
+   info • Statements in an if should be enclosed in a block • lib/features/onboarding/onboarding_screen.dart:103:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/features/onboarding/onboarding_screen.dart:105:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/features/onboarding/onboarding_screen.dart:107:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/features/onboarding/onboarding_screen.dart:109:9 • curly_braces_in_flow_control_structures
+   info • The import of 'package:flutter_riverpod/flutter_riverpod.dart' is unnecessary because all of the used elements are also provided by the import of 'package:riverpod_annotation/riverpod_annotation.dart' • lib/features/onboarding/providers/wallpapers_provider.dart:3:8 • unnecessary_import
+   info • The import of 'package:flutter/cupertino.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/features/onboarding/steps/intro_step2.dart:1:8 • unnecessary_import
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/features/onboarding/steps/intro_step3.dart:31:9 • sized_box_for_whitespace
+   info • Use 'const' for final variables initialized to a constant value • lib/features/onboarding/steps/intro_step3.dart:84:5 • prefer_const_declarations
+   info • Use 'const' for final variables initialized to a constant value • lib/features/onboarding/steps/intro_step3.dart:85:5 • prefer_const_declarations
+warning • The return type of ' Function(String)' can't be inferred • lib/features/onboarding/steps/onboarding_step3.dart:263:14 • inference_failure_on_function_return_type
+   info • Unnecessary use of multiple underscores • lib/features/onboarding/steps/onboarding_wallpaper_preview.dart:45:24 • unnecessary_underscores
+   info • Use 'const' with the constructor to improve performance • lib/features/onboarding/steps/onboarding_wallpaper_preview.dart:67:11 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/onboarding/steps/onboarding_wallpaper_preview.dart:71:20 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/onboarding/steps/onboarding_wallpaper_preview.dart:72:25 • prefer_const_literals_to_create_immutables
+   info • Unnecessary use of multiple underscores • lib/features/onboarding/widgets/onboarding_widgets.dart:67:45 • unnecessary_underscores
+   info • Unnecessary use of multiple underscores • lib/features/onboarding/widgets/onboarding_widgets.dart:67:49 • unnecessary_underscores
+   info • Use 'const' with the constructor to improve performance • lib/features/onboarding/widgets/onboarding_widgets.dart:222:15 • prefer_const_constructors
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/features/quest/badge_screen.dart:61:30 • sized_box_for_whitespace
+   info • Unnecessary use of multiple underscores • lib/features/quest/badge_screen.dart:69:30 • unnecessary_underscores
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/badge_screen.dart:101:50 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/badge_screen.dart:102:34 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/badge_screen.dart:144:50 • deprecated_member_use
+   info • Unnecessary use of multiple underscores • lib/features/quest/quest_screen.dart:45:36 • unnecessary_underscores
+   info • Unnecessary use of multiple underscores • lib/features/quest/quest_screen.dart:53:36 • unnecessary_underscores
+   info • Unnecessary use of multiple underscores • lib/features/quest/quest_screen.dart:61:36 • unnecessary_underscores
+   info • Unnecessary use of multiple underscores • lib/features/quest/quest_screen.dart:111:34 • unnecessary_underscores
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:164:52 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:189:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:303:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:304:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:337:53 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:383:39 • deprecated_member_use
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/quest/quest_screen.dart:420:9 • inference_failure_on_instance_creation
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:438:58 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/quest_screen.dart:439:42 • deprecated_member_use
+warning • Unused import: 'package:animate_do/animate_do.dart' • lib/features/quest/ramadan_screen.dart:7:8 • unused_import
+warning • The value of the local variable 'ramadanNotifier' isn't used • lib/features/quest/ramadan_screen.dart:106:11 • unused_local_variable
+warning • The value of the local variable 'offsetNotifier' isn't used • lib/features/quest/ramadan_screen.dart:107:11 • unused_local_variable
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/ramadan_screen.dart:228:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/ramadan_screen.dart:238:44 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/features/quest/ramadan_screen.dart:304:15 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/ramadan_screen.dart:567:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/ramadan_screen.dart:593:22 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/quest/ramadan_screen.dart:595:41 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/quest/ramadan_screen.dart:621:28 • use_build_context_synchronously
+   info • Use 'const' with the constructor to improve performance • lib/features/records/records_screen.dart:123:12 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/records/records_screen.dart:124:17 • prefer_const_literals_to_create_immutables
+   info • Unnecessary use of multiple underscores • lib/features/records/report_screen.dart:261:18 • unnecessary_underscores
+   info • Statements in an if should be enclosed in a block • lib/features/records/report_screen.dart:324:31 • curly_braces_in_flow_control_structures
+   info • Use 'const' with the constructor to improve performance • lib/features/records/report_screen.dart:419:14 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/records/report_screen.dart:421:16 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/records/report_screen.dart:422:18 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/records/report_screen.dart:424:20 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/records/report_screen.dart:426:25 • prefer_const_literals_to_create_immutables
+   info • Statements in an if should be enclosed in a block • lib/features/records/report_screen.dart:504:31 • curly_braces_in_flow_control_structures
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/about_screen.dart:39:64 • deprecated_member_use
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/about_screen.dart:53:23 • prefer_const_constructors
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/about_screen.dart:132:29 • deprecated_member_use
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/alarm_optimization_screen.dart:40:17 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/alarm_optimization_screen.dart:51:17 • prefer_const_constructors
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/alarm_optimization_screen.dart:81:23 • inference_failure_on_instance_creation
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:135:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:166:52 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:192:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:201:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:222:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:223:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:244:43 • deprecated_member_use
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/battery_optimization_screen.dart:253:28 • prefer_const_constructors
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:280:52 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:306:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:339:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/setting/battery_optimization_screen.dart:359:46 • deprecated_member_use
+warning • Unused import: 'package:animate_do/animate_do.dart' • lib/features/setting/general_setting_screen.dart:6:8 • unused_import
+   info • The private field _selectedLanguage could be 'final' • lib/features/setting/general_setting_screen.dart:20:10 • prefer_final_fields
+warning • The value of the field '_selectedLanguage' isn't used • lib/features/setting/general_setting_screen.dart:20:10 • unused_field
+warning • The type argument(s) of the function 'showModalBottomSheet' can't be inferred • lib/features/setting/general_setting_screen.dart:52:5 • inference_failure_on_function_invocation
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeTrackColor instead. This feature was deprecated after v3.24.0-0.2.pre • lib/features/setting/general_setting_screen.dart:149:23 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeTrackColor instead. This feature was deprecated after v3.24.0-0.2.pre • lib/features/setting/general_setting_screen.dart:168:23 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeTrackColor instead. This feature was deprecated after v3.24.0-0.2.pre • lib/features/setting/general_setting_screen.dart:182:23 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeTrackColor instead. This feature was deprecated after v3.24.0-0.2.pre • lib/features/setting/general_setting_screen.dart:196:23 • deprecated_member_use
+warning • Unused import: '../../core/widgets/glass_card.dart' • lib/features/setting/language_screen.dart:3:8 • unused_import
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/permission_doa_screen.dart:34:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/permission_doa_screen.dart:45:23 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/permission_doa_screen.dart:59:23 • prefer_const_constructors
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeTrackColor instead. This feature was deprecated after v3.24.0-0.2.pre • lib/features/setting/permission_doa_screen.dart:170:29 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps • lib/features/setting/permission_doa_screen.dart:219:31 • use_build_context_synchronously
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/premium_screen.dart:26:15 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/features/setting/premium_screen.dart:28:27 • prefer_const_literals_to_create_immutables
+warning • Unused import: '../../core/widgets/glass_card.dart' • lib/features/setting/setting_screen.dart:3:8 • unused_import
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/setting_screen.dart:50:25 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/setting_screen.dart:61:25 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/setting_screen.dart:72:25 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/setting_screen.dart:90:25 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/setting_screen.dart:101:25 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/setting_screen.dart:112:25 • inference_failure_on_instance_creation
+warning • The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred • lib/features/setting/setting_screen.dart:123:25 • inference_failure_on_instance_creation
+warning • A value for optional parameter 'hasNotice' isn't ever given • lib/features/setting/setting_screen.dart:285:10 • unused_element_parameter
+warning • A value for optional parameter 'trailing' isn't ever given • lib/features/setting/setting_screen.dart:287:10 • unused_element_parameter
+warning • Unused import: '../../core/widgets/glass_card.dart' • lib/features/setting/theme_setting_screen.dart:4:8 • unused_import
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/theme_setting_screen.dart:15:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/theme_setting_screen.dart:22:7 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/features/setting/theme_setting_screen.dart:29:7 • prefer_const_constructors
+   info • Statements in an if should be enclosed in a block • lib/features/sleep/sleep_screen.dart:336:13 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/features/sleep/sleep_screen.dart:338:13 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/features/widget/home_widget_service.dart:127:7 • curly_braces_in_flow_control_structures
+   info • Use interpolation to compose strings and values • lib/features/widget/home_widget_service.dart:151:12 • prefer_interpolation_to_compose_strings
+   info • Use 'const' with the constructor to improve performance • lib/main_scaffold.dart:24:5 • prefer_const_constructors
+

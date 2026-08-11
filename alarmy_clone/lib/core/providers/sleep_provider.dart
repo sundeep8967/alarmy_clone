@@ -46,9 +46,12 @@ class SleepNotifier extends Notifier<SleepState> {
     });
   }
 
-  Future<void> startTracking() async {
-    await _service.startTracking();
-    state = state.copyWith(isTracking: true);
+  Future<bool> startTracking() async {
+    final success = await _service.startTracking();
+    if (success) {
+      state = state.copyWith(isTracking: true);
+    }
+    return success;
   }
 
   Future<void> stopTracking() async {

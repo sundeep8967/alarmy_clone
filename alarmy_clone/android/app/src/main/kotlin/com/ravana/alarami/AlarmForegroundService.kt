@@ -1,5 +1,5 @@
-package com.example.alarmy_clone
-
+package com.sundeep.alarmi
+ 
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,18 +9,18 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-
+ 
 class AlarmForegroundService : Service() {
-
+ 
     companion object {
         const val CHANNEL_ID = "alarm_lock_channel"
         const val NOTIF_ID   = 9001
-        const val ACTION_START = "com.example.alarmy_clone.START_LOCK"
-        const val ACTION_STOP  = "com.example.alarmy_clone.STOP_LOCK"
+        const val ACTION_START = "com.sundeep.alarmi.START_LOCK"
+        const val ACTION_STOP  = "com.sundeep.alarmi.STOP_LOCK"
     }
-
+ 
     override fun onBind(intent: Intent?): IBinder? = null
-
+ 
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -35,7 +35,7 @@ class AlarmForegroundService : Service() {
                 .createNotificationChannel(ch)
         }
     }
-
+ 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> startForeground(NOTIF_ID, buildNotification())
@@ -43,7 +43,7 @@ class AlarmForegroundService : Service() {
         }
         return START_STICKY
     }
-
+ 
     private fun buildNotification(): Notification {
         val tap = PendingIntent.getActivity(
             this, 0,

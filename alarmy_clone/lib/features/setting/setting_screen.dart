@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import 'alarm_optimization_screen.dart';
 import 'battery_optimization_screen.dart';

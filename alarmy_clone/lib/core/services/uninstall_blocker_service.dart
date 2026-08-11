@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 
 class UninstallBlockerService {
   static const _channel = MethodChannel(
-    'com.example.alarmy_clone/device_admin',
+    'com.sundeep.alarmi/device_admin',
   );
 
   static Future<bool> isActive() async {
@@ -28,7 +28,7 @@ class UninstallBlockerService {
 
   static Future<bool> isAccessibilityEnabled() async {
     try {
-      const ch = MethodChannel('com.example.alarmy_clone/accessibility');
+      const ch = MethodChannel('com.sundeep.alarmi/accessibility');
       return await ch.invokeMethod<bool>('isEnabled') ?? false;
     } catch (_) {
       return false;
@@ -37,7 +37,7 @@ class UninstallBlockerService {
 
   static Future<void> openAccessibilitySettings() async {
     try {
-      const ch = MethodChannel('com.example.alarmy_clone/accessibility');
+      const ch = MethodChannel('com.sundeep.alarmi/accessibility');
       await ch.invokeMethod('openSettings');
     } catch (_) {}
   }

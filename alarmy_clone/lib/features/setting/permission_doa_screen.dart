@@ -211,7 +211,7 @@ class PermissionDoaScreen extends StatelessWidget {
             onPressed: () async {
               try {
                 await const MethodChannel(
-                  'com.example.alarmy_clone/system',
+                  'com.sundeep.alarmi/system',
                 ).invokeMethod('openSettings', {
                   'action': 'android.settings.action.MANAGE_OVERLAY_PERMISSION',
                 });

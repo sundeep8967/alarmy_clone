@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/widgets/glass_card.dart';
 import '../../core/services/uninstall_blocker_service.dart';
-import 'package:animate_do/animate_do.dart';
 
 class GeneralSettingScreen extends StatefulWidget {
   const GeneralSettingScreen({super.key});
@@ -17,7 +16,6 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
   bool _volumeSnooze = true;
   bool _autoDismiss = false;
   bool _preventTurnOff = false;
-  String _selectedLanguage = 'English';
   String _timeFormat = '24 Hour';
 
   @override

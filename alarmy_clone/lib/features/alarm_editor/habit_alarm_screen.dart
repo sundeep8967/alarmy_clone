@@ -324,8 +324,8 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                                 activeDays: activeDays,
                               );
                               await ref
-                                  .read(alarmsProvider.notifier)
-                                  .createAlarm(newAlarm);
+                                  .read(alarmRepositoryProvider)
+                                  .createAlarm(newAlarm, context);
                               if (mounted) Navigator.pop(context);
                             },
                             child: const Text(

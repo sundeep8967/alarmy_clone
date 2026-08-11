@@ -68,7 +68,7 @@ class _QuickAlarmSheetState extends ConsumerState<QuickAlarmSheet> {
       soundId: _selectedSoundId,
     );
 
-    await ref.read(alarmsProvider.notifier).createAlarm(alarm);
+    await ref.read(alarmRepositoryProvider).createAlarm(alarm, context);
 
     if (mounted) {
       Navigator.pop(context);

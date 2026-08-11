@@ -46,5 +46,13 @@
   "today": "Today",
   "weather": "Weather",
   "horoscope": "Horoscope",
-  "news": "News"
+  "news": "News",
+  "onboarding_title": "Alarmi never fails\nto wake you up",
+  "onboarding_subtitle": "Wake up refreshed everyday",
+  "onboarding_badge1_title": "#1 Ranked alarm app",
+  "onboarding_badge1_subtitle": "in 97 countries",
+  "onboarding_badge2_title": "4.8★",
+  "onboarding_badge2_subtitle": "Rating",
+  "onboarding_badge3_title": "100M+",
+  "onboarding_badge3_subtitle": "Downloads"
 }

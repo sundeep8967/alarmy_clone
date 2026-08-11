@@ -1,11 +1,11 @@
-package com.example.alarmy_clone
-
+package com.sundeep.alarmi
+ 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-
+ 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d("AlarmReceiver", "Alarm received!")

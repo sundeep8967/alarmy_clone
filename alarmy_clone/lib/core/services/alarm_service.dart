@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../models/alarm_model.dart';
 import '../database/database_helper.dart';
 
@@ -13,7 +15,9 @@ class AlarmService {
       FlutterLocalNotificationsPlugin();
   static const String isolateName = 'alarm_isolate';
   static final ReceivePort port = ReceivePort();
-  static const platform = MethodChannel('com.example.alarmy_clone/wakelock');
+  static const platform = MethodChannel('com.sundeep.alarmi/wakelock');
+  static const systemChannel = MethodChannel('com.sundeep.alarmi/system');
+  static const batteryChannel = MethodChannel('com.sundeep.alarmi/battery');
 
   static Future<void> acquireWakeLock() async {
     try {
@@ -33,7 +37,47 @@ class AlarmService {
 
   static Future<void> init() async {
     await AndroidAlarmManager.initialize();
+    IsolateNameServer.removePortNameMapping(isolateName);
     IsolateNameServer.registerPortWithName(port.sendPort, isolateName);
+    
+    // Request exact alarm permission on Android 12+ (API 31+)
+    await _requestExactAlarmPermission();
+
+    // Create high-importance Android notification channels
+    if (Platform.isAndroid) {
+      final androidPlugin = flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      
+      const alarmChannel = AndroidNotificationChannel(
+        'alarm_channel',
+        'Alarm Notifications',
+        description: 'Channel for alarm ring notifications',
+        importance: Importance.max,
+        playSound: true,
+      );
+
+      const preAlarmChannel = AndroidNotificationChannel(
+        'pre_alarm_channel',
+        'Gentle Wake Up',
+        description: 'Channel for gentle wake up check',
+        importance: Importance.high,
+        playSound: false,
+        enableVibration: true,
+      );
+
+      const wakeupCheckChannel = AndroidNotificationChannel(
+        'wakeup_check_channel',
+        'Wake Up Check',
+        description: 'Channel for wake up verification check',
+        importance: Importance.max,
+        playSound: true,
+      );
+
+      await androidPlugin?.createNotificationChannel(alarmChannel);
+      await androidPlugin?.createNotificationChannel(preAlarmChannel);
+      await androidPlugin?.createNotificationChannel(wakeupCheckChannel);
+    }
 
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -52,7 +96,7 @@ class AlarmService {
             await cancelReFireTask(alarmId);
             // Logic to handle confirmation UI could go here
           } else {
-            final alarm = await _getAlarmById(response.payload!);
+            final alarm = await getAlarmById(response.payload!);
             if (alarm != null)
               port.sendPort.send({'type': 'ring', 'alarm': alarm.toJson()});
           }
@@ -61,13 +105,73 @@ class AlarmService {
     );
   }
 
-  static Future<AlarmModel?> _getAlarmById(String id) async {
+  /// Check and request exact alarm permission (Android 12+ S+)
+  static Future<bool> _requestExactAlarmPermission() async {
+    if (Platform.isAndroid) {
+      final status = await Permission.scheduleExactAlarm.status;
+      if (!status.isGranted) {
+        final result = await Permission.scheduleExactAlarm.request();
+        return result.isGranted;
+      }
+    }
+    return true;
+  }
+  
+  /// Check if exact alarm permission is granted
+  static Future<bool> canScheduleExactAlarms() async {
+    if (Platform.isAndroid) {
+      return await Permission.scheduleExactAlarm.isGranted;
+    }
+    return true;
+  }
+  
+  /// Open system alarm settings (for Android 12+ when permission denied)
+  static Future<void> openAlarmSettings() async {
+    try {
+      await systemChannel.invokeMethod('openSettings', {
+        'action': 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
+      });
+    } catch (e) {
+      debugPrint('Failed to open alarm settings: $e');
+    }
+  }
+  
+  /// Check battery optimization status
+  static Future<bool> isIgnoringBatteryOptimizations() async {
+    try {
+      final result = await batteryChannel.invokeMethod('checkBatteryOptimization');
+      return result == true;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  /// Request to ignore battery optimizations
+  static Future<void> requestIgnoreBatteryOptimizations() async {
+    try {
+      await batteryChannel.invokeMethod('requestIgnoreBatteryOptimizations');
+    } catch (e) {
+      debugPrint('Failed to request battery optimization: $e');
+    }
+  }
+
+  static Future<AlarmModel?> getAlarmById(String id) async {
     final alarms = await DatabaseHelper.instance.readAllAlarms();
     try {
       return alarms.firstWhere((a) => a.id == id);
     } catch (_) {
       return null;
     }
+  }
+
+  static Future<void> _ensureNotificationsInitialized() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(
+      settings: initializationSettings,
+    );
   }
 
   @pragma('vm:entry-point')
@@ -84,6 +188,7 @@ class AlarmService {
           fullScreenIntent: true,
           playSound: true,
         );
+    await _ensureNotificationsInitialized();
     await flutterLocalNotificationsPlugin.show(
       id: id,
       title: 'Alarmy Clone',
@@ -131,6 +236,7 @@ class AlarmService {
           priority: Priority.high,
           fullScreenIntent: true,
         );
+    await _ensureNotificationsInitialized();
     await flutterLocalNotificationsPlugin.show(
       id: id,
       title: 'Wake Up Check',
@@ -297,6 +403,7 @@ class AlarmService {
               playSound: true,
             );
 
+        await _ensureNotificationsInitialized();
         await flutterLocalNotificationsPlugin.show(
           id: id,
           title: 'Smart Alarm',
@@ -349,6 +456,7 @@ class AlarmService {
           enableVibration: true,
         );
 
+    await _ensureNotificationsInitialized();
     await flutterLocalNotificationsPlugin.show(
       id: id,
       title: 'Gentle Wake Up',

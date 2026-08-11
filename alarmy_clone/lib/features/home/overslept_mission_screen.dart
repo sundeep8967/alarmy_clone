@@ -254,7 +254,8 @@ class OversleptMissionScreen extends ConsumerWidget {
     });
     final next = sorted.first;
     final updated = next.copyWith(missionTypes: [missionId]);
-    await ref.read(alarmsProvider.notifier).updateAlarm(updated);
+    await ref.read(alarmRepositoryProvider).updateAlarm(updated, context);
+    ref.invalidate(alarmsProvider);
 
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(

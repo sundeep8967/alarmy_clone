@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
@@ -14,6 +15,7 @@ import '../alarm_editor/habit_alarm_screen.dart';
 import '../alarm_editor/quick_alarm_sheet.dart';
 import 'alarm_settings_screen.dart';
 import '../setting/premium_screen.dart';
+import '../setting/battery_optimization_screen.dart';
 import 'overslept_mission_screen.dart';
 import 'rating_dialog.dart';
 
@@ -57,15 +59,51 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObserver {
   final GlobalKey _fabKey = GlobalKey();
 
   /// 'time' = default, 'active' = active alarms first
   String _sortMode = 'time';
 
+  bool _isIgnoringBattery = true;
+  bool _hasExactAlarmPermission = true;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _checkSystemPermissions();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkSystemPermissions();
+    }
+  }
+
+  Future<void> _checkSystemPermissions() async {
+    try {
+      final isIgnoringBattery = await AlarmService.isIgnoringBatteryOptimizations();
+      bool hasExact = true;
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        hasExact = await AlarmService.canScheduleExactAlarms();
+      }
+      if (mounted) {
+        setState(() {
+          _isIgnoringBattery = isIgnoringBattery;
+          _hasExactAlarmPermission = hasExact;
+        });
+      }
+    } catch (e) {
+      // Fail silently
+    }
   }
 
   void _showSortSheet() {
@@ -383,6 +421,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildPromoBanner(),
+                          _buildSystemHealthBanner(),
                           const SizedBox(height: 32),
                           _buildUpcomingHeader(
                             alarmList.where((a) => a.isActive).toList(),
@@ -735,6 +774,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   value: alarm.isActive,
                   activeColor: const Color(0xFF00E5FF),
                   onChanged: (v) async {
+                    HapticFeedback.mediumImpact();
                     // Task 1.2 — Prevent Last-Minute Edits guard
                     if (!v && alarm.preventLastMinuteEdits) {
                       final now = DateTime.now();
@@ -779,8 +819,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     }
                     final updated = alarm.copyWith(isActive: v);
                     await ref
-                        .read(alarmsProvider.notifier)
-                        .updateAlarm(updated);
+                        .read(alarmRepositoryProvider)
+                        .updateAlarm(updated, context);
+                    ref.invalidate(alarmsProvider);
                   },
                 ),
               ],
@@ -850,5 +891,99 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       default:
         return Icons.notifications_active;
     }
+  }
+
+  Widget _buildSystemHealthBanner() {
+    if (_isIgnoringBattery && _hasExactAlarmPermission) {
+      return const SizedBox.shrink();
+    }
+
+    String warningText = '';
+    VoidCallback? onTap;
+
+    if (!_hasExactAlarmPermission && !_isIgnoringBattery) {
+      warningText = 'Crucial permissions are missing! Alarms may not ring. Tap to resolve.';
+      onTap = () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AlarmSettingsScreen()),
+        );
+      };
+    } else if (!_hasExactAlarmPermission) {
+      warningText = 'Exact Alarm permission is required for accurate ringing. Tap to resolve.';
+      onTap = () => AlarmService.requestExactAlarmPermission();
+    } else if (!_isIgnoringBattery) {
+      warningText = 'Battery optimization is active! Alarms may be delayed or silenced. Tap to resolve.';
+      onTap = () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const BatteryOptimizationScreen()),
+        );
+      };
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFF3B30).withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: const Color(0xFFFF3B30).withValues(alpha: 0.3),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF3B30).withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Color(0xFFFF3B30),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'App Health Warning',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      warningText,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(
+                Icons.chevron_right,
+                color: Color(0xFFFF3B30),
+                size: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

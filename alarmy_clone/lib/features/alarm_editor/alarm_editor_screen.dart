@@ -104,7 +104,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         preventLastMinuteEdits: preventLastMinuteEdits,
         muteDuringMissionLimit: muteDuringMissionLimit,
       );
-      await ref.read(alarmsProvider.notifier).createAlarm(alarmToSchedule);
+      await ref.read(alarmRepositoryProvider).createAlarm(alarmToSchedule, context);
     } else {
       alarmToSchedule = widget.alarm!.copyWith(
         hour: selectedHour,
@@ -127,7 +127,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         preventLastMinuteEdits: preventLastMinuteEdits,
         muteDuringMissionLimit: muteDuringMissionLimit,
       );
-      await ref.read(alarmsProvider.notifier).updateAlarm(alarmToSchedule);
+      await ref.read(alarmRepositoryProvider).updateAlarm(alarmToSchedule, context);
     }
 
     if (mounted) Navigator.pop(context);

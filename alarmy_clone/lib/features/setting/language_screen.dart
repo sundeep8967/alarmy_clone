@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
 class LanguageScreen extends StatelessWidget {

@@ -144,6 +144,46 @@ class SleepScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
 
+              // Premium Charger Warning Card
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF9500).withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(0xFFFF9500).withValues(alpha: 0.25),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF9500).withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.power,
+                        color: Color(0xFFFF9500),
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Text(
+                        'For uninterrupted sleep analysis overnight, we highly recommend keeping your phone connected to a charger.',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 13,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+
               // Dual-Pipeline Analysis Stats
               if (sleepState.events.isNotEmpty)
                 _buildAnalysisStats(sleepState.events),

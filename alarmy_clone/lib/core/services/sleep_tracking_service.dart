@@ -75,7 +75,7 @@ class SleepTrackingService {
     await _sleepStageService.init();
   }
 
-  Future<void> startTracking() async {
+  Future<bool> startTracking() async {
     if (await _audioRecorder.hasPermission()) {
       _isTracking = true;
       events.clear();
@@ -100,8 +100,10 @@ class SleepTrackingService {
       });
 
       log('💤 [SleepTrackingService] Started tracking.');
+      return true;
     } else {
       log('❌ [SleepTrackingService] Microphone permission denied.');
+      return false;
     }
   }
 

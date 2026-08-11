@@ -1,5 +1,5 @@
-package com.example.alarmy_clone
-
+package com.sundeep.alarmi
+ 
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
@@ -12,14 +12,14 @@ import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-
+ 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.example.alarmy_clone/wakelock"
-    private val BATTERY_CHANNEL = "com.example.alarmy_clone/battery"
-    private val SYSTEM_CHANNEL = "com.example.alarmy_clone/system"
-    private val DEVICE_ADMIN_CHANNEL = "com.example.alarmy_clone/device_admin"
+    private val CHANNEL = "com.sundeep.alarmi/wakelock"
+    private val BATTERY_CHANNEL = "com.sundeep.alarmi/battery"
+    private val SYSTEM_CHANNEL = "com.sundeep.alarmi/system"
+    private val DEVICE_ADMIN_CHANNEL = "com.sundeep.alarmi/device_admin"
     private var wakeLock: PowerManager.WakeLock? = null
-
+ 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
@@ -36,7 +36,7 @@ class MainActivity : FlutterActivity() {
             )
         }
     }
-
+ 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         
@@ -64,12 +64,19 @@ class MainActivity : FlutterActivity() {
                     openOemBatterySettings()
                     result.success(null)
                 }
+                "checkBatteryOptimization" -> {
+                    result.success(isIgnoringBatteryOptimizations())
+                }
+                "requestIgnoreBatteryOptimizations" -> {
+                    requestIgnoreBatteryOptimizations()
+                    result.success(null)
+                }
                 else -> {
                     result.notImplemented()
                 }
             }
         }
-
+ 
         // System settings channel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, SYSTEM_CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
@@ -87,7 +94,7 @@ class MainActivity : FlutterActivity() {
                 }
             }
         }
-
+ 
         // Device admin channel for Uninstall Blocker
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, DEVICE_ADMIN_CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
@@ -122,11 +129,11 @@ class MainActivity : FlutterActivity() {
                 }
             }
         }
-
+ 
         // Foreground lock service channel
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
-            "com.example.alarmy_clone/foreground"
+            "com.sundeep.alarmi/foreground"
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "startLock" -> {
@@ -159,11 +166,11 @@ class MainActivity : FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
-
+ 
         // Accessibility service channel for checking if service is enabled
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
-            "com.example.alarmy_clone/accessibility"
+            "com.sundeep.alarmi/accessibility"
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "isEnabled" -> {
@@ -183,7 +190,7 @@ class MainActivity : FlutterActivity() {
             }
         }
     }
-
+ 
     private fun openSystemSettings(action: String) {
         val intent = android.content.Intent(action)
         if (action == android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS) {
@@ -253,7 +260,7 @@ class MainActivity : FlutterActivity() {
             // Intent not available or failed - fail silently as per requirements
         }
     }
-
+ 
     private fun acquireWakeLock() {
         if (wakeLock == null) {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -266,10 +273,34 @@ class MainActivity : FlutterActivity() {
             wakeLock?.acquire(10 * 60 * 1000L) // 10 minutes max
         }
     }
-
+ 
     private fun releaseWakeLock() {
         if (wakeLock?.isHeld == true) {
             wakeLock?.release()
+        }
+    }
+ 
+    private fun isIgnoringBatteryOptimizations(): Boolean {
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        return powerManager.isIgnoringBatteryOptimizations(packageName)
+    }
+ 
+    private fun requestIgnoreBatteryOptimizations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:$packageName")
+            }
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                // Fallback to battery settings
+                val fallbackIntent = Intent(android.provider.Settings.ACTION_BATTERY_SAVER_SETTINGS)
+                try {
+                    startActivity(fallbackIntent)
+                } catch (_: Exception) {
+                    // Fail silently
+                }
+            }
         }
     }
 }

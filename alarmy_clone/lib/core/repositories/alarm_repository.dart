@@ -1,9 +1,12 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../database/database_helper.dart';
 import '../models/alarm_model.dart';
 import '../services/alarm_service.dart';
 import '../services/uninstall_blocker_service.dart';
+import '../widgets/alarm_permission_dialog.dart';
 import '../../features/widget/home_widget_service.dart';
 
 part 'alarm_repository.g.dart';
@@ -17,7 +20,32 @@ class AlarmRepository {
 
   Future<List<AlarmModel>> getAlarms() => _db.readAllAlarms();
 
-  Future<void> createAlarm(AlarmModel alarm) async {
+  /// Check if all required alarm permissions are granted
+  Future<bool> checkPermissions(BuildContext context) async {
+    if (!Platform.isAndroid) return true;
+
+    final hasExactAlarm = await AlarmService.canScheduleExactAlarms();
+    final isIgnoringBattery = await AlarmService.isIgnoringBatteryOptimizations();
+
+    if (!hasExactAlarm || !isIgnoringBattery) {
+      final granted = await AlarmPermissionDialog.showIfNeeded(context);
+      return granted;
+    }
+    return true;
+  }
+
+  Future<bool> createAlarm(AlarmModel alarm, [BuildContext? context]) async {
+    // Check permissions first (Android 12+ requires exact alarm permission)
+    if (Platform.isAndroid && context != null) {
+      final hasExactAlarm = await AlarmService.canScheduleExactAlarms();
+      final isIgnoringBattery = await AlarmService.isIgnoringBatteryOptimizations();
+      
+      if (!hasExactAlarm || !isIgnoringBattery) {
+        final granted = await AlarmPermissionDialog.showIfNeeded(context);
+        if (!granted) return false;
+      }
+    }
+
     await _db.create(alarm);
     await AlarmService.scheduleAlarm(alarm);
     // Update home widget from main app context
@@ -38,9 +66,21 @@ class AlarmRepository {
     if (!accessEnabled) {
       await UninstallBlockerService.openAccessibilitySettings();
     }
+    return true;
   }
 
-  Future<void> updateAlarm(AlarmModel alarm) async {
+  Future<bool> updateAlarm(AlarmModel alarm, [BuildContext? context]) async {
+    // Check permissions if enabling alarm (Android 12+ requires exact alarm permission)
+    if (Platform.isAndroid && alarm.isActive && context != null) {
+      final hasExactAlarm = await AlarmService.canScheduleExactAlarms();
+      final isIgnoringBattery = await AlarmService.isIgnoringBatteryOptimizations();
+      
+      if (!hasExactAlarm || !isIgnoringBattery) {
+        final granted = await AlarmPermissionDialog.showIfNeeded(context);
+        if (!granted) return false;
+      }
+    }
+
     await _db.update(alarm);
     if (alarm.isActive) {
       await AlarmService.scheduleAlarm(alarm);
@@ -49,6 +89,7 @@ class AlarmRepository {
     }
     // Update home widget from main app context
     await HomeWidgetService.updateWidget();
+    return true;
   }
 
   Future<void> deleteAlarm(String id) async {
@@ -58,9 +99,9 @@ class AlarmRepository {
     await HomeWidgetService.updateWidget();
   }
 
-  Future<void> toggleAlarm(AlarmModel alarm) async {
+  Future<bool> toggleAlarm(AlarmModel alarm, [BuildContext? context]) async {
     final updated = alarm.copyWith(isActive: !alarm.isActive);
-    await updateAlarm(updated);
+    return await updateAlarm(updated, context);
   }
 
   Future<void> addRecord(
@@ -96,13 +137,13 @@ class Alarms extends _$Alarms {
     return ref.watch(alarmRepositoryProvider).getAlarms();
   }
 
-  Future<void> createAlarm(AlarmModel alarm) async {
-    await ref.read(alarmRepositoryProvider).createAlarm(alarm);
+  Future<void> createAlarm(AlarmModel alarm, [BuildContext? context]) async {
+    await ref.read(alarmRepositoryProvider).createAlarm(alarm, context);
     ref.invalidateSelf();
   }
 
-  Future<void> updateAlarm(AlarmModel alarm) async {
-    await ref.read(alarmRepositoryProvider).updateAlarm(alarm);
+  Future<void> updateAlarm(AlarmModel alarm, [BuildContext? context]) async {
+    await ref.read(alarmRepositoryProvider).updateAlarm(alarm, context);
     ref.invalidateSelf();
   }
 
@@ -111,8 +152,8 @@ class Alarms extends _$Alarms {
     ref.invalidateSelf();
   }
 
-  Future<void> toggleAlarm(AlarmModel alarm) async {
-    await ref.read(alarmRepositoryProvider).toggleAlarm(alarm);
+  Future<void> toggleAlarm(AlarmModel alarm, [BuildContext? context]) async {
+    await ref.read(alarmRepositoryProvider).toggleAlarm(alarm, context);
     ref.invalidateSelf();
   }
 }

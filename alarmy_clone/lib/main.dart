@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'main_scaffold.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'core/services/alarm_service.dart';
+import 'core/services/alarm_lock_service.dart';
 import 'core/services/tflite_mission_service.dart';
 import 'core/services/mission_ml_service.dart';
 import 'features/alarm_ring/alarm_ring_screen.dart';
@@ -94,7 +95,31 @@ class _MyAppState extends ConsumerState<MyApp> {
     AlarmService.port.listen((message) {
       if (message is Map && message['type'] == 'ring') {
         final alarm = AlarmModel.fromJson(Map<String, dynamic>.from(message['alarm'] as Map));
+        AlarmLockService.bringToFront();
         _router.push(AppRoutes.ring, extra: alarm);
+      }
+    });
+
+    // Check if the app was launched from a notification
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final details = await AlarmService.flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+      if (details?.didNotificationLaunchApp ?? false) {
+        final payload = details?.notificationResponse?.payload;
+        if (payload != null) {
+          if (payload.startsWith('wakeup_confirm_')) {
+            final alarmId = payload.replaceFirst('wakeup_confirm_', '');
+            await AlarmService.cancelReFireTask(alarmId);
+          } else {
+            final alarmId = payload.startsWith('wakeup_check_')
+                ? payload.replaceFirst('wakeup_check_', '')
+                : payload;
+            final alarm = await AlarmService.getAlarmById(alarmId);
+            if (alarm != null) {
+              AlarmLockService.bringToFront();
+              _router.push(AppRoutes.ring, extra: alarm);
+            }
+          }
+        }
       }
     });
   }

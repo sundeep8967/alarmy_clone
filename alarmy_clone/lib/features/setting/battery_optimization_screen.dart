@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:disable_battery_optimization/disable_battery_optimization.dart';
+import '../../core/services/alarm_service.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -14,7 +14,7 @@ class BatteryOptimizationScreen extends StatefulWidget {
 
 class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
     with WidgetsBindingObserver {
-  static const platform = MethodChannel('com.example.alarmy_clone/battery');
+  static const platform = MethodChannel('com.sundeep.alarmi/battery');
   bool _isLoading = false;
   bool _isBatteryOptimizationDisabled = false;
 
@@ -41,9 +41,9 @@ class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
   Future<void> _checkBatteryOptimizationStatus() async {
     try {
       final isDisabled =
-          await DisableBatteryOptimization.isBatteryOptimizationDisabled;
+          await AlarmService.isIgnoringBatteryOptimizations();
       if (mounted) {
-        setState(() => _isBatteryOptimizationDisabled = isDisabled ?? false);
+        setState(() => _isBatteryOptimizationDisabled = isDisabled);
       }
     } catch (e) {
       // Handle error silently
@@ -55,7 +55,7 @@ class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
 
     try {
       // First, try the standard Android battery optimization settings
-      await DisableBatteryOptimization.showDisableBatteryOptimizationSettings();
+      await AlarmService.requestIgnoreBatteryOptimizations();
 
       // Then, attempt OEM-specific deep links
       await _openOemSpecificSettings();

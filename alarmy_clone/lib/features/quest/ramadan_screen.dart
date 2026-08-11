@@ -83,6 +83,18 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
 
   Future<void> _loadPrayerTimes() async {
     try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+        setState(() {
+          _isLoadingLocation = false;
+          _prayerTimes = null;
+        });
+        return;
+      }
+
       final position = await Geolocator.getCurrentPosition();
       final coordinates = Coordinates(position.latitude, position.longitude);
       final params = CalculationMethod.muslim_world_league.getParameters();
@@ -95,6 +107,7 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
     } catch (e) {
       setState(() {
         _isLoadingLocation = false;
+        _prayerTimes = null;
       });
     }
   }
@@ -103,8 +116,6 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
   Widget build(BuildContext context) {
     final isEnabled = ref.watch(ramadanEnabledProvider);
     final suhoorOffset = ref.watch(suhoorOffsetProvider);
-    final ramadanNotifier = ref.read(ramadanEnabledProvider.notifier);
-    final offsetNotifier = ref.read(suhoorOffsetProvider.notifier);
 
     final fajrTime = _prayerTimes?.fajr;
     final maghribTime = _prayerTimes?.maghrib;
@@ -615,7 +626,7 @@ class _RamadanScreenState extends ConsumerState<RamadanScreen> {
       activeDays: [1, 2, 3, 4, 5, 6, 0], // All days
     );
 
-    await ref.read(alarmRepositoryProvider).createAlarm(alarm);
+    await ref.read(alarmRepositoryProvider).createAlarm(alarm, context);
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

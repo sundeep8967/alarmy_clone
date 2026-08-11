@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
@@ -42,6 +43,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _nextPage() {
+    HapticFeedback.lightImpact();
     final currentPage = (_pageController.page ?? 0).round();
     debugPrint('👆 [Onboarding] Next tapped on page $currentPage');
     if (currentPage == 9) {
@@ -60,6 +62,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _goBack() {
+    HapticFeedback.lightImpact();
     final currentPage = (_pageController.page ?? 0).round();
     if (currentPage > 0) {
       _pageController.animateToPage(

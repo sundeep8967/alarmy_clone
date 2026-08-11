@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:animate_do/animate_do.dart';
-import '../../core/widgets/glass_card.dart';
 import '../../core/providers/theme_provider.dart';
 
 class ThemeSettingScreen extends ConsumerWidget {

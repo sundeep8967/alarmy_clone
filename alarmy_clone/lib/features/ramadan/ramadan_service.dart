@@ -12,7 +12,7 @@ class RamadanService {
   /// Schedule Suhoor and Iftar alarms based on prayer times
   Future<void> scheduleRamadanAlarms() async {
     try {
-      final position = await Geolocator.getCurrentPosition();
+      final position = await _determinePosition();
       final coordinates = Coordinates(position.latitude, position.longitude);
       final params = CalculationMethod.muslim_world_league.getParameters();
       params.madhab = Madhab.shafi;
@@ -111,7 +111,7 @@ class RamadanService {
   /// Get today's prayer times for display
   Future<Map<String, DateTime>?> getTodayPrayerTimes() async {
     try {
-      final position = await Geolocator.getCurrentPosition();
+      final position = await _determinePosition();
       final coordinates = Coordinates(position.latitude, position.longitude);
       final params = CalculationMethod.muslim_world_league.getParameters();
       params.madhab = Madhab.shafi;
@@ -129,5 +129,27 @@ class RamadanService {
     } catch (e) {
       return null;
     }
+  }
+
+  /// Helper to determine the device's current position and request permissions
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception('Location services are disabled.');
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('Location permissions are denied.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception('Location permissions are permanently denied.');
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 }
