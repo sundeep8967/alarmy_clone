@@ -7,7 +7,7 @@ import 'battery_optimization_screen.dart';
 class AlarmOptimizationScreen extends StatelessWidget {
   const AlarmOptimizationScreen({super.key});
 
-  static const _platform = MethodChannel('com.sundeep.alarmi/system');
+  static const _platform = MethodChannel('com.ravana.alarami/system');
 
   Future<void> _openSettings(String action) async {
     try {

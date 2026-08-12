@@ -14,7 +14,7 @@ class BatteryOptimizationScreen extends StatefulWidget {
 
 class _BatteryOptimizationScreenState extends State<BatteryOptimizationScreen>
     with WidgetsBindingObserver {
-  static const platform = MethodChannel('com.sundeep.alarmi/battery');
+  static const platform = MethodChannel('com.ravana.alarami/battery');
   bool _isLoading = false;
   bool _isBatteryOptimizationDisabled = false;
 

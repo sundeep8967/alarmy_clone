@@ -1,4 +1,4 @@
-package com.sundeep.alarmi
+package com.ravana.alarami
  
 import android.app.Notification
 import android.app.NotificationChannel
@@ -15,8 +15,8 @@ class AlarmForegroundService : Service() {
     companion object {
         const val CHANNEL_ID = "alarm_lock_channel"
         const val NOTIF_ID   = 9001
-        const val ACTION_START = "com.sundeep.alarmi.START_LOCK"
-        const val ACTION_STOP  = "com.sundeep.alarmi.STOP_LOCK"
+        const val ACTION_START = "com.ravana.alarami.START_LOCK"
+        const val ACTION_STOP  = "com.ravana.alarami.STOP_LOCK"
     }
  
     override fun onBind(intent: Intent?): IBinder? = null

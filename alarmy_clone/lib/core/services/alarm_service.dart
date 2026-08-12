@@ -15,9 +15,9 @@ class AlarmService {
       FlutterLocalNotificationsPlugin();
   static const String isolateName = 'alarm_isolate';
   static final ReceivePort port = ReceivePort();
-  static const platform = MethodChannel('com.sundeep.alarmi/wakelock');
-  static const systemChannel = MethodChannel('com.sundeep.alarmi/system');
-  static const batteryChannel = MethodChannel('com.sundeep.alarmi/battery');
+  static const platform = MethodChannel('com.ravana.alarami/wakelock');
+  static const systemChannel = MethodChannel('com.ravana.alarami/system');
+  static const batteryChannel = MethodChannel('com.ravana.alarami/battery');
 
   static Future<void> acquireWakeLock() async {
     try {
@@ -41,7 +41,7 @@ class AlarmService {
     IsolateNameServer.registerPortWithName(port.sendPort, isolateName);
     
     // Request exact alarm permission on Android 12+ (API 31+)
-    await _requestExactAlarmPermission();
+    await requestExactAlarmPermission();
 
     // Create high-importance Android notification channels
     if (Platform.isAndroid) {
@@ -106,7 +106,7 @@ class AlarmService {
   }
 
   /// Check and request exact alarm permission (Android 12+ S+)
-  static Future<bool> _requestExactAlarmPermission() async {
+  static Future<bool> requestExactAlarmPermission() async {
     if (Platform.isAndroid) {
       final status = await Permission.scheduleExactAlarm.status;
       if (!status.isGranted) {

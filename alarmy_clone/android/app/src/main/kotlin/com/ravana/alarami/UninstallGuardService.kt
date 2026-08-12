@@ -1,4 +1,4 @@
-package com.sundeep.alarmi
+package com.ravana.alarami
  
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo

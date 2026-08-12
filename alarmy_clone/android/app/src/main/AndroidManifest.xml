@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="Alarmy Clone"
+        android:label="Alarami"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

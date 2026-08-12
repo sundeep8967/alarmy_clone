@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 /// Call startLock() when alarm begins ringing.
 /// Call stopLock() when alarm is dismissed or snoozed.
 class AlarmLockService {
-  static const _ch = MethodChannel('com.sundeep.alarmi/foreground');
+  static const _ch = MethodChannel('com.ravana.alarami/foreground');
 
   static Future<void> startLock() async {
     try {

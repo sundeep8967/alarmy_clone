@@ -1,4 +1,4 @@
-package com.sundeep.alarmi
+package com.ravana.alarami
  
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider

@@ -8,8 +8,8 @@ import 'package:alarmy_clone/features/ramadan/ramadan_service.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const MethodChannel batteryChannel = MethodChannel('com.sundeep.alarmi/battery');
-  const MethodChannel systemChannel = MethodChannel('com.sundeep.alarmi/system');
+  const MethodChannel batteryChannel = MethodChannel('com.ravana.alarami/battery');
+  const MethodChannel systemChannel = MethodChannel('com.ravana.alarami/system');
   const MethodChannel geolocatorChannel = MethodChannel('flutter.baseflow.com/geolocator');
   const MethodChannel recordChannel = MethodChannel('com.llfbandit.record/messages');
 

@@ -1,4 +1,4 @@
-package com.sundeep.alarmi
+package com.ravana.alarami
  
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
@@ -14,10 +14,10 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
  
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.sundeep.alarmi/wakelock"
-    private val BATTERY_CHANNEL = "com.sundeep.alarmi/battery"
-    private val SYSTEM_CHANNEL = "com.sundeep.alarmi/system"
-    private val DEVICE_ADMIN_CHANNEL = "com.sundeep.alarmi/device_admin"
+    private val CHANNEL = "com.ravana.alarami/wakelock"
+    private val BATTERY_CHANNEL = "com.ravana.alarami/battery"
+    private val SYSTEM_CHANNEL = "com.ravana.alarami/system"
+    private val DEVICE_ADMIN_CHANNEL = "com.ravana.alarami/device_admin"
     private var wakeLock: PowerManager.WakeLock? = null
  
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,7 +133,7 @@ class MainActivity : FlutterActivity() {
         // Foreground lock service channel
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
-            "com.sundeep.alarmi/foreground"
+            "com.ravana.alarami/foreground"
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "startLock" -> {
@@ -170,7 +170,7 @@ class MainActivity : FlutterActivity() {
         // Accessibility service channel for checking if service is enabled
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
-            "com.sundeep.alarmi/accessibility"
+            "com.ravana.alarami/accessibility"
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "isEnabled" -> {
