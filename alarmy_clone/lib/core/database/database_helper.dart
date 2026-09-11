@@ -21,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 15,
+      version: 16,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -85,6 +85,15 @@ CREATE TABLE sleep_sessions (
   durationMinutes INTEGER NOT NULL,
   snoreCount INTEGER NOT NULL DEFAULT 0,
   avgDecibels REAL
+)
+''');
+    await db.execute('''
+CREATE TABLE morning_feelings (
+  id TEXT PRIMARY KEY,
+  date TEXT NOT NULL,
+  feeling TEXT NOT NULL,
+  note TEXT,
+  alarm_id TEXT
 )
 ''');
   }
@@ -222,6 +231,17 @@ CREATE TABLE sleep_sessions (
       await db.execute(
         'ALTER TABLE alarms ADD COLUMN muteDuringMissionLimit INTEGER NOT NULL DEFAULT 0',
       );
+    }
+    if (oldVersion < 16) {
+      await db.execute('''
+CREATE TABLE IF NOT EXISTS morning_feelings (
+  id TEXT PRIMARY KEY,
+  date TEXT NOT NULL,
+  feeling TEXT NOT NULL,
+  note TEXT,
+  alarm_id TEXT
+)
+''');
     }
   }
 
@@ -491,5 +511,37 @@ CREATE TABLE sleep_sessions (
       where: 'id = ?',
       whereArgs: [1],
     );
+  }
+
+  // --- Morning Feelings Methods ---
+
+  Future<void> saveMorningFeeling(Map<String, dynamic> feelingMap) async {
+    final db = await instance.database;
+    await db.insert(
+      'morning_feelings',
+      feelingMap,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getMorningFeelings({int limit = 30}) async {
+    final db = await instance.database;
+    return await db.query(
+      'morning_feelings',
+      orderBy: 'date DESC',
+      limit: limit,
+    );
+  }
+
+  Future<Map<String, dynamic>?> getTodayMorningFeeling() async {
+    final db = await instance.database;
+    final todayPrefix = DateTime.now().toIso8601String().substring(0, 10);
+    final results = await db.query(
+      'morning_feelings',
+      where: 'date LIKE ?',
+      whereArgs: ['$todayPrefix%'],
+      limit: 1,
+    );
+    return results.isNotEmpty ? results.first : null;
   }
 }

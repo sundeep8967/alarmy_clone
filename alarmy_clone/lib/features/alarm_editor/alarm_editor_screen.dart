@@ -1,16 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/repositories/alarm_repository.dart';
-import 'mission_settings_screen.dart';
+import '../../core/widgets/bouncy_pressable.dart';
 import 'alarm_sound_screen.dart';
 import 'alarm_wallpaper_screen.dart';
-import '../onboarding/providers/sounds_provider.dart';
-import '../onboarding/providers/wallpapers_provider.dart';
+import 'mission_settings_screen.dart';
+import '../alarm_ring/alarm_ring_screen.dart';
 
 class AlarmEditorScreen extends ConsumerStatefulWidget {
   final AlarmModel? alarm;
@@ -52,6 +50,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     {'id': 'stage', 'icon': Icons.self_improvement, 'name': 'Stage'},
     {'id': 'picture', 'icon': Icons.camera_alt, 'name': 'Picture'},
     {'id': 'qr', 'icon': Icons.qr_code_scanner, 'name': 'Barcode'},
+    {'id': 'taptap', 'icon': Icons.touch_app_rounded, 'name': 'TapTap'},
   ];
 
   @override
@@ -133,6 +132,39 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     if (mounted) Navigator.pop(context);
   }
 
+  void _previewAlarm() {
+    final previewAlarm = AlarmModel(
+      id: widget.alarm?.id ?? const Uuid().v4(),
+      hour: selectedHour,
+      minute: selectedMinute,
+      isActive: true,
+      missionTypes: selectedMissions,
+      missionSettings: missionSettings,
+      activeDays: activeDays,
+      wallpaperId: selectedWallpaperId,
+      soundId: selectedSoundId,
+      isVibrateEnabled: isVibrateEnabled,
+      snoozeMinutes: snoozeMinutes,
+      snoozeCount: snoozeCount,
+      volume: volume,
+      isVolumeCrescendo: isVolumeCrescendo,
+      crescendoDuration: crescendoDuration,
+      isWakeUpCheckEnabled: isWakeUpCheckEnabled,
+      wakeUpCheckMinutes: wakeUpCheckMinutes,
+      timePressure: timePressure,
+      smartAlarmWindow: smartAlarmWindow,
+      preventLastMinuteEdits: false, // Don't block during test
+      muteDuringMissionLimit: muteDuringMissionLimit,
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AlarmRingScreen(alarm: previewAlarm),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,11 +210,14 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: Colors.white54, fontSize: 16),
+          BouncyPressable(
+            onTap: () => Navigator.pop(context),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.white54, fontSize: 16),
+              ),
             ),
           ),
           Text(
@@ -193,16 +228,59 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          TextButton(
-            onPressed: _saveAlarm,
-            child: const Text(
-              'Save',
-              style: TextStyle(
-                color: Color(0xFFFF3B30),
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              BouncyPressable(
+                onTap: _previewAlarm,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  margin: const EdgeInsets.only(right: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF00D1FF).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFF00D1FF).withValues(alpha: 0.4),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.play_arrow_rounded, color: Color(0xFF00D1FF), size: 16),
+                      SizedBox(width: 4),
+                      Text(
+                        'Test',
+                        style: TextStyle(
+                          color: Color(0xFF00D1FF),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              BouncyPressable(
+                onTap: _saveAlarm,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFF3B30).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFFFF3B30).withValues(alpha: 0.5),
+                    ),
+                  ),
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(
+                      color: Color(0xFFFF3B30),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -271,24 +349,44 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
               itemBuilder: (context, i) {
                 final m = missions[i];
                 final isSelected = selectedMissions.contains(m['id']);
-                return GestureDetector(
+                final hasSettings = m['id'] != 'default';
+                return BouncyPressable(
                   onTap: () async {
                     setState(() {
                       if (m['id'] == 'default') {
                         selectedMissions = ['default'];
                       } else {
                         selectedMissions.remove('default');
-                          if (isSelected) {
-                          if (selectedMissions.length > 1)
+                        if (isSelected) {
+                          if (selectedMissions.length > 1) {
                             selectedMissions.remove(m['id'] as String);
+                          }
                         } else {
                           selectedMissions.add(m['id'] as String);
                         }
                       }
                     });
                   },
+                  onLongPress: hasSettings
+                      ? () async {
+                          final updated = await Navigator.push<Map<String, dynamic>>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MissionSettingsScreen(
+                                missionId: m['id'] as String,
+                                initialSettings: missionSettings,
+                              ),
+                            ),
+                          );
+                          if (updated != null) {
+                            setState(() {
+                              missionSettings.addAll(updated);
+                            });
+                          }
+                        }
+                      : null,
                   child: Container(
-                    width: 80,
+                    width: 86,
                     margin: const EdgeInsets.only(right: 12),
                     decoration: BoxDecoration(
                       color: isSelected
@@ -299,21 +397,55 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                           ? Border.all(color: const Color(0xFFFF3B30))
                           : null,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Stack(
                       children: [
-                        Icon(
-                          m['icon'] as IconData,
-                          color: isSelected
-                              ? const Color(0xFFFF3B30)
-                              : Colors.white38,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          m['name'] as String,
-                          style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.white38,
-                            fontSize: 12,
+                        if (isSelected && hasSettings)
+                          Positioned(
+                            top: 6,
+                            right: 6,
+                            child: GestureDetector(
+                              onTap: () async {
+                                final updated = await Navigator.push<Map<String, dynamic>>(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => MissionSettingsScreen(
+                                      missionId: m['id'] as String,
+                                      initialSettings: missionSettings,
+                                    ),
+                                  ),
+                                );
+                                if (updated != null) {
+                                  setState(() {
+                                    missionSettings.addAll(updated);
+                                  });
+                                }
+                              },
+                              child: const Icon(
+                                Icons.settings,
+                                size: 14,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ),
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                m['icon'] as IconData,
+                                color: isSelected
+                                    ? const Color(0xFFFF3B30)
+                                    : Colors.white38,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                m['name'] as String,
+                                style: TextStyle(
+                                  color: isSelected ? Colors.white : Colors.white38,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -336,17 +468,17 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(7, (i) {
           final active = activeDays.contains(i);
-          return GestureDetector(
+          return BouncyPressable(
             onTap: () => setState(
               () => active ? activeDays.remove(i) : activeDays.add(i),
             ),
             child: Container(
-              width: 36,
-              height: 36,
+              width: 38,
+              height: 38,
               decoration: BoxDecoration(
                 color: active ? const Color(0xFFFF3B30) : Colors.transparent,
                 shape: BoxShape.circle,
-                border: active ? null : Border.all(color: Colors.white10),
+                border: active ? null : Border.all(color: Colors.white12),
               ),
               child: Center(
                 child: Text(
@@ -369,11 +501,59 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
       'General',
       Column(
         children: [
-          _buildRow(
-            'Ringtone',
-            Text(
-              selectedSoundId,
-              style: const TextStyle(color: Colors.white38),
+          BouncyPressable(
+            onTap: () async {
+              final result = await Navigator.push<String>(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AlarmSoundScreen(initialSoundId: selectedSoundId),
+                ),
+              );
+              if (result != null) {
+                setState(() => selectedSoundId = result);
+              }
+            },
+            child: _buildRow(
+              'Ringtone',
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    selectedSoundId,
+                    style: const TextStyle(color: Color(0xFFFF3B30), fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(width: 6),
+                  const Icon(Icons.chevron_right, color: Colors.white38, size: 20),
+                ],
+              ),
+            ),
+          ),
+          const Divider(color: Colors.white10, height: 32),
+          BouncyPressable(
+            onTap: () async {
+              final result = await Navigator.push<String>(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AlarmWallpaperScreen(initialWallpaperId: selectedWallpaperId),
+                ),
+              );
+              if (result != null) {
+                setState(() => selectedWallpaperId = result);
+              }
+            },
+            child: _buildRow(
+              'Wallpaper',
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    selectedWallpaperId,
+                    style: const TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(width: 6),
+                  const Icon(Icons.chevron_right, color: Colors.white38, size: 20),
+                ],
+              ),
             ),
           ),
           const Divider(color: Colors.white10, height: 32),
@@ -381,7 +561,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             'Vibrate',
             Switch(
               value: isVibrateEnabled,
-              activeColor: const Color(0xFFFF3B30),
+              activeThumbColor: const Color(0xFFFF3B30),
               onChanged: (v) => setState(() => isVibrateEnabled = v),
             ),
           ),
@@ -516,15 +696,8 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       child: SizedBox(
         width: double.infinity,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1C1C1E),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          onPressed: () async {
+        child: BouncyPressable(
+          onTap: () async {
             if (preventLastMinuteEdits && widget.alarm?.isActive == true) {
               final now = DateTime.now();
               final alarmToday = DateTime(
@@ -543,12 +716,23 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             await ref.read(alarmsProvider.notifier).deleteAlarm(widget.alarm!.id);
             if (mounted) Navigator.pop(context);
           },
-          child: const Text(
-            'Delete Alarm',
-            style: TextStyle(
-              color: Color(0xFFFF3B30),
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1C1C1E),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: const Color(0xFFFF3B30).withValues(alpha: 0.2),
+              ),
+            ),
+            alignment: Alignment.center,
+            child: const Text(
+              'Delete Alarm',
+              style: TextStyle(
+                color: Color(0xFFFF3B30),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

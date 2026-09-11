@@ -8,6 +8,9 @@ import 'permission_doa_screen.dart';
 import 'language_screen.dart';
 import '../quest/ramadan_screen.dart';
 import '../home/alarm_settings_screen.dart';
+import 'about_screen.dart';
+import 'faq_screen.dart';
+import 'notice_screen.dart';
 
 class SettingScreen extends ConsumerWidget {
   const SettingScreen({super.key});
@@ -121,6 +124,39 @@ class SettingScreen extends ConsumerWidget {
                         context,
                         MaterialPageRoute(
                           builder: (_) => const GeneralSettingScreen(),
+                        ),
+                      ),
+                    ),
+                    _SettingModel(
+                      'FAQ & Support',
+                      Icons.help_outline_rounded,
+                      const Color(0xFFFFD60A),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const FaqScreen(),
+                        ),
+                      ),
+                    ),
+                    _SettingModel(
+                      'Notice & Updates',
+                      Icons.campaign_outlined,
+                      const Color(0xFF30D158),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const NoticeScreen(),
+                        ),
+                      ),
+                    ),
+                    _SettingModel(
+                      'About Alarami',
+                      Icons.info_outline,
+                      const Color(0xFFFF3B30),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AboutScreen(),
                         ),
                       ),
                     ),

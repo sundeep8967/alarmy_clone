@@ -8,16 +8,17 @@ import 'package:animate_do/animate_do.dart';
 import '../../core/models/alarm_model.dart';
 import '../../core/repositories/alarm_repository.dart';
 import '../../core/services/alarm_service.dart';
-import '../../core/services/today_data_service.dart';
-import '../../core/providers/today_provider.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
 import '../alarm_editor/habit_alarm_screen.dart';
 import '../alarm_editor/quick_alarm_sheet.dart';
+import '../alarm_ring/alarm_ring_screen.dart';
 import 'alarm_settings_screen.dart';
 import '../setting/premium_screen.dart';
 import '../setting/battery_optimization_screen.dart';
+import '../setting/notice_screen.dart';
 import 'overslept_mission_screen.dart';
-import 'rating_dialog.dart';
+import '../../core/widgets/liquid_page_transition.dart';
+import '../../core/widgets/bouncy_pressable.dart';
 
 class StarburstPainter extends CustomPainter {
   @override
@@ -299,8 +300,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                             Navigator.pop(context);
                             await Navigator.push(
                               this.context,
-                              MaterialPageRoute(
-                                builder: (_) => const AlarmEditorScreen(),
+                              LiquidPageRoute(
+                                page: const AlarmEditorScreen(),
                               ),
                             );
                           },
@@ -466,13 +467,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        key: _fabKey,
-        backgroundColor: const Color(0xFFFF3B30),
-        shape: const CircleBorder(),
-        elevation: 10,
-        onPressed: _showFabMenu,
-        child: const Icon(Icons.add, size: 32, color: Colors.white),
+      floatingActionButton: BouncyPressable(
+        scaleFactor: 0.86,
+        onTap: _showFabMenu,
+        child: FloatingActionButton(
+          key: _fabKey,
+          backgroundColor: const Color(0xFFFF3B30),
+          shape: const CircleBorder(),
+          elevation: 10,
+          onPressed: null, // handled by BouncyPressable
+          child: const Icon(Icons.add, size: 32, color: Colors.white),
+        ),
       ),
     );
   }
@@ -482,39 +487,92 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
       backgroundColor: Colors.transparent,
       floating: true,
       expandedHeight: 80,
-      title: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const PremiumScreen()),
-          );
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFFF3B30), Color(0xFFFF6B35)],
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 34,
+            height: 34,
+            margin: const EdgeInsets.only(right: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(9),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF3B30).withValues(alpha: 0.3),
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                ),
+              ],
             ),
-            borderRadius: BorderRadius.circular(20),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(9),
+              child: Image.asset(
+                'assets/images/app_logo.png',
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-          child: const Row(
-            mainAxisSize: MainAxisSize.min,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PremiumScreen()),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFF3B30), Color(0xFFFF6B35)],
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.verified, color: Colors.white, size: 15),
+                  SizedBox(width: 5),
+                  Text(
+                    'PRO Activated',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        IconButton(
+          icon: Stack(
+            clipBehavior: Clip.none,
             children: [
-              Icon(Icons.verified, color: Colors.white, size: 15),
-              SizedBox(width: 5),
-              Text(
-                'PRO Activated',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
+              const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 24),
+              Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFF3B30),
+                    shape: BoxShape.circle,
+                  ),
                 ),
               ),
             ],
           ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => const NoticeScreen()),
+            );
+          },
         ),
-      ),
-      actions: [
         PopupMenuButton<String>(
           icon: const Icon(Icons.more_horiz, color: Colors.white),
           color: const Color(0xFF1C1C1E),
@@ -689,8 +747,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     final hourStr = alarm.hour.toString();
     final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     final activeSet = alarm.activeDays.toSet();
-
-    return GestureDetector(
+    return BouncyPressable(
+      scaleFactor: 0.97,
       onTap: () async {
         if (alarm.preventLastMinuteEdits && alarm.isActive) {
           final now = DateTime.now();
@@ -736,7 +794,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
         }
         await Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => AlarmEditorScreen(alarm: alarm)),
+          LiquidPageRoute(page: AlarmEditorScreen(alarm: alarm)),
         );
         ref.invalidate(alarmsProvider);
       },
@@ -854,9 +912,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                     ],
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: Icon(Icons.more_vert, color: Colors.white24),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: PopupMenuButton<String>(
+                    icon: const Icon(Icons.more_vert, color: Colors.white24),
+                    color: const Color(0xFF1C1C1E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      side: const BorderSide(color: Colors.white12),
+                    ),
+                    onSelected: (val) async {
+                      if (val == 'test') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AlarmRingScreen(alarm: alarm),
+                          ),
+                        );
+                      } else if (val == 'delete') {
+                        await ref.read(alarmsProvider.notifier).deleteAlarm(alarm.id);
+                        ref.invalidate(alarmsProvider);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem<String>(
+                        value: 'test',
+                        child: Row(
+                          children: [
+                            Icon(Icons.play_arrow_rounded, color: Color(0xFF00D1FF), size: 20),
+                            SizedBox(width: 10),
+                            Text('Test Alarm', style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete_outline, color: Color(0xFFFF3B30), size: 20),
+                            SizedBox(width: 10),
+                            Text('Delete', style: TextStyle(color: Color(0xFFFF3B30))),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

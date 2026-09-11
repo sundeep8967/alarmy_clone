@@ -195,15 +195,17 @@ class _OnboardingStep3State extends ConsumerState<OnboardingStep3> {
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(6),
+                        width: 28,
+                        height: 28,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFF3B30),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Icon(
-                          Icons.alarm,
-                          color: Colors.white,
-                          size: 16,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: Image.asset(
+                            'assets/images/app_logo.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),

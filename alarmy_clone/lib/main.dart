@@ -14,9 +14,11 @@ import 'core/models/alarm_model.dart';
 import 'features/widget/home_widget_service.dart';
 import 'features/ramadan/ramadan_service.dart';
 import 'core/providers/theme_provider.dart';
+import 'features/splash/splash_screen.dart';
 
 // Route constants
 class AppRoutes {
+  static const String splash = '/splash';
   static const String onboarding = '/onboarding';
   static const String home = '/';
   static const String ring = '/ring';
@@ -69,10 +71,12 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     _router = GoRouter(
-      initialLocation: widget.hasSeenOnboarding
-          ? AppRoutes.home
-          : AppRoutes.onboarding,
+      initialLocation: AppRoutes.splash,
       routes: [
+        GoRoute(
+          path: AppRoutes.splash,
+          builder: (context, state) => const SplashScreen(),
+        ),
         GoRoute(
           path: AppRoutes.onboarding,
           builder: (context, state) => const OnboardingScreen(),

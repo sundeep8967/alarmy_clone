@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 import '../../core/widgets/glass_card.dart';
+import '../../core/widgets/bouncy_pressable.dart';
 import 'package:animate_do/animate_do.dart';
 
 class MathMissionScreen extends StatefulWidget {
@@ -249,13 +251,18 @@ class _MathMissionScreenState extends State<MathMissionScreen> {
           final key = keys[index];
           final isSpecial = key == "DEL" || key == "OK";
 
-          return InkWell(
-            onTap: () => _onKeyPress(key),
-            borderRadius: BorderRadius.circular(16),
-            child: GlassContainer(
-              blur: 5,
-              opacity: isSpecial ? 0.15 : 0.05,
+          return BouncyPressable(
+            scaleFactor: 0.90,
+            onTap: () async {
+              if (await Vibration.hasVibrator() == true) {
+                Vibration.vibrate(duration: 15);
+              }
+              _onKeyPress(key);
+            },
+            child: GlassCard(
               borderRadius: BorderRadius.circular(16),
+              opacity: isSpecial ? 0.25 : 0.08,
+              color: isSpecial ? const Color(0xFFFF3B30).withValues(alpha: 0.2) : null,
               child: Center(
                 child: Text(
                   key,

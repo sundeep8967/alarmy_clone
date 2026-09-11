@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +20,10 @@ import '../missions/step_mission_screen.dart';
 import '../missions/stage_mission_screen.dart';
 import '../missions/barcode_mission_screen.dart';
 import '../missions/picture_mission_screen.dart';
-import 'wake_up_check_screen.dart';
+import '../missions/taptap_mission_screen.dart';
+import '../../core/widgets/liquid_page_transition.dart';
+import 'emergency_dismiss_dialog.dart';
+import '../morning/morning_feeling_sheet.dart';
 
 class AlarmRingScreen extends ConsumerStatefulWidget {
   final AlarmModel alarm;
@@ -46,6 +48,8 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   double _currentVolume = 0.0;
   bool _isAlarmActive = true;
   int _muteCount = 0; // Task 1.3 — mute limit tracker
+  Timer? _escalationTimer;
+  bool _hasEscalated = false;
 
   Future<void> _setRingingState(bool isRinging) async {
     final prefs = await SharedPreferences.getInstance();
@@ -106,11 +110,17 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
       Duration(minutes: globalDuration),
       () => _dismissAlarm(isAuto: true),
     );
+
+    // 40-second unresponsive escalation — switch to siren if user doesn't interact
+    _escalationTimer = Timer(
+      const Duration(seconds: 40),
+      _escalateToLoud,
+    );
   }
 
   Future<void> _startRinging() async {
     if (widget.alarm.isVibrateEnabled) {
-      if (await Vibration.hasVibrator() ?? false) {
+      if (await Vibration.hasVibrator() == true) {
         Vibration.vibrate(pattern: [500, 1000, 500, 1000], repeat: 0);
       }
     }
@@ -148,6 +158,24 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     });
   }
 
+  /// Called if the user doesn't interact for 40 seconds — escalates to siren at max volume.
+  Future<void> _escalateToLoud() async {
+    if (!_isAlarmActive || _hasEscalated) return;
+    _hasEscalated = true;
+    _crescendoTimer?.cancel();
+    await _audioPlayer.stop();
+    await _audioPlayer.setVolume(1.0);
+    await _audioPlayer.play(AssetSource('sounds/siren.mp3'));
+    if (await Vibration.hasVibrator() == true) {
+      Vibration.vibrate(pattern: [100, 200, 100, 200, 100, 200], repeat: 0);
+    }
+    if (mounted) {
+      setState(() {
+        // Trigger UI rebuild — _hasEscalated flag will be used for red pulse indicator
+      });
+    }
+  }
+
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -157,6 +185,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     _crescendoTimer?.cancel();
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();
+    _escalationTimer?.cancel();
     _timePressureTimer?.cancel();
     _audioPlayer.dispose();
     _tts.stop();
@@ -211,6 +240,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     Vibration.cancel();
     _audioPlayer.stop();
     _crescendoTimer?.cancel();
+    _escalationTimer?.cancel();
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();
 
@@ -224,6 +254,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     Vibration.cancel();
     _audioPlayer.stop();
     _crescendoTimer?.cancel();
+    _escalationTimer?.cancel();
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();
 
@@ -241,6 +272,14 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
 
     if (mounted) {
       Navigator.of(context).popUntil((route) => route.isFirst);
+      if (isManual) {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (_) => MorningFeelingSheet(alarmId: widget.alarm.id),
+        );
+      }
     }
   }
 
@@ -315,6 +354,13 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
           settings: widget.alarm.missionSettings,
         );
         break;
+      case 'taptap':
+      case 'tap':
+        missionScreen = TapTapMissionScreen(
+          onMissionComplete: onComplete,
+          settings: widget.alarm.missionSettings,
+        );
+        break;
       default:
         _runMissionSequence(index + 1);
         return;
@@ -322,7 +368,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => missionScreen),
+      LiquidPageRoute(page: missionScreen),
     );
   }
 
@@ -368,13 +414,52 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Alarm ringing',
-                    style: TextStyle(
-                      color: Color(0xFFFF3B30),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    child: _hasEscalated
+                        ? Container(
+                            key: const ValueKey('escalated'),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF3B30),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFFFF3B30)
+                                      .withValues(alpha: 0.6),
+                                  blurRadius: 20,
+                                  spreadRadius: 4,
+                                ),
+                              ],
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.warning_amber_rounded,
+                                    color: Colors.white, size: 20),
+                                SizedBox(width: 8),
+                                Text(
+                                  'EXTRA LOUD',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : const Text(
+                            key: ValueKey('normal'),
+                            'Alarm ringing',
+                            style: TextStyle(
+                              color: Color(0xFFFF3B30),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                   const Spacer(),
                   Padding(
@@ -442,16 +527,46 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
                             );
                           }),
                         ),
-                        const SizedBox(height: 16),
-                        TextButton(
-                          onPressed: () => _dismissAlarm(isManual: true),
-                          child: const Text(
-                            'Dismiss',
-                            style: TextStyle(
-                              color: Colors.white24,
-                              fontSize: 16,
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () => _dismissAlarm(isManual: true),
+                              child: const Text(
+                                'Dismiss',
+                                style: TextStyle(
+                                  color: Colors.white24,
+                                  fontSize: 15,
+                                ),
+                              ),
                             ),
-                          ),
+                            const Text(' • ', style: TextStyle(color: Colors.white12)),
+                            TextButton.icon(
+                              icon: const Icon(
+                                Icons.warning_amber_rounded,
+                                color: Color(0xFFFF453A),
+                                size: 16,
+                              ),
+                              label: const Text(
+                                'Emergency (1000 taps)',
+                                style: TextStyle(
+                                  color: Color(0xFFFF453A),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => EmergencyDismissDialog(
+                                    onEmergencyComplete: () => _dismissAlarm(isManual: true),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),

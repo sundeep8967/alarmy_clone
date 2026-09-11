@@ -42,6 +42,8 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
     } else if (widget.missionId == 'picture') {
       _settings['picture_sensitivity'] ??=
           70; // ML confidence threshold (0-100)
+    } else if (widget.missionId == 'taptap' || widget.missionId == 'tap') {
+      _settings['tap_count'] ??= 35;
     }
   }
 
@@ -117,6 +119,11 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
         _buildPictureSensitivitySlider(),
         const SizedBox(height: 24),
         _buildPictureMissionInfo(),
+      ];
+    } else if (widget.missionId == 'taptap' || widget.missionId == 'tap') {
+      return [
+        _buildSectionHeader('Number of Taps'),
+        _buildCounterRow('tap_count', 10, 150, step: 5),
       ];
     }
     return [
@@ -449,6 +456,9 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
         return 'Squat';
       case 'step':
         return 'Step';
+      case 'taptap':
+      case 'tap':
+        return 'TapTap';
       default:
         return 'Default';
     }

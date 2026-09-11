@@ -30,15 +30,24 @@ class IntroStep1 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  height: 120,
-                  child: Lottie.asset(
-                    'assets/lottie/lottie_trophy.lottie',
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.emoji_events,
-                      color: Colors.amber,
-                      size: 80,
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFF3B30).withValues(alpha: 0.35),
+                        blurRadius: 28,
+                        spreadRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Image.asset(
+                      'assets/images/app_logo.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

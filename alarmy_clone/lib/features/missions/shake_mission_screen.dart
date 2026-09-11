@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:vibration/vibration.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -53,7 +54,10 @@ class _ShakeMissionScreenState extends State<ShakeMissionScreen> {
     });
   }
 
-  void _triggerShake() {
+  void _triggerShake() async {
+    if (await Vibration.hasVibrator() == true) {
+      Vibration.vibrate(duration: 25);
+    }
     setState(() {
       shakeCount++;
       _isGlow = true;

@@ -16,6 +16,7 @@ import 'steps/onboarding_step3.dart';
 import 'steps/onboarding_step4_list.dart';
 import 'steps/onboarding_step4_detail.dart';
 import 'steps/onboarding_processing_step.dart';
+import '../../core/widgets/liquid_page_transition.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -25,13 +26,8 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 }
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
-  final PageController _pageController = PageController();
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  final GlobalKey<LiquidSwipeViewState> _liquidKey = GlobalKey<LiquidSwipeViewState>();
+  int _currentPageIndex = 0;
 
   void _completeOnboarding() async {
     debugPrint('🏁 [Onboarding] Completing flow...');
@@ -44,7 +40,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   void _nextPage() {
     HapticFeedback.lightImpact();
-    final currentPage = (_pageController.page ?? 0).round();
+    final currentPage = _currentPageIndex;
     debugPrint('👆 [Onboarding] Next tapped on page $currentPage');
     if (currentPage == 9) {
       _completeOnboarding();
@@ -63,33 +59,30 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   void _goBack() {
     HapticFeedback.lightImpact();
-    final currentPage = (_pageController.page ?? 0).round();
+    final currentPage = _currentPageIndex;
     if (currentPage > 0) {
-      _pageController.animateToPage(
+      _liquidKey.currentState?.animateToPage(
         currentPage - 1,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 650),
       );
     }
   }
 
   void _goToNext() {
-    final currentPage = (_pageController.page ?? 0).round();
+    final currentPage = _currentPageIndex;
     debugPrint('⏭️ [Onboarding] Animating to page ${currentPage + 1}');
-    _pageController.animateToPage(
+    _liquidKey.currentState?.animateToPage(
       currentPage + 1,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 650),
     );
   }
 
   void _skipPreviewAndGoToSound() {
     // Skip wallpaper preview (page 5) and go directly to sound (page 6)
     debugPrint('⏭️ [Onboarding] Skipping preview, going to sound selection');
-    _pageController.animateToPage(
+    _liquidKey.currentState?.animateToPage(
       6, // Page 6 is sound selection (3/4)
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 650),
     );
   }
 
@@ -120,11 +113,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            // PageView — fills the area
-            PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
+            // LiquidSwipeView — organic liquid wave transition
+            LiquidSwipeView(
+              key: _liquidKey,
+              enableGesture: state.currentPage < 3,
               onPageChanged: (value) {
+                setState(() {
+                  _currentPageIndex = value;
+                });
                 ref.read(onboardingProvider.notifier).setPage(value);
                 if (value == 9) {
                   ref
@@ -132,7 +128,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       .startProcessing(_completeOnboarding);
                 }
               },
-              children: [
+              pages: [
                 const IntroStep1(),
                 const IntroStep2(),
                 const IntroStep3(),

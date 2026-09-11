@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 import '../../core/widgets/glass_card.dart';
+import '../../core/widgets/bouncy_pressable.dart';
 import 'package:animate_do/animate_do.dart';
 
 class MemoryMissionScreen extends StatefulWidget {
@@ -243,12 +245,19 @@ class _MemoryMissionScreenState extends State<MemoryMissionScreen> {
 
           return FadeIn(
             duration: Duration(milliseconds: 300 + (index * 50)),
-            child: GestureDetector(
-              onTap: () => _onTileTapped(index),
-              child: GlassContainer(
-                blur: 10,
-                opacity: 0.1,
+            child: BouncyPressable(
+              scaleFactor: 0.92,
+              onTap: () async {
+                if (!_isPlayingSequence) {
+                  if (await Vibration.hasVibrator() == true) {
+                    Vibration.vibrate(duration: 20);
+                  }
+                  _onTileTapped(index);
+                }
+              },
+              child: GlassCard(
                 borderRadius: BorderRadius.circular(20),
+                opacity: 0.1,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   decoration: BoxDecoration(

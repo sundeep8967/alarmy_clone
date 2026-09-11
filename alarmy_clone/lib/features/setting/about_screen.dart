@@ -32,20 +32,21 @@ class AboutScreen extends StatelessWidget {
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFF3B30),
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFF3B30).withOpacity(0.3),
+                                color: const Color(0xFFFF3B30).withValues(alpha: 0.3),
                                 blurRadius: 20,
                                 spreadRadius: 5,
                               ),
                             ],
                           ),
-                          child: const Icon(
-                            Icons.alarm,
-                            color: Colors.white,
-                            size: 60,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24),
+                            child: Image.asset(
+                              'assets/images/app_logo.png',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
