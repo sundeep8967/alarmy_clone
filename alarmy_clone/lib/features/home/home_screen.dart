@@ -998,7 +998,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
         return CupertinoIcons.keyboard;
       case 'squat':
       case 'step':
-        return CupertinoIcons.figure_walk;
+        return CupertinoIcons.sportscourt;
       case 'stage':
         return CupertinoIcons.waveform_path_ecg;
       case 'qr':
