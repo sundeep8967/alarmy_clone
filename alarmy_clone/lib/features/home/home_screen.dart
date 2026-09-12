@@ -530,16 +530,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
       floating: true,
       expandedHeight: 56,
       toolbarHeight: 56,
-      titleSpacing: 20,
-      title: const Text(
-        'Alarm',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 34,
-          fontWeight: FontWeight.bold,
-          fontFamily: '.SF Pro Display',
-          letterSpacing: 0.4,
-        ),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF453A).withValues(alpha: 0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                'assets/images/app_logo.png',
+                width: 38,
+                height: 38,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          const Text(
+            'Alarami',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              fontFamily: '.SF Pro Display',
+              letterSpacing: 0.4,
+            ),
+          ),
+        ],
       ),
       actions: [
         // PRO badge
