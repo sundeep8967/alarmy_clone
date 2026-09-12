@@ -170,7 +170,7 @@ class SleepScreen extends ConsumerWidget {
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.power,
+                        CupertinoIcons.bolt_fill,
                         color: Color(0xFFFF9500),
                         size: 20,
                       ),
@@ -218,7 +218,7 @@ class SleepScreen extends ConsumerWidget {
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
-                            Icons.nights_stay,
+                            CupertinoIcons.moon_stars_fill,
                             color: Color(0xFF42A5F5),
                             size: 20,
                           ),
@@ -231,9 +231,9 @@ class SleepScreen extends ConsumerWidget {
                           ),
                         ),
                         const Icon(
-                          Icons.chevron_right,
+                          CupertinoIcons.chevron_right,
                           color: Colors.white54,
-                          size: 20,
+                          size: 16,
                         ),
                       ],
                     ),

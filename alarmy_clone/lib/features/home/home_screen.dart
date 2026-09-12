@@ -108,90 +108,72 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
   }
 
   void _showSortSheet() {
-    showModalBottomSheet(
+    showCupertinoModalPopup<void>(
       context: context,
-      backgroundColor: const Color(0xFF1C1C1E),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (_) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Sort alarms',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+      builder: (ctx) => CupertinoActionSheet(
+        title: const Text('Sort alarms'),
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () {
+              setState(() => _sortMode = 'time');
+              Navigator.pop(ctx);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Default (by time)'),
+                if (_sortMode == 'time') ...[
+                  const SizedBox(width: 8),
+                  const Icon(CupertinoIcons.checkmark, color: Color(0xFFFF3B30), size: 18),
+                ],
+              ],
             ),
-            const SizedBox(height: 20),
-            _buildSortOption('Default (by time)', 'time'),
-            const Divider(color: Colors.white10),
-            _buildSortOption('Active first', 'active'),
-            const SizedBox(height: 16),
-          ],
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              setState(() => _sortMode = 'active');
+              Navigator.pop(ctx);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Active first'),
+                if (_sortMode == 'active') ...[
+                  const SizedBox(width: 8),
+                  const Icon(CupertinoIcons.checkmark, color: Color(0xFFFF3B30), size: 18),
+                ],
+              ],
+            ),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.pop(ctx),
+          child: const Text('Cancel'),
         ),
       ),
-    );
-  }
-
-  Widget _buildSortOption(String label, String mode) {
-    final isSelected = _sortMode == mode;
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? const Color(0xFFFF3B30) : Colors.white,
-        ),
-      ),
-      trailing: isSelected
-          ? const Icon(Icons.check, color: Color(0xFFFF3B30))
-          : null,
-      onTap: () {
-        setState(() => _sortMode = mode);
-        Navigator.pop(context);
-      },
     );
   }
 
   void _confirmDeleteInactive() {
-    showDialog(
+    showCupertinoDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1C1C1E),
-        title: const Text(
-          'Delete inactive alarms',
-          style: TextStyle(color: Colors.white),
-        ),
+      builder: (ctx) => CupertinoAlertDialog(
+        title: const Text('Delete inactive alarms'),
         content: const Text(
           'All alarms that are currently toggled OFF will be permanently deleted.',
-          style: TextStyle(color: Colors.white54),
         ),
         actions: [
-          TextButton(
+          CupertinoDialogAction(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: Colors.white38),
-            ),
+            child: const Text('Cancel'),
           ),
-          TextButton(
+          CupertinoDialogAction(
+            isDestructiveAction: true,
             onPressed: () async {
               Navigator.pop(ctx);
               await _deleteInactiveAlarms();
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(
-                color: Color(0xFFFF3B30),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child: const Text('Delete'),
           ),
         ],
       ),
@@ -324,21 +306,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     if (selectedAction == 'habit') {
       Navigator.push(
         context,
-        MaterialPageRoute(
+        CupertinoPageRoute<void>(
           builder: (_) => const HabitAlarmScreen(),
         ),
       );
     } else if (selectedAction == 'quick') {
-      showModalBottomSheet(
+      showCupertinoModalPopup<void>(
         context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
         builder: (context) => const QuickAlarmSheet(),
       );
     } else if (selectedAction == 'new_alarm') {
       Navigator.push(
         context,
-        MaterialPageRoute(
+        CupertinoPageRoute<void>(
           builder: (_) => const AlarmEditorScreen(),
         ),
       );
@@ -527,6 +507,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
       floating: true,
       expandedHeight: 56,
       toolbarHeight: 56,
+      centerTitle: false,
+      titleSpacing: 20,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -801,26 +783,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
             diff += 24 * 60;
           }
           if (diff >= 0 && diff <= 30) {
-            showDialog(
+            showCupertinoDialog(
               context: context,
-              builder: (_) => AlertDialog(
-                backgroundColor: const Color(0xFF1C1C1E),
-                title: const Text(
-                  'Cannot Edit Alarm',
-                  style: TextStyle(color: Colors.white),
-                ),
+              builder: (_) => CupertinoAlertDialog(
+                title: const Text('Cannot Edit Alarm'),
                 content: Text(
                   'This alarm is set to ring in $diff minutes. '
                   'Last-minute edits are blocked to prevent cheating.',
-                  style: const TextStyle(color: Colors.white70),
                 ),
                 actions: [
-                  TextButton(
+                  CupertinoDialogAction(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'OK',
-                      style: TextStyle(color: Color(0xFFFF3B30)),
-                    ),
+                    child: const Text('OK'),
                   ),
                 ],
               ),
@@ -888,26 +862,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                         diff += 24 * 60;
                       }
                       if (diff >= 0 && diff <= 30) {
-                        showDialog(
+                        showCupertinoDialog(
                           context: context,
-                          builder: (_) => AlertDialog(
-                            backgroundColor: const Color(0xFF1C1C1E),
-                            title: const Text(
-                              'Cannot Turn Off Alarm',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                          builder: (_) => CupertinoAlertDialog(
+                            title: const Text('Cannot Turn Off Alarm'),
                             content: Text(
                               'This alarm is set to ring in $diff minutes. '
                               'Last-minute edits are blocked to prevent cheating.',
-                              style: const TextStyle(color: Colors.white70),
                             ),
                             actions: [
-                              TextButton(
+                              CupertinoDialogAction(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text(
-                                  'OK',
-                                  style: TextStyle(color: Color(0xFFFF3B30)),
-                                ),
+                                child: const Text('OK'),
                               ),
                             ],
                           ),
@@ -954,48 +920,61 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: PopupMenuButton<String>(
-                    icon: const Icon(Icons.more_vert, color: Colors.white24),
-                    color: const Color(0xFF1C1C1E),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      side: const BorderSide(color: Colors.white12),
-                    ),
-                    onSelected: (val) async {
-                      if (val == 'test') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => AlarmRingScreen(alarm: alarm),
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    minSize: 32,
+                    onPressed: () {
+                      showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (ctx) => CupertinoActionSheet(
+                          title: Text(
+                            'Alarm ${alarm.hour.toString().padLeft(2, '0')}:${alarm.minute.toString().padLeft(2, '0')}',
                           ),
-                        );
-                      } else if (val == 'delete') {
-                        await ref.read(alarmsProvider.notifier).deleteAlarm(alarm.id);
-                        ref.invalidate(alarmsProvider);
-                      }
+                          actions: [
+                            CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.pop(ctx);
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute<void>(
+                                    builder: (_) => AlarmRingScreen(alarm: alarm),
+                                  ),
+                                );
+                              },
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(CupertinoIcons.play_circle_fill, color: Color(0xFF00D1FF), size: 20),
+                                  SizedBox(width: 8),
+                                  Text('Test Alarm'),
+                                ],
+                              ),
+                            ),
+                            CupertinoActionSheetAction(
+                              isDestructiveAction: true,
+                              onPressed: () async {
+                                Navigator.pop(ctx);
+                                await ref.read(alarmsProvider.notifier).deleteAlarm(alarm.id);
+                                ref.invalidate(alarmsProvider);
+                              },
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(CupertinoIcons.trash, color: Color(0xFFFF3B30), size: 20),
+                                  SizedBox(width: 8),
+                                  Text('Delete Alarm'),
+                                ],
+                              ),
+                            ),
+                          ],
+                          cancelButton: CupertinoActionSheetAction(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: const Text('Cancel'),
+                          ),
+                        ),
+                      );
                     },
-                    itemBuilder: (context) => [
-                      const PopupMenuItem<String>(
-                        value: 'test',
-                        child: Row(
-                          children: [
-                            Icon(Icons.play_arrow_rounded, color: Color(0xFF00D1FF), size: 20),
-                            SizedBox(width: 10),
-                            Text('Test Alarm', style: TextStyle(color: Colors.white)),
-                          ],
-                        ),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete_outline, color: Color(0xFFFF3B30), size: 20),
-                            SizedBox(width: 10),
-                            Text('Delete', style: TextStyle(color: Color(0xFFFF3B30))),
-                          ],
-                        ),
-                      ),
-                    ],
+                    child: const Icon(CupertinoIcons.ellipsis, color: Colors.white38, size: 20),
                   ),
                 ),
               ],
@@ -1009,27 +988,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
   IconData _getMissionIcon(String type) {
     switch (type.toLowerCase()) {
       case 'math':
-        return Icons.calculate;
+        return CupertinoIcons.function;
       case 'shake':
-        return Icons.vibration;
+        return CupertinoIcons.device_phone_portrait;
       case 'memory':
       case 'tiles':
-        return Icons.grid_view;
+        return CupertinoIcons.square_grid_2x2;
       case 'typing':
-        return Icons.keyboard;
+        return CupertinoIcons.keyboard;
       case 'squat':
-        return Icons.accessibility_new;
       case 'step':
-        return Icons.directions_walk;
+        return CupertinoIcons.figure_walk;
       case 'stage':
-        return Icons.self_improvement;
+        return CupertinoIcons.waveform_path_ecg;
       case 'qr':
-        return Icons.qr_code_scanner;
+        return CupertinoIcons.qrcode;
       case 'picture':
       case 'photo':
-        return Icons.camera_alt;
+        return CupertinoIcons.camera_fill;
       default:
-        return Icons.notifications_active;
+        return CupertinoIcons.bell_fill;
     }
   }
 

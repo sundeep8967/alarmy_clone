@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
-import 'package:animate_do/animate_do.dart';
 import '../../core/repositories/alarm_repository.dart';
 
 class RecordsScreen extends ConsumerStatefulWidget {
@@ -116,7 +116,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
   Widget _buildDateSelector() {
     return const Row(
       children: [
-        Icon(Icons.chevron_left, color: Colors.white70, size: 24),
+        Icon(CupertinoIcons.chevron_left, color: Colors.white70, size: 20),
         SizedBox(width: 8),
         Text(
           'Recent History',
@@ -124,10 +124,11 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w500,
+            fontFamily: '.SF Pro Display',
           ),
         ),
         SizedBox(width: 8),
-        Icon(Icons.chevron_right, color: Colors.white24, size: 24),
+        Icon(CupertinoIcons.chevron_right, color: Colors.white24, size: 20),
       ],
     );
   }
@@ -150,6 +151,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
                 style: TextStyle(
                   color: isSelected ? const Color(0xFFFF3B30) : Colors.white38,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontFamily: '.SF Pro Text',
                 ),
               ),
             ),
@@ -189,38 +191,61 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
             blur: 15,
             opacity: 0.05,
             borderRadius: BorderRadius.circular(16),
-            child: ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: isSuccess
-                      ? const Color(0xFF00FF85).withValues(alpha: 0.2)
-                      : const Color(0xFFFF3B30).withValues(alpha: 0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  isSuccess ? Icons.check : Icons.close,
-                  color: isSuccess
-                      ? const Color(0xFF00FF85)
-                      : const Color(0xFFFF3B30),
-                  size: 20,
-                ),
-              ),
-              title: Text(
-                timeOfDay,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                timeText,
-                style: const TextStyle(color: Colors.white54, fontSize: 14),
-              ),
-              trailing: Text(
-                '${timestamp.day}/${timestamp.month}',
-                style: const TextStyle(color: Colors.white38, fontSize: 12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: isSuccess
+                          ? const Color(0xFF34C759).withValues(alpha: 0.2)
+                          : const Color(0xFFFF3B30).withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isSuccess ? CupertinoIcons.checkmark : CupertinoIcons.xmark,
+                      color: isSuccess
+                          ? const Color(0xFF34C759)
+                          : const Color(0xFFFF3B30),
+                      size: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          timeOfDay,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: '.SF Pro Display',
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          timeText,
+                          style: const TextStyle(
+                            color: Colors.white54,
+                            fontSize: 14,
+                            fontFamily: '.SF Pro Text',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    '${timestamp.day}/${timestamp.month}',
+                    style: const TextStyle(
+                      color: Colors.white38,
+                      fontSize: 12,
+                      fontFamily: '.SF Pro Text',
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -238,7 +263,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
           const Color(0xFF00D1FF),
         ),
         const SizedBox(width: 16),
-        _buildStatItem(timeStr, 'Avg. to solve', const Color(0xFF00FF85)),
+        _buildStatItem(timeStr, 'Avg. to solve', const Color(0xFF34C759)),
       ],
     );
   }
@@ -260,12 +285,17 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
+                    fontFamily: '.SF Pro Display',
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   label,
-                  style: const TextStyle(color: Colors.white38, fontSize: 12),
+                  style: const TextStyle(
+                    color: Colors.white38,
+                    fontSize: 12,
+                    fontFamily: '.SF Pro Text',
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Container(height: 2, width: 40, color: color),
@@ -280,29 +310,31 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
     return Center(
       child: Column(
         children: [
-          const Icon(Icons.history_toggle_off, color: Colors.white10, size: 64),
+          const Icon(CupertinoIcons.clock, color: Colors.white10, size: 64),
           const SizedBox(height: 24),
           const Text(
             'No records yet',
-            style: TextStyle(color: Colors.white54, fontSize: 16),
+            style: TextStyle(
+              color: Colors.white54,
+              fontSize: 16,
+              fontFamily: '.SF Pro Text',
+            ),
           ),
           const SizedBox(height: 32),
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF3B30).withValues(alpha: 0.1),
-                foregroundColor: const Color(0xFFFF3B30),
-                side: const BorderSide(color: Color(0xFFFF3B30), width: 1),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
+            child: CupertinoButton(
+              color: const Color(0xFFFF3B30).withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(16),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               onPressed: () => Navigator.popUntil(context, (r) => r.isFirst),
               child: const Text(
                 'Back to Alarms',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Color(0xFFFF3B30),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: '.SF Pro Text',
+                ),
               ),
             ),
           ),

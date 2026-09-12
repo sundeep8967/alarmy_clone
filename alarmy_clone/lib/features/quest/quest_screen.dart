@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
@@ -88,7 +89,7 @@ class QuestScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               children: [
-                const Icon(Icons.star, color: Color(0xFFFFD700), size: 20),
+                const Icon(CupertinoIcons.star_fill, color: Color(0xFFFFD700), size: 18),
                 const SizedBox(width: 8),
                 Consumer(
                   builder: (context, ref, child) {
@@ -345,26 +346,29 @@ class QuestScreen extends ConsumerWidget {
             ),
             const SizedBox(width: 12),
             if (quest.isCompleted && !quest.isClaimed)
-              ElevatedButton(
+              CupertinoButton(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                color: const Color(0xFFFFD700),
+                borderRadius: BorderRadius.circular(12),
+                minSize: 36,
                 onPressed: () async {
                   await QuestService.claimQuestReward(quest.id);
                   ref.refreshQuests();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFFD700),
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+                child: Text(
+                  '+${quest.xpReward}',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
                 ),
-                child: Text('+${quest.xpReward}'),
               )
             else if (quest.isClaimed)
-              const Icon(Icons.check_circle, color: Color(0xFF00D1FF), size: 28)
+              const Icon(CupertinoIcons.checkmark_alt_circle_fill, color: Color(0xFF00D1FF), size: 28)
             else
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -409,7 +413,7 @@ class QuestScreen extends ConsumerWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const BadgeScreen()),
+        CupertinoPageRoute<void>(builder: (_) => const BadgeScreen()),
       ),
       child: GlassContainer(
         blur: 15,
@@ -458,7 +462,7 @@ class QuestScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              const Icon(Icons.chevron_right, color: Colors.white38),
+              const Icon(CupertinoIcons.chevron_right, color: Colors.white38, size: 16),
             ],
           ),
         ),
