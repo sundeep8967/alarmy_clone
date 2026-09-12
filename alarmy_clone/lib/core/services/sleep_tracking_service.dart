@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:math' as math;
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:record/record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/database_helper.dart';
@@ -9,6 +11,7 @@ export 'sleep_stage_service.dart' show SleepStage, SleepStageResult;
 
 import 'yamnet_service.dart';
 import 'sleep_stage_service.dart';
+import 'alarm_service.dart';
 
 enum SnoreSeverity { none, background, low, moderate, loud, veryLoud }
 
@@ -99,6 +102,15 @@ class SleepTrackingService {
         _analyzeBuffer();
       });
 
+      // Keep CPU awake overnight and start Foreground Microphone Service so Android Doze mode does not mute audio
+      try {
+        await AlarmService.acquireWakeLock();
+        if (Platform.isAndroid) {
+          const foregroundChannel = MethodChannel('com.ravana.alarami/foreground');
+          await foregroundChannel.invokeMethod('startSleepTracking');
+        }
+      } catch (_) {}
+
       log('💤 [SleepTrackingService] Started tracking.');
       return true;
     } else {
@@ -112,6 +124,14 @@ class SleepTrackingService {
     _analysisTimer?.cancel();
     await _audioStreamSub?.cancel();
     await _audioRecorder.stop();
+
+    try {
+      await AlarmService.releaseWakeLock();
+      if (Platform.isAndroid) {
+        const foregroundChannel = MethodChannel('com.ravana.alarami/foreground');
+        await foregroundChannel.invokeMethod('stopSleepTracking');
+      }
+    } catch (_) {}
 
     // Save session to database
     if (sessionStartTime != null) {
@@ -193,14 +213,15 @@ class SleepTrackingService {
 
     // 3. Pipeline A: Amplitude Severity Bucket
     SnoreSeverity severity = SnoreSeverity.background;
-    if (normalizedDb > 85)
+    if (normalizedDb > 85) {
       severity = SnoreSeverity.veryLoud;
-    else if (normalizedDb > 70)
+    } else if (normalizedDb > 70) {
       severity = SnoreSeverity.loud;
-    else if (normalizedDb > 55)
+    } else if (normalizedDb > 55) {
       severity = SnoreSeverity.moderate;
-    else if (normalizedDb > 40)
+    } else if (normalizedDb > 40) {
       severity = SnoreSeverity.low;
+    }
 
     // 4. Pipeline B: YAMNet Inference (snore detection)
     YamnetResult? yamnetRes;
@@ -226,6 +247,10 @@ class SleepTrackingService {
     final isAmplitudeSnore = severity != SnoreSeverity.background;
 
     if (isMlSnore || isAmplitudeSnore) {
+      // Memory safety: cap events list at 1000 items to prevent overnight heap fragmentation and OOM
+      if (events.length >= 1000) {
+        events.removeAt(0);
+      }
       events.add(
         SleepEvent(
           timestamp: DateTime.now(),

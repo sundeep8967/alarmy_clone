@@ -15,6 +15,14 @@ class VolumeOverlay extends ConsumerStatefulWidget {
 class _VolumeOverlayState extends ConsumerState<VolumeOverlay> {
   double _volume = 0.95;
   bool _gentleWakeUp = true;
+  bool _isPlayingPreview = false;
+  SelectedSound? _soundsNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _soundsNotifier = ref.read(selectedSoundProvider.notifier);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,41 +153,58 @@ class _VolumeOverlayState extends ConsumerState<VolumeOverlay> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                GestureDetector(
-                  onTap: () {
-                    // Play preview of currently selected sound or first sound
+                InkWell(
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: () async {
                     final selectedSoundId = ref.read(selectedSoundProvider);
-                    final soundsNotifier = ref.read(
-                      selectedSoundProvider.notifier,
-                    );
-                    soundsNotifier.select(selectedSoundId);
+                    final notifier = ref.read(selectedSoundProvider.notifier);
+                    if (_isPlayingPreview) {
+                      notifier.stopPreview();
+                      setState(() {
+                        _isPlayingPreview = false;
+                      });
+                    } else {
+                      setState(() {
+                        _isPlayingPreview = true;
+                      });
+                      await notifier.togglePreview(
+                        soundId: selectedSoundId,
+                        volume: _volume,
+                      );
+                    }
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF152A38), // Darker blue circular bg
-                          shape: BoxShape.circle,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF152A38),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            _isPlayingPreview ? Icons.stop : Icons.play_arrow,
+                            color: const Color(0xFF42A5F5),
+                            size: 20,
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.play_arrow,
-                          color: Color(0xFF42A5F5),
-                          size: 20,
+                        const SizedBox(width: 8),
+                        Text(
+                          _isPlayingPreview ? 'Stop' : 'Preview',
+                          style: const TextStyle(
+                            color: Color(0xFF42A5F5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.none,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Preview',
-                        style: TextStyle(
-                          color: Color(0xFF42A5F5),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -192,7 +217,10 @@ class _VolumeOverlayState extends ConsumerState<VolumeOverlay> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    onPressed: widget.onNext,
+                    onPressed: () {
+                      ref.read(selectedSoundProvider.notifier).stopPreview();
+                      widget.onNext();
+                    },
                     child: const Text(
                       'Next',
                       style: TextStyle(
@@ -209,6 +237,12 @@ class _VolumeOverlayState extends ConsumerState<VolumeOverlay> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _soundsNotifier?.stopPreview();
+    super.dispose();
   }
 }
 

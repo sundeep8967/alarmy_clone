@@ -18,6 +18,12 @@ class AlarmLockService {
     } catch (_) {}
   }
 
+  static Future<void> stopNativeAlarm() async {
+    try {
+      await _ch.invokeMethod('stopNativeAlarm');
+    } catch (_) {}
+  }
+
   static Future<void> bringToFront() async {
     try {
       await _ch.invokeMethod('bringToFront');

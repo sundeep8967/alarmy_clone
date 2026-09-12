@@ -18,6 +18,7 @@ class AlarmService {
   static const platform = MethodChannel('com.ravana.alarami/wakelock');
   static const systemChannel = MethodChannel('com.ravana.alarami/system');
   static const batteryChannel = MethodChannel('com.ravana.alarami/battery');
+  static const foregroundChannel = MethodChannel('com.ravana.alarami/foreground');
 
   static Future<void> acquireWakeLock() async {
     try {
@@ -97,8 +98,9 @@ class AlarmService {
             // Logic to handle confirmation UI could go here
           } else {
             final alarm = await getAlarmById(response.payload!);
-            if (alarm != null)
+            if (alarm != null) {
               port.sendPort.send({'type': 'ring', 'alarm': alarm.toJson()});
+            }
           }
         }
       },
@@ -178,6 +180,20 @@ class AlarmService {
   static void alarmCallback(int id, Map<String, dynamic> params) async {
     final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
     send?.send({'type': 'ring', 'alarm': params});
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('pending_ringing_alarm_id', params['id'] as String? ?? '');
+      await prefs.setBool('is_alarm_ringing', true);
+    } catch (_) {}
+
+    // If main isolate was killed, trigger native alarm service so sound rings unconditionally
+    if (send == null && Platform.isAndroid) {
+      try {
+        const foregroundChannel = MethodChannel('com.ravana.alarami/foreground');
+        await foregroundChannel.invokeMethod('startLock');
+      } catch (_) {}
+    }
 
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
@@ -280,8 +296,9 @@ class AlarmService {
       alarm.minute,
     );
     if (alarm.activeDays.isEmpty) {
-      if (scheduleTime.isBefore(now))
+      if (scheduleTime.isBefore(now)) {
         scheduleTime = scheduleTime.add(const Duration(days: 1));
+      }
     } else {
       while (!alarm.activeDays.contains(scheduleTime.weekday % 7) ||
           scheduleTime.isBefore(now)) {
@@ -349,6 +366,19 @@ class AlarmService {
       rescheduleOnReboot: true,
       params: alarm.toJson(),
     );
+
+    // Schedule native Android setAlarmClock as a fail-safe (rings even if app is killed / Doze mode)
+    if (Platform.isAndroid) {
+      try {
+        await foregroundChannel.invokeMethod('scheduleNativeAlarm', {
+          'alarmId': alarm.id,
+          'triggerTimeMillis': scheduleTime.millisecondsSinceEpoch,
+          'alarmJson': alarm.toJson().toString(),
+        });
+      } catch (e) {
+        debugPrint('Failed to schedule native setAlarmClock: $e');
+      }
+    }
   }
 
   static Future<void> cancelAlarm(String alarmId) async {
@@ -358,11 +388,19 @@ class AlarmService {
     // Cancel pre-alarm (secondary alarm)
     await AndroidAlarmManager.cancel(alarmIdHash + 10000);
     await flutterLocalNotificationsPlugin.cancel(id: alarmIdHash + 10000);
+
+    // Cancel native setAlarmClock
+    if (Platform.isAndroid) {
+      try {
+        await foregroundChannel.invokeMethod('cancelNativeAlarm', {
+          'alarmId': alarmId,
+        });
+      } catch (_) {}
+    }
   }
 
   static Future<void> cancelAlarmById(String alarmId) async {
-    await AndroidAlarmManager.cancel(alarmId.hashCode);
-    await flutterLocalNotificationsPlugin.cancel(id: alarmId.hashCode);
+    await cancelAlarm(alarmId);
   }
 
   // Smart Alarm Window callback - monitor for light sleep
@@ -372,19 +410,10 @@ class AlarmService {
     Map<String, dynamic> params,
   ) async {
     final sleepTrackingActive = params['sleepTrackingActive'] as bool? ?? false;
-    final scheduleTime = DateTime.parse(params['scheduleTime'] as String);
 
     if (sleepTrackingActive) {
       // Sleep tracking is active - check for light sleep conditions
       // In a real implementation, this would query sleep tracking data
-      // For now, we use a simplified heuristic based on time within window
-      final now = DateTime.now();
-      final minutesUntilAlarm = scheduleTime.difference(now).inMinutes;
-
-      // Simulate "light sleep" detection - in reality this would check:
-      // - High movement levels (accelerometer)
-      // - Elevated noise levels (microphone decibels)
-      // - Sleep stage data from wearables
       final isLightSleepDetected = await _detectLightSleep();
 
       if (isLightSleepDetected) {

@@ -26,7 +26,7 @@ class OversleptMissionScreen extends ConsumerWidget {
       'color': Color(0xFF30D158),
     },
     {
-      'id': 'photo',
+      'id': 'picture',
       'icon': Icons.photo_camera,
       'title': 'Photo',
       'subtitle': 'Scan a pre-registered photo',
@@ -239,7 +239,9 @@ class OversleptMissionScreen extends ConsumerWidget {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const AlarmEditorScreen()),
+        MaterialPageRoute(
+          builder: (_) => AlarmEditorScreen(initialMission: missionId),
+        ),
       );
       return;
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:math' as math;
 import '../../core/providers/sleep_provider.dart';
@@ -13,30 +14,35 @@ class SleepScreen extends ConsumerWidget {
     final isTracking = sleepState.isTracking;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF101014),
+      backgroundColor: const Color(0xFF000000),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 24),
-              const Text(
-                'Sleep',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+              const SizedBox(height: 20),
+              const Padding(
+                padding: EdgeInsets.only(left: 4),
+                child: Text(
+                  'Sleep',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 34,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: '.SF Pro Display',
+                    letterSpacing: 0.4,
+                  ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
               // Main Track Sleep Card
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1C1D24),
-                  borderRadius: BorderRadius.circular(24),
+                  color: const Color(0xFF1C1C1E),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
                   children: [
@@ -50,28 +56,30 @@ class SleepScreen extends ConsumerWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         height: 1.3,
+                        fontFamily: '.SF Pro Display',
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
                     Text(
                       isTracking
                           ? 'Current Decibels: ${sleepState.currentDecibels.toStringAsFixed(1)} dB'
                           : 'Check your tossing, snoring sounds',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: Color(0xFF8E8E93),
                         fontSize: 14,
+                        fontFamily: '.SF Pro Text',
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
 
                     // Waveform Container
                     Container(
                       height: 80,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF2C2C30).withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(16),
+                        color: const Color(0xFF2C2C2E),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
@@ -82,15 +90,17 @@ class SleepScreen extends ConsumerWidget {
                               Text(
                                 isTracking ? 'Live' : 'am 01:26',
                                 style: const TextStyle(
-                                  color: Colors.white54,
+                                  color: Color(0xFF8E8E93),
                                   fontSize: 12,
+                                  fontFamily: '.SF Pro Text',
                                 ),
                               ),
                               Text(
                                 _getSeverityText(sleepState.currentDecibels),
                                 style: const TextStyle(
-                                  color: Colors.white54,
+                                  color: Color(0xFF8E8E93),
                                   fontSize: 12,
+                                  fontFamily: '.SF Pro Text',
                                 ),
                               ),
                             ],
@@ -107,21 +117,17 @@ class SleepScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
 
-                    // Track my sleep button
+                    // Start/Stop Tracking Button — iOS filled style
                     SizedBox(
                       width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isTracking
-                              ? Colors.redAccent
-                              : Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
+                      height: 50,
+                      child: CupertinoButton(
+                        color: isTracking
+                            ? const Color(0xFFFF3B30)
+                            : const Color(0xFF0A84FF),
+                        borderRadius: BorderRadius.circular(14),
                         onPressed: () {
                           if (isTracking) {
                             ref.read(sleepProvider.notifier).stopTracking();
@@ -130,11 +136,12 @@ class SleepScreen extends ConsumerWidget {
                           }
                         },
                         child: Text(
-                          isTracking ? 'Stop Tracking' : 'Track my sleep',
-                          style: TextStyle(
-                            color: isTracking ? Colors.white : Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                          isTracking ? 'Stop Tracking' : 'Track sleep',
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            fontFamily: '.SF Pro Text',
                           ),
                         ),
                       ),
@@ -144,7 +151,7 @@ class SleepScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
 
-              // Premium Charger Warning Card
+              // Charger Warning Card
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -232,6 +239,7 @@ class SleepScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -372,10 +380,11 @@ class WaveformPainter extends CustomPainter {
       } else if (!isTracking) {
         // Static pattern
         if (i > barCount * 0.3 && i < barCount * 0.7) {
-          if (i % 3 == 0)
+          if (i % 3 == 0) {
             height = 15.0 + random.nextDouble() * 15.0;
-          else
+          } else {
             height = 5.0 + random.nextDouble() * 10.0;
+          }
         } else {
           height = 2.0 + random.nextDouble() * 4.0;
         }

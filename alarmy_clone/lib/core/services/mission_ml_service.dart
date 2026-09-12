@@ -22,14 +22,8 @@ class MissionMLService {
       // Object detector initialization failed
     }
 
-    // Initialize Pose Landmarker for squat missions
-    try {
-      _poseInterpreter = await Interpreter.fromAsset(
-        'assets/ml/pose_landmarker.task',
-      );
-    } catch (e) {
-      // If model fails to load, we'll use fallback threshold-based detection
-    }
+    // Pose Landmarker is a MediaPipe task bundle and uses heuristic/fallback squat detection
+    // rather than raw TFLite interpreter
   }
 
   // Unified evaluation interface

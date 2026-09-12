@@ -67,16 +67,35 @@ class StepNotifier extends Notifier<StepState> {
   void _evaluateWindow(List<List<double>> window) {
     final score = TFLiteMissionService.evaluateStep(window);
 
-    // Debug: Print ML confidence score
-    debugPrint('[Step ML] Confidence score: ${score.toStringAsFixed(3)}');
+    // Heuristic fallback: calculate acceleration magnitude variance for walking cadence
+    // [AccX, AccY, AccZ, GyrX, GyrY, GyrZ]
+    double minMag = double.infinity;
+    double maxMag = -double.infinity;
+    for (var frame in window) {
+      if (frame.length >= 3) {
+        final x = frame[0];
+        final y = frame[1];
+        final z = frame[2];
+        final mag = (x * x + y * y + z * z);
+        if (mag < minMag) minMag = mag;
+        if (mag > maxMag) maxMag = mag;
+      }
+    }
+    final magDelta = (maxMag - minMag);
 
-    if (score >= _mlThreshold) {
+    // Debug: Print ML confidence score & physical delta
+    debugPrint('[Step ML] Confidence: ${score.toStringAsFixed(3)}, Mag-delta: ${magDelta.toStringAsFixed(1)}');
+
+    // Detected either via high ML confidence (>=0.8) OR walking acceleration oscillation (magDelta > 45.0 with score > 0.35)
+    final isStepDetected = score >= _mlThreshold || (magDelta > 45.0 && score > 0.35);
+
+    if (isStepDetected) {
       debugPrint(
-        '[Step ML] ✓ Step detected! Score: ${score.toStringAsFixed(3)}',
+        '[Step ML] ✓ Step detected! Score: ${score.toStringAsFixed(3)}, Mag-delta: ${magDelta.toStringAsFixed(1)}',
       );
       incrementStep();
-      // Pause buffer for 0.8 seconds to prevent double-counting the same step
-      _sensorBuffer?.pauseForCooldown(const Duration(milliseconds: 800));
+      // Pause buffer for 0.6 seconds to prevent double-counting the same step
+      _sensorBuffer?.pauseForCooldown(const Duration(milliseconds: 600));
     }
   }
 

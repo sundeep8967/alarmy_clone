@@ -20,8 +20,12 @@ class MainActivity : FlutterActivity() {
     private val DEVICE_ADMIN_CHANNEL = "com.ravana.alarami/device_admin"
     private var wakeLock: PowerManager.WakeLock? = null
  
+    private var pendingAlarmId: String? = null
+    private var alarmChannel: MethodChannel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        handleAlarmIntent(intent)
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
@@ -36,9 +40,41 @@ class MainActivity : FlutterActivity() {
             )
         }
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleAlarmIntent(intent)
+    }
+
+    private fun handleAlarmIntent(intent: Intent?) {
+        val alarmId = intent?.getStringExtra("alarm_id")
+        if (!alarmId.isNullOrEmpty()) {
+            pendingAlarmId = alarmId
+            alarmChannel?.invokeMethod("onAlarmTriggered", mapOf("alarmId" to alarmId))
+            android.util.Log.d("MainActivity", "Alarm intent received with alarmId: $alarmId")
+        }
+    }
  
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        
+        // Dedicated alarm events channel for cold-start and full-screen intent forwarding
+        alarmChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "com.ravana.alarami/alarm_events").apply {
+            setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "getPendingAlarm" -> {
+                        result.success(pendingAlarmId)
+                        pendingAlarmId = null // clear after consumed
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+        }
+        // If an alarm arrived before the engine was attached, send it immediately
+        pendingAlarmId?.let { id ->
+            alarmChannel?.invokeMethod("onAlarmTriggered", mapOf("alarmId" to id))
+        }
         
         // WakeLock channel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
@@ -136,6 +172,22 @@ class MainActivity : FlutterActivity() {
             "com.ravana.alarami/foreground"
         ).setMethodCallHandler { call, result ->
             when (call.method) {
+                "scheduleNativeAlarm" -> {
+                    val alarmId = call.argument<String>("alarmId") ?: ""
+                    val triggerTimeMillis = call.argument<Long>("triggerTimeMillis") ?: 0L
+                    val alarmJson = call.argument<String>("alarmJson") ?: "{}"
+                    if (alarmId.isNotEmpty() && triggerTimeMillis > System.currentTimeMillis()) {
+                        scheduleNativeAlarmClock(alarmId, triggerTimeMillis, alarmJson)
+                    }
+                    result.success(true)
+                }
+                "cancelNativeAlarm" -> {
+                    val alarmId = call.argument<String>("alarmId") ?: ""
+                    if (alarmId.isNotEmpty()) {
+                        cancelNativeAlarmClock(alarmId)
+                    }
+                    result.success(true)
+                }
                 "startLock" -> {
                     val i = Intent(this, AlarmForegroundService::class.java).apply {
                         action = AlarmForegroundService.ACTION_START
@@ -150,6 +202,31 @@ class MainActivity : FlutterActivity() {
                 "stopLock" -> {
                     val i = Intent(this, AlarmForegroundService::class.java).apply {
                         action = AlarmForegroundService.ACTION_STOP
+                    }
+                    startService(i)
+                    result.success(null)
+                }
+                "stopNativeAlarm" -> {
+                    val i = Intent(this, AlarmService::class.java).apply {
+                        action = AlarmService.ACTION_STOP
+                    }
+                    startService(i)
+                    result.success(null)
+                }
+                "startSleepTracking" -> {
+                    val i = Intent(this, SleepTrackingService::class.java).apply {
+                        action = SleepTrackingService.ACTION_START
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(i)
+                    } else {
+                        startService(i)
+                    }
+                    result.success(null)
+                }
+                "stopSleepTracking" -> {
+                    val i = Intent(this, SleepTrackingService::class.java).apply {
+                        action = SleepTrackingService.ACTION_STOP
                     }
                     startService(i)
                     result.success(null)
@@ -303,4 +380,65 @@ class MainActivity : FlutterActivity() {
             }
         }
     }
+
+    private fun scheduleNativeAlarmClock(alarmId: String, triggerTimeMillis: Long, alarmJson: String) {
+        try {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+            val intent = Intent(this, AlarmReceiver::class.java).apply {
+                putExtra("alarm_id", alarmId)
+                putExtra("alarm_json", alarmJson)
+            }
+            val pendingIntent = android.app.PendingIntent.getBroadcast(
+                this,
+                alarmId.hashCode(),
+                intent,
+                android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+            )
+            val showIntent = android.app.PendingIntent.getActivity(
+                this,
+                0,
+                Intent(this, MainActivity::class.java),
+                android.app.PendingIntent.FLAG_IMMUTABLE
+            )
+            val alarmClockInfo = android.app.AlarmManager.AlarmClockInfo(triggerTimeMillis, showIntent)
+            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent)
+
+            // Persist alarm details for BootReceiver recovery after reboot
+            val prefs = getSharedPreferences("native_alarm_prefs", Context.MODE_PRIVATE)
+            val record = org.json.JSONObject().apply {
+                put("triggerTimeMillis", triggerTimeMillis)
+                put("alarmJson", alarmJson)
+            }
+            prefs.edit().putString(alarmId, record.toString()).apply()
+
+            android.util.Log.d("MainActivity", "Scheduled and persisted native setAlarmClock for alarm: $alarmId at $triggerTimeMillis")
+        } catch (e: Exception) {
+            android.util.Log.e("MainActivity", "Failed to schedule native alarm: $e")
+        }
+    }
+
+    private fun cancelNativeAlarmClock(alarmId: String) {
+        try {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+            val intent = Intent(this, AlarmReceiver::class.java)
+            val pendingIntent = android.app.PendingIntent.getBroadcast(
+                this,
+                alarmId.hashCode(),
+                intent,
+                android.app.PendingIntent.FLAG_NO_CREATE or android.app.PendingIntent.FLAG_IMMUTABLE
+            )
+            if (pendingIntent != null) {
+                alarmManager.cancel(pendingIntent)
+                pendingIntent.cancel()
+                android.util.Log.d("MainActivity", "Cancelled native setAlarmClock for alarm: $alarmId")
+            }
+
+            // Remove from native persistence
+            val prefs = getSharedPreferences("native_alarm_prefs", Context.MODE_PRIVATE)
+            prefs.edit().remove(alarmId).apply()
+        } catch (e: Exception) {
+            android.util.Log.e("MainActivity", "Failed to cancel native alarm: $e")
+        }
+    }
 }
+

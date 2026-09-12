@@ -22,8 +22,19 @@ class AlarmSound {
 class SelectedSound extends _$SelectedSound {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
+  bool _isPlaying = false;
+  bool get isPlaying => _isPlaying;
+
   @override
   String build() {
+    _audioPlayer.onPlayerStateChanged.listen((playerState) {
+      final playing = playerState == PlayerState.playing;
+      if (_isPlaying != playing) {
+        _isPlaying = playing;
+        ref.notifyListeners();
+      }
+    });
+
     ref.onDispose(() {
       _audioPlayer.dispose();
       debugPrint('🎵 [Sounds] AudioPlayer disposed');
@@ -37,6 +48,21 @@ class SelectedSound extends _$SelectedSound {
     _playPreview(id);
   }
 
+  void setVolume(double volume) {
+    _audioPlayer.setVolume(volume.clamp(0.0, 1.0));
+  }
+
+  Future<void> togglePreview({String? soundId, double? volume}) async {
+    if (_isPlaying) {
+      stopPreview();
+    } else {
+      if (volume != null) {
+        await _audioPlayer.setVolume(volume.clamp(0.0, 1.0));
+      }
+      await _playPreview(soundId ?? state);
+    }
+  }
+
   Future<void> _playPreview(String id) async {
     final sound = sounds.firstWhere(
       (s) => s.id == id,
@@ -45,6 +71,8 @@ class SelectedSound extends _$SelectedSound {
     try {
       await _audioPlayer.stop();
       await _audioPlayer.play(AssetSource('sounds/${sound.assetPath}'));
+      _isPlaying = true;
+      ref.notifyListeners();
       debugPrint('🎵 [Sounds] Playing preview: ${sound.assetPath}');
     } catch (e) {
       debugPrint('❌ [Sounds] Error playing preview: $e');
@@ -53,6 +81,8 @@ class SelectedSound extends _$SelectedSound {
 
   void stopPreview() {
     _audioPlayer.stop();
+    _isPlaying = false;
+    ref.notifyListeners();
   }
 }
 

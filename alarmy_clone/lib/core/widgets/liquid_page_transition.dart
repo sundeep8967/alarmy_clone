@@ -242,27 +242,34 @@ class LiquidSwipeViewState extends State<LiquidSwipeView>
     final screenWidth = MediaQuery.of(context).size.width;
     final activeProgress = _isDragging ? _dragProgress : _animation.value;
 
+    final content = Stack(
+      fit: StackFit.expand,
+      children: [
+        // Base Page
+        widget.pages[_currentPage],
+
+        // Liquid overlay for incoming page
+        if (_targetPage != null && activeProgress > 0.0)
+          ClipPath(
+            clipper: LiquidWaveClipper(
+              progress: activeProgress,
+              isLeftToRight: _isLeftToRight,
+            ),
+            child: widget.pages[_targetPage!],
+          ),
+      ],
+    );
+
+    if (!widget.enableGesture) {
+      return content;
+    }
+
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onHorizontalDragStart: _onHorizontalDragStart,
       onHorizontalDragUpdate: (d) => _onHorizontalDragUpdate(d, screenWidth),
       onHorizontalDragEnd: _onHorizontalDragEnd,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Base Page
-          widget.pages[_currentPage],
-
-          // Liquid overlay for incoming page
-          if (_targetPage != null && activeProgress > 0.0)
-            ClipPath(
-              clipper: LiquidWaveClipper(
-                progress: activeProgress,
-                isLeftToRight: _isLeftToRight,
-              ),
-              child: widget.pages[_targetPage!],
-            ),
-        ],
-      ),
+      child: content,
     );
   }
 }

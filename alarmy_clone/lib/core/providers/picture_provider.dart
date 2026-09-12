@@ -57,9 +57,11 @@ class PictureNotifier extends Notifier<PictureState> {
 
     ref.onDispose(() async {
       if (_isStreaming) {
-        await _controller?.stopImageStream();
+        try {
+          await _controller?.stopImageStream();
+        } catch (_) {}
       }
-      await _controller?.dispose();
+      await CameraService.dispose();
       _controller = null;
     });
 
@@ -90,17 +92,31 @@ class PictureNotifier extends Notifier<PictureState> {
   void startObjectDetection() async {
     if (_controller == null ||
         !_controller!.value.isInitialized ||
-        _isStreaming)
+        _isStreaming) {
       return;
+    }
 
     _isStreaming = true;
+    int lastProcessedTimestamp = 0;
+    bool isProcessingFrame = false;
+
     await _controller!.startImageStream((CameraImage image) async {
-      if (state.isVerified) return;
+      if (state.isVerified || !_isStreaming) return;
+
+      final now = DateTime.now().millisecondsSinceEpoch;
+      // Throttle: process at most once every 500ms to avoid Dart GC spikes and OOM
+      if (now - lastProcessedTimestamp < 500 || isProcessingFrame) return;
+
+      lastProcessedTimestamp = now;
+      isProcessingFrame = true;
 
       try {
         // Convert CameraImage to InputImage for ML Kit
         final inputImage = _convertCameraImage(image);
-        if (inputImage == null) return;
+        if (inputImage == null) {
+          isProcessingFrame = false;
+          return;
+        }
 
         // Detect objects
         final detectedLabels = await MissionMLService.detectObjects(inputImage);
@@ -119,6 +135,8 @@ class PictureNotifier extends Notifier<PictureState> {
         }
       } catch (e) {
         // Silent fail - continue trying
+      } finally {
+        isProcessingFrame = false;
       }
     });
   }
@@ -186,9 +204,20 @@ class PictureNotifier extends Notifier<PictureState> {
     double nativeScore = 0.0;
     if (_originalImageBytes != null && _controller != null) {
       try {
-        // Take a picture
+        // Crucial HAL3 Safety: Temporarily pause image stream to avoid CAMERA_IN_USE hardware deadlock
+        final wasStreaming = _isStreaming;
+        if (wasStreaming) {
+          await stopObjectDetection();
+        }
+
+        // Take a picture safely
         final XFile photo = await _controller!.takePicture();
         final currentBytes = await photo.readAsBytes();
+
+        // Resume stream if still in verification phase
+        if (wasStreaming && !state.isVerified) {
+          startObjectDetection();
+        }
 
         // Preprocess both images
         final originalProcessed = ImageUtils.preprocessForTFLite(
@@ -215,8 +244,8 @@ class PictureNotifier extends Notifier<PictureState> {
     state = state.copyWith(nativeScore: nativeScore);
 
     // Check if verified via either method
-    // Method 1: Native TFLite similarity > 0.85
-    final nativeMatch = nativeScore > 0.85;
+    // Method 1: Native TFLite similarity > 0.70 (calibrated for real-world lighting variance)
+    final nativeMatch = nativeScore > 0.70;
 
     // Method 2: Google ML Kit object match (already checked in stream)
     final googleMatch =
@@ -224,7 +253,8 @@ class PictureNotifier extends Notifier<PictureState> {
         _targetObject != null &&
         MissionMLService.checkObjectMatch(state.googleLabels, _targetObject!);
 
-    final isVerified = nativeMatch || googleMatch;
+    // Method 3: Fallback if no target is specified or native score is reasonably close (>0.60)
+    final isVerified = nativeMatch || googleMatch || (nativeScore > 0.60 && _targetObject == null);
 
     if (isVerified) {
       debugPrint(
@@ -246,6 +276,7 @@ class PictureNotifier extends Notifier<PictureState> {
   CameraController? get controller => _controller;
 }
 
-final pictureProvider = NotifierProvider<PictureNotifier, PictureState>(
+final pictureProvider =
+    NotifierProvider.autoDispose<PictureNotifier, PictureState>(
   PictureNotifier.new,
 );

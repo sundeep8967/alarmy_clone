@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:animate_do/animate_do.dart';
 import 'alarm_optimization_screen.dart';
 import 'battery_optimization_screen.dart';
 import 'general_setting_screen.dart';
@@ -18,153 +18,85 @@ class SettingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: const Color(0xFF101014),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF1A1A20), Color(0xFF101014)],
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(),
-                const SizedBox(height: 12),
-                FadeInUp(
-                  duration: const Duration(milliseconds: 600),
-                  child: _buildProStatusBadge(),
+      backgroundColor: const Color(0xFF000000),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 8),
+              _buildProStatusBadge(),
+              const SizedBox(height: 32),
+              _buildSectionHeader('SYSTEM'),
+              _buildSettingsGroup([
+                _SettingModel(
+                  'Alarm Optimization',
+                  CupertinoIcons.sparkles,
+                  const Color(0xFF00C7FF),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const AlarmOptimizationScreen())),
                 ),
-                const SizedBox(height: 24),
-                _buildSectionHeader('SYSTEM'),
-                FadeInUp(
-                  duration: const Duration(milliseconds: 700),
-                  child: _buildSettingsGroup([
-                    _SettingModel(
-                      'Alarm optimization',
-                      Icons.auto_fix_high,
-                      const Color(0xFF00D1FF),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const AlarmOptimizationScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'Permission & Security',
-                      Icons.security,
-                      const Color(0xFFFF3B30),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const PermissionDoaScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'Battery Optimization',
-                      Icons.battery_charging_full,
-                      const Color(0xFFFF9500),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const BatteryOptimizationScreen(),
-                        ),
-                      ),
-                    ),
-                  ]),
+                _SettingModel(
+                  'Permission & Security',
+                  CupertinoIcons.lock_shield_fill,
+                  const Color(0xFFFF3B30),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const PermissionDoaScreen())),
                 ),
-                const SizedBox(height: 24),
-                _buildSectionHeader('PREFERENCES'),
-                FadeInUp(
-                  duration: const Duration(milliseconds: 800),
-                  child: _buildSettingsGroup([
-                    _SettingModel(
-                      'Language',
-                      Icons.language,
-                      const Color(0xFF5856D6),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const LanguageScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'Alarm Settings',
-                      Icons.alarm,
-                      const Color(0xFFFF9500),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const AlarmSettingsScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'Ramadan Mode',
-                      Icons.nightlight_round,
-                      const Color(0xFF00D1FF),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RamadanScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'Behaviour & System',
-                      Icons.tune,
-                      const Color(0xFF8E8E93),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const GeneralSettingScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'FAQ & Support',
-                      Icons.help_outline_rounded,
-                      const Color(0xFFFFD60A),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const FaqScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'Notice & Updates',
-                      Icons.campaign_outlined,
-                      const Color(0xFF30D158),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const NoticeScreen(),
-                        ),
-                      ),
-                    ),
-                    _SettingModel(
-                      'About Alarami',
-                      Icons.info_outline,
-                      const Color(0xFFFF3B30),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const AboutScreen(),
-                        ),
-                      ),
-                    ),
-                  ]),
+                _SettingModel(
+                  'Battery Optimization',
+                  CupertinoIcons.battery_full,
+                  const Color(0xFFFF9500),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const BatteryOptimizationScreen())),
                 ),
-                const SizedBox(height: 40),
-              ],
-            ),
+              ]),
+              const SizedBox(height: 32),
+              _buildSectionHeader('PREFERENCES'),
+              _buildSettingsGroup([
+                _SettingModel(
+                  'Language',
+                  CupertinoIcons.globe,
+                  const Color(0xFF5856D6),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const LanguageScreen())),
+                ),
+                _SettingModel(
+                  'Alarm Settings',
+                  CupertinoIcons.alarm_fill,
+                  const Color(0xFFFF9500),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const AlarmSettingsScreen())),
+                ),
+                _SettingModel(
+                  'Ramadan Mode',
+                  CupertinoIcons.moon_stars_fill,
+                  const Color(0xFF00C7FF),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const RamadanScreen())),
+                ),
+                _SettingModel(
+                  'Behaviour & System',
+                  CupertinoIcons.slider_horizontal_3,
+                  const Color(0xFF8E8E93),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const GeneralSettingScreen())),
+                ),
+                _SettingModel(
+                  'FAQ & Support',
+                  CupertinoIcons.question_circle_fill,
+                  const Color(0xFFFFD60A),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const FaqScreen())),
+                ),
+                _SettingModel(
+                  'Notice & Updates',
+                  CupertinoIcons.bell_fill,
+                  const Color(0xFF30D158),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const NoticeScreen())),
+                ),
+                _SettingModel(
+                  'About Alarami',
+                  CupertinoIcons.info_circle_fill,
+                  const Color(0xFFFF3B30),
+                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const AboutScreen())),
+                ),
+              ]),
+              const SizedBox(height: 40),
+            ],
           ),
         ),
       ),
@@ -173,13 +105,15 @@ class SettingScreen extends ConsumerWidget {
 
   Widget _buildHeader() {
     return const Padding(
-      padding: EdgeInsets.all(24.0),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Text(
         'Settings',
         style: TextStyle(
           color: Colors.white,
-          fontSize: 32,
+          fontSize: 34,
           fontWeight: FontWeight.bold,
+          fontFamily: '.SF Pro Display',
+          letterSpacing: 0.4,
         ),
       ),
     );
@@ -187,25 +121,24 @@ class SettingScreen extends ConsumerWidget {
 
   Widget _buildProStatusBadge() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(24, 8, 24, 0),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: const Color(0xFF1C1C1E),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFF30D158).withValues(alpha: 0.4),
-        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF30D158).withValues(alpha: 0.3), width: 0.5),
       ),
       child: const Row(
         children: [
-          Icon(Icons.verified, color: Color(0xFF30D158), size: 22),
-          SizedBox(width: 12),
+          Icon(CupertinoIcons.checkmark_seal_fill, color: Color(0xFF30D158), size: 20),
+          SizedBox(width: 10),
           Text(
             'All PRO features activated',
             style: TextStyle(
               color: Color(0xFF30D158),
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 15,
+              fontFamily: '.SF Pro Text',
             ),
           ),
         ],
@@ -215,14 +148,15 @@ class SettingScreen extends ConsumerWidget {
 
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, bottom: 8),
+      padding: const EdgeInsets.only(left: 36, bottom: 6),
       child: Text(
         title,
         style: const TextStyle(
-          color: Colors.white38,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.2,
+          color: Color(0xFF8E8E93),
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
+          fontFamily: '.SF Pro Text',
+          letterSpacing: 0.1,
         ),
       ),
     );
@@ -230,71 +164,68 @@ class SettingScreen extends ConsumerWidget {
 
   Widget _buildSettingsGroup(List<_SettingModel> items) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(24),
+        color: const Color(0xFF1C1C1E),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: items.asMap().entries.map((entry) {
           final index = entry.key;
           final item = entry.value;
+          final isFirst = index == 0;
           final isLast = index == items.length - 1;
 
-          return InkWell(
+          return GestureDetector(
             onTap: item.onTap,
-            borderRadius: BorderRadius.circular(24),
+            behavior: HitTestBehavior.opaque,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: item.iconColor.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(item.icon, color: item.iconColor, size: 20),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Text(
-                          item.title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      if (item.hasNotice)
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1C1C1E),
+                    borderRadius: BorderRadius.vertical(
+                      top: isFirst ? const Radius.circular(12) : Radius.zero,
+                      bottom: isLast ? const Radius.circular(12) : Radius.zero,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+                    child: Row(
+                      children: [
+                        // iOS-style square icon badge
                         Container(
-                          width: 8,
-                          height: 8,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: item.iconColor,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: Icon(item.icon, color: Colors.white, size: 17),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Text(
+                            item.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: '.SF Pro Text',
+                            ),
                           ),
                         ),
-                      if (item.trailing != null)
-                        item.trailing!
-                      else
-                        const Icon(
-                          Icons.chevron_right,
-                          color: Colors.white12,
-                          size: 20,
-                        ),
-                    ],
+                        const Icon(CupertinoIcons.chevron_right, color: Color(0xFF48484A), size: 16),
+                      ],
+                    ),
                   ),
                 ),
                 if (!isLast)
-                  Divider(
-                    height: 1,
-                    color: Colors.white.withValues(alpha: 0.05),
-                    indent: 64,
+                  const Divider(
+                    height: 0.5,
+                    thickness: 0.5,
+                    color: Color(0xFF38383A),
+                    indent: 60,
                   ),
               ],
             ),
@@ -309,16 +240,14 @@ class _SettingModel {
   final String title;
   final IconData icon;
   final Color iconColor;
-  final bool hasNotice;
   final VoidCallback? onTap;
-  final Widget? trailing;
 
   _SettingModel(
     this.title,
     this.icon,
     this.iconColor, {
-    this.hasNotice = false,
     this.onTap,
-    this.trailing,
   });
 }
+
+

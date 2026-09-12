@@ -24,24 +24,38 @@ class SensorBufferProvider {
     _buffer.clear();
     _isPaused = false;
 
-    // Listen to Gyroscope and cache latest values
+    // Listen to Gyroscope and cache latest values with timestamp
+    int lastGyroTimestamp = 0;
     _gyroSub = gyroscopeEventStream().listen((GyroscopeEvent event) {
       _lastGyroX = event.x;
       _lastGyroY = event.y;
       _lastGyroZ = event.z;
+      lastGyroTimestamp = DateTime.now().millisecondsSinceEpoch;
     });
 
     // Listen to Accelerometer, sync with Gyro, and build buffer
+    int lastSampleTimestamp = 0;
     _accelSub = accelerometerEventStream().listen((AccelerometerEvent event) {
       if (_isPaused) return;
+
+      final now = DateTime.now().millisecondsSinceEpoch;
+      // Resample at ~50Hz (every 20ms) to ensure uniform time steps for the ML LSTM
+      if (now - lastSampleTimestamp < 15) return;
+      lastSampleTimestamp = now;
+
+      // Ensure gyro readings are fresh (within 200ms) or gracefully decay to zero
+      final isGyroFresh = (now - lastGyroTimestamp) < 200;
+      final gyroX = isGyroFresh ? _lastGyroX : 0.0;
+      final gyroY = isGyroFresh ? _lastGyroY : 0.0;
+      final gyroZ = isGyroFresh ? _lastGyroZ : 0.0;
 
       final frame = [
         event.x,
         event.y,
         event.z,
-        _lastGyroX,
-        _lastGyroY,
-        _lastGyroZ,
+        gyroX,
+        gyroY,
+        gyroZ,
       ];
 
       _buffer.add(frame);

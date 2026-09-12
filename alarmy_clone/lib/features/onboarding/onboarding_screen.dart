@@ -111,61 +111,67 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            // LiquidSwipeView — organic liquid wave transition
-            LiquidSwipeView(
-              key: _liquidKey,
-              enableGesture: state.currentPage < 3,
-              onPageChanged: (value) {
-                setState(() {
-                  _currentPageIndex = value;
-                });
-                ref.read(onboardingProvider.notifier).setPage(value);
-                if (value == 9) {
-                  ref
-                      .read(onboardingProvider.notifier)
-                      .startProcessing(_completeOnboarding);
-                }
-              },
-              pages: [
-                const IntroStep1(),
-                const IntroStep2(),
-                const IntroStep3(),
-                const OnboardingStep1(),
-                OnboardingStep2(
-                  onNext: _nextPage,
-                  onSkipPreview: _skipPreviewAndGoToSound,
-                ),
-                OnboardingWallpaperPreview(onNext: _goToNext, goBack: _goBack),
-                OnboardingStep3(onNext: _nextPage),
-                OnboardingStep4List(onNext: _nextPage),
-                OnboardingStep4Detail(onNext: _nextPage),
-                OnboardingProcessingStep(onComplete: _completeOnboarding),
-              ],
-            ),
-
             // Progress bar at top
-            if (showProgressBar)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: _buildProgressBar(progressStep),
-              ),
+            if (showProgressBar) _buildProgressBar(progressStep),
 
-            // Navigation elements at bottom (conditionally shown)
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+            // Main swipeable content
+            Expanded(
+              child: Stack(
                 children: [
-                  if (state.currentPage < 3)
-                    _buildPageIndicator(state.currentPage),
-                  if (_shouldShowBottomButton(state.currentPage))
-                    _buildBottomButton(state.currentPage),
+                  // LiquidSwipeView — organic liquid wave transition
+                  LiquidSwipeView(
+                    key: _liquidKey,
+                    enableGesture: state.currentPage < 3,
+                    onPageChanged: (value) {
+                      setState(() {
+                        _currentPageIndex = value;
+                      });
+                      ref.read(onboardingProvider.notifier).setPage(value);
+                      if (value == 9) {
+                        ref
+                            .read(onboardingProvider.notifier)
+                            .startProcessing(_completeOnboarding);
+                      }
+                    },
+                    pages: [
+                      const IntroStep1(),
+                      const IntroStep2(),
+                      const IntroStep3(),
+                      const OnboardingStep1(),
+                      OnboardingStep2(
+                        onNext: _nextPage,
+                        onSkipPreview: _skipPreviewAndGoToSound,
+                      ),
+                      OnboardingWallpaperPreview(
+                        onNext: _goToNext,
+                        goBack: _goBack,
+                      ),
+                      OnboardingStep3(onNext: _nextPage),
+                      OnboardingStep4List(onNext: _nextPage),
+                      OnboardingStep4Detail(onNext: _nextPage),
+                      OnboardingProcessingStep(
+                        onComplete: _completeOnboarding,
+                      ),
+                    ],
+                  ),
+
+                  // Navigation elements at bottom (conditionally shown)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (state.currentPage < 3)
+                          _buildPageIndicator(state.currentPage),
+                        if (_shouldShowBottomButton(state.currentPage))
+                          _buildBottomButton(state.currentPage),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

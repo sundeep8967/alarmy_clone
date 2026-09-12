@@ -10,7 +10,11 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d("AlarmReceiver", "Alarm received!")
         
-        val serviceIntent = Intent(context, AlarmService::class.java)
+        val serviceIntent = Intent(context, AlarmService::class.java).apply {
+            action = AlarmService.ACTION_START
+            intent.getStringExtra("alarm_id")?.let { putExtra("alarm_id", it) }
+            intent.getStringExtra("alarm_json")?.let { putExtra("alarm_json", it) }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent)
         } else {

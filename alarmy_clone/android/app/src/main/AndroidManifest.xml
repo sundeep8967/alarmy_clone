@@ -7,7 +7,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -24,7 +26,8 @@
     <application
         android:label="Alarami"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -66,6 +69,18 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <!-- Native Boot Receiver for setAlarmClock restoration -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
         
         <!-- Custom Analog Home Widget Provider -->
         <receiver
@@ -92,11 +107,27 @@
             </intent-filter>
         </receiver>
 
-        <!-- Foreground Service for Alarm Lock -->
+        <!-- Foreground Service for Alarm Lock (mediaPlayback compliant with Android 14+ policies) -->
         <service
             android:name=".AlarmForegroundService"
             android:exported="false"
-            android:foregroundServiceType="phoneCall" />
+            android:foregroundServiceType="mediaPlayback" />
+
+        <!-- Native Alarm Receiver & Service for background ringing when app is killed -->
+        <receiver
+            android:name=".AlarmReceiver"
+            android:exported="true" />
+
+        <service
+            android:name=".AlarmService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <!-- Native Sleep Tracking Foreground Service (microphone compliant with Android 10-15 policies) -->
+        <service
+            android:name=".SleepTrackingService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
 
         <!-- Accessibility Service for Uninstall Guard -->
         <service

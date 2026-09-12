@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
 import '../../core/models/alarm_model.dart';
@@ -15,7 +16,6 @@ import '../alarm_ring/alarm_ring_screen.dart';
 import 'alarm_settings_screen.dart';
 import '../setting/premium_screen.dart';
 import '../setting/battery_optimization_screen.dart';
-import '../setting/notice_screen.dart';
 import 'overslept_mission_screen.dart';
 import '../../core/widgets/liquid_page_transition.dart';
 import '../../core/widgets/bouncy_pressable.dart';
@@ -232,7 +232,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     }
   }
 
-  void _showFabMenu() {
+  Future<void> _showFabMenu() async {
     final RenderBox? fabBox =
         _fabKey.currentContext?.findRenderObject() as RenderBox?;
     Offset? fabPosition;
@@ -240,24 +240,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
       fabPosition = fabBox.localToGlobal(Offset.zero);
     }
 
-    showGeneralDialog(
+    final selectedAction = await showGeneralDialog<String>(
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.8),
       barrierDismissible: true,
       barrierLabel: 'FAB Menu',
-      transitionDuration: const Duration(milliseconds: 300),
-      pageBuilder: (context, animation, secondaryAnimation) {
+      transitionDuration: const Duration(milliseconds: 250),
+      pageBuilder: (dialogContext, animation, secondaryAnimation) {
         return Scaffold(
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
+              Positioned.fill(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => Navigator.pop(dialogContext),
+                  child: Container(color: Colors.transparent),
+                ),
+              ),
               if (fabPosition != null)
                 Positioned(
                   bottom:
-                      MediaQuery.of(context).size.height - fabPosition.dy + 24,
+                      MediaQuery.of(dialogContext).size.height - fabPosition.dy + 24,
                   right: 24,
                   child: FadeInUp(
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 250),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisSize: MainAxisSize.min,
@@ -266,45 +273,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                           'Habit alarm',
                           Icons.calendar_month,
                           const Color(0xFF6B7BFF),
-                          () async {
-                            Navigator.pop(context);
-                            await Navigator.push(
-                              this.context,
-                              MaterialPageRoute(
-                                builder: (_) => const HabitAlarmScreen(),
-                              ),
-                            );
-                          },
+                          () => Navigator.pop(dialogContext, 'habit'),
                         ),
                         const SizedBox(height: 12),
                         _buildFabMenuItem(
                           'Quick alarm',
                           Icons.bolt,
                           const Color(0xFF00D1FF),
-                          () {
-                            Navigator.pop(context);
-                            showModalBottomSheet(
-                              context: this.context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) => const QuickAlarmSheet(),
-                            );
-                          },
+                          () => Navigator.pop(dialogContext, 'quick'),
                         ),
                         const SizedBox(height: 12),
                         _buildFabMenuItem(
                           'New Alarm',
                           Icons.alarm_add,
                           const Color(0xFFFF3B30),
-                          () async {
-                            Navigator.pop(context);
-                            await Navigator.push(
-                              this.context,
-                              LiquidPageRoute(
-                                page: const AlarmEditorScreen(),
-                              ),
-                            );
-                          },
+                          () => Navigator.pop(dialogContext, 'new_alarm'),
                         ),
                       ],
                     ),
@@ -315,11 +298,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                   left: fabPosition.dx,
                   top: fabPosition.dy,
                   child: ZoomIn(
+                    duration: const Duration(milliseconds: 200),
                     child: FloatingActionButton(
+                      heroTag: 'fab_close_dialog',
                       backgroundColor: Colors.white,
                       shape: const CircleBorder(),
                       elevation: 0,
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.pop(dialogContext),
                       child: const Icon(
                         Icons.close,
                         size: 28,
@@ -333,6 +318,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
         );
       },
     );
+
+    if (!mounted || selectedAction == null) return;
+
+    if (selectedAction == 'habit') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const HabitAlarmScreen(),
+        ),
+      );
+    } else if (selectedAction == 'quick') {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => const QuickAlarmSheet(),
+      );
+    } else if (selectedAction == 'new_alarm') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AlarmEditorScreen(),
+        ),
+      );
+    }
   }
 
   Widget _buildFabMenuItem(
@@ -341,34 +351,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     Color color,
     VoidCallback onTap,
   ) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GlassContainer(
-            blur: 10,
-            opacity: 0.1,
-            borderRadius: BorderRadius.circular(12),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(28),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2C2C2E),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white12, width: 0.5),
+                ),
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(width: 12),
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.4),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Icon(icon, color: Colors.white, size: 24),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            child: Icon(icon, color: Colors.white, size: 24),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -467,17 +495,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
           ),
         ),
       ),
-      floatingActionButton: BouncyPressable(
-        scaleFactor: 0.86,
-        onTap: _showFabMenu,
-        child: FloatingActionButton(
-          key: _fabKey,
-          backgroundColor: const Color(0xFFFF3B30),
-          shape: const CircleBorder(),
-          elevation: 10,
-          onPressed: null, // handled by BouncyPressable
-          child: const Icon(Icons.add, size: 32, color: Colors.white),
-        ),
+      floatingActionButton: FloatingActionButton(
+        key: _fabKey,
+        heroTag: 'fab_home_main',
+        backgroundColor: const Color(0xFFFF3B30),
+        shape: const CircleBorder(),
+        elevation: 10,
+        onPressed: _showFabMenu,
+        child: const Icon(Icons.add, size: 32, color: Colors.white),
       ),
     );
   }
@@ -486,139 +511,99 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     return SliverAppBar(
       backgroundColor: Colors.transparent,
       floating: true,
-      expandedHeight: 80,
-      title: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 34,
-            height: 34,
-            margin: const EdgeInsets.only(right: 10),
+      expandedHeight: 56,
+      toolbarHeight: 56,
+      titleSpacing: 20,
+      title: const Text(
+        'Alarm',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 34,
+          fontWeight: FontWeight.bold,
+          fontFamily: '.SF Pro Display',
+          letterSpacing: 0.4,
+        ),
+      ),
+      actions: [
+        // PRO badge
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute<void>(builder: (_) => const PremiumScreen()),
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.only(right: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(9),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFFF3B30).withValues(alpha: 0.3),
-                  blurRadius: 10,
-                  spreadRadius: 1,
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFF3B30), Color(0xFFFF6B35)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(CupertinoIcons.checkmark_seal_fill, color: Colors.white, size: 13),
+                SizedBox(width: 4),
+                Text(
+                  'PRO',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: '.SF Pro Text',
+                  ),
                 ),
               ],
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(9),
-              child: Image.asset(
-                'assets/images/app_logo.png',
-                fit: BoxFit.cover,
-              ),
-            ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const PremiumScreen()),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF3B30), Color(0xFFFF6B35)],
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.verified, color: Colors.white, size: 15),
-                  SizedBox(width: 5),
-                  Text(
-                    'PRO Activated',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                    ),
+        ),
+        // 3-dot menu
+        CupertinoButton(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          onPressed: () {
+            showCupertinoModalPopup<void>(
+              context: context,
+              builder: (_) => CupertinoActionSheet(
+                actions: [
+                  CupertinoActionSheetAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const AlarmSettingsScreen()));
+                    },
+                    child: const Text('Alarm Settings'),
+                  ),
+                  CupertinoActionSheetAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _showSortSheet();
+                    },
+                    child: const Text('Sort Alarms'),
+                  ),
+                  CupertinoActionSheetAction(
+                    isDestructiveAction: true,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _confirmDeleteInactive();
+                    },
+                    child: const Text('Delete Inactive Alarms'),
                   ),
                 ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        IconButton(
-          icon: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 24),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFF3B30),
-                    shape: BoxShape.circle,
-                  ),
+                cancelButton: CupertinoActionSheetAction(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
                 ),
               ),
-            ],
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute<void>(builder: (_) => const NoticeScreen()),
             );
           },
+          child: const Icon(CupertinoIcons.ellipsis_circle, color: Colors.white, size: 22),
         ),
-        PopupMenuButton<String>(
-          icon: const Icon(Icons.more_horiz, color: Colors.white),
-          color: const Color(0xFF1C1C1E),
-          onSelected: (value) {
-            if (value == 'settings') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const AlarmSettingsScreen()),
-              );
-            } else if (value == 'sort') {
-              _showSortSheet();
-            } else if (value == 'delete_inactive') {
-              _confirmDeleteInactive();
-            }
-          },
-          itemBuilder: (BuildContext context) {
-            return [
-              const PopupMenuItem<String>(
-                value: 'settings',
-                child: Text('Settings', style: TextStyle(color: Colors.white)),
-              ),
-              const PopupMenuItem<String>(
-                value: 'edit',
-                child: Text(
-                  'Edit Alarms',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const PopupMenuItem<String>(
-                value: 'sort',
-                child: Text('Sort', style: TextStyle(color: Colors.white)),
-              ),
-              const PopupMenuItem<String>(
-                value: 'delete_inactive',
-                child: Text(
-                  'Delete inactive alarms',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ];
-          },
-        ),
-        const SizedBox(width: 8),
       ],
     );
   }
+
 
   Widget _buildPromoBanner() {
     return GestureDetector(

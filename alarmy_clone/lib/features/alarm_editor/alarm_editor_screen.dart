@@ -12,7 +12,8 @@ import '../alarm_ring/alarm_ring_screen.dart';
 
 class AlarmEditorScreen extends ConsumerStatefulWidget {
   final AlarmModel? alarm;
-  const AlarmEditorScreen({super.key, this.alarm});
+  final String? initialMission;
+  const AlarmEditorScreen({super.key, this.alarm, this.initialMission});
 
   @override
   ConsumerState<AlarmEditorScreen> createState() => _AlarmEditorScreenState();
@@ -58,7 +59,13 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     super.initState();
     selectedHour = widget.alarm?.hour ?? 7;
     selectedMinute = widget.alarm?.minute ?? 0;
-    selectedMissions = List.from(widget.alarm?.missionTypes ?? ['default']);
+    if (widget.alarm != null) {
+      selectedMissions = List.from(widget.alarm!.missionTypes);
+    } else if (widget.initialMission != null) {
+      selectedMissions = [widget.initialMission!];
+    } else {
+      selectedMissions = ['default'];
+    }
     activeDays = widget.alarm?.activeDays ?? [1, 2, 3, 4, 5];
     selectedWallpaperId = widget.alarm?.wallpaperId ?? 'default';
     selectedSoundId = widget.alarm?.soundId ?? 'orkney';
@@ -160,7 +167,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => AlarmRingScreen(alarm: previewAlarm),
+        builder: (_) => AlarmRingScreen(alarm: previewAlarm, isPreview: true),
       ),
     );
   }
@@ -350,54 +357,57 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                 final m = missions[i];
                 final isSelected = selectedMissions.contains(m['id']);
                 final hasSettings = m['id'] != 'default';
-                return BouncyPressable(
-                  onTap: () async {
-                    setState(() {
-                      if (m['id'] == 'default') {
-                        selectedMissions = ['default'];
-                      } else {
-                        selectedMissions.remove('default');
-                        if (isSelected) {
-                          if (selectedMissions.length > 1) {
-                            selectedMissions.remove(m['id'] as String);
-                          }
-                        } else {
-                          selectedMissions.add(m['id'] as String);
-                        }
-                      }
-                    });
-                  },
-                  onLongPress: hasSettings
-                      ? () async {
-                          final updated = await Navigator.push<Map<String, dynamic>>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => MissionSettingsScreen(
-                                missionId: m['id'] as String,
-                                initialSettings: missionSettings,
-                              ),
-                            ),
-                          );
-                          if (updated != null) {
-                            setState(() {
-                              missionSettings.addAll(updated);
-                            });
-                          }
-                        }
-                      : null,
-                  child: Container(
-                    width: 86,
-                    margin: const EdgeInsets.only(right: 12),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xFFFF3B30).withValues(alpha: 0.1)
-                          : Colors.white.withValues(alpha: 0.05),
+                return Container(
+                  width: 86,
+                  margin: const EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xFFFF3B30).withValues(alpha: 0.1)
+                        : Colors.white.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(20),
+                    border: isSelected
+                        ? Border.all(color: const Color(0xFFFF3B30))
+                        : null,
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
                       borderRadius: BorderRadius.circular(20),
-                      border: isSelected
-                          ? Border.all(color: const Color(0xFFFF3B30))
+                      onTap: () async {
+                        setState(() {
+                          if (m['id'] == 'default') {
+                            selectedMissions = ['default'];
+                          } else {
+                            selectedMissions.remove('default');
+                            if (isSelected) {
+                              if (selectedMissions.length > 1) {
+                                selectedMissions.remove(m['id'] as String);
+                              }
+                            } else {
+                              selectedMissions.add(m['id'] as String);
+                            }
+                          }
+                        });
+                      },
+                      onLongPress: hasSettings
+                          ? () async {
+                              final updated = await Navigator.push<Map<String, dynamic>>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => MissionSettingsScreen(
+                                    missionId: m['id'] as String,
+                                    initialSettings: missionSettings,
+                                  ),
+                                ),
+                              );
+                              if (updated != null) {
+                                setState(() {
+                                  missionSettings.addAll(updated);
+                                });
+                              }
+                            }
                           : null,
-                    ),
-                    child: Stack(
+                      child: Stack(
                       children: [
                         if (isSelected && hasSettings)
                           Positioned(
@@ -451,7 +461,8 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                       ],
                     ),
                   ),
-                );
+                ),
+              );
               },
             ),
           ),

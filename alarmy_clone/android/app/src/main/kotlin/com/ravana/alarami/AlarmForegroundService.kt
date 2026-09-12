@@ -38,7 +38,13 @@ class AlarmForegroundService : Service() {
  
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            ACTION_START -> startForeground(NOTIF_ID, buildNotification())
+            ACTION_START -> {
+                try {
+                    startForeground(NOTIF_ID, buildNotification())
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
             ACTION_STOP  -> { stopForeground(true); stopSelf() }
         }
         return START_STICKY

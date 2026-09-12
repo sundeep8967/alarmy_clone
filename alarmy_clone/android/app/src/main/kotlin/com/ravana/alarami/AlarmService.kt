@@ -32,7 +32,17 @@ class AlarmService : Service() {
         wakeLock?.acquire(10 * 60 * 1000L /*10 minutes*/)
     }
  
+    companion object {
+        const val ACTION_START = "com.ravana.alarami.START_NATIVE_ALARM"
+        const val ACTION_STOP = "com.ravana.alarami.STOP_NATIVE_ALARM"
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == ACTION_STOP) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
+
         val channelId = "alarm_channel"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -44,8 +54,11 @@ class AlarmService : Service() {
             manager.createNotificationChannel(channel)
         }
  
-        val fullScreenIntent = Intent(this, MainActivity::class.java)
-        fullScreenIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val fullScreenIntent = Intent(this, MainActivity::class.java).apply {
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent?.getStringExtra("alarm_id")?.let { putExtra("alarm_id", it) }
+            intent?.getStringExtra("alarm_json")?.let { putExtra("alarm_json", it) }
+        }
         val fullScreenPendingIntent = PendingIntent.getActivity(
             this, 0, fullScreenIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

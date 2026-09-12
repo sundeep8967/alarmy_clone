@@ -44,6 +44,7 @@ class PictureMissionScreen extends ConsumerWidget {
               const SizedBox(height: 20),
               Expanded(
                 child: _buildCameraPreview(
+                  context: context,
                   pictureState: pictureState,
                   controller: pictureNotifier.controller,
                 ),
@@ -100,6 +101,7 @@ class PictureMissionScreen extends ConsumerWidget {
   }
 
   Widget _buildCameraPreview({
+    required BuildContext context,
     required PictureState pictureState,
     required CameraController? controller,
   }) {
@@ -203,13 +205,24 @@ class PictureMissionScreen extends ConsumerWidget {
     }
 
     // Show camera preview
+    // Note: camera controller aspectRatio is width / height in landscape (typically > 1.0, e.g. 16/9 or 4/3).
+    // In portrait orientation on mobile, we invert it so it fits the screen properly.
+    final rawRatio = controller?.value.aspectRatio ?? (16 / 9);
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    final previewRatio = isPortrait ? (1.0 / rawRatio) : rawRatio;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: AspectRatio(
-          aspectRatio: controller!.value.aspectRatio,
-          child: CameraPreview(controller),
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Container(
+            color: Colors.black,
+            child: AspectRatio(
+              aspectRatio: previewRatio,
+              child: CameraPreview(controller!),
+            ),
+          ),
         ),
       ),
     );

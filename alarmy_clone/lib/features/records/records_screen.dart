@@ -46,63 +46,55 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF101014),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF1A1A20), Color(0xFF101014)],
-          ),
-        ),
-        child: SafeArea(
-          child: FutureBuilder<Map<String, dynamic>>(
-            future: _statsFuture,
-            builder: (context, snapshot) {
-              final stats =
-                  snapshot.data ??
-                  {'successRate': 0.0, 'avgSolvingTime': 0.0, 'count': 0};
-              final successPercent = ((stats['successRate'] as num) * 100)
-                  .toInt();
-              final avgTime = stats['avgSolvingTime'] as double;
-              final timeStr = avgTime > 60
-                  ? '${(avgTime / 60).floor()}m ${(avgTime % 60).toInt()}s'
-                  : '${avgTime.toInt()}s';
+      backgroundColor: const Color(0xFF000000),
+      body: SafeArea(
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: _statsFuture,
+          builder: (context, snapshot) {
+            final stats =
+                snapshot.data ??
+                {'successRate': 0.0, 'avgSolvingTime': 0.0, 'count': 0};
+            final successPercent = ((stats['successRate'] as num) * 100)
+                .toInt();
+            final avgTime = stats['avgSolvingTime'] as double;
+            final timeStr = avgTime > 60
+                ? '${(avgTime / 60).floor()}m ${(avgTime % 60).toInt()}s'
+                : '${avgTime.toInt()}s';
 
-              return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 24),
-                    _buildHeader(),
-                    const SizedBox(height: 32),
-                    _buildDateSelector(),
-                    const SizedBox(height: 24),
-                    _buildTabPills(),
-                    const SizedBox(height: 40),
-                    _buildStatsRow(timeStr, successPercent),
-                    const SizedBox(height: 32),
-                    const Text(
-                      'Recent Records',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  _buildHeader(),
+                  const SizedBox(height: 28),
+                  _buildDateSelector(),
+                  const SizedBox(height: 20),
+                  _buildTabPills(),
+                  const SizedBox(height: 32),
+                  _buildStatsRow(timeStr, successPercent),
+                  const SizedBox(height: 28),
+                  const Text(
+                    'Recent Records',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: '.SF Pro Display',
                     ),
-                    const SizedBox(height: 16),
-                    _buildTimeline(
-                      stats['records'] as List<Map<String, dynamic>>? ?? [],
-                    ),
-                    const SizedBox(height: 40),
-                    if (stats['count'] == 0) _buildEmptyState(context),
-                    const SizedBox(height: 40),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildTimeline(
+                    stats['records'] as List<Map<String, dynamic>>? ?? [],
+                  ),
+                  const SizedBox(height: 40),
+                  if (stats['count'] == 0) _buildEmptyState(context),
+                  const SizedBox(height: 40),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -113,18 +105,20 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
       'Report',
       style: TextStyle(
         color: Colors.white,
-        fontSize: 32,
+        fontSize: 34,
         fontWeight: FontWeight.bold,
+        fontFamily: '.SF Pro Display',
+        letterSpacing: 0.4,
       ),
     );
   }
 
   Widget _buildDateSelector() {
-    return Row(
+    return const Row(
       children: [
-        const Icon(Icons.chevron_left, color: Colors.white70, size: 24),
-        const SizedBox(width: 8),
-        const Text(
+        Icon(Icons.chevron_left, color: Colors.white70, size: 24),
+        SizedBox(width: 8),
+        Text(
           'Recent History',
           style: TextStyle(
             color: Colors.white,
@@ -132,8 +126,8 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        const SizedBox(width: 8),
-        const Icon(Icons.chevron_right, color: Colors.white24, size: 24),
+        SizedBox(width: 8),
+        Icon(Icons.chevron_right, color: Colors.white24, size: 24),
       ],
     );
   }

@@ -21,14 +21,18 @@ import '../missions/stage_mission_screen.dart';
 import '../missions/barcode_mission_screen.dart';
 import '../missions/picture_mission_screen.dart';
 import '../missions/taptap_mission_screen.dart';
-import '../../core/widgets/liquid_page_transition.dart';
 import 'emergency_dismiss_dialog.dart';
 import '../morning/morning_feeling_sheet.dart';
 
 class AlarmRingScreen extends ConsumerStatefulWidget {
   final AlarmModel alarm;
+  final bool isPreview;
 
-  const AlarmRingScreen({super.key, required this.alarm});
+  const AlarmRingScreen({
+    super.key,
+    required this.alarm,
+    this.isPreview = false,
+  });
 
   @override
   ConsumerState<AlarmRingScreen> createState() => _AlarmRingScreenState();
@@ -60,14 +64,22 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
-    _setRingingState(true);
-    AlarmService.acquireWakeLock();
     _startTime = DateTime.now();
     _updateTime();
-    _startRinging();
-    AlarmLockService.startLock();
+    _initRingingLifecycle();
     _setupAutoTimers();
     _initTts();
+  }
+
+  Future<void> _initRingingLifecycle() async {
+    if (!widget.isPreview) {
+      _setRingingState(true);
+      AlarmService.acquireWakeLock();
+      AlarmLockService.startLock();
+      // Ensure background native alarm audio is completely halted before Flutter audio takes over
+      await AlarmLockService.stopNativeAlarm();
+    }
+    await _startRinging();
   }
 
   Future<void> _initTts() async {
@@ -181,6 +193,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     WidgetsBinding.instance.removeObserver(this);
     _setRingingState(false);
     AlarmLockService.stopLock();
+    AlarmLockService.stopNativeAlarm();
     AlarmService.releaseWakeLock();
     _crescendoTimer?.cancel();
     _autoSnoozeTimer?.cancel();
@@ -251,28 +264,36 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   void _dismissAlarm({bool isAuto = false, bool isManual = false}) async {
     _isAlarmActive = false;
     await AlarmLockService.stopLock();
-    Vibration.cancel();
-    _audioPlayer.stop();
+    try {
+      Vibration.cancel();
+    } catch (_) {}
+    try {
+      await _audioPlayer.stop();
+    } catch (_) {}
     _crescendoTimer?.cancel();
     _escalationTimer?.cancel();
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();
 
-    // Track Record
-    final solvingTime = DateTime.now().difference(_startTime).inSeconds;
-    await ref
-        .read(alarmRepositoryProvider)
-        .addRecord(widget.alarm.id, !isAuto, solvingTimeSeconds: solvingTime);
+    if (!widget.isPreview && mounted) {
+      // Track Record
+      final solvingTime = DateTime.now().difference(_startTime).inSeconds;
+      try {
+        await ref
+            .read(alarmRepositoryProvider)
+            .addRecord(widget.alarm.id, !isAuto, solvingTimeSeconds: solvingTime);
+      } catch (_) {}
 
-    // Trigger Wake Up Check if enabled
-    if (widget.alarm.isWakeUpCheckEnabled &&
-        widget.alarm.wakeUpCheckMinutes > 0) {
-      await AlarmService.scheduleWakeUpCheck(widget.alarm);
+      // Trigger Wake Up Check if enabled
+      if (widget.alarm.isWakeUpCheckEnabled &&
+          widget.alarm.wakeUpCheckMinutes > 0) {
+        await AlarmService.scheduleWakeUpCheck(widget.alarm);
+      }
     }
 
     if (mounted) {
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      if (isManual) {
+      Navigator.of(context).pop();
+      if (!widget.isPreview && isManual) {
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -290,7 +311,13 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     _autoSnoozeTimer?.cancel();
     _autoDismissTimer?.cancel();
 
-    if (widget.alarm.missionTypes.isEmpty) {
+    debugPrint('🎯 [_navigateToMission] missions: ${widget.alarm.missionTypes}');
+
+    final nonDefaultMissions = widget.alarm.missionTypes
+        .where((m) => m.toLowerCase() != 'default' && m.toLowerCase() != 'none')
+        .toList();
+
+    if (nonDefaultMissions.isEmpty) {
       _dismissAlarm(isManual: true);
       return;
     }
@@ -298,12 +325,14 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
   }
 
   void _runMissionSequence(int index) {
+    debugPrint('🎯 [_runMissionSequence] index: $index of ${widget.alarm.missionTypes.length}');
     if (index >= widget.alarm.missionTypes.length) {
       _dismissAlarm(isManual: true);
       return;
     }
 
     final missionType = widget.alarm.missionTypes[index].toLowerCase();
+    debugPrint('🎯 [_runMissionSequence] launching mission: $missionType');
     Widget missionScreen;
     final onComplete = () => _runMissionSequence(index + 1);
 
@@ -361,14 +390,18 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
           settings: widget.alarm.missionSettings,
         );
         break;
+      case 'default':
+      case 'none':
+        _runMissionSequence(index + 1);
+        return;
       default:
         _runMissionSequence(index + 1);
         return;
     }
 
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
-      LiquidPageRoute(page: missionScreen),
+      MaterialPageRoute(builder: (_) => missionScreen),
     );
   }
 

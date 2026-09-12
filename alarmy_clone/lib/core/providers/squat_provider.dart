@@ -61,19 +61,35 @@ class SquatNotifier extends Notifier<SquatState> {
   void _evaluateWindow(List<List<double>> window) {
     final score = TFLiteMissionService.evaluateSquat(window);
 
-    // Debug: Print ML confidence score
-    debugPrint('[Squat ML] Confidence score: ${score.toStringAsFixed(3)}');
+    // Heuristic fallback: check vertical acceleration variance across the 20-frame window
+    // [AccX, AccY, AccZ, GyrX, GyrY, GyrZ]
+    double minY = double.infinity;
+    double maxY = -double.infinity;
+    for (var frame in window) {
+      if (frame.length >= 2) {
+        final y = frame[1];
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+    final yDelta = (maxY - minY).abs();
 
-    // Provide some minimal UI feedback for deep squat if score is rising
-    if (score > 0.4 && !state.isInDeepSquat) {
+    // Debug: Print ML confidence score & physical delta
+    debugPrint('[Squat ML] Confidence: ${score.toStringAsFixed(3)}, Y-delta: ${yDelta.toStringAsFixed(2)}');
+
+    // Provide UI feedback for squat posture if score is rising or vertical motion detected
+    if ((score > 0.4 || yDelta > 4.0) && !state.isInDeepSquat) {
       state = state.copyWith(isInDeepSquat: true);
-    } else if (score < 0.2 && state.isInDeepSquat) {
+    } else if (score < 0.2 && yDelta < 2.0 && state.isInDeepSquat) {
       state = state.copyWith(isInDeepSquat: false);
     }
 
-    if (score >= _mlThreshold) {
+    // Detected either through high ML confidence (>=0.75) OR reliable physical dip-and-rise (yDelta > 7.5 with score > 0.35)
+    final isDetected = score >= _mlThreshold || (yDelta > 7.5 && score > 0.35);
+
+    if (isDetected) {
       debugPrint(
-        '[Squat ML] ✓ Squat detected! Score: ${score.toStringAsFixed(3)}',
+        '[Squat ML] ✓ Squat detected! Score: ${score.toStringAsFixed(3)}, Y-delta: ${yDelta.toStringAsFixed(2)}',
       );
       incrementSquat();
       // Pause buffer for 1.5 seconds to prevent double-counting the same squat
