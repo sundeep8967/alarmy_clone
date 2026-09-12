@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/glass_card.dart';
 import 'package:animate_do/animate_do.dart';
@@ -320,18 +321,11 @@ class MorningScreen extends ConsumerWidget {
         'label': 'Cosmic',
         'color': const Color(0xFFFFD60A),
         'onTap': () {
-          showModalBottomSheet(
+          showCupertinoModalPopup<void>(
             context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
             builder: (_) => HoroscopeSheet(
               onSignSelected: (sign) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${sign.name} selected! Daily cosmic horoscope updated.'),
-                    backgroundColor: const Color(0xFF1C1C1E),
-                  ),
-                );
+                // dismissed
               },
             ),
           );
@@ -342,10 +336,8 @@ class MorningScreen extends ConsumerWidget {
         'label': 'Insights',
         'color': const Color(0xFF00D1FF),
         'onTap': () {
-          showModalBottomSheet(
+          showCupertinoModalPopup<void>(
             context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
             builder: (_) => const MorningFeelingSheet(),
           );
         },
@@ -484,10 +476,8 @@ class MorningScreen extends ConsumerWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
+                      showCupertinoModalPopup<void>(
                         context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
                         builder: (_) => const MorningFeelingSheet(),
                       );
                     },

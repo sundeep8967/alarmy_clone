@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../services/alarm_service.dart';
 
@@ -18,7 +19,7 @@ class AlarmPermissionDialog extends StatefulWidget {
     final isIgnoringBattery = await AlarmService.isIgnoringBatteryOptimizations();
 
     if (!hasExactAlarm || !isIgnoringBattery) {
-      final result = await showDialog<bool>(
+      final result = await showCupertinoDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) => AlarmPermissionDialog(
@@ -93,10 +94,10 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
             ),
             const SizedBox(height: 24),
             if (_isLoading)
-              const Center(child: CircularProgressIndicator())
+              const Center(child: CupertinoActivityIndicator())
             else ...[
               _buildPermissionTile(
-                icon: Icons.alarm,
+                icon: CupertinoIcons.alarm,
                 title: 'Exact Alarm Permission',
                 subtitle: 'Required for precise alarm timing on Android 12+',
                 isGranted: _hasExactAlarm,
@@ -104,7 +105,7 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
               ),
               const SizedBox(height: 16),
               _buildPermissionTile(
-                icon: Icons.battery_charging_full,
+                icon: CupertinoIcons.battery_charging,
                 title: 'Battery Optimization',
                 subtitle: 'Allow app to run in background',
                 isGranted: _isIgnoringBattery,
@@ -114,15 +115,19 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _allGranted ? const Color(0xFFFF3B30) : Colors.white24,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
+              child: CupertinoButton(
+                color: _allGranted ? const Color(0xFFFF3B30) : const Color(0xFF2C2C2E),
+                borderRadius: BorderRadius.circular(16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 onPressed: _allGranted ? widget.onGranted : null,
-                child: Text(_allGranted ? 'Continue' : 'Grant Permissions'),
+                child: Text(
+                  _allGranted ? 'Continue' : 'Grant Permissions',
+                  style: TextStyle(
+                    color: _allGranted ? Colors.white : Colors.white38,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
           ],
@@ -138,13 +143,12 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
     required bool isGranted,
     required VoidCallback onTap,
   }) {
-    return InkWell(
+    return GestureDetector(
       onTap: isGranted ? null : onTap,
-      borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isGranted ? const Color(0xFF30D158).withOpacity(0.1) : Colors.white.withOpacity(0.05),
+          color: isGranted ? const Color(0xFF30D158).withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isGranted ? const Color(0xFF30D158) : Colors.white12,
@@ -159,7 +163,7 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
-                isGranted ? Icons.check : icon,
+                isGranted ? CupertinoIcons.checkmark : icon,
                 color: Colors.white,
                 size: 20,
               ),
@@ -186,7 +190,7 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
               ),
             ),
             if (!isGranted)
-              const Icon(Icons.chevron_right, color: Colors.white54),
+              const Icon(CupertinoIcons.chevron_right, color: Colors.white54, size: 16),
           ],
         ),
       ),

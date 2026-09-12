@@ -47,32 +47,49 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
   }
 
   void _showTimeFormatPicker() {
-    showModalBottomSheet(
+    showCupertinoModalPopup<void>(
       context: context,
-      backgroundColor: const Color(0xFF1C1D24),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Time Format',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+      builder: (context) => CupertinoActionSheet(
+        title: const Text('Time Format'),
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () {
+              setState(() => _timeFormat = '12 Hour');
+              _saveTimeFormat('12 Hour');
+              Navigator.pop(context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('12 Hour'),
+                if (_timeFormat == '12 Hour') ...[
+                  const SizedBox(width: 8),
+                  const Icon(CupertinoIcons.checkmark, size: 18),
+                ],
+              ],
             ),
-            const SizedBox(height: 24),
-            _buildTimeFormatOption('12 Hour'),
-            const SizedBox(height: 12),
-            _buildTimeFormatOption('24 Hour'),
-            const SizedBox(height: 24),
-          ],
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              setState(() => _timeFormat = '24 Hour');
+              _saveTimeFormat('24 Hour');
+              Navigator.pop(context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('24 Hour'),
+                if (_timeFormat == '24 Hour') ...[
+                  const SizedBox(width: 8),
+                  const Icon(CupertinoIcons.checkmark, size: 18),
+                ],
+              ],
+            ),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
         ),
       ),
     );
@@ -140,7 +157,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 _buildSection('BEHAVIOR', [
                   _SettingItem(
                     'Uninstall Blocker',
-                    Icons.lock_person,
+                    CupertinoIcons.lock_shield_fill,
                     Colors.red,
                     trailing: CupertinoSwitch(
                       value: _uninstallBlocker,
@@ -159,7 +176,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                   ),
                   _SettingItem(
                     'Prevent Phone Turn-off',
-                    Icons.power_off,
+                    CupertinoIcons.power,
                     Colors.deepPurple,
                     trailing: CupertinoSwitch(
                       value: _preventTurnOff,
@@ -173,7 +190,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                   ),
                   _SettingItem(
                     'Volume Button',
-                    Icons.volume_up,
+                    CupertinoIcons.volume_up,
                     Colors.orange,
                     trailing: CupertinoSwitch(
                       value: _volumeSnooze,
@@ -187,7 +204,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                   ),
                   _SettingItem(
                     'Auto-dismiss',
-                    Icons.timer_off,
+                    CupertinoIcons.timer,
                     Colors.green,
                     trailing: CupertinoSwitch(
                       value: _autoDismiss,
@@ -204,7 +221,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 _buildSection('SYSTEM', [
                   _SettingItem(
                     'Time Format',
-                    Icons.schedule,
+                    CupertinoIcons.clock_fill,
                     Colors.cyan,
                     trailing: Text(
                       _timeFormat,
@@ -224,13 +241,14 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
 
   Widget _buildAppBar(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Row(
         children: [
-          IconButton(
+          CupertinoButton(
+            padding: EdgeInsets.zero,
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_ios,
+            child: const Icon(
+              CupertinoIcons.chevron_back,
               color: Colors.white,
               size: 24,
             ),

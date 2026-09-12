@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
@@ -294,10 +295,8 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
     if (mounted) {
       Navigator.of(context).pop();
       if (!widget.isPreview && isManual) {
-        showModalBottomSheet(
+        showCupertinoModalPopup<void>(
           context: context,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
           builder: (_) => MorningFeelingSheet(alarmId: widget.alarm.id),
         );
       }
@@ -590,7 +589,7 @@ class _AlarmRingScreenState extends ConsumerState<AlarmRingScreen>
                                 ),
                               ),
                               onPressed: () {
-                                showDialog(
+                                showCupertinoDialog<void>(
                                   context: context,
                                   barrierDismissible: false,
                                   builder: (_) => EmergencyDismissDialog(

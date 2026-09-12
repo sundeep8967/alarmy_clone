@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:vibration/vibration.dart';
 
 class EmergencyDismissDialog extends StatefulWidget {
@@ -61,7 +62,7 @@ class _EmergencyDismissDialogState extends State<EmergencyDismissDialog> {
                 children: [
                   const Row(
                     children: [
-                      Icon(Icons.warning_amber_rounded, color: Color(0xFFFF3B30), size: 28),
+                      Icon(CupertinoIcons.exclamationmark_triangle_fill, color: Color(0xFFFF3B30), size: 24),
                       SizedBox(width: 8),
                       Text(
                         'Emergency Dismiss',
@@ -73,8 +74,10 @@ class _EmergencyDismissDialogState extends State<EmergencyDismissDialog> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white54),
+                  CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    minSize: 32,
+                    child: const Icon(CupertinoIcons.xmark_circle_fill, color: Colors.white54, size: 24),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -135,8 +138,8 @@ class _EmergencyDismissDialogState extends State<EmergencyDismissDialog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.touch_app_rounded,
-                        size: 56,
+                        CupertinoIcons.hand_point_right_fill,
+                        size: 50,
                         color: Colors.white.withValues(alpha: 0.95),
                       ),
                       const SizedBox(height: 6),
