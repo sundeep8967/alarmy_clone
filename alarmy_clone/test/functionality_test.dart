@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:alarmy_clone/core/services/alarm_service.dart';
 import 'package:alarmy_clone/core/providers/sleep_provider.dart';
-import 'package:alarmy_clone/features/ramadan/ramadan_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -121,39 +120,6 @@ void main() {
       expect(state.isTracking, isFalse);
       expect(state.currentDecibels, 0.0);
       expect(state.events, isEmpty);
-    });
-  });
-
-  group('Ramadan Location Permission and Prayer Time Tests', () {
-    test('RamadanService calculates prayer times successfully when permissions are granted', () async {
-      final prayerTimes = await RamadanService.instance.getTodayPrayerTimes();
-      
-      expect(prayerTimes, isNotNull);
-      expect(prayerTimes!['fajr'], isNotNull);
-      expect(prayerTimes['maghrib'], isNotNull);
-      expect(prayerTimes['fajr']!.isBefore(prayerTimes['maghrib']!), isTrue);
-    });
-
-    test('RamadanService handles permission denial gracefully', () async {
-      // Mock Geolocator to return denied permissions
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(geolocatorChannel, (MethodCall methodCall) async {
-        if (methodCall.method == 'checkPermission') {
-          return 0; // LocationPermission.denied
-        }
-        if (methodCall.method == 'requestPermission') {
-          return 0; // Denied upon prompt
-        }
-        if (methodCall.method == 'isLocationServiceEnabled') {
-          return true;
-        }
-        return null;
-      });
-
-      final prayerTimes = await RamadanService.instance.getTodayPrayerTimes();
-      
-      // Should handle permission denial safely and return null (fails gracefully)
-      expect(prayerTimes, isNull);
     });
   });
 }

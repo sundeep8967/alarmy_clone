@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/widgets/bouncy_pressable.dart';
 import 'alarm_optimization_screen.dart';
 import 'battery_optimization_screen.dart';
 import 'general_setting_screen.dart';
@@ -81,7 +82,7 @@ class SettingScreen extends ConsumerWidget {
                   onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const AboutScreen())),
                 ),
               ]),
-              const SizedBox(height: 40),
+              const SizedBox(height: 100),
             ],
           ),
         ),
@@ -162,9 +163,9 @@ class SettingScreen extends ConsumerWidget {
           final isFirst = index == 0;
           final isLast = index == items.length - 1;
 
-          return GestureDetector(
+          return BouncyPressable(
+            scaleFactor: 0.98,
             onTap: item.onTap,
-            behavior: HitTestBehavior.opaque,
             child: Column(
               children: [
                 Container(

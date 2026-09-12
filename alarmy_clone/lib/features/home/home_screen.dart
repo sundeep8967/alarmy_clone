@@ -477,10 +477,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                             );
                           }
                           final alarm = sortedAlarms[index];
-                          return FadeInUp(
-                            delay: Duration(milliseconds: 100 * index),
-                            child: _buildAlarmCard(alarm),
-                          );
+                          return _buildAlarmCard(alarm);
                         },
                         childCount: sortedAlarms.isEmpty
                             ? 1
@@ -651,11 +648,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
 
 
   Widget _buildPromoBanner() {
-    return GestureDetector(
+    return BouncyPressable(
+      scaleFactor: 0.98,
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const OversleptMissionScreen()),
+          CupertinoPageRoute<void>(builder: (_) => const OversleptMissionScreen()),
         );
       },
       child: Container(
@@ -832,7 +830,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
         }
         await Navigator.push(
           context,
-          LiquidPageRoute(page: AlarmEditorScreen(alarm: alarm)),
+          CupertinoPageRoute<void>(builder: (_) => AlarmEditorScreen(alarm: alarm)),
         );
         ref.invalidate(alarmsProvider);
       },
@@ -1048,7 +1046,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
       onTap = () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const AlarmSettingsScreen()),
+          CupertinoPageRoute<void>(builder: (_) => const AlarmSettingsScreen()),
         );
       };
     } else if (!_hasExactAlarmPermission) {
@@ -1059,14 +1057,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
       onTap = () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const BatteryOptimizationScreen()),
+          CupertinoPageRoute<void>(builder: (_) => const BatteryOptimizationScreen()),
         );
       };
     }
 
     return Container(
       margin: const EdgeInsets.only(top: 12),
-      child: GestureDetector(
+      child: BouncyPressable(
+        scaleFactor: 0.98,
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),

@@ -239,7 +239,7 @@ class SleepScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 100),
             ],
           ),
         ),

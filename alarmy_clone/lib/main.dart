@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -198,6 +199,10 @@ class _MyAppState extends ConsumerState<MyApp> {
           brightness: Brightness.dark,
           surface: const Color(0xFF1C1C1E), // iOS grouped bg
         ),
+        platform: TargetPlatform.iOS,
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         scaffoldBackgroundColor: const Color(0xFF000000), // iOS true black
         // iOS-style page transitions on all platforms
         pageTransitionsTheme: const PageTransitionsTheme(
@@ -252,6 +257,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         useMaterial3: true,
         brightness: Brightness.light,
         fontFamily: '.SF Pro Text',
+        platform: TargetPlatform.iOS,
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFFF3B30),
           brightness: Brightness.light,
@@ -276,6 +285,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           ),
         ),
       ),
+      scrollBehavior: const CupertinoScrollBehavior(),
       routerConfig: _router,
     );
   }

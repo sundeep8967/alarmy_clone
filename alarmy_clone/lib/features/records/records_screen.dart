@@ -90,7 +90,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
                   ),
                   const SizedBox(height: 40),
                   if (stats['count'] == 0) _buildEmptyState(context),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 100),
                 ],
               ),
             );
@@ -245,8 +245,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
 
   Widget _buildStatItem(String value, String label, Color color) {
     return Expanded(
-      child: FadeInUp(
-        child: GlassContainer(
+      child: GlassContainer(
           blur: 15,
           opacity: 0.05,
           borderRadius: BorderRadius.circular(24),
@@ -274,7 +273,6 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
             ),
           ),
         ),
-      ),
     );
   }
 

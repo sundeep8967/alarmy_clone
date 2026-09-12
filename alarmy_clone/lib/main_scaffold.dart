@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'features/home/home_screen.dart';
 import 'features/records/records_screen.dart';
@@ -40,11 +41,19 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     return Scaffold(
       extendBody: true,
       backgroundColor: const Color(0xFF000000),
-      body: _pages[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: _IOSTabBar(
         currentIndex: _currentIndex,
         tabs: _tabs,
-        onTap: (i) => setState(() => _currentIndex = i),
+        onTap: (i) {
+          if (_currentIndex != i) {
+            HapticFeedback.selectionClick();
+            setState(() => _currentIndex = i);
+          }
+        },
         bottomPadding: bottomPadding,
       ),
     );
@@ -127,10 +136,10 @@ class _IOSTabBarState extends State<_IOSTabBar> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(32),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xE0141418), // 88% opaque obsidian glass
+                  color: const Color(0xF216161A), // 95% obsidian dark glass
                   borderRadius: BorderRadius.circular(32),
                   border: Border.all(
                     color: Colors.white.withValues(alpha: 0.12),

@@ -56,6 +56,7 @@ class QuestScreen extends ConsumerWidget {
                         loading: () => _buildLoadingBadges(),
                         error: (_, __) => const SizedBox.shrink(),
                       ),
+                      const SizedBox(height: 100),
                     ],
                   ),
                 ),
@@ -264,15 +265,10 @@ class QuestScreen extends ConsumerWidget {
 
   Widget _buildQuestsList(List<QuestModel> quests, WidgetRef ref) {
     return Column(
-      children: quests.asMap().entries.map((entry) {
-        final index = entry.key;
-        final quest = entry.value;
-        return FadeInUp(
-          delay: Duration(milliseconds: 100 * index),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: _buildQuestCard(quest, ref),
-          ),
+      children: quests.map((quest) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: _buildQuestCard(quest, ref),
         );
       }).toList(),
     );
