@@ -6,11 +6,9 @@ import 'battery_optimization_screen.dart';
 import 'general_setting_screen.dart';
 import 'permission_doa_screen.dart';
 import 'language_screen.dart';
-import '../quest/ramadan_screen.dart';
 import '../home/alarm_settings_screen.dart';
 import 'about_screen.dart';
 import 'faq_screen.dart';
-import 'notice_screen.dart';
 
 class SettingScreen extends ConsumerWidget {
   const SettingScreen({super.key});
@@ -65,12 +63,6 @@ class SettingScreen extends ConsumerWidget {
                   onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const AlarmSettingsScreen())),
                 ),
                 _SettingModel(
-                  'Ramadan Mode',
-                  CupertinoIcons.moon_stars_fill,
-                  const Color(0xFF00C7FF),
-                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const RamadanScreen())),
-                ),
-                _SettingModel(
                   'Behaviour & System',
                   CupertinoIcons.slider_horizontal_3,
                   const Color(0xFF8E8E93),
@@ -81,12 +73,6 @@ class SettingScreen extends ConsumerWidget {
                   CupertinoIcons.question_circle_fill,
                   const Color(0xFFFFD60A),
                   onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const FaqScreen())),
-                ),
-                _SettingModel(
-                  'Notice & Updates',
-                  CupertinoIcons.bell_fill,
-                  const Color(0xFF30D158),
-                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const NoticeScreen())),
                 ),
                 _SettingModel(
                   'About Alarami',

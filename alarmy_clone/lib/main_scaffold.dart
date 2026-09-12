@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,6 +38,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     return Scaffold(
+      extendBody: true,
       backgroundColor: const Color(0xFF000000),
       body: _pages[_currentIndex],
       bottomNavigationBar: _IOSTabBar(
@@ -97,78 +99,126 @@ class _IOSTabBarState extends State<_IOSTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    const selectedColor = Color(0xFFFF3B30);
+    const selectedColor = Color(0xFFFF453A);
     const unselectedColor = Color(0xFF8E8E93);
-    const barBg = Color(0xE61C1C1E); // 90% opacity iOS grouped bg
+    final bottomMargin = widget.bottomPadding > 0 ? widget.bottomPadding : 12.0;
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: barBg,
-        border: Border(
-          top: BorderSide(color: Color(0xFF38383A), width: 0.5),
-        ),
-      ),
+    return SafeArea(
+      top: false,
       child: Padding(
-        padding: EdgeInsets.only(bottom: widget.bottomPadding),
-        child: SizedBox(
-          height: 50,
-          child: Row(
-            children: List.generate(widget.tabs.length, (i) {
-              final tab = widget.tabs[i];
-              final isSelected = i == widget.currentIndex;
-              final color = isSelected ? selectedColor : unselectedColor;
-              return Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTapDown: (_) => _onTapDown(i),
-                  onTapUp: (_) => _onTapUp(i),
-                  onTapCancel: () => _onTapCancel(i),
-                  child: AnimatedScale(
-                    scale: _scales[i],
-                    duration: const Duration(milliseconds: 120),
-                    curve: Curves.easeOut,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Settings badge dot
-                        if (tab.label == 'Setting')
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Icon(isSelected ? tab.selectedIcon : tab.unselectedIcon, color: color, size: 24),
-                              Positioned(
-                                right: -3,
-                                top: -1,
-                                child: Container(
-                                  width: 7,
-                                  height: 7,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFFFF3B30),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        else
-                          Icon(isSelected ? tab.selectedIcon : tab.unselectedIcon, color: color, size: 24),
-                        const SizedBox(height: 3),
-                        Text(
-                          tab.label,
-                          style: TextStyle(
-                            color: color,
-                            fontSize: 10,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                            fontFamily: '.SF Pro Text',
-                            letterSpacing: -0.1,
-                          ),
-                        ),
-                      ],
-                    ),
+        padding: EdgeInsets.fromLTRB(16, 0, 16, bottomMargin),
+        child: Container(
+          height: 64,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.4),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
+              ),
+              BoxShadow(
+                color: const Color(0xFFFF453A).withValues(alpha: 0.08),
+                blurRadius: 16,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xE0141418), // 88% opaque obsidian glass
+                  borderRadius: BorderRadius.circular(32),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.12),
+                    width: 0.5,
                   ),
                 ),
-              );
-            }),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    children: List.generate(widget.tabs.length, (i) {
+                      final tab = widget.tabs[i];
+                      final isSelected = i == widget.currentIndex;
+
+                      return Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTapDown: (_) => _onTapDown(i),
+                          onTapUp: (_) => _onTapUp(i),
+                          onTapCancel: () => _onTapCancel(i),
+                          child: AnimatedScale(
+                            scale: _scales[i],
+                            duration: const Duration(milliseconds: 120),
+                            curve: Curves.easeOut,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut,
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? const Color(0xFFFF453A).withValues(alpha: 0.14)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (tab.label == 'Setting')
+                                    Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Icon(
+                                          isSelected ? tab.selectedIcon : tab.unselectedIcon,
+                                          color: isSelected ? selectedColor : unselectedColor,
+                                          size: 22,
+                                        ),
+                                        Positioned(
+                                          right: -2,
+                                          top: -1,
+                                          child: Container(
+                                            width: 6,
+                                            height: 6,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFFF453A),
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  else
+                                    Icon(
+                                      isSelected ? tab.selectedIcon : tab.unselectedIcon,
+                                      color: isSelected ? selectedColor : unselectedColor,
+                                      size: 22,
+                                    ),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    tab.label,
+                                    style: TextStyle(
+                                      color: isSelected ? selectedColor : unselectedColor,
+                                      fontSize: 10,
+                                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                                      fontFamily: '.SF Pro Text',
+                                      letterSpacing: -0.1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),

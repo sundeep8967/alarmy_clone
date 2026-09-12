@@ -406,9 +406,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     final alarmsAsync = ref.watch(alarmsProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF101014),
+      backgroundColor: const Color(0xFF000000),
       body: Container(
-        decoration: const BoxDecoration(color: Color(0xFF101014)),
+        decoration: const BoxDecoration(color: Color(0xFF000000)),
         child: SafeArea(
           child: alarmsAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
@@ -495,14 +495,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        key: _fabKey,
-        heroTag: 'fab_home_main',
-        backgroundColor: const Color(0xFFFF3B30),
-        shape: const CircleBorder(),
-        elevation: 10,
-        onPressed: _showFabMenu,
-        child: const Icon(Icons.add, size: 32, color: Colors.white),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 104),
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFFF453A).withValues(alpha: 0.35),
+                blurRadius: 16,
+                spreadRadius: 2,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: FloatingActionButton(
+            key: _fabKey,
+            heroTag: 'fab_home_main',
+            backgroundColor: const Color(0xFFFF453A),
+            shape: const CircleBorder(),
+            elevation: 0,
+            highlightElevation: 2,
+            onPressed: _showFabMenu,
+            child: const Icon(CupertinoIcons.add, size: 30, color: Colors.white),
+          ),
+        ),
       ),
     );
   }
@@ -615,31 +632,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
       },
       child: Container(
         margin: const EdgeInsets.only(top: 8),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: const Color(0xFF1C1C1E),
-          borderRadius: BorderRadius.circular(24),
+          color: const Color(0xFF161618),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.08),
+            width: 0.5,
+          ),
         ),
         child: Row(
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                CustomPaint(
-                  size: const Size(48, 48),
-                  painter: StarburstPainter(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFF3B30).withValues(alpha: 0.16),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: const Color(0xFFFF3B30).withValues(alpha: 0.4),
+                  width: 0.5,
                 ),
-                const Text(
-                  'NEW',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w900,
-                  ),
+              ),
+              child: const Text(
+                'NEW',
+                style: TextStyle(
+                  color: Color(0xFFFF453A),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.5,
                 ),
-              ],
+              ),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 16),
             const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -647,9 +671,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                   Text(
                     'Overslept AGAIN?',
                     style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF8E8E93),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(height: 2),
@@ -657,14 +681,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                     'Try our new mission',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -0.2,
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: Colors.white54, size: 24),
+            const Icon(CupertinoIcons.chevron_forward, color: Color(0xFF8E8E93), size: 18),
           ],
         ),
       ),
@@ -784,11 +809,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
         ref.invalidate(alarmsProvider);
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        margin: const EdgeInsets.only(bottom: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
         decoration: BoxDecoration(
-          color: const Color(0xFF1C1C1E),
-          borderRadius: BorderRadius.circular(28),
+          color: const Color(0xFF161618),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.08),
+            width: 0.5,
+          ),
         ),
         child: Column(
           children: [
@@ -1008,16 +1037,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     }
 
     return Container(
-      margin: const EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 12),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFFF3B30).withValues(alpha: 0.1),
+            color: const Color(0xFF1C1314),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: const Color(0xFFFF3B30).withValues(alpha: 0.3),
+              color: const Color(0xFFFF453A).withValues(alpha: 0.25),
+              width: 0.5,
             ),
           ),
           child: Row(
@@ -1025,16 +1055,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF3B30).withValues(alpha: 0.15),
+                  color: const Color(0xFFFF453A).withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
-                  Icons.warning_amber_rounded,
-                  color: Color(0xFFFF3B30),
-                  size: 20,
+                  CupertinoIcons.exclamationmark_triangle_fill,
+                  color: Color(0xFFFF453A),
+                  size: 18,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1044,26 +1074,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -0.1,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       warningText,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: Color(0xFF8E8E93),
                         fontSize: 12,
-                        height: 1.4,
+                        height: 1.3,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
               const Icon(
-                Icons.chevron_right,
-                color: Color(0xFFFF3B30),
-                size: 20,
+                CupertinoIcons.chevron_forward,
+                color: Color(0xFF8E8E93),
+                size: 16,
               ),
             ],
           ),

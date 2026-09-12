@@ -375,18 +375,4 @@ class QuestService {
     }
   }
 
-  // ─── Ramadan Special ───────────────────────────────────────────
-
-  static List<Map<String, dynamic>> getRamadanSchedules() {
-    return [
-      {'name': 'Suhoor', 'hour': 4, 'minute': 30, 'label': 'Pre-dawn meal'},
-      {'name': 'Fajr', 'hour': 5, 'minute': 15, 'label': 'Morning prayer'},
-      {'name': 'Dhuhr', 'hour': 12, 'minute': 30, 'label': 'Noon prayer'},
-      {'name': 'Asr', 'hour': 15, 'minute': 45, 'label': 'Afternoon prayer'},
-      {'name': 'Iftar', 'hour': 18, 'minute': 30, 'label': 'Break fast'},
-      {'name': 'Maghrib', 'hour': 18, 'minute': 45, 'label': 'Sunset prayer'},
-      {'name': 'Isha', 'hour': 20, 'minute': 0, 'label': 'Night prayer'},
-      {'name': 'Taraweeh', 'hour': 21, 'minute': 0, 'label': 'Night prayers'},
-    ];
-  }
 }

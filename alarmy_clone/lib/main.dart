@@ -13,7 +13,6 @@ import 'core/services/mission_ml_service.dart';
 import 'features/alarm_ring/alarm_ring_screen.dart';
 import 'core/models/alarm_model.dart';
 import 'features/widget/home_widget_service.dart';
-import 'features/ramadan/ramadan_service.dart';
 import 'core/providers/theme_provider.dart';
 import 'features/splash/splash_screen.dart';
 import 'features/alarm_editor/alarm_editor_screen.dart';
@@ -36,11 +35,6 @@ void main() async {
   await TFLiteMissionService.initialize();
 
   await EasyLocalization.ensureInitialized();
-
-  // Evaluate Ramadan mode asynchronously in background (don't block app launch or freeze UI thread)
-  RamadanService.instance.evaluateOnAppLaunch().catchError((Object e) {
-    debugPrint('Ramadan evaluation error on launch: $e');
-  });
 
   final prefs = await SharedPreferences.getInstance();
   final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;

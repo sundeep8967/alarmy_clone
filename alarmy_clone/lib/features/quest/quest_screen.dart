@@ -19,14 +19,10 @@ class QuestScreen extends ConsumerWidget {
     final badgesAsync = ref.watch(badgesProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF101014),
+      backgroundColor: const Color(0xFF000000),
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF1A1A20), Color(0xFF101014)],
-          ),
+          color: Color(0xFF000000),
         ),
         child: SafeArea(
           child: CustomScrollView(
