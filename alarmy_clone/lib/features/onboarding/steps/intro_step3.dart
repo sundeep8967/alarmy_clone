@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class IntroStep3 extends StatelessWidget {
@@ -6,67 +7,110 @@ class IntroStep3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('📄 [Onboarding] ===== PAGE 2: Intro Step 3 =====');
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Text(
-          'Scientific sounds to\nactivate your brainwave',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            height: 1.2,
-          ),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'Wake up instantly',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16, color: Colors.white54),
-        ),
-        const SizedBox(height: 64),
-        // Sound wave visualization
-        Container(
-          width: 280,
-          height: 120,
-          child: CustomPaint(painter: SoundWavePainter()),
-        ),
-        const SizedBox(height: 48),
-        // Feature badges
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildFeatureBadge(Icons.psychology, 'Brain\nStimulation'),
-            const SizedBox(width: 32),
-            _buildFeatureBadge(Icons.bolt, 'Energy\nBoost'),
+            const Spacer(),
+            const Text(
+              'Scientific sounds to\nactivate your brainwave',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                fontFamily: '.SF Pro Display',
+                color: Colors.white,
+                height: 1.25,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Wake up instantly',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: '.SF Pro Text',
+                color: Colors.white60,
+                letterSpacing: -0.2,
+              ),
+            ),
+            const SizedBox(height: 48),
+            // Sound wave visualization
+            SizedBox(
+              width: 280,
+              height: 100,
+              child: CustomPaint(painter: SoundWavePainter()),
+            ),
+            const SizedBox(height: 48),
+            // Feature badges with iOS cards
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: _buildFeatureBadge(
+                    CupertinoIcons.waveform_path,
+                    'Brain\nStimulation',
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildFeatureBadge(
+                    CupertinoIcons.bolt_fill,
+                    'Energy\nBoost',
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            const SizedBox(height: 90), // Offset for bottom button & indicator
           ],
         ),
-        const SizedBox(height: 40),
-      ],
+      ),
     );
   }
 
   Widget _buildFeatureBadge(IconData icon, String label) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2A2A2E),
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.white10),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1C1C1E),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.3),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
-          child: Icon(icon, color: Colors.white70, size: 32),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white54, fontSize: 12),
-        ),
-      ],
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E60FF).withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: const Color(0xFF1E60FF), size: 28),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              fontFamily: '.SF Pro Text',
+              height: 1.2,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -75,7 +119,7 @@ class SoundWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFFF7A6A)
+      ..color = const Color(0xFF4A89FF)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3
       ..strokeCap = StrokeCap.round;

@@ -51,7 +51,7 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
             child: const Text(
               'Done',
               style: TextStyle(
-                color: Color(0xFFFF3B30),
+                color: Color(0xFF1E60FF),
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -88,7 +88,7 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
                         ? Icons.radio_button_checked
                         : Icons.radio_button_unchecked,
                     color: isSelected
-                        ? const Color(0xFFFF3B30)
+                        ? const Color(0xFF1E60FF)
                         : Colors.white30,
                   ),
                   title: Text(
@@ -101,7 +101,7 @@ class _AlarmSoundScreenState extends ConsumerState<AlarmSoundScreen> {
                   trailing: isSelected
                       ? const Icon(
                           Icons.volume_up,
-                          color: Color(0xFFFF3B30),
+                          color: Color(0xFF1E60FF),
                           size: 20,
                         )
                       : null,

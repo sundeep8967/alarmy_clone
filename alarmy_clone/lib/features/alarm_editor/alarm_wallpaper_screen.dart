@@ -43,7 +43,7 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
             child: const Text(
               'Done',
               style: TextStyle(
-                color: Color(0xFFFF3B30),
+                color: Color(0xFF1E60FF),
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -77,7 +77,7 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
           );
         },
         loading: () => const Center(
-          child: CircularProgressIndicator(color: Color(0xFFFF3B30)),
+          child: CircularProgressIndicator(color: Color(0xFF1E60FF)),
         ),
         error: (e, _) => Center(
           child: Text('Error: $e', style: const TextStyle(color: Colors.white)),
@@ -119,7 +119,7 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: isSelected
-                        ? Border.all(color: const Color(0xFFFF3B30), width: 2)
+                        ? Border.all(color: const Color(0xFF1E60FF), width: 2)
                         : null,
                   ),
                   child: ClipRRect(
@@ -139,7 +139,7 @@ class _AlarmWallpaperScreenState extends ConsumerState<AlarmWallpaperScreen> {
                             right: 8,
                             child: CircleAvatar(
                               radius: 10,
-                              backgroundColor: Color(0xFFFF3B30),
+                              backgroundColor: Color(0xFF1E60FF),
                               child: Icon(
                                 Icons.check,
                                 size: 12,

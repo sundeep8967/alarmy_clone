@@ -195,7 +195,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         brightness: Brightness.dark,
         fontFamily: '.SF Pro Text',
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF3B30), // iOS system red
+          seedColor: const Color(0xFF1E60FF), // Alarmy iOS Royal Blue
           brightness: Brightness.dark,
           surface: const Color(0xFF1C1C1E), // iOS grouped bg
         ),
@@ -226,7 +226,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF1C1C1E),
-          selectedItemColor: Color(0xFFFF3B30),
+          selectedItemColor: Color(0xFF1E60FF),
           unselectedItemColor: Color(0xFF8E8E93),
           selectedLabelStyle: TextStyle(fontFamily: '.SF Pro Text', fontSize: 10, fontWeight: FontWeight.w500),
           unselectedLabelStyle: TextStyle(fontFamily: '.SF Pro Text', fontSize: 10),
@@ -262,7 +262,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF3B30),
+          seedColor: const Color(0xFF1E60FF),
           brightness: Brightness.light,
         ),
         scaffoldBackgroundColor: const Color(0xFFF2F2F7), // iOS grouped light bg

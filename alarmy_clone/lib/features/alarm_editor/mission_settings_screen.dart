@@ -60,7 +60,7 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
             child: const Text(
               'Save',
               style: TextStyle(
-                color: Color(0xFFFF3B30),
+                color: Color(0xFF1E60FF),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -221,7 +221,7 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
                     ),
                   ),
                   if (isSelected)
-                    const Icon(Icons.check, color: Color(0xFFFF3B30)),
+                    const Icon(Icons.check, color: Color(0xFF1E60FF)),
                 ],
               ),
             ),
@@ -363,10 +363,10 @@ class _MissionSettingsScreenState extends State<MissionSettingsScreen> {
           const SizedBox(height: 8),
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: const Color(0xFFFF3B30),
-              thumbColor: const Color(0xFFFF3B30),
+              activeTrackColor: const Color(0xFF1E60FF),
+              thumbColor: const Color(0xFF1E60FF),
               inactiveTrackColor: Colors.white12,
-              overlayColor: const Color(0xFFFF3B30).withValues(alpha: 0.2),
+              overlayColor: const Color(0xFF1E60FF).withValues(alpha: 0.2),
             ),
             child: Slider(
               value: sensitivity,

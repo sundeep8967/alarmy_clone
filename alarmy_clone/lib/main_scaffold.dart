@@ -108,7 +108,7 @@ class _IOSTabBarState extends State<_IOSTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    const selectedColor = Color(0xFFFF453A);
+    const selectedColor = Color(0xFF1E60FF);
     const unselectedColor = Color(0xFF8E8E93);
     final bottomMargin = widget.bottomPadding > 0 ? widget.bottomPadding : 12.0;
 
@@ -127,7 +127,7 @@ class _IOSTabBarState extends State<_IOSTabBar> {
                 offset: const Offset(0, 8),
               ),
               BoxShadow(
-                color: const Color(0xFFFF453A).withValues(alpha: 0.08),
+                color: const Color(0xFF1E60FF).withValues(alpha: 0.15),
                 blurRadius: 16,
                 offset: const Offset(0, 2),
               ),
@@ -169,7 +169,7 @@ class _IOSTabBarState extends State<_IOSTabBar> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? const Color(0xFFFF453A).withValues(alpha: 0.14)
+                                    ? const Color(0xFF1E60FF).withValues(alpha: 0.14)
                                     : Colors.transparent,
                                 borderRadius: BorderRadius.circular(20),
                               ),

@@ -17,14 +17,13 @@ import 'alarm_settings_screen.dart';
 import '../setting/premium_screen.dart';
 import '../setting/battery_optimization_screen.dart';
 import 'overslept_mission_screen.dart';
-import '../../core/widgets/liquid_page_transition.dart';
 import '../../core/widgets/bouncy_pressable.dart';
 
 class StarburstPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFFF3B30)
+      ..color = const Color(0xFF1E60FF)
       ..style = PaintingStyle.fill;
 
     final path = Path();
@@ -124,7 +123,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                 const Text('Default (by time)'),
                 if (_sortMode == 'time') ...[
                   const SizedBox(width: 8),
-                  const Icon(CupertinoIcons.checkmark, color: Color(0xFFFF3B30), size: 18),
+                  const Icon(CupertinoIcons.checkmark, color: Color(0xFF1E60FF), size: 18),
                 ],
               ],
             ),
@@ -140,7 +139,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                 const Text('Active first'),
                 if (_sortMode == 'active') ...[
                   const SizedBox(width: 8),
-                  const Icon(CupertinoIcons.checkmark, color: Color(0xFFFF3B30), size: 18),
+                  const Icon(CupertinoIcons.checkmark, color: Color(0xFF1E60FF), size: 18),
                 ],
               ],
             ),
@@ -268,7 +267,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                         _buildFabMenuItem(
                           'New Alarm',
                           Icons.alarm_add,
-                          const Color(0xFFFF3B30),
+                          const Color(0xFF1E60FF),
                           () => Navigator.pop(dialogContext, 'new_alarm'),
                         ),
                       ],
@@ -479,7 +478,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFFF453A).withValues(alpha: 0.35),
+                color: const Color(0xFF1E60FF).withValues(alpha: 0.35),
                 blurRadius: 16,
                 spreadRadius: 2,
                 offset: const Offset(0, 4),
@@ -489,7 +488,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
           child: FloatingActionButton(
             key: _fabKey,
             heroTag: 'fab_home_main',
-            backgroundColor: const Color(0xFFFF453A),
+            backgroundColor: const Color(0xFF1E60FF),
             shape: const CircleBorder(),
             elevation: 0,
             highlightElevation: 2,
@@ -519,7 +518,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF453A).withValues(alpha: 0.3),
+                  color: const Color(0xFF1E60FF).withValues(alpha: 0.3),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
@@ -562,7 +561,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFF3B30), Color(0xFFFF6B35)],
+                colors: [Color(0xFF1E60FF), Color(0xFF4A89FF)],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -654,17 +653,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
               decoration: BoxDecoration(
-                color: const Color(0xFFFF3B30).withValues(alpha: 0.16),
+                color: const Color(0xFF1E60FF).withValues(alpha: 0.16),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: const Color(0xFFFF3B30).withValues(alpha: 0.4),
+                  color: const Color(0xFF1E60FF).withValues(alpha: 0.4),
                   width: 0.5,
                 ),
               ),
               child: const Text(
                 'NEW',
                 style: TextStyle(
-                  color: Color(0xFFFF453A),
+                  color: Color(0xFF1E60FF),
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.5,
@@ -932,25 +931,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                           ),
                           actions: [
                             CupertinoActionSheetAction(
-                              onPressed: () {
-                                Navigator.pop(ctx);
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute<void>(
-                                    builder: (_) => AlarmRingScreen(alarm: alarm),
-                                  ),
-                                );
-                              },
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(CupertinoIcons.play_circle_fill, color: Color(0xFF00D1FF), size: 20),
-                                  SizedBox(width: 8),
-                                  Text('Test Alarm'),
-                                ],
-                              ),
-                            ),
-                            CupertinoActionSheetAction(
                               isDestructiveAction: true,
                               onPressed: () async {
                                 Navigator.pop(ctx);
@@ -1048,10 +1028,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFF1C1314),
+            color: const Color(0xFF1C1A14),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: const Color(0xFFFF453A).withValues(alpha: 0.25),
+              color: const Color(0xFFFF9F0A).withValues(alpha: 0.25),
               width: 0.5,
             ),
           ),
@@ -1060,12 +1040,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF453A).withValues(alpha: 0.15),
+                  color: const Color(0xFFFF9F0A).withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   CupertinoIcons.exclamationmark_triangle_fill,
-                  color: Color(0xFFFF453A),
+                  color: Color(0xFFFF9F0A),
                   size: 18,
                 ),
               ),

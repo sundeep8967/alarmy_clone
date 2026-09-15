@@ -126,7 +126,7 @@ class SleepScreen extends ConsumerWidget {
                       child: CupertinoButton(
                         color: isTracking
                             ? const Color(0xFFFF3B30)
-                            : const Color(0xFF0A84FF),
+                            : const Color(0xFF1E60FF),
                         borderRadius: BorderRadius.circular(14),
                         onPressed: () {
                           if (isTracking) {

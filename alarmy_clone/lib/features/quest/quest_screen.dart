@@ -159,10 +159,10 @@ class QuestScreen extends ConsumerWidget {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFF3B30).withOpacity(0.2),
+                    color: const Color(0xFF1E60FF).withOpacity(0.2),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: const Color(0xFFFF3B30),
+                      color: const Color(0xFF1E60FF),
                       width: 2,
                     ),
                   ),
@@ -170,7 +170,7 @@ class QuestScreen extends ConsumerWidget {
                     child: Text(
                       '${progress.currentLevel}',
                       style: const TextStyle(
-                        color: Color(0xFFFF3B30),
+                        color: Color(0xFF1E60FF),
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -185,7 +185,7 @@ class QuestScreen extends ConsumerWidget {
               child: LinearProgressIndicator(
                 value: progress.levelProgress.clamp(0.0, 1.0),
                 backgroundColor: Colors.white.withOpacity(0.1),
-                valueColor: const AlwaysStoppedAnimation(Color(0xFFFF3B30)),
+                valueColor: const AlwaysStoppedAnimation(Color(0xFF1E60FF)),
                 minHeight: 8,
               ),
             ),
@@ -237,7 +237,7 @@ class QuestScreen extends ConsumerWidget {
       child: const Padding(
         padding: EdgeInsets.all(24),
         child: Center(
-          child: CircularProgressIndicator(color: Color(0xFFFF3B30)),
+          child: CircularProgressIndicator(color: Color(0xFF1E60FF)),
         ),
       ),
     );
@@ -294,7 +294,7 @@ class QuestScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: quest.isCompleted
                     ? const Color(0xFF00D1FF).withOpacity(0.2)
-                    : const Color(0xFFFF3B30).withOpacity(0.2),
+                    : const Color(0xFF1E60FF).withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -331,7 +331,7 @@ class QuestScreen extends ConsumerWidget {
                       valueColor: AlwaysStoppedAnimation(
                         quest.isCompleted
                             ? const Color(0xFF00D1FF)
-                            : const Color(0xFFFF3B30),
+                            : const Color(0xFF1E60FF),
                       ),
                       minHeight: 6,
                     ),

@@ -149,7 +149,7 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
               child: Text(
                 entry.value,
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFFFF3B30) : Colors.white38,
+                  color: isSelected ? const Color(0xFF1E60FF) : Colors.white38,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   fontFamily: '.SF Pro Text',
                 ),
@@ -324,14 +324,14 @@ class _RecordsScreenState extends ConsumerState<RecordsScreen> {
           SizedBox(
             width: double.infinity,
             child: CupertinoButton(
-              color: const Color(0xFFFF3B30).withValues(alpha: 0.15),
+              color: const Color(0xFF1E60FF).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(16),
               padding: const EdgeInsets.symmetric(vertical: 16),
               onPressed: () => Navigator.popUntil(context, (r) => r.isFirst),
               child: const Text(
                 'Back to Alarms',
                 style: TextStyle(
-                  color: Color(0xFFFF3B30),
+                  color: Color(0xFF1E60FF),
                   fontWeight: FontWeight.bold,
                   fontFamily: '.SF Pro Text',
                 ),

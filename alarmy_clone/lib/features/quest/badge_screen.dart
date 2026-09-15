@@ -61,7 +61,7 @@ class BadgeScreen extends ConsumerWidget {
                       child: Container(
                         height: 200,
                         child: const CircularProgressIndicator(
-                          color: Color(0xFFFF3B30),
+                          color: Color(0xFF1E60FF),
                         ),
                       ),
                     ),

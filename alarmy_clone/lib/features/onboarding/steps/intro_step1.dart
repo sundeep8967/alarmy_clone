@@ -12,9 +12,6 @@ class IntroStep1 extends StatelessWidget {
     debugPrint('📄 [Onboarding] ===== PAGE 0: Intro Step 1 =====');
     return Stack(
       children: [
-        // Star field background
-        Positioned.fill(child: CustomPaint(painter: StarFieldPainter())),
-        
         // Floating premium language selector at top-right
         Positioned(
           top: 16,
@@ -24,7 +21,7 @@ class IntroStep1 extends StatelessWidget {
 
         Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 80, bottom: 24),
+            padding: const EdgeInsets.only(top: 80, bottom: 100),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +34,7 @@ class IntroStep1 extends StatelessWidget {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFFF3B30).withValues(alpha: 0.35),
+                        color: const Color(0xFF1E60FF).withValues(alpha: 0.35),
                         blurRadius: 28,
                         spreadRadius: 4,
                       ),
@@ -58,21 +55,28 @@ class IntroStep1 extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
+                    fontFamily: '.SF Pro Display',
                     color: Colors.white,
                     height: 1.2,
+                    letterSpacing: -0.5,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
                 Text(
                   'onboarding_subtitle'.tr(),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16, color: Colors.white54),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: '.SF Pro Text',
+                    color: Colors.white60,
+                    letterSpacing: -0.2,
+                  ),
                 ),
-                const SizedBox(height: 48),
+                const SizedBox(height: 40),
                 _buildTrustBadge('onboarding_badge1_title'.tr(), 'onboarding_badge1_subtitle'.tr()),
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
                 _buildTrustBadge('onboarding_badge2_title'.tr(), 'onboarding_badge2_subtitle'.tr()),
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
                 _buildTrustBadge('onboarding_badge3_title'.tr(), 'onboarding_badge3_subtitle'.tr()),
               ],
             ),
@@ -151,12 +155,19 @@ class IntroStep1 extends StatelessWidget {
             color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
+            fontFamily: '.SF Pro Display',
+            letterSpacing: -0.3,
           ),
         ),
+        const SizedBox(height: 4),
         Text(
           subtitle,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white54, fontSize: 16),
+          style: const TextStyle(
+            color: Colors.white54,
+            fontSize: 15,
+            fontFamily: '.SF Pro Text',
+          ),
         ),
       ],
     );

@@ -235,59 +235,26 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Row(
-            children: [
-              BouncyPressable(
-                onTap: _previewAlarm,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF00D1FF).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color(0xFF00D1FF).withValues(alpha: 0.4),
-                    ),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.play_arrow_rounded, color: Color(0xFF00D1FF), size: 16),
-                      SizedBox(width: 4),
-                      Text(
-                        'Test',
-                        style: TextStyle(
-                          color: Color(0xFF00D1FF),
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+          BouncyPressable(
+            onTap: _saveAlarm,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E60FF).withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: const Color(0xFF1E60FF).withValues(alpha: 0.5),
                 ),
               ),
-              BouncyPressable(
-                onTap: _saveAlarm,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF3B30).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color(0xFFFF3B30).withValues(alpha: 0.5),
-                    ),
-                  ),
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(
-                      color: Color(0xFFFF3B30),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                  color: Color(0xFF1E60FF),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
@@ -362,11 +329,11 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                   margin: const EdgeInsets.only(right: 12),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? const Color(0xFFFF3B30).withValues(alpha: 0.1)
+                        ? const Color(0xFF1E60FF).withValues(alpha: 0.12)
                         : Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(20),
                     border: isSelected
-                        ? Border.all(color: const Color(0xFFFF3B30))
+                        ? Border.all(color: const Color(0xFF1E60FF))
                         : null,
                   ),
                   child: Material(
@@ -444,7 +411,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                               Icon(
                                 m['icon'] as IconData,
                                 color: isSelected
-                                    ? const Color(0xFFFF3B30)
+                                    ? const Color(0xFF1E60FF)
                                     : Colors.white38,
                               ),
                               const SizedBox(height: 8),
@@ -487,7 +454,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
               width: 38,
               height: 38,
               decoration: BoxDecoration(
-                color: active ? const Color(0xFFFF3B30) : Colors.transparent,
+                color: active ? const Color(0xFF1E60FF) : Colors.transparent,
                 shape: BoxShape.circle,
                 border: active ? null : Border.all(color: Colors.white12),
               ),
@@ -531,7 +498,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
                 children: [
                   Text(
                     selectedSoundId,
-                    style: const TextStyle(color: Color(0xFFFF3B30), fontWeight: FontWeight.w600),
+                    style: const TextStyle(color: Color(0xFF1E60FF), fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(width: 6),
                   const Icon(Icons.chevron_right, color: Colors.white38, size: 20),
@@ -572,7 +539,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             'Vibrate',
             Switch(
               value: isVibrateEnabled,
-              activeThumbColor: const Color(0xFFFF3B30),
+              activeColor: const Color(0xFF34C759),
               onChanged: (v) => setState(() => isVibrateEnabled = v),
             ),
           ),
@@ -598,7 +565,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             'Wake Up Check',
             Switch(
               value: isWakeUpCheckEnabled,
-              activeColor: const Color(0xFFFF3B30),
+              activeColor: const Color(0xFF34C759),
               onChanged: (v) => setState(() => isWakeUpCheckEnabled = v),
             ),
           ),
@@ -607,7 +574,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             'Fade-in Sound',
             Switch(
               value: isVolumeCrescendo,
-              activeColor: const Color(0xFFFF3B30),
+              activeColor: const Color(0xFF34C759),
               onChanged: (v) => setState(() => isVolumeCrescendo = v),
             ),
           ),
@@ -616,7 +583,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             'Time Pressure',
             Switch(
               value: timePressure,
-              activeColor: const Color(0xFFFF3B30),
+              activeColor: const Color(0xFF34C759),
               onChanged: (v) => setState(() => timePressure = v),
             ),
           ),
@@ -644,7 +611,7 @@ class _AlarmEditorScreenState extends ConsumerState<AlarmEditorScreen> {
             'Prevent Last-Minute Edits',
             Switch(
               value: preventLastMinuteEdits,
-              activeColor: const Color(0xFFFF3B30),
+              activeColor: const Color(0xFF34C759),
               onChanged: (v) =>
                   setState(() => preventLastMinuteEdits = v),
             ),

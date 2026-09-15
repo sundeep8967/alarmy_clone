@@ -16,7 +16,7 @@ import 'steps/onboarding_step3.dart';
 import 'steps/onboarding_step4_list.dart';
 import 'steps/onboarding_step4_detail.dart';
 import 'steps/onboarding_processing_step.dart';
-import '../../core/widgets/liquid_page_transition.dart';
+import '../../core/widgets/ios_bounceable.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -26,8 +26,20 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 }
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
-  final GlobalKey<LiquidSwipeViewState> _liquidKey = GlobalKey<LiquidSwipeViewState>();
+  late final PageController _pageController;
   int _currentPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   void _completeOnboarding() async {
     debugPrint('🏁 [Onboarding] Completing flow...');
@@ -36,6 +48,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     if (!mounted) return;
     debugPrint('➡️ [Onboarding] Navigating to Home');
     context.go('/');
+  }
+
+  void _animateToPage(int page) {
+    if (!_pageController.hasClients) return;
+    _pageController.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 380),
+      curve: Curves.easeInOutCubic,
+    );
   }
 
   void _nextPage() {
@@ -61,29 +82,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     HapticFeedback.lightImpact();
     final currentPage = _currentPageIndex;
     if (currentPage > 0) {
-      _liquidKey.currentState?.animateToPage(
-        currentPage - 1,
-        duration: const Duration(milliseconds: 650),
-      );
+      _animateToPage(currentPage - 1);
     }
   }
 
   void _goToNext() {
     final currentPage = _currentPageIndex;
     debugPrint('⏭️ [Onboarding] Animating to page ${currentPage + 1}');
-    _liquidKey.currentState?.animateToPage(
-      currentPage + 1,
-      duration: const Duration(milliseconds: 650),
-    );
+    _animateToPage(currentPage + 1);
   }
 
   void _skipPreviewAndGoToSound() {
     // Skip wallpaper preview (page 5) and go directly to sound (page 6)
     debugPrint('⏭️ [Onboarding] Skipping preview, going to sound selection');
-    _liquidKey.currentState?.animateToPage(
-      6, // Page 6 is sound selection (3/4)
-      duration: const Duration(milliseconds: 650),
-    );
+    _animateToPage(6);
   }
 
   @override
@@ -120,10 +132,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             Expanded(
               child: Stack(
                 children: [
-                  // LiquidSwipeView — organic liquid wave transition
-                  LiquidSwipeView(
-                    key: _liquidKey,
-                    enableGesture: state.currentPage < 3,
+                  // Shared starfield in background for intro steps (0, 1, 2)
+                  if (state.currentPage < 3)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: CustomPaint(painter: StarFieldPainter()),
+                      ),
+                    ),
+
+                  // Native smooth iOS PageView
+                  PageView(
+                    controller: _pageController,
+                    physics: state.currentPage < 3
+                        ? const BouncingScrollPhysics()
+                        : const NeverScrollableScrollPhysics(),
                     onPageChanged: (value) {
                       setState(() {
                         _currentPageIndex = value;
@@ -135,7 +157,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             .startProcessing(_completeOnboarding);
                       }
                     },
-                    pages: [
+                    children: [
                       const IntroStep1(),
                       const IntroStep2(),
                       const IntroStep3(),
@@ -162,14 +184,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (state.currentPage < 3)
-                          _buildPageIndicator(state.currentPage),
-                        if (_shouldShowBottomButton(state.currentPage))
-                          _buildBottomButton(state.currentPage),
-                      ],
+                    child: SafeArea(
+                      top: false,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (state.currentPage < 3)
+                            _buildPageIndicator(state.currentPage),
+                          if (_shouldShowBottomButton(state.currentPage))
+                            _buildBottomButton(state.currentPage),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -224,20 +249,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _buildPageIndicator(int current) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
+      padding: const EdgeInsets.only(bottom: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(
           3,
-          (index) => Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            height: 8,
-            width: 8,
-            decoration: BoxDecoration(
-              color: current == index ? Colors.white : Colors.white24,
-              shape: BoxShape.circle,
-            ),
-          ),
+          (index) {
+            final isSelected = current == index;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              height: 6,
+              width: isSelected ? 20 : 6,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? Colors.white
+                    : Colors.white.withValues(alpha: 0.25),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -248,21 +280,31 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
       child: SizedBox(
         width: double.infinity,
-        height: 56,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFF3B30),
-            shape: RoundedRectangleBorder(
+        height: 54,
+        child: IOSBounceable(
+          onTap: _nextPage,
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E60FF),
               borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF1E60FF).withValues(alpha: 0.3),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-          ),
-          onPressed: _nextPage,
-          child: Text(
-            page == 2 ? 'Get started' : 'Next',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+            alignment: Alignment.center,
+            child: Text(
+              page == 2 ? 'Get started' : 'Next',
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                fontFamily: '.SF Pro Text',
+                color: Colors.white,
+                letterSpacing: -0.4,
+              ),
             ),
           ),
         ),

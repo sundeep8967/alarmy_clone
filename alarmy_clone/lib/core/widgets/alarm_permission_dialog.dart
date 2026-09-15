@@ -32,7 +32,8 @@ class AlarmPermissionDialog extends StatefulWidget {
   }
 }
 
-class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
+class _AlarmPermissionDialogState extends State<AlarmPermissionDialog>
+    with WidgetsBindingObserver {
   bool _hasExactAlarm = false;
   bool _isIgnoringBattery = false;
   bool _isLoading = true;
@@ -40,30 +41,49 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _checkPermissions();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkPermissions();
+    }
   }
 
   Future<void> _checkPermissions() async {
     final hasExact = await AlarmService.canScheduleExactAlarms();
     final ignoringBattery = await AlarmService.isIgnoringBatteryOptimizations();
-    setState(() {
-      _hasExactAlarm = hasExact;
-      _isIgnoringBattery = ignoringBattery;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _hasExactAlarm = hasExact;
+        _isIgnoringBattery = ignoringBattery;
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _requestExactAlarm() async {
     final status = await Permission.scheduleExactAlarm.request();
     if (status.isGranted) {
-      setState(() => _hasExactAlarm = true);
+      if (mounted) setState(() => _hasExactAlarm = true);
     } else {
       await AlarmService.openAlarmSettings();
     }
+    await _checkPermissions();
   }
 
   Future<void> _requestBatteryOptimization() async {
     await AlarmService.requestIgnoreBatteryOptimizations();
+    await Future.delayed(const Duration(milliseconds: 500));
+    await _checkPermissions();
   }
 
   bool get _allGranted => _hasExactAlarm && _isIgnoringBattery;
@@ -79,13 +99,26 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Permissions Required',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Permissions Required',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.pop(context, true),
+                  child: const Icon(
+                    CupertinoIcons.xmark_circle_fill,
+                    color: Colors.white30,
+                    size: 24,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             const Text(
@@ -116,14 +149,14 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
             SizedBox(
               width: double.infinity,
               child: CupertinoButton(
-                color: _allGranted ? const Color(0xFFFF3B30) : const Color(0xFF2C2C2E),
+                color: _allGranted ? const Color(0xFF1E60FF) : const Color(0xFF2C2C2E),
                 borderRadius: BorderRadius.circular(16),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                onPressed: _allGranted ? widget.onGranted : null,
+                onPressed: _allGranted ? widget.onGranted : widget.onGranted,
                 child: Text(
-                  _allGranted ? 'Continue' : 'Grant Permissions',
+                  _allGranted ? 'Continue' : 'Continue Anyway',
                   style: TextStyle(
-                    color: _allGranted ? Colors.white : Colors.white38,
+                    color: _allGranted ? Colors.white : Colors.white70,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
@@ -159,7 +192,7 @@ class _AlarmPermissionDialogState extends State<AlarmPermissionDialog> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isGranted ? const Color(0xFF30D158) : const Color(0xFFFF3B30),
+                color: isGranted ? const Color(0xFF30D158) : const Color(0xFFFF9F0A),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(

@@ -75,12 +75,6 @@ class SettingScreen extends ConsumerWidget {
                   const Color(0xFFFFD60A),
                   onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const FaqScreen())),
                 ),
-                _SettingModel(
-                  'About Alarami',
-                  CupertinoIcons.info_circle_fill,
-                  const Color(0xFFFF3B30),
-                  onTap: () => Navigator.push(context, CupertinoPageRoute<void>(builder: (_) => const AboutScreen())),
-                ),
               ]),
               const SizedBox(height: 100),
             ],

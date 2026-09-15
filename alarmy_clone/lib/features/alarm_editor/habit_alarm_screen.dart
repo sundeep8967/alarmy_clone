@@ -307,7 +307,7 @@ class _HabitAlarmScreenState extends ConsumerState<HabitAlarmScreen> {
                           height: 56,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFFF3B30),
+                              backgroundColor: const Color(0xFF1E60FF),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

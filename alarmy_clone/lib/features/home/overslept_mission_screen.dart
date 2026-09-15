@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/repositories/alarm_repository.dart';
+import '../../core/widgets/bouncy_pressable.dart';
 import '../alarm_editor/alarm_editor_screen.dart';
 
 class OversleptMissionScreen extends ConsumerWidget {
@@ -9,7 +11,7 @@ class OversleptMissionScreen extends ConsumerWidget {
   static const _missions = [
     {
       'id': 'squat',
-      'icon': Icons.accessibility_new,
+      'icon': CupertinoIcons.sportscourt,
       'title': 'Squat',
       'subtitle': 'Do 10 squats to dismiss',
       'description':
@@ -18,7 +20,7 @@ class OversleptMissionScreen extends ConsumerWidget {
     },
     {
       'id': 'step',
-      'icon': Icons.directions_walk,
+      'icon': Icons.directions_walk_rounded,
       'title': 'Walk',
       'subtitle': 'Walk 100 steps to dismiss',
       'description':
@@ -27,7 +29,7 @@ class OversleptMissionScreen extends ConsumerWidget {
     },
     {
       'id': 'picture',
-      'icon': Icons.photo_camera,
+      'icon': CupertinoIcons.camera_fill,
       'title': 'Photo',
       'subtitle': 'Scan a pre-registered photo',
       'description':
@@ -36,7 +38,7 @@ class OversleptMissionScreen extends ConsumerWidget {
     },
     {
       'id': 'shake',
-      'icon': Icons.vibration,
+      'icon': CupertinoIcons.waveform_path_ecg,
       'title': 'Shake',
       'subtitle': 'Shake your phone vigorously',
       'description':
@@ -48,65 +50,101 @@ class OversleptMissionScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: const Color(0xFF101014),
+      backgroundColor: const Color(0xFF000000), // iOS True Black
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
+            // iOS Top Navigation Bar
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 16, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  const SizedBox(width: 8),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Overslept AGAIN?',
-                          style: TextStyle(color: Colors.white54, fontSize: 13),
+                  BouncyPressable(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1C1C1E),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          width: 0.5,
                         ),
-                        Text(
-                          'Try a physical mission',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                      ),
+                      child: const Icon(
+                        CupertinoIcons.chevron_back,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(24, 16, 24, 8),
-              child: Text(
-                'These missions force your body to move — making it nearly impossible to fall back asleep.',
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 14,
-                  height: 1.5,
-                ),
+
+            // iOS Large Title Header Section
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1E60FF).withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color(0xFF1E60FF).withValues(alpha: 0.35),
+                        width: 0.5,
+                      ),
+                    ),
+                    child: const Text(
+                      'OVERSLEPT AGAIN?',
+                      style: TextStyle(
+                        color: Color(0xFF1E60FF),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.8,
+                        fontFamily: '.SF Pro Text',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Try a physical mission',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: '.SF Pro Display',
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'These missions force your body to move — making it nearly impossible to fall back asleep.',
+                    style: TextStyle(
+                      color: Color(0xFF8E8E93),
+                      fontSize: 15,
+                      height: 1.4,
+                      fontFamily: '.SF Pro Text',
+                      letterSpacing: -0.2,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Divider(color: Colors.white10, height: 32),
+
+            // Mission Cards List
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+                physics: const BouncingScrollPhysics(),
                 itemCount: _missions.length,
                 itemBuilder: (context, i) {
                   final m = _missions[i];
@@ -115,27 +153,51 @@ class OversleptMissionScreen extends ConsumerWidget {
                     margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
                       color: const Color(0xFF1C1C1E),
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.08),
+                        width: 0.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.3),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
+                    child: Padding(
+                      padding: const EdgeInsets.all(18),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(14),
+                                width: 50,
+                                height: 50,
                                 decoration: BoxDecoration(
-                                  color: color.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(18),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      color.withValues(alpha: 0.28),
+                                      color.withValues(alpha: 0.12),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: color.withValues(alpha: 0.3),
+                                    width: 0.5,
+                                  ),
                                 ),
                                 child: Icon(
                                   m['icon'] as IconData,
                                   color: color,
-                                  size: 28,
+                                  size: 26,
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: 14),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,15 +207,29 @@ class OversleptMissionScreen extends ConsumerWidget {
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: '.SF Pro Display',
+                                        letterSpacing: -0.3,
                                       ),
                                     ),
                                     const SizedBox(height: 4),
-                                    Text(
-                                      m['subtitle'] as String,
-                                      style: TextStyle(
-                                        color: color,
-                                        fontSize: 13,
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 3,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: color.withValues(alpha: 0.14),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Text(
+                                        m['subtitle'] as String,
+                                        style: TextStyle(
+                                          color: color,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: '.SF Pro Text',
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -161,51 +237,69 @@ class OversleptMissionScreen extends ConsumerWidget {
                               ),
                             ],
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                          child: Text(
+                          const SizedBox(height: 14),
+                          Text(
                             m['description'] as String,
                             style: const TextStyle(
-                              color: Colors.white54,
-                              fontSize: 13,
-                              height: 1.5,
+                              color: Color(0xFF98989D),
+                              fontSize: 14,
+                              height: 1.45,
+                              fontFamily: '.SF Pro Text',
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: color),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                ),
+                          const SizedBox(height: 16),
+                          BouncyPressable(
+                            scaleFactor: 0.97,
+                            onTap: () => _applyMissionToNextAlarm(
+                              context,
+                              ref,
+                              m['id'] as String,
+                              m['title'] as String,
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: color,
+                                borderRadius: BorderRadius.circular(14),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: color.withValues(alpha: 0.35),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
                               ),
-                              onPressed: () => _applyMissionToNextAlarm(
-                                context,
-                                ref,
-                                m['id'] as String,
-                                m['title'] as String,
-                              ),
-                              child: Text(
-                                'Add to my next alarm',
-                                style: TextStyle(
-                                  color: color,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Add to my next alarm',
+                                    style: TextStyle(
+                                      color: (color.computeLuminance() > 0.6)
+                                          ? Colors.black
+                                          : Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15,
+                                      fontFamily: '.SF Pro Text',
+                                      letterSpacing: -0.2,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Icon(
+                                    CupertinoIcons.arrow_right,
+                                    size: 16,
+                                    color: (color.computeLuminance() > 0.6)
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -239,7 +333,7 @@ class OversleptMissionScreen extends ConsumerWidget {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
+        CupertinoPageRoute(
           builder: (_) => AlarmEditorScreen(initialMission: missionId),
         ),
       );
